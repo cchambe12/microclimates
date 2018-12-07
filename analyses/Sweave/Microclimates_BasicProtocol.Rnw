@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{Sweave}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{mdframed}
+\usepackage{natbib}
+\bibliographystyle{..//papers/styles/besjournals.bst}
+\usepackage[small]{caption}
+\setkeys{Gin}{width=0.8\textwidth}
+\setlength{\captionmargin}{30pt}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+\topmargin -1.5cm        
+\oddsidemargin -0.015cm   
+\evensidemargin -0.015cm
+\textwidth 16cm
+\textheight 21cm 
+%\pagestyle{empty} %comment if want page numbers
+\parskip 7.2pt
+\renewcommand{\baselinestretch}{2}
+\parindent 20pt
+\usepackage{indentfirst} 
+
+\newmdenv[
+  topline=true,
+  bottomline=true,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{siderules}
+
+\begin{document}
+
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\labelitemi}{$-$}
+
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand\thesubsection{\arabic{section}.\arabic{subsection}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Experiment Breakdown}
+
+Experiment Part 1 - Set up 15 hobo loggers along the Tree Spotters route at the Arboretum at regular intervals. Also set up 15 hobo loggers along John O'Keefe's route. Completed in the Fall of 2018 to capture over-winter chilling before 2019 spring. Experiment Part 2 - I will monitor the phenology data for each individual and species. Experiment Part 3 - I will assess the various budburst and leafout times across all species and determine the strength of microclimatic variation within a more urban environment (Arnold Arboretum) vs a forest habitat (Harvard Forest). 
+
+\begin{center}
+\captionof{table}{List of species with overlap between the two sites.}\label{tab:exp1} 
+\footnotesize
+\begin{tabular}{|c | c | c | c |}
+\hline
+\textbf{Species} \\
+\hline
+ACESAC \\
+\hline
+BETALL \\
+\hline
+FAGGRA \\
+\hline
+QUEALB \\
+\hline
+QUERUB \\
+\hline
+HAMVIR \\
+\hline
+VIBCAS \\
+\hline
+ACERUB \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}
