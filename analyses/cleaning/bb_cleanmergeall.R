@@ -43,27 +43,14 @@ source("cleaning/clean_CG.R") # 24 Jan 2019: 433
 
 # 5. Get John O'Keefe data - and clean!
 ok15<-read.csv("output/okeefe2015.csv", header=TRUE)
-ok15$year <- 2015
-ok15$JULIAN <- as.integer(ok15$JULIAN)
-ok15$CIRCUIT <- as.integer(ok15$CIRCUIT)
-ok15$BBRK <- as.integer(ok15$BBRK)
-ok15$FOPN <- as.integer(ok15$FOPN)
-ok15$L75 <- as.integer(ok15$L75)
-ok15$L95 <- as.integer(ok15$L95)
-ok16<-read.csv("output/okeefe2016.csv", header=TRUE)
-ok16$year <- 2016
-jok <- full_join(ok15, ok16)
-ok17<-read.csv("output/okeefe2017.csv", header=TRUE)
-ok17$year <- 2017
-jok <- full_join(jok, ok17)
-ok18<-read.csv("output/okeefe2018.csv", header=TRUE)
-ok18$year <- 2018
-ok18$FPST <- as.character(ok18$FPST)
-ok18$LFIN <- as.character(ok18$LFIN)
-jok <- full_join(jok, ok18)
+source("cleaning/HF_datareadin.R")
 
 # 6. Clean John O'Keefe's data for budburst and leafout data
-source("cleaning/clean_HF.R") # 24 Jan 2019: 433
+source("cleaning/clean_HF.R") # 24 Jan 2019: 662
+
+write.csv(d, file="output/clean_budburstandleafout.csv", row.names=FALSE)
+
+
 
 
 
