@@ -41,7 +41,7 @@ bb<-bb%>%
   rename(photo=Daylength) %>%
   rename(phase=Phenophase_Description)%>%
   rename(ID=Individual_ID)
-bb.pheno<-dplyr::select(bb, Genus, Species, Common_Name, phase, lat, long, elev, year, doy, numYs, photo, ID, AGDD)
+bb.pheno<-dplyr::select(bb, Genus, Species, Common_Name, phase, lat, long, elev, year, doy, numYs, photo, ID)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Breaking leaf buds", "budburst", bb.pheno$phase)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Leaves", "leafout", bb.pheno$phase)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Flowers or flower buds", "flowers", bb.pheno$phase)
@@ -190,13 +190,112 @@ cc<-dplyr::select(cc, year, doy, tmean)
 chilldays<-inner_join(chilldays, cc)
 chilldays<-chilldays[!duplicated(chilldays),]
 
+library(chillR)
+period<-2016:2018
+nyears <- length(period)
+ids<-chilldays[!duplicated(chilldays$ID),]
+ids <- ids[!duplicated(ids$ID),]
+ninds <- length(ids$ninds)
+ids$idslist<-1:57
 
+chilldays$ninds <- NA
+for(i in c(1:nrow(ids))){
+  for(j in c(1:nrow(chilldays)))
+    chilldays$ninds[j] <- ifelse(ids$ID[i] == chilldays$ID[j], ids$idslist[i], chilldays$ninds[j])
+}
+
+#tavg <- chilldays$tmean
+
+#leaps<-c(2016)
+
+extractchill<-function(tavg,period){
+  
+  for(i in ninds){
+    print(i)
+    
+  chillingyears<-array(NA,dim=c(nyears, 3, ninds))
+  row.names(chillingyears)<-period
+  colnames(chillingyears)<-c("Mean.Chill", "SD.Chill", "Species Num.")
+  
+  yearlyresults<-array(NA,dim=c(nyears,3))
+  
+  for(j in period){
+    print(paste(i,j))
+  
+    
+    days<-length(chilldays$doy2[chilldays$ninds==i & chilldays$year==j]) #number of days of climate data
+    yr<-j #year of climate data
+    JDay<-seq(1:days)#DOYs- in January in this case
+    Year<-rep(yr,length(JDay))
+    
+  
+    tavg <- chilldays$tmean[chilldays$ninds==i& chilldays$doy2>=chilldays$chill.start &
+                              chilldays$year==j]
+    meandaily<-data.frame(JDay, Year, tavg)
+    
+    #convert mean daily temperature data to hourly data
+    hrly.temp =
+      data.frame(
+        Temp = c(rep(meandaily$tavg, times = 24)),
+        Year = c(rep(meandaily$Year, times = 24)),
+        JDay = sort(c(rep(seq(1:length(JDay)), times = 24)))
+      )
+  #Chilling calculations for lat and time period of interest (January 2018 in my example)
+    chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
+  
+  
+  yearlyresults[which(period==j),1]<-chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
+  
+  yearlyresults[which(period==j),3]<-ids$idslist[i]
+  
+  }
+  
+  chillingyears[,,i]<-yearlyresults
+  
+  }
+  
+  return(chillingyears)
+  
+}
+
+chill_tree <- extractchill(tavg, period)
+
+#2. Estimate chilling using Tmin and Tmax
+#use min and max daily temp to create fake climate data frame for January 2018 
+Tmin<- -5
+Tmax<-10
+minmaxdaily<-data.frame(Year,JDay,Tmin,Tmax)
+
+#Convert daily tmin and tmax data to hourly data, using packaged functions in chillR
+hrly<-stack_hourly_temps(latitude=lat,make_hourly_temps(lat, minmaxdaily, keep_sunrise_sunset = FALSE))$hourtemps
+
+#Chilling calculations for lat and time period of interest (January 2018 in my example)
+chillcalc <- chilling(chilldays$tmean, hrly$JDay[1], hrly$JDay[nrow(hrly)]) 
+
+#3. Alternative: estimate chilling using one mean temperature
+
+#use constant mean daily temp to create fake climate data frame for January 2018
+Tmean<- 2.5
+meandaily<-data.frame(JDay,Year,Tmean)
+#convert mean daily temperature data to hourly data
+hrly.temp =
+  data.frame(
+    Temp = c(rep(meandaily$Tmean, times = 24)),
+    Year = c(rep(meandaily$Year, times = 24)),
+    JDay = sort(c(rep(seq(1:length(JDay)), times = 24)))
+  )
+
+chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp1)]) 
+
+
+if(FALSE){
 chilldays$chill<-NA
 chilldays$chill<-ifelse(chilldays$doy2>=chilldays$chill.start, ave(chilldays$tmean, chilldays$ID, chilldays$year), chilldays$chill)
 
 
 chilldays$achill<-ifelse(chilldays$doy2>=chilldays$chill.start & chilldays$doy2<=chilldays$chill.end & chilldays$tmean>=0 & chilldays$tmean<=5, chilldays$tmean, 0)
 chilldays$achill<-ave(chilldays$achill, chilldays$ID, chilldays$year, FUN=sum)
+}
 
 forcing<-dplyr::select(forcing, -tmean, -doy, -gdd.start, -tmeanbb, -tmeanlo)
 forcing<-forcing[!duplicated(forcing),]

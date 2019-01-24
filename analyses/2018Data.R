@@ -14,7 +14,7 @@ library(rstan)
 library(RColorBrewer)
 
 # Set Working Directory
-setwd("~/Documents/git/treespotters/analysis")
+setwd("~/Documents/git/microclimates/analyses")
 
 ## Get all that data!
 ## Start with phenology data and clean
@@ -23,6 +23,9 @@ bb$budburst<-ifelse(bb$Species=="deltoides"&bb$year==2016&bb$budburst==84, NA, b
 bb<-bb[!is.na(bb$budburst),]
 ok16<-read.csv("output/okeefe2016.csv", header=TRUE)
 ok17<-read.csv("output/okeefe2017.csv", header=TRUE)
+ok18<-read.csv("output/okeefe2018.csv", header=TRUE)
+
+cg <-read.csv("output/dvr_cg_2018.csv", header=TRUE)
 
 
 #Clean up John's data first
@@ -105,6 +108,45 @@ ok17$spp<-ifelse(ok17$spp=="FAGR", "Fagus grandifolia", ok17$spp)
 ok17$spp<-ifelse(ok17$spp=="QUAL", "Quercus alba", ok17$spp)
 ok17$spp<-ifelse(ok17$spp=="QURU", "Quercus rubra", ok17$spp)
 ok17$type<-"Harvard Forest"
+
+ok18.bb<-ok18%>%
+  dplyr::select(JULIAN, TREEID, BBRK) %>%
+  rename(doy=JULIAN)%>%
+  rename(ind=TREEID)%>%
+  rename(budburst=BBRK)
+ok18.bb$budburst<-ifelse(ok18.bb$budburst>=75, ok18.bb$budburst, NA)
+ok18.bb<-ok18.bb[!is.na(ok18.bb$budburst),]
+
+ok18.bb<-ok18.bb %>% group_by(ind) %>% filter(row_number(budburst) == 1)                   
+ok18.bb$bb<-ok18.bb$doy
+
+bb18<-ok18.bb%>%dplyr::select(ind, bb)
+bb18<-bb18[!is.na(bb18$bb),]
+
+ok18.lo<-ok18%>%
+  dplyr::select(JULIAN, TREEID, L95) %>%
+  rename(doy=JULIAN)%>%
+  rename(ind=TREEID)%>%
+  rename(leafout=L95)
+ok18.lo$leafout<-ifelse(ok18.lo$leafout>=75, ok18.lo$leafout, NA)
+ok18.lo<-ok18.lo[!is.na(ok18.lo$leafout),]
+
+ok18.lo<-ok18.lo %>% group_by(ind) %>% filter(row_number(leafout) == 1)                   
+ok18.lo$lo<-ok18.lo$doy
+
+lo18<-ok18.lo%>%dplyr::select(ind, lo)
+lo18<-lo18[!is.na(lo18$lo),]
+
+ok18<-full_join(bb18, lo18)
+ok18$spp<-substr(ok18$ind, 0, 4)
+ok18<-ok18%>%filter(spp%in%spps)
+
+ok18$spp<-ifelse(ok18$spp=="ACSA", "Acer saccharum", ok18$spp)
+ok18$spp<-ifelse(ok18$spp=="BEAL", "Betula alleghaniensis", ok18$spp)
+ok18$spp<-ifelse(ok18$spp=="FAGR", "Fagus grandifolia", ok18$spp)
+ok18$spp<-ifelse(ok18$spp=="QUAL", "Quercus alba", ok18$spp)
+ok18$spp<-ifelse(ok18$spp=="QURU", "Quercus rubra", ok18$spp)
+ok18$type<-"Harvard Forest"
 
 
 
@@ -248,6 +290,37 @@ box<-ggplot(d.17, aes(x=spp, y=dvr, fill=spp, alpha=type)) + geom_boxplot(aes(fi
   theme(text=element_text(family="Helvetica"),legend.text.align = 0, axis.text.x = element_text(face = "italic", angle=45, hjust=1),
         plot.margin = unit(c(1.5,1.5,1.0,1.5), "lines"), axis.title.x = element_blank(), 
         axis.ticks.x = element_blank()) + ylab("Duration of Vegetative Risk") + guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
+
+
+dts18<-subset(bb, bb$year==2018)
+dts18$type<-"TreeSpotters"
+dts18<-dplyr::select(dts18, spp, budburst, leafout, type)
+dts18$dvr<-dts18$leafout-dts18$budburst
+dts18<-dplyr::select(dts18, -budburst, -leafout)
+
+dok18<-ok18%>%ungroup%>%dplyr::select(spp, bb, type, lo)
+dok18$dvr<-dok18$lo-dok18$bb
+dok18<-dplyr::select(dok18, -bb, -lo)
+dok18<-dok18[!duplicated(dok18),]
+dok18$type<-"Z Harvard Forest"
+dts18<-dts18[!duplicated(dts18),]
+d.18<-full_join(dok18, dts18)
+
+quartz()
+box<-ggplot(d.18, aes(x=spp, y=dvr, fill=spp, alpha=type)) + geom_boxplot(aes(fill=as.factor(spp), col=as.factor(spp), alpha=as.factor(type))) +
+  theme_classic() + scale_alpha_manual(name="Dataset", values=c(0.2, 1), labels=c("TreeSpotters", "Harvard Forest")) +
+  scale_y_continuous(expand = c(0, 0)) + #coord_cartesian(ylim=c(80,135)) +
+  theme(text=element_text(family="Helvetica"),legend.text.align = 0, axis.text.x = element_text(face = "italic", angle=45, hjust=1),
+        plot.margin = unit(c(1.5,1.5,1.0,1.5), "lines"), axis.title.x = element_blank(), 
+        axis.ticks.x = element_blank()) + ylab("Duration of Vegetative Risk") + guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
+
+
+### Now add in CG data and make one datasheet
+d.16$year <- 2016
+d.17$year <- 2017
+d.18$year <- 2018
+
+
 
 
 
