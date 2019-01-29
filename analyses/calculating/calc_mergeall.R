@@ -32,7 +32,14 @@ setwd("~/Documents/git/microclimates/analyses")
 
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
-# 1. Let's add in Forcing data first. We will use February 15 as the start
-# of calculating GDD. Easy to fix if necessary in the gdd.start column
-source("calculating/calc_forceBB.R")
+# 1. Let's add in climate data first for forcing.
+source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
 
+
+# 2. Let's add in Forcing data first. We will use February 15 as the start
+# of calculating GDD. Easy to fix if necessary in the gdd.start column
+source("calculating/calc_forceBB.R") 
+
+
+# 3. Now let's add in forcing from budburst to leafout!! 
+source("calculating/calc_forceBB.R") 

@@ -1,5 +1,6 @@
-### Let's calculate Forcing for budburst 
-# 24 January 2019 - Cat
+### Let's calculate Forcing from budburst to leafout
+# 29 January 2019 - Cat
+# based off calc_forceBB.R
 
 # Load from calc_mergeall.R (including libraries)
 
@@ -8,9 +9,11 @@ if(is.data.frame(d)){
   climandpheno<-data_frame()
   days.btw<-array()
   
-  days.btw <- Map(seq, d$gdd.start, d$budburst, by = 1)
+  d.dvr <- d[!(d$budburst>d$leafout),]
+  d.dvr <- d.dvr[!is.na(d.dvr$budburst) | !is.na(d.dvr$leafout),]
+  days.btw <- Map(seq, d.dvr$budburst, d.dvr$leafout, by=1)
   
-  climandpheno <- data.frame(id_year = rep.int(d$id_year, vapply(days.btw, length, 1L)), 
+  climandpheno <- data.frame(id_year = rep.int(d.dvr$id_year, vapply(days.btw, length, 1L)), 
                              doy = do.call(c, days.btw))
   
   climandpheno <- separate(data = climandpheno, col = id_year, into = c("ID", "year"), sep = "\\*")
@@ -29,8 +32,8 @@ if(is.data.frame(d)){
   climandpheno$year <- as.integer(climandpheno$year)
   climandpheno$doy <- as.numeric(climandpheno$doy)
   
-  climandpheno$budburst<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
-  climandpheno$gdd.start<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
+  climandpheno$leafout<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
+  climandpheno$budburst<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
   
   ## Add Climate data back in 
   cc<-dplyr::select(cc, year, doy, tmean, tmin, tmax, hour)
@@ -41,7 +44,7 @@ if(is.data.frame(d)){
   
   #climandpheno$ID <- as.character(climandpheno$ID)
   
-  bb_climandpheno<-full_join(climandpheno, d)
+  bb_climandpheno<-full_join(climandpheno, d.dvr)
   
   bb_forcing_all <- subset(bb_climandpheno, select=c("ID", "doy", "year", "tmean"))
   bb_forcing_all <-na.omit(bb_forcing_all)
@@ -54,13 +57,13 @@ if(is.data.frame(d)){
   rms <- as.vector(unique(rms$Var1))
   
   bb_forcing <- subset(bb_forcing_all, !bb_forcing_all$ID %in% rms) ## need to do common garden inds after!!
-
+  
   period<-2016:2018
   nyears <- length(period)
   ids<-bb_forcing[!duplicated(bb_forcing$ID),]
   ids <- ids[!duplicated(ids$ID),]
   ninds <- length(ids$ID)
-  ids$idslist<-1:103
+  ids$idslist<-1:82
   
   idlisttomerge <- subset(ids, select=c("ID", "idslist"))
   bb_forcing <- full_join(bb_forcing, idlisttomerge)
@@ -71,7 +74,7 @@ if(is.data.frame(d)){
     
     forcingyears<-array(NA,dim=c(nyears, 1, ninds))
     row.names(forcingyears)<-period
-    colnames(forcingyears)<-c("GDD")
+    colnames(forcingyears)<-c("GDD_dvr")
     
     yearlyresults<-array(NA,dim=c(length(period),1))
     
@@ -82,17 +85,17 @@ if(is.data.frame(d)){
         print(paste(i,j))
         
         days<-bb_forcing$doy[bb_forcing$idslist==i & bb_forcing$year==j] #number of days of climate data
-       
+        
         tavg <- bb_forcing$tmean[bb_forcing$idslist==i & bb_forcing$year==j]
-      
+        
         hrly.temp =
           data.frame(
             Temp = tavg,
             Year = j,
             JDay = sort(days)
           )
-
-      
+        
+        
         chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
         
         yearlyresults[which(period==j),1] <- chillcalc.mn$GDH[which(chillcalc.mn$End_year==j)]/24
@@ -110,9 +113,9 @@ if(is.data.frame(d)){
   
   allyears<-as.data.frame(force_all)
   
-  allyears <- gather(allyears, idslist, GDD)
+  allyears <- gather(allyears, idslist, GDD_dvr)
   allyears$year <- seq(2016, 2018, by=1)
-  allyears$idslist <- as.numeric(substr(allyears$idslist, 5, 7))
+  allyears$idslist <- as.numeric(substr(allyears$idslist, 9, 11))
   
   bb_forcing <- subset(bb_forcing, select=c("ID", "year", "idslist"))
   bb_forcing <- bb_forcing[!duplicated(bb_forcing),]
@@ -132,7 +135,7 @@ if(is.data.frame(d)){
   ids_cg<-bb_forcing_cg[!duplicated(bb_forcing_cg$ID),]
   ids_cg <- ids_cg[!duplicated(ids_cg$ID),]
   ninds_cg <- length(ids_cg$ID)
-  ids_cg$idslist<-1:267
+  ids_cg$idslist<-1:264
   
   idlisttomerge_cg <- subset(ids_cg, select=c("ID", "idslist"))
   bb_forcing_cg <- full_join(bb_forcing_cg, idlisttomerge_cg)
@@ -143,7 +146,7 @@ if(is.data.frame(d)){
     
     forcingyears_cg<-array(NA,dim=c(nyears, 1, ninds_cg))
     row.names(forcingyears_cg)<-period_cg
-    colnames(forcingyears_cg)<-c("GDD")
+    colnames(forcingyears_cg)<-c("GDD_dvr")
     
     yearlyresults_cg<-array(NA,dim=c(length(period_cg),1))
     
@@ -181,9 +184,9 @@ if(is.data.frame(d)){
   force_all_cg <- extractforce_cg(ninds_cg, period_cg)  
   
   oneyear<-as.data.frame(force_all_cg)
-  oneyear <- gather(oneyear, idslist, GDD)
+  oneyear <- gather(oneyear, idslist, GDD_dvr)
   oneyear$year <- 2018
-  oneyear$idslist <- as.numeric(substr(oneyear$idslist, 5, 7))
+  oneyear$idslist <- as.numeric(substr(oneyear$idslist, 9, 11))
   
   bb_forcing_cg <- subset(bb_forcing_cg, select=c("ID", "year", "idslist"))
   bb_forcing_cg <- bb_forcing_cg[!duplicated(bb_forcing_cg),]
@@ -192,12 +195,14 @@ if(is.data.frame(d)){
   
   oneyear <- dplyr::select(oneyear, -idslist)
   
-  forcebb <- full_join(allyears, oneyear)
+  forcedvr <- full_join(allyears, oneyear)
+  
+  force <- full_join(forcebb, forcedvr)
   
 } else {
-  print("Error: forcebb not a data.frame")
+  print("Error: forcedvr not a data.frame. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
+     I have checked and rechecked the data")
 }
 
-stop("Not an error, forcing for budburst is now included. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
+stop("Not an error, forcing from budburst to leafout is now included. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
      I have checked and rechecked the data")
-  

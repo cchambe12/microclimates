@@ -1,12 +1,12 @@
-### Let's calculate Forcing for budburst 
-# 24 January 2019 - Cat
+### Let's calculate chilling!! 
+# 29 January 2019 - Cat
 
 # Load from calc_mergeall.R (including libraries)
 
 if(is.data.frame(d)){
   
   climandpheno<-data_frame()
-  days.btw<-array()
+  days.btw<-array()  ### Starting here!! Need to figure out how to do chilling from one year to the next
   
   days.btw <- Map(seq, d$gdd.start, d$budburst, by = 1)
   
@@ -54,7 +54,7 @@ if(is.data.frame(d)){
   rms <- as.vector(unique(rms$Var1))
   
   bb_forcing <- subset(bb_forcing_all, !bb_forcing_all$ID %in% rms) ## need to do common garden inds after!!
-
+  
   period<-2016:2018
   nyears <- length(period)
   ids<-bb_forcing[!duplicated(bb_forcing$ID),]
@@ -82,17 +82,17 @@ if(is.data.frame(d)){
         print(paste(i,j))
         
         days<-bb_forcing$doy[bb_forcing$idslist==i & bb_forcing$year==j] #number of days of climate data
-       
+        
         tavg <- bb_forcing$tmean[bb_forcing$idslist==i & bb_forcing$year==j]
-      
+        
         hrly.temp =
           data.frame(
             Temp = tavg,
             Year = j,
             JDay = sort(days)
           )
-
-      
+        
+        
         chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
         
         yearlyresults[which(period==j),1] <- chillcalc.mn$GDH[which(chillcalc.mn$End_year==j)]/24
@@ -198,6 +198,4 @@ if(is.data.frame(d)){
   print("Error: forcebb not a data.frame")
 }
 
-stop("Not an error, forcing for budburst is now included. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
-     I have checked and rechecked the data")
-  
+stop("Not an error, forcing for budburst is now included.")
