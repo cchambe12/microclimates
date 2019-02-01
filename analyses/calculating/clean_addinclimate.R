@@ -1,4 +1,5 @@
 ### Let's add in climate data for forcing
+## FORGOT TO ADD IN HARVARD FOREST CLIMATE DATA!!! NEED TO FIX! - 31 January 2019
 # 24 January 2019 - Cat
 
 # Load from calc_mergeall.R (including libraries)
