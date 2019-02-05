@@ -3,11 +3,11 @@
 # Then more scripts, to calculate chilling and forcing
 
 ## Updated 21 January 2019 with new TS data & 21 November 2018 for Climate data
-### Weather data downloaded from... http://labs.arboretum.harvard.edu/weather/
+### Weld Hill weather data downloaded from... http://labs.arboretum.harvard.edu/weather/
 
-## Data download: https://data.usanpn.org/observations/get-started
+## Tree Spotters Data download: https://data.usanpn.org/observations/get-started
 ## Individual Phenometrics -> Set Date -> Set Partner Groups -> Output fields (ObservedBy Person ID, Multiple Observers)
-
+## * FOR MORE DETAILS SEE clean_TS.R
 
 # ## housekeeping
 rm(list=ls()) 
