@@ -26,10 +26,9 @@ bb<-d%>%
   rename(day=First_Yes_Day)%>%
   rename(doy=First_Yes_DOY)%>%
   rename(numYs=Multiple_Observers)%>%
-  rename(photo=Daylength) %>%
   rename(phase=Phenophase_Description)%>%
   rename(ID=Individual_ID)
-bb.pheno<-dplyr::select(bb, Genus, Species, Common_Name, phase, lat, long, elev, year, doy, numYs, photo, ID)
+bb.pheno<-dplyr::select(bb, Genus, Species, Common_Name, phase, lat, long, elev, year, doy, numYs, ID)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Breaking leaf buds", "budburst", bb.pheno$phase)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Leaves", "leafout", bb.pheno$phase)
 bb.pheno$phase<-ifelse(bb.pheno$phase=="Flowers or flower buds", "flowers", bb.pheno$phase)
