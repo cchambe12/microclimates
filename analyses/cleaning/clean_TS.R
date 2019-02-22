@@ -10,6 +10,7 @@
     # 'Botanic Gardens and Arboretums and select 'Arnold Arboretum - Tree Spotters'
     # Press 'Set Groups' and NEXT
 # 5) Select 'Output fields' tab on left: and select 'ObservedBy Person ID' and 'Multiple Observers'
+# 6) Agree to the terms and conditions on the right and then press 'Download'. This can take a few minutes. 
 
 
 # Load from bb_cleanmergeall.R (including libraries)

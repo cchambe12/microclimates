@@ -42,5 +42,4 @@ if(is.data.frame(d)){
   print("Error: d not a data.frame")
 }
 
-stop("Not an error, climate is now added to dataframe. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
-     I have checked and rechecked the data")
+stop("Not an error, climate is now added to dataframe.")
