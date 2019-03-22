@@ -10,10 +10,10 @@ if(is.data.frame(d)){
   
   days.btw <- Map(seq, d$gdd.start, d$budburst, by = 1)
   
-  climandpheno <- data.frame(id_year = rep.int(d$id_year, vapply(days.btw, length, 1L)), 
+  climandpheno <- data.frame(id_year = rep.int(d$id_year_type, vapply(days.btw, length, 1L)), 
                              doy = do.call(c, days.btw))
   
-  climandpheno <- separate(data = climandpheno, col = id_year, into = c("ID", "year"), sep = "\\*")
+  climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("ID", "year", "climatetype"), sep = "\\*")
   climandpheno$id_year<-paste(climandpheno$ID, climandpheno$year)
   
   addhrs <- as.vector(unique(paste(climandpheno$id_year, climandpheno$doy)))
@@ -33,7 +33,6 @@ if(is.data.frame(d)){
   climandpheno$gdd.start<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
   
   ## Add Climate data back in 
-  cc<-dplyr::select(cc, year, doy, tmean, tmin, tmax, hour)
   cc$hour <- as.numeric(cc$hour)
   
   climandpheno<-full_join(climandpheno, cc)

@@ -39,7 +39,7 @@ source("cleaning/clean_TS.R") # 24 Jan 2019: 171
 cg <- read.csv("output/dvr_cg_2018.csv", header=TRUE) ## from CGtraits repo https://github.com/cchambe12/CGtraits
 
 # 4. Clean CG data for budburst and leafout
-source("cleaning/clean_CG.R") # 24 Jan 2019: 433
+source("cleaning/clean_CG.R") # 24 Jan 2019: 433 ### NEED TO UPDATE THE LEAF DROP INFORMATION!!!!!
 
 # 5. Get John O'Keefe data - and clean!
 ok15<-read.csv("output/okeefe2015.csv", header=TRUE)
