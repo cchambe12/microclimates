@@ -8,66 +8,66 @@ if(is.data.frame(jok)){
   jok.bb<-jok%>%
     dplyr::select(JULIAN, TREEID, BBRK, year) %>%
     rename(doy=JULIAN)%>%
-    rename(ID=TREEID)%>%
+    rename(id=TREEID)%>%
     rename(budburst=BBRK)
   jok.bb$budburst<-ifelse(jok.bb$budburst>=75, jok.bb$budburst, NA)
   jok.bb<-jok.bb[!is.na(jok.bb$budburst),]
   
-  jok.bb<-jok.bb %>% group_by(ID, year) %>% filter(row_number(budburst) == 1)                   
+  jok.bb<-jok.bb %>% group_by(id, year) %>% filter(row_number(budburst) == 1)                   
   jok.bb$budburst<-jok.bb$doy
   jok.bb$doy <- NULL
   
   jok.lo<-jok%>%
     dplyr::select(JULIAN, TREEID, L95, year) %>%
     rename(doy=JULIAN)%>%
-    rename(ID=TREEID)%>%
+    rename(id=TREEID)%>%
     rename(leafout=L95)
   jok.lo$leafout<-ifelse(jok.lo$leafout>=50, jok.lo$leafout, NA)
   jok.lo<-jok.lo[!is.na(jok.lo$leafout),]
   
-  jok.lo<-jok.lo %>% group_by(ID, year) %>% filter(row_number(leafout) == 1)                   
+  jok.lo<-jok.lo %>% group_by(id, year) %>% filter(row_number(leafout) == 1)                   
   jok.lo$leafout<-jok.lo$doy
   jok.lo$doy <- NULL
   
   jok.pheno<-full_join(jok.bb, jok.lo)
-  jok.pheno$spp<-substr(jok.pheno$ID, 0, 4)
+  jok.pheno$spp<-substr(jok.pheno$id, 0, 4)
   
-  jok.pheno$Genus <- NA
-  jok.pheno$Species <- NA
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="ACPE", "Acer", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="ACPE", "pensylvanicum", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="ACRU", "Acer", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="ACRU", "rubra", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="ACSA", "Acer", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="ACSA", "saccharum", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="AMSP", "Amelanchier", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="AMSP", "canadensis", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="BEAL", "Betula", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="BEAL", "alleghaniensis", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="BELE", "Betula", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="BELE", "lenta", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="BEPA", "Betula", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="BEPA", "papyrifera", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="COAL", "Cornus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="COAL", "alternifolia", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="CRSP", "Crataegus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="CRSP", "sp.", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="FAGR", "Fagus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="FAGR", "grandifolia", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="FRAM", "Fraxinus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="FRAM", "americana", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="HAVI", "Hamamelis", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="HAVI", "virginiana", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="POTR", "Populus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="POTR", "tremuloides", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="PRSE", "Prunus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="PRSE", "serotina", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="QUAL", "Quercus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="QUAL", "alba", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="QURU", "Quercus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="QURU", "rubra", jok.pheno$Species)
-  jok.pheno$Genus<-ifelse(jok.pheno$spp=="QUVE", "Quercus", jok.pheno$Genus)
-  jok.pheno$Species<-ifelse(jok.pheno$spp=="QUVE", "velutina", jok.pheno$Species)
+  jok.pheno$genus <- NA
+  jok.pheno$species <- NA
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="ACPE", "Acer", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="ACPE", "pensylvanicum", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="ACRU", "Acer", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="ACRU", "rubra", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="ACSA", "Acer", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="ACSA", "saccharum", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="AMSP", "Amelanchier", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="AMSP", "canadensis", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="BEAL", "Betula", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="BEAL", "alleghaniensis", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="BELE", "Betula", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="BELE", "lenta", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="BEPA", "Betula", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="BEPA", "papyrifera", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="COAL", "Cornus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="COAL", "alternifolia", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="CRSP", "Crataegus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="CRSP", "sp.", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="FAGR", "Fagus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="FAGR", "grandifolia", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="FRAM", "Fraxinus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="FRAM", "americana", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="HAVI", "Hamamelis", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="HAVI", "virginiana", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="POTR", "Populus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="POTR", "tremuloides", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="PRSE", "Prunus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="PRSE", "serotina", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="QUAL", "Quercus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="QUAL", "alba", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="QURU", "Quercus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="QURU", "rubra", jok.pheno$species)
+  jok.pheno$genus<-ifelse(jok.pheno$spp=="QUVE", "Quercus", jok.pheno$genus)
+  jok.pheno$species<-ifelse(jok.pheno$spp=="QUVE", "velutina", jok.pheno$species)
   
   jok.pheno$type<-"Harvard Forest"
   
@@ -90,21 +90,21 @@ if(is.data.frame(jok)){
   fall<-fall%>%
     dplyr::select(DATE, TREE.ID, LF.COLOR, year) %>%
     rename(date=DATE)%>%
-    rename(ID=TREE.ID)%>%
+    rename(id=TREE.ID)%>%
     rename(last.obs=LF.COLOR)
   fall$last.obs<-ifelse(fall$last.obs>=75, fall$last.obs, NA)
   fall<-fall[!is.na(fall$last.obs),]
   
-  fall<-fall %>% group_by(ID, year) %>% filter(row_number(last.obs) == 1)                   
+  fall<-fall %>% group_by(id, year) %>% filter(row_number(last.obs) == 1)                   
   fall$doy <- yday(as.Date(fall$date, "%m/%d/%y"))
   fall$last.obs<-fall$doy
   
-  fall <- subset(fall, select=c("ID", "last.obs", "year"))
+  fall <- subset(fall, select=c("id", "last.obs", "year"))
   
   hf <- full_join(jok.pheno, fall)
   hf$last.obs <- ifelse(is.na(hf$last.obs) & hf$year==2016, 274, hf$last.obs)
   hf$last.obs <- ifelse(is.na(hf$last.obs) & hf$year!=2016, 275, hf$last.obs)
-  hf <- hf[!is.na(hf$Genus),]
+  hf <- hf[!is.na(hf$genus),]
   
   hf$gdd.start <- 46
   hf$yr.end <- ifelse(hf$year==2016, 366, 365)

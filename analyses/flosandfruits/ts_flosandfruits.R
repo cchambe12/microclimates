@@ -8,7 +8,7 @@ options(stringsAsFactors = FALSE)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(rstanarm)
+library(rstan)
 library(brms)
 
 # Set Working Directory
@@ -24,7 +24,7 @@ prov <- subset(prov, select=c("id", "provenance.lat"))
 
 ### First let's do the obligatory cleaning checks with citizen scienece data
 d <- d[(d$Multiple_FirstY>=1 | d$Multiple_Observers>0),]
-#d <- d[(npn$NumYs_in_Series>=7),]
+d <- d[(d$NumYs_in_Series>=3),]
 d <- d[(d$NumDays_Since_Prior_No<=7),]
 
 #### Alright so the questions I have... 
@@ -56,12 +56,17 @@ ts$phenophase <- ifelse(ts$phenophase=="Ripe fruits", "ripefruits", ts$phenophas
 
 ts <- ts[(ts$year>=2016),]
 
-ts$budburst <- ifelse(ts$phenophase=="budburst", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
-ts$leaves <- ifelse(ts$phenophase=="leaves", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
-ts$flobudburst <- ifelse(ts$phenophase=="flobudburst", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
-ts$flowers <- ifelse(ts$phenophase=="flowers", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
-ts$fruits <- ifelse(ts$phenophase=="fruits", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
-ts$ripefruits <- ifelse(ts$phenophase=="ripefruits", ave(ts$doy, ts$id, ts$year, FUN=first), NA)
+ts <-ts%>% 
+  group_by(id, phenophase, year) %>% 
+  slice(which.min(doy))
+ts<-ts[!duplicated(ts),]
+
+ts$budburst <- ifelse(ts$phenophase=="budburst", ts$doy, NA)
+ts$leaves <- ifelse(ts$phenophase=="leaves", ts$doy, NA)
+ts$flobudburst <- ifelse(ts$phenophase=="flobudburst", ts$doy, NA)
+ts$flowers <- ifelse(ts$phenophase=="flowers", ts$doy, NA)
+ts$fruits <- ifelse(ts$phenophase=="fruits", ts$doy, NA)
+ts$ripefruits <- ifelse(ts$phenophase=="ripefruits", ts$doy, NA)
 
 ts.stan <- subset(ts, select=c("genus", "species", "id", "year", "budburst", "leaves", "flobudburst", 
                                "flowers", "fruits", "ripefruits"))
@@ -81,15 +86,99 @@ ts.stan <- left_join(ts.stan, polsyn)
 ts.stan$pol.syn <- ifelse(ts.stan$pol.syn=="wind", 0, 1)
 
 ts.stan$dvr <- ts.stan$leaves - ts.stan$budburst
-ts.stan$flofruittime <- ts.stan$ripefruits - ts.stan$flobudburst
+ts.stan$flofruittime <- ts.stan$fruits - ts.stan$flobudburst
 
 ts.stan <- left_join(ts.stan, prov)
 
-flo.stan <- subset(ts.stan, select=c("flofruittime", "dvr", "pol.syn", "provenance.lat", "genus", "species"))
-flo.stan$spp <- paste(substr(flo.stan$genus, 0, 3), substr(flo.stan$species, 0, 3))
-flo.stan <- 
+##### Let's add in climate!!
+d <- ts
+d$type <- "Treespotters"
+source("calculating/clean_addinclimate.R")
 
-mod <- brm(flofruittime ~ dvr + pol.syn + prov)
+ts.stan$mst <- NA
+springtemps <- vector()
+for(i in unique(cc$year)) {
+  springtemps <- cc$tmean[(cc$year==i & cc$doy>=60 & cc$doy<=151)] # average spring temp from March 1-May 31
+  springtemps <- springtemps[!is.na(springtemps)]
+  ts.stan$mst<- ifelse(ts.stan$year==i, mean(springtemps), ts.stan$mst)
+} 
+
+ts.stan$idyear <- paste(ts.stan$id, ts.stan$year)
+
+ts.stan$dvr.temp <- NA
+dvrtemps <- vector()
+for(i in c(1:nrow(ts.stan))) {
+  dvrtemps <- cc$tmean[(cc$doy>=ts.stan$budburst[i] & cc$doy<=ts.stan$leaves[i])]
+  dvrtemps <- dvrtemps[!is.na(dvrtemps)]
+  ts.stan$dvr.temp[i]<- mean(dvrtemps)
+}
+
+ts.stan$flofruit.temp <- NA
+flotemps <- vector()
+
+for(i in c(1:nrow(ts.stan))) {
+  flotemps <- cc$tmean[(cc$doy>=ts.stan$flobudburst[i] & cc$doy<=ts.stan$fruits[i])]
+  flotemps <- flotemps[!is.na(flotemps)]
+  ts.stan$flofruit.temp[i]<- mean(flotemps)
+}
+
+
+
+### Now some model prep!
+flo.stan <- subset(ts.stan, select=c("flofruittime", "flowers", "fruits", "ripefruits", "leaves", "mst",
+                                     "pol.syn", "provenance.lat", "genus", "species", "year", "flofruit.temp"))
+flo.stan$spp <- paste(substr(flo.stan$genus, 0, 3), substr(flo.stan$species, 0, 3), sep="")
+flo.stan <- flo.stan[!(flo.stan$flofruittime<=0),]
+
+#flo.stan <- flo.stan[!(flo.stan$species=="hamvir"),]
+
+#mod <- brm(flofruittime ~ leaves + mst + provenance.lat + (1|spp), 
+ #          data = flo.stan, control=list(max_treedepth = 12,adapt_delta = 0.99) )
+
+
+
+
+
+### Flowering to fruiting time - mst, leafout, prov.lat
+fft.stan <- flo.stan[!is.na(flo.stan$flofruittime),]
+fft.stan <- fft.stan[!is.na(fft.stan$mst),]
+fft.stan <- fft.stan[!is.na(fft.stan$leaves),]
+fft.stan <- fft.stan[!is.na(fft.stan$provenance.lat),]
+
+
+datalist.ff <- with(fft.stan, 
+                       list(y = flofruittime, 
+                            mst = mst, 
+                            lo = leaves, 
+                            lat = provenance.lat,
+                            sp = as.numeric(as.factor(spp)),
+                            N = nrow(flo.stan),
+                            n_sp = length(unique(flo.stan$spp))
+                       )
+)
+
+flofruit.norm = stan('stan/flofruit_normal.stan', data = datalist.ff,
+                     iter = 2000, warmup=1500, control=list(max_treedepth = 12,adapt_delta = 0.99)) ## 7 divergent transitions
+
+
+### Let's try to z-score now... 
+fft.stan$mst.z <- (fft.stan$mst-mean(fft.stan$mst,na.rm=TRUE))/(sd(fft.stan$mst,na.rm=TRUE))
+fft.stan$lo.z <- (fft.stan$leaves-mean(fft.stan$leaves,na.rm=TRUE))/(sd(fft.stan$leaves,na.rm=TRUE))
+fft.stan$lat.z <- (fft.stan$provenance.lat-mean(fft.stan$provenance.lat,na.rm=TRUE))/(sd(fft.stan$provenance.lat,na.rm=TRUE))
+
+datalist.ff <- with(fft.stan, 
+                    list(y = flofruittime, 
+                         mst = mst.z, 
+                         lo = lo.z, 
+                         lat = lat.z,
+                         sp = as.numeric(as.factor(spp)),
+                         N = nrow(flo.stan),
+                         n_sp = length(unique(flo.stan$spp))
+                    )
+)
+
+flofruit.z = stan('stan/flofruit_normal.stan', data = datalist.ff,
+                     iter = 2000, warmup=1500, control=list(max_treedepth = 12,adapt_delta = 0.99)) ## 7 divergent transitions
 
 
 

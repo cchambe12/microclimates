@@ -34,7 +34,7 @@ d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 # 1. Let's add in climate data first for forcing.
 source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
-
+#write.csv(d, file="output/clean_addinclimate.csv", row.names=FALSE)
 
 # 2. Let's add in Forcing data first. We will use February 15 as the start
 # of calculating GDD. Easy to fix if necessary in the gdd.start column

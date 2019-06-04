@@ -1,5 +1,4 @@
 ### Let's add in climate data for forcing
-## FORGOT TO ADD IN HARVARD FOREST CLIMATE DATA!!! NEED TO FIX! - 31 January 2019
 # 24 January 2019 - Cat
 
 # Load from calc_mergeall.R (including libraries)
@@ -20,12 +19,15 @@ if(is.data.frame(d)){
   # Find data for the day and by hour
   cc.arb<-dplyr::select(cc.arb, Temp..F,
                     Rain.in, date, year, doy, hour)
+  
   cc.arb$tmin<-ave(cc.arb$Temp..F, cc.arb$date, FUN=min)
   cc.arb$tmin<-fahrenheit.to.celsius(cc.arb$tmin)
   cc.arb$tmax<-ave(cc.arb$Temp..F, cc.arb$date, FUN=max)
   cc.arb$tmax<-fahrenheit.to.celsius(cc.arb$tmax)
-  cc.arb$tmean<-ave(cc.arb$Temp..F, cc.arb$hour)
+  cc.arb$tmean<-ave(cc.arb$Temp..F, cc.arb$date, cc.arb$hour)
   cc.arb$tmean<-fahrenheit.to.celsius(cc.arb$tmean)
+  cc.arb$Temp..F <- NULL
+  cc.arb<-cc.arb[!duplicated(cc.arb),]
   
   ## If we deem necessary later on in analysis we can add precip back in
   if(FALSE){
@@ -48,9 +50,11 @@ if(is.data.frame(d)){
   
   cc.hf<-dplyr::select(cc.hf, airt,
                         prec, date, year, doy, hour)
+  
   cc.hf$tmin<-ave(cc.hf$airt, cc.hf$date, FUN=min)
   cc.hf$tmax<-ave(cc.hf$airt, cc.hf$date, FUN=max)
   cc.hf$tmean<-ave(cc.hf$airt, cc.hf$hour)
+  cc.hf<-cc.hf[!duplicated(cc.hf),]
   
   cc.hf$climatetype <- "harvardforest"
   
@@ -67,12 +71,13 @@ if(is.data.frame(d)){
   cc.hf <- subset(cc.hf, select=commoncols)
   
   cc <- full_join(cc.arb, cc.hf)
+  cc <- cc[!duplicated(cc),]
   
   d$climatetype <- NA
   d$climatetype <- ifelse(d$type=="Treespotters" | d$type=="Common Garden", "weldhill", d$climatetype)
   d$climatetype <- ifelse(d$type=="Harvard Forest", "harvardforest", d$climatetype)
   
-  d$id_year_type <- paste(d$ID, d$year, d$climatetype)
+  d$id_year_type <- paste(d$id, d$year, d$climatetype)
   
   
 } else {

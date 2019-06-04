@@ -13,8 +13,8 @@ if(is.data.frame(d)){
   climandpheno <- data.frame(id_year = rep.int(d$id_year_type, vapply(days.btw, length, 1L)), 
                              doy = do.call(c, days.btw))
   
-  climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("ID", "year", "climatetype"), sep = "\\*")
-  climandpheno$id_year<-paste(climandpheno$ID, climandpheno$year)
+  climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\*")
+  climandpheno$id_year<-paste(climandpheno$id, climandpheno$year)
   
   addhrs <- as.vector(unique(paste(climandpheno$id_year, climandpheno$doy)))
   
@@ -24,13 +24,13 @@ if(is.data.frame(d)){
       hour = sort(c(rep(seq(1:24))))
     )
   
-  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("ID", "year", "doy"), sep = "\\ ")
-  climandpheno$ID <- as.character(climandpheno$ID)
+  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("id", "year", "doy"), sep = "\\ ")
+  climandpheno$id <- as.character(climandpheno$id)
   climandpheno$year <- as.integer(climandpheno$year)
   climandpheno$doy <- as.numeric(climandpheno$doy)
   
-  climandpheno$budburst<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
-  climandpheno$gdd.start<-ave(climandpheno$doy, climandpheno$ID, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
+  climandpheno$budburst<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
+  climandpheno$gdd.start<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
   
   ## Add Climate data back in 
   cc$hour <- as.numeric(cc$hour)
@@ -42,26 +42,26 @@ if(is.data.frame(d)){
   
   bb_climandpheno<-full_join(climandpheno, d)
   
-  bb_forcing_all <- subset(bb_climandpheno, select=c("ID", "doy", "year", "tmean"))
+  bb_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean"))
   bb_forcing_all <-na.omit(bb_forcing_all)
   
   bb_forcing_all <- bb_forcing_all[(bb_forcing_all$year>2015),]
   
   ### Start with Treespotters and Harvard Forest
-  tt <- as.data.frame(table(bb_forcing_all$ID, bb_forcing_all$year))
+  tt <- as.data.frame(table(bb_forcing_all$id, bb_forcing_all$year))
   rms <- subset(tt, tt$Freq==0)
   rms <- as.vector(unique(rms$Var1))
   
-  bb_forcing <- subset(bb_forcing_all, !bb_forcing_all$ID %in% rms) ## need to do common garden inds after!!
+  bb_forcing <- subset(bb_forcing_all, !bb_forcing_all$id %in% rms) ## need to do common garden inds after!!
 
   period<-2016:2018
   nyears <- length(period)
-  ids<-bb_forcing[!duplicated(bb_forcing$ID),]
-  ids <- ids[!duplicated(ids$ID),]
-  ninds <- length(ids$ID)
+  ids<-bb_forcing[!duplicated(bb_forcing$id),]
+  ids <- ids[!duplicated(ids$id),]
+  ninds <- length(ids$id)
   ids$idslist<-1:103
   
-  idlisttomerge <- subset(ids, select=c("ID", "idslist"))
+  idlisttomerge <- subset(ids, select=c("id", "idslist"))
   bb_forcing <- full_join(bb_forcing, idlisttomerge)
   
   #bb_forcing <- bb_forcing[!is.na(bb_forcing$doy),]
@@ -113,7 +113,7 @@ if(is.data.frame(d)){
   allyears$year <- seq(2016, 2018, by=1)
   allyears$idslist <- as.numeric(substr(allyears$idslist, 5, 7))
   
-  bb_forcing <- subset(bb_forcing, select=c("ID", "year", "idslist"))
+  bb_forcing <- subset(bb_forcing, select=c("id", "year", "idslist"))
   bb_forcing <- bb_forcing[!duplicated(bb_forcing),]
   
   allyears <- full_join(allyears, bb_forcing)
@@ -123,17 +123,17 @@ if(is.data.frame(d)){
   #############################
   ### Now for Common Garden ###
   #############################
-  bb_forcing_cg <- subset(bb_forcing_all, bb_forcing_all$ID %in% rms)
+  bb_forcing_cg <- subset(bb_forcing_all, bb_forcing_all$id %in% rms)
   bb_forcing_cg <- subset(bb_forcing_cg, bb_forcing_cg$year==2018)
   
   period_cg<-2018
   nyears <- length(period_cg)
-  ids_cg<-bb_forcing_cg[!duplicated(bb_forcing_cg$ID),]
-  ids_cg <- ids_cg[!duplicated(ids_cg$ID),]
-  ninds_cg <- length(ids_cg$ID)
+  ids_cg<-bb_forcing_cg[!duplicated(bb_forcing_cg$id),]
+  ids_cg <- ids_cg[!duplicated(ids_cg$id),]
+  ninds_cg <- length(ids_cg$id)
   ids_cg$idslist<-1:267
   
-  idlisttomerge_cg <- subset(ids_cg, select=c("ID", "idslist"))
+  idlisttomerge_cg <- subset(ids_cg, select=c("id", "idslist"))
   bb_forcing_cg <- full_join(bb_forcing_cg, idlisttomerge_cg)
   
   bb_forcing_cg <- bb_forcing_cg[!is.na(bb_forcing_cg$doy),]
@@ -184,7 +184,7 @@ if(is.data.frame(d)){
   oneyear$year <- 2018
   oneyear$idslist <- as.numeric(substr(oneyear$idslist, 5, 7))
   
-  bb_forcing_cg <- subset(bb_forcing_cg, select=c("ID", "year", "idslist"))
+  bb_forcing_cg <- subset(bb_forcing_cg, select=c("id", "year", "idslist"))
   bb_forcing_cg <- bb_forcing_cg[!duplicated(bb_forcing_cg),]
   
   oneyear <- full_join(oneyear, bb_forcing_cg)
