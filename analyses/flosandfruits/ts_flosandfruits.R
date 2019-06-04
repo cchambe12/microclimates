@@ -1,4 +1,5 @@
 ### Thinking about flowers and fruits... 
+# Started 3 June 2019 - Cat
 
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -15,7 +16,16 @@ setwd("~/Documents/git/microclimates/analyses")
 
 ## Data!
 d<-read.csv("input/individual_phenometrics_data.csv", header=TRUE)
-prov <- read.csv("input/provenanceinfo.")
+prov <- read.csv("input/provenanceinfo.csv", header=TRUE)
+polsyn <- read.csv("flosandfruits/data/pollination.csv", header=TRUE)
+
+prov$id <- prov$Individual_ID
+prov <- subset(prov, select=c("id", "provenance.lat"))
+
+### First let's do the obligatory cleaning checks with citizen scienece data
+d <- d[(d$Multiple_FirstY>=1 | d$Multiple_Observers>0),]
+#d <- d[(npn$NumYs_in_Series>=7),]
+d <- d[(d$NumDays_Since_Prior_No<=7),]
 
 #### Alright so the questions I have... 
 # a) pollination syndrome and fruit type, how do they influence the time between flowering and fruit development?
@@ -60,7 +70,26 @@ ts.stan <- ts.stan[!duplicated(ts.stan),]
 
 ts.stan <- ts.stan %>% 
   group_by(genus, species, id, year) %>% 
-  summarise_all(funs(first(na.omit(.))))
+  summarise_all(list(~first(na.omit(.))))
+
+ts.stan$hys <- ifelse(ts.stan$budburst <= ts.stan$flobudburst, 0, 1)
+
+polsyn$hys <- NULL
+polsyn$flotype <- NULL
+
+ts.stan <- left_join(ts.stan, polsyn)
+ts.stan$pol.syn <- ifelse(ts.stan$pol.syn=="wind", 0, 1)
+
+ts.stan$dvr <- ts.stan$leaves - ts.stan$budburst
+ts.stan$flofruittime <- ts.stan$ripefruits - ts.stan$flobudburst
+
+ts.stan <- left_join(ts.stan, prov)
+
+flo.stan <- subset(ts.stan, select=c("flofruittime", "dvr", "pol.syn", "provenance.lat", "genus", "species"))
+flo.stan$spp <- paste(substr(flo.stan$genus, 0, 3), substr(flo.stan$species, 0, 3))
+flo.stan <- 
+
+mod <- brm(flofruittime ~ dvr + pol.syn + prov)
 
 
 
