@@ -16,14 +16,6 @@ options(stringsAsFactors = FALSE)
 ## Load Libraries
 library(dplyr)
 library(tidyr)
-library(ggplot2)
-library(rstanarm)
-library(geosphere)
-library(anytime)
-library(weathermetrics)
-library(measurements)
-library(lubridate)
-library(egg)
 
 
 # Set Working Directory

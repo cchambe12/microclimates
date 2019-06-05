@@ -53,7 +53,7 @@ if(is.data.frame(d)){
   
   cc.hf$tmin<-ave(cc.hf$airt, cc.hf$date, FUN=min)
   cc.hf$tmax<-ave(cc.hf$airt, cc.hf$date, FUN=max)
-  cc.hf$tmean<-ave(cc.hf$airt, cc.hf$hour)
+  cc.hf$tmean<-ave(cc.hf$airt, cc.hf$date, cc.hf$hour)
   cc.hf<-cc.hf[!duplicated(cc.hf),]
   
   cc.hf$climatetype <- "harvardforest"
