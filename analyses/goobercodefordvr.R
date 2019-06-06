@@ -38,53 +38,87 @@ dvr$climatetype <- ifelse(dvr$type=="Treespotters" | dvr$type=="Common Garden", 
 # site, individual and year. Mean spring temp will be from March 1 - May 31
 
 period<-2015:2019
-nsites <- ncol(cc.dvr) - 3 ## this is to subtract date, doy, and year columns from site count
-sites <- as.data.frame(subset(dvr, select=c("climatetype")))
+#nsites <- ncol(cc.dvr) - 3 ## this is to subtract date, doy, and year columns from site count
+sites <- arrange(as.data.frame(subset(dvr, select=c("climatetype"))), climatetype)
 sites <- as.data.frame(sites[!duplicated(sites),])
+sites <-na.omit(sites)
+nsites <- length(unique(sites$`sites[!duplicated(sites), ]`))
 sites$siteslist<-1:nsites
 colnames(sites)<-c("climatetype", "siteslist")
-dvr <- full_join(dvr, sites)
+dvr$siteslist <- NA
+for(i in c(1:nrow(dvr))){
+  for(j in c(1:nrow(sites)))
+    dvr$siteslist[i] <- ifelse(dvr$climatetype[i]==sites$climatetype[j], sites$siteslist[j], dvr$siteslist[i])
+}
+
 
 individuals <- as.data.frame(subset(dvr, select=c("id")))
 individuals <- as.data.frame(individuals[!duplicated(individuals),])
 ninds <- nrow(individuals)
 individuals$indslist<-1:ninds
 colnames(individuals)<-c("id", "indslist")
-dvr <- full_join(dvr, individuals)
+dvr$indslist <- NA
+for(i in c(1:nrow(dvr))){
+  for(j in c(1:nrow(individuals)))
+    dvr$indslist[i] <- ifelse(dvr$id[i]==individuals$id[j], individuals$indslist[j], dvr$indslist[i])
+}
 
 
 
 springtemps <- function(period) {
   
   nyears<-length(period)
+  sitesarray <- array(NA, dim=c(length(period), 1:nsites))
+  row.names(sitesarray)<-period
+  colnames(sitesarray) <- "mst"
   
-  for(i in 1:nsites){#i=2
+  for(i in 1:nsites){#i=1
     print(i)
-    sitesi<-sites$siteslist[i]
     
-    dvr$mst <- NA
-    dvr$dvr.temp <- NA
+    #dvr$mst <- NA
+    #dvr$dvr.temp <- NA
     
     springtemps <- vector()
-    dvrtemps <- vector()
+    #dvrtemps <- vector()
+    yearlyresults <- array(NA, dim=c(length(period), 1))
+    
+    #msttemp <- array(NA, dim=c(length(period), 1:nsites))
+    #row.names(msttemp)<-period
+    #msttemp <- data.frame(siteslist=rep(1:nsites, each=nyears), mst=NA, year=rep(period, times=nsites))
       
-    for(j in period){#j=2018
+    for(j in period){#j=2016
         print(paste(i,j))
+        yearj <- length(period)
         
         springtemps <- cc.dvr[(cc.dvr$doy>=60 & cc.dvr$doy<=151 & cc.dvr$year==j),] # average spring temp from March 1-May 31
-        springtemps <- springtemps[,(sitesi+3)] ### finding the correct column for the climate type we're using
+        springtemps <- springtemps[,(i+3)] ### finding the correct column for the climate type we're using
+      
+        yearlyresults[which(period==j),1] <- mean(springtemps, na.rm=TRUE) 
         
-        dvr$mst <- ifelse(dvr$year==j & dvr$siteslist==sitesi, 
-                            mean(springtemps, rm.na=TRUE), dvr$mst)
+        #for(k in 1:nsites){
+         # dvr$mst[which(dvr$year==j & dvr$siteslist==i)]<-yearlyresults
+        #}
         
-      }
+    }
+    
+    sitesarray[,,i] <- yearlyresults
+    
+  }
+  
+  sitesdf <- as.data.frame(sitesarray)
+  names(sitesdf) <- substring(names(sitesdf), 5)
+  
+  dvr$mst <- NA
+  for(k in c(1:nrow(dvr))){#k=1
+    dvr$mst[k]<-sitesdf[which(dvr$year[k]==row.names(sitesdf)),dvr$siteslist[k]]
   }
       
-      return(dvr)
-  }
+  return(dvr)  
+  
 }
-        
-foo <- springtemps(period)        
+
+
+foo <- springtemps(period)
         
         
         

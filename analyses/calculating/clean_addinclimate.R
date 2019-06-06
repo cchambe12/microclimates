@@ -64,7 +64,7 @@ if(is.data.frame(d)){
   }
   
   cc.hf$year<-as.integer(cc.hf$year)
-  cc.hf <- cc.hf[(cc.hf$year>2015),]
+  cc.hf <- cc.hf[(cc.hf$year>2014),]
   
   commoncols <- c("date", "year", "doy", "hour", "tmin", "tmax", "tmean", "climatetype")
   cc.arb <- subset(cc.arb, select=commoncols)
