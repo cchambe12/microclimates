@@ -65,39 +65,28 @@ for(i in c(1:nrow(dvr))){
 
 
 
-springtemps <- function(period) {
+springtemps <- function(x) {
   
   nyears<-length(period)
-  sitesarray <- array(NA, dim=c(length(period), 1:nsites))
+  sitesarray <- array(NA, dim=c(length(period), 1:nsites)) ## may need to tweak this once there are more sites...
   row.names(sitesarray)<-period
   colnames(sitesarray) <- "mst"
   
   for(i in 1:nsites){#i=1
     print(i)
     
-    #dvr$mst <- NA
-    #dvr$dvr.temp <- NA
-    
     springtemps <- vector()
-    #dvrtemps <- vector()
+    dvrtemps <- vector()
     yearlyresults <- array(NA, dim=c(length(period), 1))
     
-    #msttemp <- array(NA, dim=c(length(period), 1:nsites))
-    #row.names(msttemp)<-period
-    #msttemp <- data.frame(siteslist=rep(1:nsites, each=nyears), mst=NA, year=rep(period, times=nsites))
-      
     for(j in period){#j=2016
         print(paste(i,j))
         yearj <- length(period)
         
         springtemps <- cc.dvr[(cc.dvr$doy>=60 & cc.dvr$doy<=151 & cc.dvr$year==j),] # average spring temp from March 1-May 31
         springtemps <- springtemps[,(i+3)] ### finding the correct column for the climate type we're using
-      
-        yearlyresults[which(period==j),1] <- mean(springtemps, na.rm=TRUE) 
         
-        #for(k in 1:nsites){
-         # dvr$mst[which(dvr$year==j & dvr$siteslist==i)]<-yearlyresults
-        #}
+        yearlyresults[which(period==j),1] <- mean(springtemps, na.rm=TRUE) 
         
     }
     
@@ -108,19 +97,60 @@ springtemps <- function(period) {
   sitesdf <- as.data.frame(sitesarray)
   names(sitesdf) <- substring(names(sitesdf), 5)
   
-  dvr$mst <- NA
-  for(k in c(1:nrow(dvr))){#k=1
-    dvr$mst[k]<-sitesdf[which(dvr$year[k]==row.names(sitesdf)),dvr$siteslist[k]]
+  x$mst <- NA
+  for(k in c(1:nrow(x))){#k=1
+    x$mst[k]<-sitesdf[which(x$year[k]==row.names(sitesdf)),x$siteslist[k]]
   }
       
-  return(dvr)  
+  return(x)  
   
 }
 
 
-foo <- springtemps(period)
+foo <- springtemps(dvr)
+
+dvrtempfunc <- function(period) {
+  
+  #ninds<-length(individuals$indslist)
+  yearlyresults <- array(NA, dim=c(length(individuals$id), 1, length(period)))
+  row.names(yearlyresults) <- individuals$indslist
+  colnames(yearlyresults) <- "dvrtemps"
+  
+  for(i in period){#i=2015
+    print(i)
+    dvrtemps <- vector()
+    indsarray <- array(NA, dim=c(length(individuals$id), 1))
+    
+    for(j in 1:ninds){#j=1
+      print(paste(i,j))
+      
+      sitenum <- unique(dvr$siteslist[which(dvr$indslist==j)])
+      
+      dvrtemps <- cc.dvr[(cc.dvr$doy>=dvr$budburst[which(dvr$indslist==j & dvr$year==i)] & 
+                              cc.dvr$doy<=dvr$leafout[which(dvr$indslist==j & dvr$year==i)] & cc.dvr$year==i),]
+      dvrtemps <- dvrtemps[,(sitenum+3)]
         
-        
+      indsarray[which(individuals$indslist==j),1] <- mean(dvrtemps, na.rm=TRUE) 
+    
+    }
+    
+    yearlyresults[,,i] <- indsarray
+    
+  }
+  
+  indsdf <- as.data.frame(indsarray)
+  names(indsdf) <- substring(names(indsdf), 10)
+  
+  dvr$dvrtemps <- NA
+  for(k in c(1:nrow(dvr))){#k=1
+    dvr$dvrtemps[k]<-indsdf[which(dvr$indslist[k]==row.names(indsdf)),dvr$year[k]]
+  }
+  
+  return(dvr)  
+  
+}        
+
+foo <- dvrtempfunc(period)
         
         
         for(k in 1:ninds){#k=2
