@@ -7,6 +7,7 @@ options(stringsAsFactors = FALSE)
 ## Load Libraries
 library(dplyr)
 library(tidyr)
+library(rstan)
 
 # Set Working Directory
 setwd("~/Documents/git/microclimates/analyses")
@@ -67,7 +68,7 @@ for(i in c(1:nrow(dvr))){
 
 springtemps <- function(x) {
   
-  nyears<-length(period)
+  #nyears<-length(period)
   sitesarray <- array(NA, dim=c(length(period), 1:nsites)) ## may need to tweak this once there are more sites...
   row.names(sitesarray)<-period
   colnames(sitesarray) <- "mst"
@@ -107,87 +108,51 @@ springtemps <- function(x) {
 }
 
 
-foo <- springtemps(dvr)
+dvr <- springtemps(dvr)
 
-dvrtempfunc <- function(period) {
+dvrtempfunc <- function(x) {
   
-  #ninds<-length(individuals$indslist)
-  yearlyresults <- array(NA, dim=c(length(individuals$id), 1, length(period)))
-  row.names(yearlyresults) <- individuals$indslist
-  colnames(yearlyresults) <- "dvrtemps"
+  x$dvr.temp <- NA
   
-  for(i in period){#i=2015
-    print(i)
-    dvrtemps <- vector()
-    indsarray <- array(NA, dim=c(length(individuals$id), 1))
-    
-    for(j in 1:ninds){#j=1
-      print(paste(i,j))
-      
-      sitenum <- unique(dvr$siteslist[which(dvr$indslist==j)])
-      
-      dvrtemps <- cc.dvr[(cc.dvr$doy>=dvr$budburst[which(dvr$indslist==j & dvr$year==i)] & 
-                              cc.dvr$doy<=dvr$leafout[which(dvr$indslist==j & dvr$year==i)] & cc.dvr$year==i),]
-      dvrtemps <- dvrtemps[,(sitenum+3)]
+  for(i in c(1:nrow(x))) {#i=3 
+    for(j in period){#j=2016
+      for(k in 1:nsites){#k=1
         
-      indsarray[which(individuals$indslist==j),1] <- mean(dvrtemps, na.rm=TRUE) 
-    
+        dvrtemps <- cc.dvr[(cc.dvr$year==j),] # average spring temp from March 1-May 31
+        dvrtemps <- dvrtemps[,(k+3)] ### finding the correct column for the climate type we're using
+        dvrtemps <- dvrtemps[(x$budburst[i]:x$leafout[i])]
+  
+        x$dvr.temp[i] <- mean(dvrtemps, na.rm=TRUE)
+      }
     }
-    
-    yearlyresults[,,i] <- indsarray
-    
   }
-  
-  indsdf <- as.data.frame(indsarray)
-  names(indsdf) <- substring(names(indsdf), 10)
-  
-  dvr$dvrtemps <- NA
-  for(k in c(1:nrow(dvr))){#k=1
-    dvr$dvrtemps[k]<-indsdf[which(dvr$indslist[k]==row.names(indsdf)),dvr$year[k]]
-  }
-  
-  return(dvr)  
+
+  return(x)  
   
 }        
 
-foo <- dvrtempfunc(period)
-        
-        
-        for(k in 1:ninds){#k=2
-          print(paste(j,k))
-          indsk <- individuals$indslist[k]
-          
-          if(indsk==individuals$indslist[k])
-            
-            dvrnew <- vector()
-            dvrnew <- dvr[(dvr$year==j & dvr$indslist==indsk),]          
-        
-            dvrtemps <- cc.dvr[(cc.dvr$year==j & cc.dvr$doy>=dvrnew$budburst & cc.dvr$doy<=dvrnew$leafout),]
-            dvrtemps <- dvrtemps[,(sitesi+3)]
-        
-            dvr$dvr.temp <- ifelse(dvr$year==j & dvr$siteslist==sitesi, 
-                               mean(dvrtemps, rm.na=TRUE), dvr$dvr.temp)
-        
-        
-      }
-    
-  
-}
+dvr <- dvrtempfunc(dvr)
 
-meanspring(dvr)
-  
+dvr$spp <- paste(substr(dvr$genus, 0,3), substr(dvr$species, 0,3), sep="")
+
+dvr.stan <- subset(dvr, select=c("provenance.lat", "risk", "spp", "type", "dvr.temp", "id"))
+dvr.stan <- dvr.stan[!duplicated(dvr.stan),]
+
+dvr.stan <- na.omit(dvr.stan)
+dvr.stan <- dvr.stan[(dvr.stan$risk>=0),]
+
+datalist.dvr <- with(dvr.stan, 
+                       list(y = risk, 
+                            lat = provenance.lat, 
+                            #site = as.numeric(as.factor(type)), 
+                            dvrtemp = dvr.temp,
+                            sp = as.numeric(as.factor(spp)),
+                            N = nrow(dvr.stan),
+                            n_sp = length(unique(dvr.stan$spp))
+                            #n_site = length(unique(dvr.stan$type))
+                       )
+)
 
 
-climnew <- data.frame()
-dvrnew <- data.frame()
-for(i in 1:length(unique(dvr$idyear))) {
-  for(j in 1:length(unique(cc$climatetype)))
-  
-  climnew <- cc[(cc$climatetype[j]),]
-  dvrnew <- dvr[(length(unique(dvr$idyear))==i),]
-  
-
-}
-
-
-
+dvr.siteint = stan('stan/nointer_2level_dvrtemp.stan', data = datalist.dvr,
+                   iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ###
