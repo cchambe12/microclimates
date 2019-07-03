@@ -18,9 +18,9 @@
 if(is.data.frame(d)){
   
   ### First let's do the obligatory cleaning checks with citizen scienece data
-  d <- d[(d$Multiple_FirstY>=1 | d$Multiple_Observers>0),]
-  d <- d[(d$NumYs_in_Series>=3),]
-  d <- d[(d$NumDays_Since_Prior_No<=7),]
+  d <- d[(d$Multiple_FirstY>=1 | d$Multiple_Observers>0),] ## This selects data where multiple people observed the same phenophase
+  d <- d[(d$NumYs_in_Series>=3),] ## This selects data again where the same phenophase was seen 3 times in a row
+  d <- d[(d$NumDays_Since_Prior_No>=0 & d$NumDays_Since_Prior_No<=14),] ## And this limits to data where a no is followed by a yes, so that it is a new observation/new phenophase but has been detected within a reasonable timeframe
   
   # change from NPN output to more digestible column names
   bb<-d%>%
@@ -53,10 +53,12 @@ if(is.data.frame(d)){
   doy_pheno<-doy_pheno[!duplicated(doy_pheno),]
   
   ### Clean observation error!
+  if(FALSE){ #Detected with new cleaning checks!! 3 July 2019 by Cat
   # QbyLizzie: How did you find this? - I found this by making initial raw data plots. There was a outlier and I went back 
   ## to check the data. It was a new volunteer who made a couple of mistakes. 
   doy_pheno$doy<-ifelse(doy_pheno$species=="alleghaniensis" & doy_pheno$year==2016 & doy_pheno$doy==59, NA, doy_pheno$doy)
   doy_pheno<-doy_pheno[!is.na(doy_pheno$doy),]
+  }
   
   #### Now start building a small data frame with phenophase info then add in climandpheno, chilling and photo
   colstokeep<-c("genus", "species", "id","year", "phase","lat", "long", "elev", "doy")
