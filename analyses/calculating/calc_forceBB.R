@@ -8,12 +8,15 @@ if(is.data.frame(d)){
   climandpheno<-data_frame()
   days.btw<-array()
   
+  d <- d[!is.na(d$budburst),]
+  d <- d[!is.na(d$leafout),]
+  
   days.btw <- Map(seq, d$gdd.start, d$budburst, by = 1)
   
-  climandpheno <- data.frame(id_year = rep.int(d$id_year_type, vapply(days.btw, length, 1L)), 
+  climandpheno <- data.frame(id_year_type = rep.int(d$id_year_type, vapply(days.btw, length, 1L)), 
                              doy = do.call(c, days.btw))
   
-  climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\*")
+  climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\;")
   climandpheno$id_year<-paste(climandpheno$id, climandpheno$year)
   
   addhrs <- as.vector(unique(paste(climandpheno$id_year, climandpheno$doy)))
@@ -42,156 +45,34 @@ if(is.data.frame(d)){
   
   bb_climandpheno<-full_join(climandpheno, d)
   
-  bb_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean"))
+  bb_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean",
+                                                     "gdd.start", "budburst"))
   bb_forcing_all <-na.omit(bb_forcing_all)
   
   bb_forcing_all <- bb_forcing_all[(bb_forcing_all$year>2015),]
   
-  ### Start with Treespotters and Harvard Forest
-  tt <- as.data.frame(table(bb_forcing_all$id, bb_forcing_all$year))
-  rms <- subset(tt, tt$Freq==0)
-  rms <- as.vector(unique(rms$Var1))
-  
-  bb_forcing <- subset(bb_forcing_all, !bb_forcing_all$id %in% rms) ## need to do common garden inds after!!
-
-  period<-2016:2018
-  nyears <- length(period)
-  ids<-bb_forcing[!duplicated(bb_forcing$id),]
-  ids <- ids[!duplicated(ids$id),]
-  ninds <- length(ids$id)
-  ids$idslist<-1:103
-  
-  idlisttomerge <- subset(ids, select=c("id", "idslist"))
-  bb_forcing <- full_join(bb_forcing, idlisttomerge)
-  
-  #bb_forcing <- bb_forcing[!is.na(bb_forcing$doy),]
-  
-  extractforce<-function(tavg,period){
+  bb_forcing_all$indyear <- paste(bb_forcing_all$id, bb_forcing_all$year, sep=";")
+  bb_forcing_all$indyrnum <- as.numeric(as.factor(bb_forcing_all$indyear))
+  indsyrlist <- length(unique(bb_forcing_all$indyrnum))
+  hourtemps <- data.frame()
+  bb_forcing_all$gdd_bb <- NA
+  for(i in 1:indsyrlist){ #i=2
     
-    forcingyears<-array(NA,dim=c(nyears, 1, ninds))
-    row.names(forcingyears)<-period
-    colnames(forcingyears)<-c("GDD")
+    hourtemps <- subset(bb_forcing_all[(bb_forcing_all$indyrnum==i),], select=c("year", "doy", "tmean"))
+    hourtemps <- hourtemps[order(hourtemps$doy),]
+    hourtemps$tmean <- ave(hourtemps$tmean, hourtemps$doy)
+    hourtemps <- hourtemps[!duplicated(hourtemps),]
+    hourtemps$gddcalc <- ifelse(hourtemps$tmean>0, hourtemps$tmean, 0)
+    hourtemps$gdd_bb <- ave(hourtemps$gddcalc, FUN=sum)
     
-    yearlyresults<-array(NA,dim=c(length(period),1))
+    bb_forcing_all[which(bb_forcing_all$indyrnum==i), 9] <- unique(hourtemps$gdd_bb)
     
-    for(i in 1:ninds){
-      print(i)
-      
-      for(j in period){
-        print(paste(i,j))
-        
-        days<-bb_forcing$doy[bb_forcing$idslist==i & bb_forcing$year==j] #number of days of climate data
-       
-        tavg <- bb_forcing$tmean[bb_forcing$idslist==i & bb_forcing$year==j]
-      
-        hrly.temp =
-          data.frame(
-            Temp = tavg,
-            Year = j,
-            JDay = sort(days)
-          )
-
-      
-        chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
-        
-        yearlyresults[which(period==j),1] <- chillcalc.mn$GDH[which(chillcalc.mn$End_year==j)]/24
-        
-        
-      }
-      forcingyears[,,i]<-yearlyresults
-    }
     
-    return(forcingyears)
-    
-  }
+  }   
   
-  force_all <- extractforce(tavg, period)  
-  
-  allyears<-as.data.frame(force_all)
-  
-  allyears <- gather(allyears, idslist, GDD)
-  allyears$year <- seq(2016, 2018, by=1)
-  allyears$idslist <- as.numeric(substr(allyears$idslist, 5, 7))
-  
-  bb_forcing <- subset(bb_forcing, select=c("id", "year", "idslist"))
-  bb_forcing <- bb_forcing[!duplicated(bb_forcing),]
-  
-  allyears <- full_join(allyears, bb_forcing)
-  
-  allyears <- dplyr::select(allyears, -idslist)
-  
-  #############################
-  ### Now for Common Garden ###
-  #############################
-  bb_forcing_cg <- subset(bb_forcing_all, bb_forcing_all$id %in% rms)
-  bb_forcing_cg <- subset(bb_forcing_cg, bb_forcing_cg$year==2018)
-  
-  period_cg<-2018
-  nyears <- length(period_cg)
-  ids_cg<-bb_forcing_cg[!duplicated(bb_forcing_cg$id),]
-  ids_cg <- ids_cg[!duplicated(ids_cg$id),]
-  ninds_cg <- length(ids_cg$id)
-  ids_cg$idslist<-1:267
-  
-  idlisttomerge_cg <- subset(ids_cg, select=c("id", "idslist"))
-  bb_forcing_cg <- full_join(bb_forcing_cg, idlisttomerge_cg)
-  
-  bb_forcing_cg <- bb_forcing_cg[!is.na(bb_forcing_cg$doy),]
-  
-  extractforce_cg<-function(ninds_cg,period_cg){
-    
-    forcingyears_cg<-array(NA,dim=c(nyears, 1, ninds_cg))
-    row.names(forcingyears_cg)<-period_cg
-    colnames(forcingyears_cg)<-c("GDD")
-    
-    yearlyresults_cg<-array(NA,dim=c(length(period_cg),1))
-    
-    for(i in 1:ninds_cg){
-      print(i)
-      
-      for(j in period_cg){
-        print(paste(i,j))
-        
-        days<-bb_forcing_cg$doy[bb_forcing_cg$idslist==i & bb_forcing_cg$year==j] #number of days of climate data
-        
-        tavg_cg <- bb_forcing_cg$tmean[bb_forcing_cg$idslist==i & bb_forcing_cg$year==j]
-        
-        hrly.temp =
-          data.frame(
-            Temp = tavg_cg,
-            Year = j,
-            JDay = sort(days)
-          )
-        
-        
-        chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
-        
-        yearlyresults_cg[which(period_cg==j),1] <- chillcalc.mn$GDH[which(chillcalc.mn$End_year==j)]/24
-        
-        
-      }
-      forcingyears_cg[,,i]<-yearlyresults_cg
-    }
-    
-    return(forcingyears_cg)
-    
-  }
-  
-  force_all_cg <- extractforce_cg(ninds_cg, period_cg)  
-  
-  oneyear<-as.data.frame(force_all_cg)
-  oneyear <- gather(oneyear, idslist, GDD)
-  oneyear$year <- 2018
-  oneyear$idslist <- as.numeric(substr(oneyear$idslist, 5, 7))
-  
-  bb_forcing_cg <- subset(bb_forcing_cg, select=c("id", "year", "idslist"))
-  bb_forcing_cg <- bb_forcing_cg[!duplicated(bb_forcing_cg),]
-  
-  oneyear <- full_join(oneyear, bb_forcing_cg)
-  
-  oneyear <- dplyr::select(oneyear, -idslist)
-  
-  forcebb <- full_join(allyears, oneyear)
+  forcebb <- subset(bb_forcing_all, select=c("id", "year", "budburst", "gdd_bb"))
+  forcebb <- forcebb[!duplicated(forcebb),]
+                    
   
 } else {
   print("Error: forcebb not a data.frame")

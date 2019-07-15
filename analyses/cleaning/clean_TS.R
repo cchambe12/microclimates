@@ -10,7 +10,8 @@
 # 4) Select 'Partner Groups' tab on left: press the + next to 
 # 'Botanic Gardens and Arboretums and select 'Arnold Arboretum - Tree Spotters'
 # Press 'Set Groups' and NEXT
-# 5) Select 'Output fields' tab on left: and select 'ObservedBy Person ID' and 'Multiple Observers'
+# 5) Select 'Output fields' tab on left: and select 'ObservedBy Person ID', 'Multiple Observers',
+                                        ## `NumYs_in_Series' and `Multiple_FirstY'
 
 
 # Load from bb_cleanmergeall.R (including libraries)

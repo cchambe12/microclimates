@@ -77,7 +77,7 @@ if(is.data.frame(d)){
   d$climatetype <- ifelse(d$type=="Treespotters" | d$type=="Common Garden", "weldhill", d$climatetype)
   d$climatetype <- ifelse(d$type=="Harvard Forest", "harvardforest", d$climatetype)
   
-  d$id_year_type <- paste(d$id, d$year, d$climatetype)
+  d$id_year_type <- paste(d$id, d$year, d$climatetype, sep=";")
   
   
 } else {

@@ -54,8 +54,53 @@ if(is.data.frame(d)){
   #cg18$last.obs <- 274
   cg18$Plot <- NULL
   
+  
+  ## Now let's clean 2019 data
+  cg19 <- read.csv("input/2019_CG_datasheet.csv", header=TRUE)
+  
+  cg19$id <- paste(cg19$Ind, cg19$Plot, sep="_")
+  cg19$Ind<-NULL
+  cg19$Plot<-NULL
+  cg19 <- gather(cg19, "date", "bbch", -id, -Phase)
+  cg19 <- na.omit(cg19)
+  cg19 <- cg19[!(cg19$bbch==""),]
+  
+  cg19$date <- gsub("X", "", cg19$date)
+  cg19$date <- as.Date(cg19$date, format="%m.%d.%Y")
+  cg19$doy <- yday(cg19$date)
+  
+  cg19 <- cg19[(cg19$Phase=="Leaves"),]
+  
+  cg19 <- subset(cg19, select=c("id", "doy", "bbch"))
+  cg19 <- separate(data = cg19, col = id, into = c("spp", "site", "ind", "plot"), sep = "\\_")
+  cg19$ind <- ifelse(is.na(cg19$ind), substr(cg19$spp, 7,8), cg19$ind)
+  cg19$ind <- ifelse(cg19$ind=="", "XX", cg19$ind)
+  cg19$spp <- substr(cg19$spp, 0, 6)
+  cg19$year <- 2019
+  
+  cg19$bbch <- ifelse(cg19$bbch==10, 9, cg19$bbch)
+  
+  cg19 <-cg19%>% 
+    group_by(spp, site, ind, plot, bbch, year) %>% 
+    slice(which.min(doy))
+  cg19<-cg19[!duplicated(cg19),]
+  
+  cg19$budburst <- ifelse(cg19$bbch==9, cg19$doy, NA)
+  cg19$leafout <- ifelse(cg19$bbch==19, cg19$doy, NA)
+  
+  cg19 <- subset(cg19, select=c("spp", "year", "site", "ind", "budburst", "leafout", "plot"))
+  cg19$plot <- as.character(cg19$plot)
+  
+  cg19 <- cg19[!duplicated(cg19),]
+  
+  cg19 <- cg19 %>% 
+    group_by(spp, site, ind, plot, year) %>% 
+    summarise_all(list(~first(na.omit(.))))
+  cg19$risk <- cg19$leafout - cg19$budburst
+  
   ## Let's combine the years
   cg <- full_join(cg17, cg18)
+  cg <- full_join(cg, cg19)
 
   ### Let's clean up species names now
   cg$species<- NA

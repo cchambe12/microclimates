@@ -2,7 +2,7 @@
 ## Fresh start to adding in climate data
 # Trying to calculate chilling and forcing for budburst and leafout
 
-## Updated 21 January 2019 with new TS data & 21 November 2018 for Climate data
+## Updated 15 July 2019 with new TS data & 15 July 2019 for Climate data
 ### Weather data downloaded from... http://labs.arboretum.harvard.edu/weather/
 
 ## Data download: https://data.usanpn.org/observations/get-started
@@ -38,5 +38,7 @@ source("calculating/clean_addinclimate.R") ## takes a while to load all the data
 source("calculating/calc_forceBB.R") 
 
 
-# 3. Now let's add in forcing from budburst to leafout!! 
-source("calculating/calc_forceBB.R") 
+# 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
+source("calculating/calc_forceDVR.R") 
+
+write.csv(gdd.stan, file="output/gdd_clean_bbanddvr.csv", row.names = FALSE)
