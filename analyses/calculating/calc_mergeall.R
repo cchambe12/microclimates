@@ -29,8 +29,14 @@ setwd("~/Documents/git/microclimates/analyses")
 
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
-# 1. Let's add in climate data first for forcing.
-source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
+### For #1, must choose whether you want hobo logger data or main climate towers
+
+# 1a. Let's add in climate data first for forcing.
+#source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
+#write.csv(cc, file="output/clean_addinclimate.csv", row.names=FALSE)
+
+# 1b. Let's add in climate data from each hobo logger.
+#source("calculating/clean_addinclimate_loggers.R") ## takes a while to load all the data, brings in climate data
 #write.csv(cc, file="output/clean_addinclimate.csv", row.names=FALSE)
 
 # 2. Let's add in Forcing data first. We will use February 15 as the start
@@ -41,4 +47,8 @@ source("calculating/calc_forceBB.R")
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
 source("calculating/calc_forceDVR.R") 
 
-write.csv(gdd.stan, file="output/gdd_clean_bbanddvr.csv", row.names = FALSE)
+## If using 1a)...
+#write.csv(gdd.stan, file="output/clean_gdd_bbanddvr.csv", row.names = FALSE)
+
+## If using 1b)...
+#write.csv(gdd.stan, file="output/clean_gdd_bbanddvr_hobo.csv", row.names = FALSE)
