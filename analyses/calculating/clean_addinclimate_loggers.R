@@ -6,6 +6,41 @@
 if(is.data.frame(d)){
   ## Now it's time to bring in climate data from Weld Hill...
   # Clean up the dataframe 
+  cc.arb<-read.csv("input/weldhill.csv", header=TRUE)
+  cc.arb<-cc.arb%>%
+    rename(date.time=Eastern.daylight.time)
+  cc.arb$date<-gsub("\\s* .*$", '', cc.arb$date.time)
+  cc.arb$date<- as.Date(cc.arb$date, "%m/%d/%Y")
+  cc.arb$date<-as.Date(gsub("001", "201", cc.arb$date))
+  cc.arb$year<-substr(cc.arb$date, 0, 4)
+  cc.arb$doy<-yday(cc.arb$date)
+  cc.arb$hour<-gsub("^.* \\s*|\\s*:.*$", '', cc.arb$date.time)
+  
+  # Find data for the day and by hour
+  cc.arb<-dplyr::select(cc.arb, Temp..F,
+                        Rain.in, date, year, doy, hour)
+  
+  cc.arb$tmin<-ave(cc.arb$Temp..F, cc.arb$date, FUN=min)
+  cc.arb$tmin<-fahrenheit.to.celsius(cc.arb$tmin)
+  cc.arb$tmax<-ave(cc.arb$Temp..F, cc.arb$date, FUN=max)
+  cc.arb$tmax<-fahrenheit.to.celsius(cc.arb$tmax)
+  cc.arb$tmean<-ave(cc.arb$Temp..F, cc.arb$date, cc.arb$hour)
+  cc.arb$tmean<-fahrenheit.to.celsius(cc.arb$tmean)
+  cc.arb$Temp..F <- NULL
+  cc.arb<-cc.arb[!duplicated(cc.arb),]
+  
+  ## If we deem necessary later on in analysis we can add precip back in
+  if(FALSE){
+    cc.arb$Rain.in<-ave(cc.arb$Rain.in, cc.arb$date, FUN=sum)
+    cc.arb$precip<-conv_unit(cc.arb$Rain.in, "inch", "mm")
+  }
+  
+  cc.arb$year<-as.integer(cc.arb$year)
+  
+  cc.arb$climatetype <- "weldhill"
+  cc.arb <- cc.arb[(cc.arb$year>2015),]
+  
+  ## Now it's time for the Arb hobo loggers
   setwd("~/Documents/git/microclimates/analyses/output/arbclimdata/")
   mycsv = dir("~/Documents/git/microclimates/analyses/output/arbclimdata/", pattern=".csv")
   
@@ -45,6 +80,8 @@ if(is.data.frame(d)){
   cc <- full_join(cc, arb14)
   cc <- full_join(cc, arb15)
   
+  cc <- full_join(cc, cc.arb)
+  
   ## Skip 8 and 10 for now because missing data
   cc <- full_join(cc, hf1)
   cc <- full_join(cc, hf2)
@@ -63,8 +100,7 @@ if(is.data.frame(d)){
   
   cc$climatetype.hobo <- cc$climatetype
   
-  d$climatetype.hobo <- NA
-  
+  ### Delineate individuals to loggers for Arb
   indslist <- read.csv("~/Documents/git/microclimates/analyses/input/individual_phenometrics_data.csv", header=TRUE)
   indslist <- subset(indslist, select=c("Site_ID", "Individual_ID", "Genus", "Species"))
   indslist$spp <- paste(substr(indslist$Genus, 0, 3), substr(indslist$Species, 0, 3), sep="")
@@ -120,7 +156,51 @@ if(is.data.frame(d)){
   indslist$route <-NULL
   indslist$spp <-NULL
   
+  ### Delineate individuals to loggers for HF
+  hflist <- subset(d, select=c("id", "genus", "species", "type"))
+  hflist <- hflist[(hflist$type=="Harvard Forest"),]
+  hflist <- hflist[!duplicated(hflist),]
+  hflist$climatetype.hobo <- NA
+  
+  ## Hobo 1:
+  hflist$climatetype.hobo <- ifelse(hflist$id=="ACSA-02" | hflist$id=="ARSP-03" |
+                                      hflist$id=="FAGR-04" | hflist$id=="FRAM-03" |
+                                      hflist$id=="ILVE-02" | hflist$id=="POTR-04" |
+                                      hflist$id=="QUAL-03" | hflist$id=="SAPU-02", "hf1", hflist$climatetype.hobo)
+  ## Hobo 2:
+  hflist$climatetype.hobo <- ifelse(hflist$id=="BEPA-03" | hflist$id=="BEPA-04" |
+                                      hflist$id=="COAL-03" | hflist$id=="FRAM-02", "hf2", hflist$climatetype.hobo)
+  
+  ## Hobo 3:
+  hflist$climatetype.hobo <- ifelse(hflist$id=="BEPA-02" | hflist$id=="CRSP-02" |
+                                      hflist$id=="PRSE-02" | hflist$id=="QURU-03", "hf3", hflist$climatetype.hobo)
+  
+  ## Hobo 4:
+  hflist$climatetype.hobo <- ifelse(hflist$id=="HAVI-03" | hflist$id=="QUVE-03" |
+                                      hflist$id=="QUVE-04" | hflist$id=="TSCA-05", "hf4", hflist$climatetype.hobo)
+  
+  ## Hobo 5: 
+  hf5s <- c("ACRU-04", "BELE-03", "CRSP-03", "KAAN-03", "NEMU-03", "QUVE-02", "RHSP-03")
+  
+  ## Hobo 6:
+  hf6s <- c("AMSP-03", "BEAL-03", "CADE-04", "FAGR-03", "ILVE-04", "KAAN-02", "KALA-02", 
+            "NEMU-01", "NEMU-02", "NYSY-03", "TSCA-04", "VACO-03")
+  
+  ## Hobo 7:
+  hf7s <- c("ACPE-04", "ACRU-03", "ARSP-01", "HAVI-02", "QUAL-02", "QURU-02", "QUVE-02", "VACO-04",
+            "VIAL-03")
+  
+  ## Hobo 8: (to change to 9 for now)
+  hf8s <- c("ACPE-03", "BEAL-02", "BELE-02", "HAVI-01", "VIAL-02", "VICA-03")
+  
+  ## Hobo 9:
+  hf9s <- c("ACPE-02", "ACRU-02", "BEPA-01", "BEPO-01", "CADE-01", "CRSP-01", "KAAN-01",
+            "KALA-01", "LYLI-01", "LYLI-03", "NYSY-04", "PIST-02", "RHSP-01")
+  
+  ## Hobo 10: (to change to 9 for now)
+  
   d$climatetype.hobo <- NA
+  d$climatetype.hobo <- ifelse(d$type=="Common Garden", "weldhill", d$climatetype.hobo)
   d$climatetype.hobo <- as.character(d$climatetype.hobo)
   d <- full_join(d, indslist)
   
