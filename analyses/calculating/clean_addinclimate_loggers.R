@@ -181,28 +181,56 @@ if(is.data.frame(d)){
   
   ## Hobo 5: 
   hf5s <- c("ACRU-04", "BELE-03", "CRSP-03", "KAAN-03", "NEMU-03", "QUVE-02", "RHSP-03")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf5s, "hf5", hflist$climatetype.hobo)
   
   ## Hobo 6:
   hf6s <- c("AMSP-03", "BEAL-03", "CADE-04", "FAGR-03", "ILVE-04", "KAAN-02", "KALA-02", 
             "NEMU-01", "NEMU-02", "NYSY-03", "TSCA-04", "VACO-03")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf6s, "hf6", hflist$climatetype.hobo)
   
   ## Hobo 7:
   hf7s <- c("ACPE-04", "ACRU-03", "ARSP-01", "HAVI-02", "QUAL-02", "QURU-02", "QUVE-02", "VACO-04",
             "VIAL-03")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf7s, "hf7", hflist$climatetype.hobo)
   
   ## Hobo 8: (to change to 9 for now)
   hf8s <- c("ACPE-03", "BEAL-02", "BELE-02", "HAVI-01", "VIAL-02", "VICA-03")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf8s, "hf9", hflist$climatetype.hobo)
   
   ## Hobo 9:
   hf9s <- c("ACPE-02", "ACRU-02", "BEPA-01", "BEPO-01", "CADE-01", "CRSP-01", "KAAN-01",
             "KALA-01", "LYLI-01", "LYLI-03", "NYSY-04", "PIST-02", "RHSP-01")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf9s, "hf9", hflist$climatetype.hobo)
   
   ## Hobo 10: (to change to 9 for now)
+  hf10s <- c("ACPE-01", "FAGR-01", "ILVE-03", "LYLI-02", "QUAL-04", "QURU-01", "QUVE-01", "TSCA-01",
+             "VACO-02", "VIAL-01", "VICA-02")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf10s, "hf9", hflist$climatetype.hobo)
+  
+  ## Hobo 11:
+  hf11s <- c("BEAL-01", "BELE-01", "COAL-04", "SAPU-03", "SAPU-04")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf11s, "hf11", hflist$climatetype.hobo)
+  
+  ## Hobo 12:
+  hf12s <- c("ACRU-01", "ACSA-02", "AMSP-02", "COAL-01", "FRAM-01", "ILVE-01", "PIST-01",
+             "PRSE-01", "SAPU-01", "VACO-01", "VICA-01")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf12s, "hf12", hflist$climatetype.hobo)
+  
+  ## Hobo 13:
+  hf13s <- c("ACRU-05", "FRAM-04", "PIST-04", "POTR-02", "QURU-04")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf13s, "hf13", hflist$climatetype.hobo)
+  
+  ## Hobo 14:
+  hf14s <- c("ACSA-03", "AMSP-04", "FRAM-05", "POTR-03", "PRSE-03", "PRSE-04")
+  hflist$climatetype.hobo <- ifelse(hflist$id %in% hf14s, "hf14", hflist$climatetype.hobo)
+  
+  hflist <- subset(hflist, select=c("id", "climatetype.hobo"))
   
   d$climatetype.hobo <- NA
   d$climatetype.hobo <- ifelse(d$type=="Common Garden", "weldhill", d$climatetype.hobo)
   d$climatetype.hobo <- as.character(d$climatetype.hobo)
   d <- full_join(d, indslist)
+  d <- full_join(d, hflist)
   
   d$id_year_type <- paste(d$id, d$year, d$climatetype.hobo, sep=";")
   
