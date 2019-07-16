@@ -1,0 +1,15 @@
+lat,lon,ele,time,magvar,geoidheight,name,cmt,desc,src,sym,type,fix,sat,hdop,vdop,pdop,ageofdgpsdata,dgpsid,Proximity,Temperature,Depth,DisplayMode,Samples,Expiration,CreationTime
+42.53443301,-72.18876497,355.73819,2018-11-07T14:30:56Z,,,HOBO 1 JO,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T14:30:56Z
+42.53448799,-72.183335,395.468323,2018-11-07T16:01:59Z,,,HOBO 10 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T16:01:59Z
+42.53279099,-72.18748002,378.421936,2018-11-07T16:11:09Z,,,HOBO 11 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T16:11:09Z
+42.53255404,-72.18852902,372.510376,2018-11-07T16:16:20Z,,,HOBO 12 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T16:16:20Z
+42.53155299,-72.18923796,365.992401,2018-11-07T16:23:43Z,,,HOBO 13 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T16:23:43Z
+42.53185398,-72.19054696,359.967377,2018-11-07T16:26:58Z,,,HOBO 14 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T16:26:58Z
+42.53600897,-72.18725002,369.087646,2018-11-07T14:46:01Z,,,HOBO 2 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T14:46:01Z
+42.53807503,-72.185261,381.665649,2018-11-07T15:00:03Z,,,HOBO 3 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:00:03Z
+42.53813202,-72.182601,381.396576,2018-11-07T15:11:24Z,,,HOBO 4 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:11:24Z
+42.53833202,-72.18233303,385.693329,2018-11-07T15:16:08Z,,,HOBO 5 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:16:08Z
+42.53907398,-72.18118697,383.966888,2018-11-07T15:27:02Z,,,HOBO 6 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:27:02Z
+42.538905,-72.18149199,385.82663,2018-11-07T15:34:07Z,,,HOBO 7 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:34:07Z
+42.53718797,-72.17964998,389.041138,2018-11-07T15:49:56Z,,,HOBO 8 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:49:56Z
+42.53498202,-72.18176499,397.71817,2018-11-07T15:58:08Z,,,HOBO 9 JOK HF,,,,"Flag, Blue",user,,,,,,,,,,,SymbolAndName,,,2018-11-07T15:58:08Z
