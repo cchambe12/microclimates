@@ -29,26 +29,41 @@ setwd("~/Documents/git/microclimates/analyses")
 
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
+## Flags for question
+use.hobos <- TRUE ## make false if want to use main station climate data
+
 ### For #1, must choose whether you want hobo logger data or main climate towers
 
+if(use.hobos==FALSE){
 # 1a. Let's add in climate data first for forcing.
-#source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
+source("calculating/clean_addinclimate.R") ## takes a while to load all the data, brings in climate data
 #write.csv(cc, file="output/clean_addinclimate.csv", row.names=FALSE)
+}
 
+if(use.hobos==TRUE){
 # 1b. Let's add in climate data from each hobo logger.
-#source("calculating/clean_addinclimate_loggers.R") ## takes a while to load all the data, brings in climate data
+source("calculating/clean_addinclimate_loggers.R") ## takes a while to load all the data, brings in climate data
 #write.csv(cc, file="output/clean_addinclimate.csv", row.names=FALSE)
+}
 
 # 2. Let's add in Forcing data first. We will use February 15 as the start
 # of calculating GDD. Easy to fix if necessary in the gdd.start column
-source("calculating/calc_forceBB.R") 
+if(use.hobos==TRUE){
+## Need to reset the working directory if use.hobos==TRUE.
+setwd("~/Documents/git/microclimates/analyses")
+}
+source("calculating/calc_forceBB.R") ### Takes a long time with hobo data
 
 
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
-source("calculating/calc_forceDVR.R") 
+source("calculating/calc_forceDVR.R") ### Takes a long time with hobo data 
 
+if(use.hobos==FALSE){
 ## If using 1a)...
-#write.csv(gdd.stan, file="output/clean_gdd_bbanddvr.csv", row.names = FALSE)
+write.csv(gdd.stan, file="output/clean_gdd_bbanddvr.csv", row.names = FALSE)
+}
 
+if(use.hobos==TRUE){
 ## If using 1b)...
-#write.csv(gdd.stan, file="output/clean_gdd_bbanddvr_hobo.csv", row.names = FALSE)
+write.csv(gdd.stan, file="output/clean_gdd_bbanddvr_hobo.csv", row.names = FALSE)
+}

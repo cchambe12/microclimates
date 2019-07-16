@@ -78,6 +78,6 @@ if(is.data.frame(d)){
   print("Error: forcebb not a data.frame")
 }
 
-stop("Not an error, forcing for budburst is now included. Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
+stop("Not an error, forcing for budburst is now included in new df ('forcebb'). Also, you can ignore the warning messages below -- is due to a bug in package (https://stackoverflow.com/questions/24282550/no-non-missing-arguments-warning-when-using-min-or-max-in-reshape2). 
      I have checked and rechecked the data")
   
