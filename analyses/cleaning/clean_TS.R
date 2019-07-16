@@ -89,7 +89,7 @@ if(is.data.frame(d)){
   ### Now clean it up a bit
   phenos<-phenos[!is.na(phenos$budburst),]
   phenos<-phenos[!is.na(phenos$leafout),]
-  phenos<-phenos[!is.na(phenos$last.obs),]
+  #phenos<-phenos[!is.na(phenos$last.obs),]
   
   phenos$yr.end <- ifelse(phenos$year==2016, 366, 365)
   

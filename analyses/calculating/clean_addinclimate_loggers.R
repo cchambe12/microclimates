@@ -97,6 +97,8 @@ if(is.data.frame(d)){
   
   cc$hour <- as.character(cc$hour) ## preserving original df
   cc$date <- as.Date(cc$date)
+  
+  cc$tmean <- cc$tempcalib
   cc <- full_join(cc, cc.arb)
   cc <- cc[!duplicated(cc),]
   

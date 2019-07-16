@@ -56,7 +56,7 @@ if(is.data.frame(d)){
   indsyrlist <- length(unique(bb_forcing_all$indyrnum))
   hourtemps <- data.frame()
   bb_forcing_all$gdd_bb <- NA
-  for(i in 1:indsyrlist){ #i=2
+  for(i in 1:indsyrlist){ #i=35
     
     hourtemps <- subset(bb_forcing_all[(bb_forcing_all$indyrnum==i),], select=c("year", "doy", "tmean"))
     hourtemps <- hourtemps[order(hourtemps$doy),]
