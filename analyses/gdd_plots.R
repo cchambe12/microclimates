@@ -8,6 +8,8 @@ options(stringsAsFactors = FALSE)
 # Load libraries
 library(RColorBrewer)
 library(ggplot2)
+library(dplyr)
+library(tidyr)
 
 # Set working directory
 setwd("~/Documents/git/microclimates/analyses")
@@ -15,6 +17,22 @@ setwd("~/Documents/git/microclimates/analyses")
 ## Load the data
 gdd.stan <- read.csv("output/clean_gdd_bbanddvr.csv", header=TRUE)
 gdd.hobo <- read.csv("output/clean_gdd_bbanddvr_hobo.csv", header=TRUE)
+
+if(FALSE){ ## Testing code
+gdd.stan$stationbb <- gdd.stan$gdd_bb
+gdd.stan$gdd_bb <- NULL
+gdd.stan$stationdvr <- gdd.stan$gdd_dvr
+gdd.stan$gdd_dvr <- NULL
+gdd <- left_join(gdd.hobo, gdd.stan)
+gdd$diffbb <- gdd$stationbb - gdd$gdd_bb
+gdd$diffdvr <- gdd$stationdvr - gdd$gdd_dvr
+range(gdd$diffdvr, na.rm=TRUE)
+range(gdd$diffbb, na.rm=TRUE)
+}
+
+
+gdd.stan <- gdd.stan[(gdd.stan$type=="Treespotters"),]
+gdd.hobo <- gdd.hobo[(gdd.hobo$type=="Treespotters"),]
 
 gdd.hobo$gdd_bb_hobo <- gdd.hobo$gdd_bb
 gdd.hobo$gdd_dvr_hobo <- gdd.hobo$gdd_dvr
@@ -25,35 +43,48 @@ gdd.hobo$gdd_dvr <- NULL
 gdd.hobo$spp <- paste(substr(gdd.hobo$genus, 0, 3), substr(gdd.hobo$species, 0, 3), sep="")
 gdd.stan$spp <- paste(substr(gdd.stan$genus, 0, 3), substr(gdd.stan$species, 0, 3), sep="")
 
-commoncols <- c("id", "provenance.lat", "fs.count", "year", "budburst", "spp")
-gdd.hobo <- subset(gdd.hobo, select=c(commoncols, "gdd_bb_hobo"))
-gdd.stan <- subset(gdd.stan, select=c(commoncols, "gdd_bb"))
+commoncols <- c("id", "provenance.lat", "fs.count", "year", "budburst", "leafout", "spp", "climatetype")
+gdd.hobo <- subset(gdd.hobo, select=c(commoncols, "gdd_bb_hobo", "gdd_dvr_hobo"))
+gdd.stan <- subset(gdd.stan, select=c(commoncols, "gdd_bb", "gdd_dvr"))
+
+gdd.hobo$hobonum <- gdd.hobo$climatetype
+gdd.hobo$climatetype <- NULL
 
 gdd <- full_join(gdd.stan, gdd.hobo)
+gdd$dvr <- gdd$leafout - gdd$budburst
+gdd$leafout <- NULL
 
 gdd <- gdd[(gdd$year==2019),]
 
 gdd <- gdd[(gdd$gdd_bb<=1000),]
 gdd <- gdd[(gdd$gdd_bb_hobo<=1000),]
 
-#gdd$gdd.diff <- gdd$gdd_dvr_hobo - gdd$gdd_dvr ## mean = 4.81; range=c(-1.24, 13.97); sd=3.82
-#gdd$gdd.diff <- gdd$gdd_bb_hobo - gdd$gdd_bb ## mean = 4.95; range=c(3.48, 9.95); sd=1.14
+gdd$gdd.diffdvr <- gdd$gdd_dvr_hobo - gdd$gdd_dvr ## mean=3.81; range=c(-1.24, 12.17); sd=3.77
+gdd$gdd.diffbb <- gdd$gdd_bb_hobo - gdd$gdd_bb ## mean = 5.18; range=c(3.48, 9.95); sd=1.82
+
+gddplot.bb <- subset(gdd, select=c("provenance.lat", "fs.count", "spp", "gdd_bb", "gdd_bb_hobo", "budburst", "hobonum", "dvr"))
+gddplot.dvr <- subset(gdd, select=c("provenance.lat", "fs.count", "spp", "gdd_dvr", "gdd_dvr_hobo", "budburst", "hobonum", "dvr"))
+gddplot.bb <- na.omit(gddplot.bb)
+gddplot.dvr <- na.omit(gddplot.dvr)
+
+gddplot.bb <- gather(gddplot.bb, "method", "gdd", -provenance.lat, -fs.count, -spp, -budburst, -hobonum, -dvr)
+gddplot.dvr <- gather(gddplot.dvr, "method", "gdd", -provenance.lat, -fs.count, -spp, -budburst, -hobonum, -dvr)
+
+gddplot.bb$method <- ifelse(gddplot.bb$method=="gdd_bb", gddplot.bb$method, gddplot.bb$hobonum)
+gddplot.dvr$method <- ifelse(gddplot.dvr$method=="gdd_dvr", gddplot.dvr$method, gddplot.dvr$hobonum)
+
+gddplot.bb$gddmean <- ave(gddplot.bb$gdd, gddplot.bb$spp, gddplot.bb$method)
+gddplot.bb$gddsd <- ave(gddplot.bb$gdd, gddplot.bb$spp, gddplot.bb$method, FUN=sd)
+gddplot.bb$ymin <- gddplot.bb$gddmean-gddplot.bb$gddsd
+gddplot.bb$ymax <- gddplot.bb$gddmean+gddplot.bb$gddsd
+
+gddplot.dvr$gddmean <- ave(gddplot.dvr$gdd, gddplot.dvr$spp, gddplot.dvr$method)
+gddplot.dvr$gddsd <- ave(gddplot.dvr$gdd, gddplot.dvr$spp, gddplot.dvr$method, FUN=sd)
+gddplot.dvr$ymin <- gddplot.dvr$gddmean-gddplot.dvr$gddsd
+gddplot.dvr$ymax <- gddplot.dvr$gddmean+gddplot.dvr$gddsd
 
 cols <- colorRampPalette(brewer.pal(8,"Dark2"))(8)
-
-gddplot <- na.omit(gdd)
-
-gddplot <- gather(gddplot, "method", "gdd", -id, -provenance.lat, -fs.count, -year, -budburst, -spp)
-
-gddplot$gddmean <- ave(gddplot$gdd, gddplot$spp, gddplot$method)
-gddplot$gddsd <- ave(gddplot$gdd, gddplot$spp, gddplot$method, FUN=sd)
-gddplot$ymin <- gddplot$gddmean-gddplot$gddsd
-gddplot$ymax <- gddplot$gddmean+gddplot$gddsd
-
-gddplot <- na.omit(gddplot)
-
-
-gddbar <- ggplot(gddplot, aes(x=spp, y=gddmean, fill=method)) + 
+gddbarbb <- ggplot(gddplot.bb, aes(x=spp, y=gddmean, fill=method)) + 
   geom_bar(stat="identity", position=position_dodge()) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax),width = 0.2, position=position_dodge(0.9)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -62,16 +93,64 @@ gddbar <- ggplot(gddplot, aes(x=spp, y=gddmean, fill=method)) +
         axis.text.x = element_text(angle=45, hjust=1),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   xlab("") + 
-  ylab("Growing Degree Days between Leafout and Budburst") + 
+  ylab("Growing degree days to budburst") + 
   scale_fill_manual(name="Method", values=cols,
-                    labels=c("Weather Station", "Hobo Logger")) #+
-  #geom_hline(aes(yintercept = meancont), col="black", alpha=0.3, linetype="dashed") +
-  #geom_hline(aes(yintercept = meantx), col="black", alpha=1, linetype="dashed")  +
-  #scale_linetype_manual(name="Site", values=c(1, 2, 3), labels=c("arb", "cg", "hf")) #+
-  #guides(fill=FALSE) 
-  #ggtitle("A. Four weeks chilling")  + coord_cartesian(xlim=c(1, 8), ylim=c(-5,85), expand=TRUE)
+                    labels=c("Weather Station", "Hobo Logger")) + coord_cartesian(expand=c(0,0))
+  
+quartz()
+gddbarbb
+
+gddbardvr <- ggplot(gddplot.dvr, aes(x=spp, y=gddmean, fill=method)) + 
+  geom_bar(stat="identity", position=position_dodge()) +
+  geom_errorbar(aes(ymin=ymin, ymax=ymax),width = 0.2, position=position_dodge(0.9)) +
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        legend.text.align = 0,
+        #legend.position = "none",
+        axis.text.x = element_text(angle=45, hjust=1),
+        legend.key = element_rect(colour = "transparent", fill = "white")) +
+  xlab("") + 
+  ylab("Growing degree days from budburst to leafout") + 
+  scale_fill_manual(name="Method", values=cols,
+                    labels=c("Weather Station", "Hobo Logger")) + coord_cartesian(expand=c(0,0))
 
 quartz()
-gddbar
+gddbardvr
 
+cols <- colorRampPalette(brewer.pal(11,"Set3"))(11)
+cols <- c(cols, "black")
 
+bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=method)) + geom_point() +
+  geom_line() + scale_color_manual(name="Method", values=cols, 
+                                   labels=c("Hobo #10", "Hobo #11",
+                                            "Hobo #12", "Hobo #14",
+                                            "Hobo #15", "Hobo #2",
+                                            "Hobo #3", "Hobo #4",
+                                            "Hobo #7", "Hobo #8",
+                                            "Hobo #9", "Weather Station")) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        legend.text.align = 0,
+        #legend.position = "none",
+        #axis.text.x = element_text(angle=45, hjust=1),
+        legend.key = element_rect(colour = "transparent", fill = "white")) +
+  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE)
+
+quartz()
+bb.loggers
+
+dvr.loggers <- ggplot(gddplot.dvr, aes(x=dvr, y=gdd, col=method, linetype=method)) + geom_point() +
+  geom_line() + scale_color_manual(name="Method", values=cols, 
+                                   labels=c("Hobo #10", "Hobo #11",
+                                            "Hobo #12", "Hobo #14",
+                                            "Hobo #15", "Hobo #2",
+                                            "Hobo #3", "Hobo #4",
+                                            "Hobo #7", "Hobo #8",
+                                            "Hobo #9", "Weather Station")) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        legend.text.align = 0,
+        #legend.position = "none",
+        #axis.text.x = element_text(angle=45, hjust=1),
+        legend.key = element_rect(colour = "transparent", fill = "white")) +
+  xlab("Days from budburst to leafout") + ylab("Growing degree days") + guides(linetype=FALSE)
+
+quartz()
+dvr.loggers

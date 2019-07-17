@@ -4,6 +4,7 @@
 # Load from calc_mergeall.R (including libraries)
 
 if(is.data.frame(d)){
+  yearlim <- 2018
   ## Now it's time to bring in climate data from Weld Hill...
   # Clean up the dataframe 
   cc.arb<-read.csv("input/weldhill.csv", header=TRUE)
@@ -38,7 +39,7 @@ if(is.data.frame(d)){
   cc.arb$year<-as.integer(cc.arb$year)
   
   cc.arb$climatetype <- "weldhill"
-  cc.arb <- cc.arb[(cc.arb$year>2015),]
+  cc.arb <- cc.arb[(cc.arb$year>yearlim),]
   
   ## Now it's time for the Arb hobo loggers
   setwd("~/Documents/git/microclimates/analyses/output/arbclimdata/")
@@ -102,7 +103,7 @@ if(is.data.frame(d)){
   cc <- full_join(cc, cc.arb)
   cc <- cc[!duplicated(cc),]
   
-  cc <- cc[(cc$year >= 2019),]
+  cc <- cc[(cc$year > yearlim),]
   
   ### Delineate individuals to loggers for Arb
   indslist <- read.csv("~/Documents/git/microclimates/analyses/input/individual_phenometrics_data.csv", header=TRUE)
@@ -118,6 +119,7 @@ if(is.data.frame(d)){
   
   ## Linden and North Woods Route (and some shrub route and some maple route)
   indslist$climatetype <- ifelse(indslist$id=="87763" | indslist$id=="166768", "arb1", indslist$climatetype)
+  indslist$climatetype <- ifelse(indslist$climatetype=="arb1", "arb2", indslist$climatetype)
   indslist$climatetype <- ifelse(indslist$id=="86290" | indslist$id=="87762" | indslist$id=="85758" |
                                         indslist$id=="166769", "arb2", indslist$climatetype)
   indslist$climatetype <- ifelse(indslist$id=="85756" | indslist$id=="85755" | indslist$id=="85751" |
@@ -132,6 +134,11 @@ if(is.data.frame(d)){
   
   ## Part of Shrub route
   indslist$climatetype <- ifelse(indslist$id=="166775", "arb5", indslist$climatetype)
+  indslist$climatetype <- ifelse(indslist$climatetype=="arb5", "arb4", indslist$climatetype)
+  
+  ## Birch Route
+  indslist$climatetype <- ifelse(indslist$spp=="Betall" | indslist$spp=="Betnig", "arb6", indslist$climatetype)
+  indslist$climatetype <- ifelse(indslist$climatetype=="arb6", "arb7", indslist$climatetype)
   
   ## Hickory Route (and some shrub route)
   indslist$climatetype <- ifelse(indslist$spp=="Carova" | indslist$id=="86262" | indslist$id=="169168" | 
@@ -236,7 +243,7 @@ if(is.data.frame(d)){
   
   loggerlist <- rbind(indslist, hflist)
   
-  d <- d[(d$year>=2019),]
+  d <- d[(d$year>yearlim),]
   d <- left_join(d, loggerlist)
   
   d$climatetype <- ifelse(d$type=="Common Garden", "weldhill", d$climatetype)

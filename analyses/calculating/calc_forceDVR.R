@@ -17,9 +17,9 @@ if(is.data.frame(d)){
                              doy = do.call(c, days.btw))
   
   climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\;")
-  climandpheno$id_year<-paste(climandpheno$id, climandpheno$year)
+  climandpheno$id_year_type<-paste(climandpheno$id, climandpheno$year, climandpheno$climatetype)
   
-  addhrs <- as.vector(unique(paste(climandpheno$id_year, climandpheno$doy)))
+  addhrs <- as.vector(unique(paste(climandpheno$id_year_type, climandpheno$doy)))
   
   addhrs =
     data.frame(
@@ -27,16 +27,17 @@ if(is.data.frame(d)){
       hour = sort(c(rep(seq(1:24))))
     )
   
-  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("id", "year", "doy"), sep = "\\ ")
+  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("id", "year", "climatetype", "doy"), sep = "\\ ")
   climandpheno$id <- as.character(climandpheno$id)
   climandpheno$year <- as.integer(climandpheno$year)
+  climandpheno$climatetype <- as.character(climandpheno$climatetype)
   climandpheno$doy <- as.numeric(climandpheno$doy)
   
   climandpheno$leafout<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
   climandpheno$budburst<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
   
   ## Add Climate data back in 
-  cc<-dplyr::select(cc, year, doy, tmean, tmin, tmax, hour)
+  cc<-dplyr::select(cc, year, doy, tmean, hour, climatetype)
   cc$hour <- as.numeric(cc$hour)
   
   climandpheno<-full_join(climandpheno, cc)
@@ -46,14 +47,14 @@ if(is.data.frame(d)){
   
   bb_climandpheno<-full_join(climandpheno, d.dvr)
   
-  dvr_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean",
-                                                      "budburst", "leafout"))
+  dvr_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean", 
+                                                      "budburst", "leafout", "id_year_type"))
   dvr_forcing_all <-na.omit(dvr_forcing_all)
   
-  dvr_forcing_all <- dvr_forcing_all[(dvr_forcing_all$year>2015),]
+  dvr_forcing_all <- dvr_forcing_all[(dvr_forcing_all$year>yearlim),]
   
-  dvr_forcing_all$indyear <- paste(dvr_forcing_all$id, dvr_forcing_all$year, sep=";")
-  dvr_forcing_all$indyrnum <- as.numeric(as.factor(dvr_forcing_all$indyear))
+  #dvr_forcing_all$indyear <- paste(dvr_forcing_all$id, dvr_forcing_all$year, sep=";")
+  dvr_forcing_all$indyrnum <- as.numeric(as.factor(dvr_forcing_all$id_year_type))
   indsyrlist <- length(unique(dvr_forcing_all$indyrnum))
   hourtemps <- data.frame()
   dvr_forcing_all$gdd_dvr <- NA
@@ -78,9 +79,10 @@ if(is.data.frame(d)){
   forcedvr <- subset(dvr_forcing_all, select=c("id", "year", "budburst", "leafout", "gdd_dvr", "fs.count"))
   forcedvr <- forcedvr[!duplicated(forcedvr),]
   
-  force <- full_join(forcebb, forcedvr)
+  force <- left_join(forcebb, forcedvr)
+  force <- dplyr::select(force, -leafout)
   
-  gdd.stan <- full_join(d, force)
+  gdd.stan <- left_join(d, force)
   
 } else {
   print("Error: forcedvr not a data.frame.")

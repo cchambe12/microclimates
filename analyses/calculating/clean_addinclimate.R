@@ -37,8 +37,9 @@ if(is.data.frame(d)){
   
   cc.arb$year<-as.integer(cc.arb$year)
   
+  yearlim <- 2015
   cc.arb$climatetype <- "weldhill"
-  cc.arb <- cc.arb[(cc.arb$year>2015),]
+  cc.arb <- cc.arb[(cc.arb$year>yearlim),]
   
   #### And now time for climate data from Harvard Forest....
   cc.hf <- read.csv("input/hf001-10-15min-m.csv", header=TRUE)
@@ -64,7 +65,7 @@ if(is.data.frame(d)){
   }
   
   cc.hf$year<-as.integer(cc.hf$year)
-  cc.hf <- cc.hf[(cc.hf$year>2014),]
+  cc.hf <- cc.hf[(cc.hf$year>yearlim),]
   
   commoncols <- c("date", "year", "doy", "hour", "tmin", "tmax", "tmean", "climatetype")
   cc.arb <- subset(cc.arb, select=commoncols)

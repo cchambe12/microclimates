@@ -8,8 +8,8 @@ if(is.data.frame(d)){
   climandpheno<-data_frame()
   days.btw<-array()
   
-  d <- d[!is.na(d$budburst),]
-  d <- d[!is.na(d$leafout),]
+  d <- d[!(d$gdd.start>d$budburst),]
+  d <- d[!is.na(d$budburst) | !is.na(d$gdd.start),]
   
   days.btw <- Map(seq, d$gdd.start, d$budburst, by = 1)
   
@@ -17,9 +17,9 @@ if(is.data.frame(d)){
                              doy = do.call(c, days.btw))
   
   climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\;")
-  climandpheno$id_year<-paste(climandpheno$id, climandpheno$year)
+  climandpheno$id_year_type<-paste(climandpheno$id, climandpheno$year, climandpheno$climatetype)
   
-  addhrs <- as.vector(unique(paste(climandpheno$id_year, climandpheno$doy)))
+  addhrs <- as.vector(unique(paste(climandpheno$id_year_type, climandpheno$doy)))
   
   addhrs =
     data.frame(
@@ -27,15 +27,17 @@ if(is.data.frame(d)){
       hour = sort(c(rep(seq(1:24))))
     )
   
-  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("id", "year", "doy"), sep = "\\ ")
+  climandpheno <- separate(data = addhrs, col = id_yr_day, into = c("id", "year", "climatetype", "doy"), sep = "\\ ")
   climandpheno$id <- as.character(climandpheno$id)
   climandpheno$year <- as.integer(climandpheno$year)
+  climandpheno$climatetype <- as.character(climandpheno$climatetype)
   climandpheno$doy <- as.numeric(climandpheno$doy)
   
   climandpheno$budburst<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=max) ## Warnings can be ignored - data is clean and checked
-  climandpheno$gdd.start<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
+  climandpheno$gdd.start<-46
   
   ## Add Climate data back in 
+  cc<-dplyr::select(cc, year, doy, tmean, hour, climatetype)
   cc$hour <- as.numeric(cc$hour)
   
   climandpheno<-full_join(climandpheno, cc)
@@ -45,18 +47,18 @@ if(is.data.frame(d)){
   
   bb_climandpheno<-full_join(climandpheno, d)
   
-  bb_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean",
-                                                     "gdd.start", "budburst"))
+  bb_forcing_all <- subset(bb_climandpheno, select=c("id", "doy", "year", "tmean", 
+                                                     "gdd.start", "budburst", "id_year_type"))
   bb_forcing_all <-na.omit(bb_forcing_all)
   
-  bb_forcing_all <- bb_forcing_all[(bb_forcing_all$year>2015),]
+  bb_forcing_all <- bb_forcing_all[(bb_forcing_all$year>yearlim),]
   
-  bb_forcing_all$indyear <- paste(bb_forcing_all$id, bb_forcing_all$year, sep=";")
-  bb_forcing_all$indyrnum <- as.numeric(as.factor(bb_forcing_all$indyear))
+  #bb_forcing_all$indyear <- paste(bb_forcing_all$id, bb_forcing_all$year, sep=";")
+  bb_forcing_all$indyrnum <- as.numeric(as.factor(bb_forcing_all$id_year_type))
   indsyrlist <- length(unique(bb_forcing_all$indyrnum))
   hourtemps <- data.frame()
   bb_forcing_all$gdd_bb <- NA
-  for(i in 1:indsyrlist){ #i=35
+  for(i in 1:indsyrlist){ #i=1
     
     hourtemps <- subset(bb_forcing_all[(bb_forcing_all$indyrnum==i),], select=c("year", "doy", "tmean"))
     hourtemps <- hourtemps[order(hourtemps$doy),]

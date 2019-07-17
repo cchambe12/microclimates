@@ -30,7 +30,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 
@@ -52,11 +52,11 @@ if(use.hobos==TRUE){
 ## Need to reset the working directory if use.hobos==TRUE.
 setwd("~/Documents/git/microclimates/analyses")
 }
-source("calculating/calc_forceBB.R") ### Takes a long time with hobo data
+source("calculating/calc_forceBB.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
 
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
-source("calculating/calc_forceDVR.R") ### Takes a long time with hobo data 
+source("calculating/calc_forceDVR.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
 if(use.hobos==FALSE){
 ## If using 1a)...
