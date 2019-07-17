@@ -30,7 +30,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 

@@ -13,7 +13,7 @@ if(is.data.frame(d)){
   d.dvr <- d.dvr[!is.na(d.dvr$budburst) | !is.na(d.dvr$leafout),]
   days.btw <- Map(seq, d.dvr$budburst, d.dvr$leafout, by=1)
   
-  climandpheno <- data.frame(id_year_type = rep.int(d$id_year_type, vapply(days.btw, length, 1L)), 
+  climandpheno <- data.frame(id_year_type = rep.int(d.dvr$id_year_type, vapply(days.btw, length, 1L)), 
                              doy = do.call(c, days.btw))
   
   climandpheno <- separate(data = climandpheno, col = id_year_type, into = c("id", "year", "climatetype"), sep = "\\;")
@@ -50,7 +50,7 @@ if(is.data.frame(d)){
                                                       "budburst", "leafout"))
   dvr_forcing_all <-na.omit(dvr_forcing_all)
   
-  dvr_forcing_all <- dvr_forcing_all[(bb_forcing_all$year>2015),]
+  dvr_forcing_all <- dvr_forcing_all[(dvr_forcing_all$year>2015),]
   
   dvr_forcing_all$indyear <- paste(dvr_forcing_all$id, dvr_forcing_all$year, sep=";")
   dvr_forcing_all$indyrnum <- as.numeric(as.factor(dvr_forcing_all$indyear))
