@@ -93,3 +93,19 @@ plot(phy.plants.micro,cex=.5)
 write.tree(phy.plants.micro,"~/Documents/git/microclimates/phylodata/micro.phylogeny.tre")
 
 
+### Let's build a prettier phylogeny now..
+library(ggplot2)
+library(ggtree)
+
+phy.plants.micro <- read.tree("~/Documents/git/microclimates/phylodata/micro.phylogeny.tre")
+
+newnames <- data.frame(tiplabel=phy.plants.micro$tip.label)
+newnames$genus <- gsub("_.*", "", newnames$tiplabel)
+newnames$species <- gsub(".*_", "", newnames$tiplabel)
+newnames$labels <- paste(newnames$genus, newnames$species)
+newnames$labels <- italic(newnames$labels)
+
+ggtree(phy.plants.micro)  + geom_tiplab(size=3, label=newnames$labels, fontface='italic') + 
+  theme(plot.margin = unit(c(0,1,1,1), "lines")) +
+  xlim(c(0, 200))
+

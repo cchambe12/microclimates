@@ -105,8 +105,7 @@ library(broom)
 phymod<-as.data.frame(tidy(model_phylo, prob=0.5))
 modoutput <- phymod #modelhere
 
-### Check on species distribution across sites
-tt <- as.data.frame(table(gdd.stan$site, gdd.stan$spp))
+
 
 
 ## BETALL, QUEALB, QUERUB
