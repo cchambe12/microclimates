@@ -96,6 +96,8 @@ write.tree(phy.plants.micro,"~/Documents/git/microclimates/phylodata/micro.phylo
 ### Let's build a prettier phylogeny now..
 library(ggplot2)
 library(ggtree)
+library(phytools)
+library(cowplot)
 
 phy.plants.micro <- read.tree("~/Documents/git/microclimates/phylodata/micro.phylogeny.tre")
 
@@ -107,6 +109,7 @@ newnames$labels <- paste(newnames$genus, newnames$species)
 tt <- as.data.frame(table(gdd.stan$site, gdd.stan$latbi))
 names(tt) <- c("site", "phylo", "freq")
 tt$freq <- ifelse(tt$freq==0, NA, tt$freq)
+tt$freq <- ifelse(tt$site=="cg" & tt$phylo=="Quercus_alba", 1, tt$freq)
 
 tt <- tt[!is.na(tt$freq),]
 tt$freq <- NULL
@@ -120,33 +123,47 @@ hfids <- unique(hf$phylo)
 cg <- tt[(tt$site=="cg"),]
 cgids <- unique(cg$phylo)
 
-tiplabels <- data.frame(phylo=unique(tt$phylo))
-tiplabels$arb <- ifelse(tiplabels$phylo%in%arbids, 1, 0)
-tiplabels$hf <- ifelse(tiplabels$phylo%in%hfids, 1, 0)
-tiplabels$cg <- ifelse(tiplabels$phylo%in%cgids, 1, 0)
-tiplabels <- tiplabels[(tiplabels$phylo!="NA_NA"),]
+tiplabels <- data.frame(tiplabel=unique(tt$phylo))
+tiplabels$arb <- ifelse(tiplabels$tiplabel%in%arbids, 1, 0)
+tiplabels$hf <- ifelse(tiplabels$tiplabel%in%hfids, 1, 0)
+tiplabels$cg <- ifelse(tiplabels$tiplabel%in%cgids, 1, 0)
+#tiplabels <- tiplabels[(tiplabels$tiplabel!="Quercus_alba"),]
 
-arb.df<-select_(tiplabels, "arb")
-arb.df$col <- ifelse(arb.df$arb==0, "white", "red")
-cg.df<-select_(tiplabels, "cg")
-cg.df$col <- ifelse(cg.df$cg==0, "white", "darkgreen")
-hf.df<-select_(tiplabels, "hf")
-hf.df$col <- ifelse(hf.df$hf==0, "white", "blue4")
+arb.df<-subset(tiplabels, select=c("arb", "tiplabel"))
+arb.df$tiplabel<-as.character(arb.df$tiplabel)
+arb.df$arbcol <- ifelse(arb.df$arb==0, "white", "red")
+cg.df<-subset(tiplabels, select=c("cg", "tiplabel"))
+cg.df$tiplabel<-as.character(cg.df$tiplabel)
+cg.df$cgcol <- ifelse(cg.df$cg==0, "white", "darkgreen")
+hf.df<-subset(tiplabels, select=c("hf", "tiplabel"))
+hf.df$tiplabel<-as.character(hf.df$tiplabel)
+hf.df$hfcol <- ifelse(hf.df$hf==0, "white", "blue4")
 
+foo <- left_join(newnames, arb.df)
+foo <- left_join(foo, cg.df)
+foo <- left_join(foo, hf.df)
 
-##plot.margin: (t, r, b, l) *think 'trouble'
-tree.plot <- ggtree(phy.plants.micro)  + geom_tiplab(size=3, label=newnames$labels, fontface='italic') + 
-  theme(plot.margin = unit(c(1,3,1,1), "lines")) + geom_tippoint(col=arb.df$col) + geom_tippoint(col=cg.df$col) +
-  geom_tippoint(col=hf.df$col) +
-  xlim(c(0, 150))
+colslegend <- data.frame(collabels=c("red", "darkgreen", "blue4"), site=c("Arboretum", "Common Garden", "Harvard Forest"))
 
-tree.plot <- tree.plot %<+% tt + geom_tippoint(aes(group=c(tt$phylo, tt$site)))
+leg <- ggplot(colslegend, aes(col=collabels)) + geom_point(aes(x=site, y=collabels)) + 
+  theme(legend.key = element_rect(fill="transparent"), legend.text = element_text(size=7), 
+        legend.title = element_text(size=8),
+        plot.margin = unit(c(0,0,0,0), "lines")) +
+  scale_colour_manual(name="Site", labels=c("Arboretum", "Common Garden", "Harvard Forest"),
+                      values=c("red", "darkgreen", "blue4"))
+
+legend <- cowplot::get_legend(leg)
+
+##plot.margin: (t, r, b, l) *think 'trouble' ## 
+tree.plot <- ggtree(phy.plants.micro)  + geom_tiplab(size=3, label=foo$labels, fontface='italic') + 
+  theme(plot.margin = unit(c(1,0,1,1), "lines"), legend.position = "right") + geom_tippoint(col=foo$arbcol, x=175) + geom_tippoint(col=foo$cgcol, x=180) +
+  geom_tippoint(col=foo$hfcol, x=185) +
+  xlim(c(0, 200)) 
+
+#tree.plot <- tree.plot %<+% tt + geom_tippoint(aes(group=c(tt$phylo, tt$site)))
 #tree.plot+theme(legend.position="right")
 
 quartz()
-tree.plot
+grid.arrange(tree.plot, legend, ncol=2, widths=c(3, 0.75))
 
 
-arb.df<-arb.df$arb
-colors<-setNames(c("white","red"),c(0,1))
-dotTree(phy.plants.micro,arb.df,colors=colors,data.type="discrete",fsize=0.7,x.space=0.05)
