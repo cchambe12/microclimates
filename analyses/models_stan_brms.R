@@ -38,7 +38,9 @@ gdd.stan <- gdd.stan[!is.na(gdd.stan$spp),]
 gdd.stan <- gdd.stan[(gdd.stan$gdd_bb<1000),]
 gdd.stan <- gdd.stan[(gdd.stan$gdd_dvr<1000),]
 
-mod.gddbb <- brm(gdd_bb ~ spp*site + provenance.lat, data=gdd.stan, control=list(max_treedepth = 15,adapt_delta = 0.99))
+gdd.stan$spp <- ifelse(gdd.stan$spp=="NANA", "Quealb", gdd.stan$spp)
+
+mod.gddbb <- brm(gdd_bb ~ site + provenance.lat, data=gdd.stan, control=list(max_treedepth = 15,adapt_delta = 0.99))
 mod.gdddvr <- brm(gdd_dvr ~ spp*site, data=gdd.stan, control=list(max_treedepth = 15,adapt_delta = 0.99))
 #mod.gddbb.prov <- brm(gdd_bb ~ spp*site + provenance.lat, data=gdd.stan)
 
@@ -90,10 +92,10 @@ mod.tsdvr <- brm(gdd_dvr ~ spp, data=ts.gdd, control=list(max_treedepth = 15,ada
 
 #### Let's make side by side plots now...
 library(broom)
-hobolog<-as.data.frame(tidy(mod.hobodvr, prob=0.5))
-modoutput <- hobolog #modelhere
+sitemod<-as.data.frame(tidy(mod.gddbb, prob=0.5))
+modoutput <- sitemod #modelhere
 
-modoutput<-modoutput[2:16,]
+modoutput<-modoutput[2:4,]
 modoutput$`25%` <- modoutput$lower
 modoutput$`75%` <- modoutput$upper
 modoutput$term<-gsub(".*b_","",modoutput$term)
@@ -101,9 +103,11 @@ modoutput$term<-gsub(".*spp","",modoutput$term)
 modoutput$term <- ifelse(modoutput$term=="provenance.lat", "xlat", modoutput$term)
 modoutput$Jvar <- as.numeric(rev(as.factor(modoutput$term)))
 
-estimates<-c("Acer saccharum", "Aesculus flava", "Betula alleghaniense", "Betula nigra", "Carya glabra", "Carya ovata",
-             "Fagus grandifolia", "Hamamelis virginiana", "Populus deltoides", "Quercus alba", "Quercus rubra", "Tilia americana",
-             "Vaccinium corymbosum", "Viburnum nudum", "Provenance Latitude")
+estimates<-c("Tree Spotters","Common Garden", "Harvard Forest")
+
+#estimates<-c("Acer saccharum", "Aesculus flava", "Betula alleghaniense", "Betula nigra", "Carya glabra", "Carya ovata",
+ #            "Fagus grandifolia", "Hamamelis virginiana", "Populus deltoides", "Quercus alba", "Quercus rubra", "Tilia americana",
+  #           "Vaccinium corymbosum", "Viburnum nudum", "Provenance Latitude")
 estimates<-rev(estimates)
 modoutput <- modoutput[!is.na(modoutput$Jvar),]
 muplot<-ggplot(modoutput, aes(x=`25%`, xend=`75%`, y=Jvar, yend=Jvar)) +
@@ -117,8 +121,8 @@ muplot<-ggplot(modoutput, aes(x=`25%`, xend=`75%`, y=Jvar, yend=Jvar)) +
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
         text=element_text(family="sans"), legend.position = "none",
         legend.text.align = 0,
-        plot.margin = unit(c(0,1,1,1), "lines")) +  #+ ggtitle("Original Parameters") +
-  coord_cartesian(xlim=c(-200, 70), ylim=c(1,15), clip = 'off') + ggtitle("Hobo Loggers") 
+        plot.margin = unit(c(1,1,1,1), "lines")) +  #+ ggtitle("Original Parameters") +
+  coord_cartesian(xlim=c(-150, 150), ylim=c(1,3), clip = 'off') #+ ggtitle("Hobo Loggers") 
 
 station<-as.data.frame(tidy(mod.tsdvr, prob=0.5))
 modoutput <- station #modelhere
