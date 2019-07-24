@@ -10,6 +10,7 @@ library(RColorBrewer)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(viridis)
 
 # Set working directory
 setwd("~/Documents/git/microclimates/analyses")
@@ -73,6 +74,8 @@ gddplot.dvr <- gather(gddplot.dvr, "method", "gdd", -provenance.lat, -fs.count, 
 gddplot.bb$method <- ifelse(gddplot.bb$method=="gdd_bb", gddplot.bb$method, gddplot.bb$hobonum)
 gddplot.dvr$method <- ifelse(gddplot.dvr$method=="gdd_dvr", gddplot.dvr$method, gddplot.dvr$hobonum)
 
+gddplot.bb$method.name <- ifelse(gddplot.bb$method!="gdd_bb", "hobo", gddplot.bb$method)
+
 gddplot.bb$gddmean <- ave(gddplot.bb$gdd, gddplot.bb$spp, gddplot.bb$method)
 gddplot.bb$gddsd <- ave(gddplot.bb$gdd, gddplot.bb$spp, gddplot.bb$method, FUN=sd)
 gddplot.bb$ymin <- gddplot.bb$gddmean-gddplot.bb$gddsd
@@ -83,8 +86,25 @@ gddplot.dvr$gddsd <- ave(gddplot.dvr$gdd, gddplot.dvr$spp, gddplot.dvr$method, F
 gddplot.dvr$ymin <- gddplot.dvr$gddmean-gddplot.dvr$gddsd
 gddplot.dvr$ymax <- gddplot.dvr$gddmean+gddplot.dvr$gddsd
 
-cols <- colorRampPalette(brewer.pal(8,"Dark2"))(8)
-gddbarbb <- ggplot(gddplot.bb, aes(x=spp, y=gddmean, fill=method)) + 
+gddplot.bb$species.name <- NA
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Acerub", "Acer rubrum", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Acesac", "Acer saccharum", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Aesfla", "Aesculus flava", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Betall", "Betula alleghaniensis", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Betnig", "Betula nigra", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Cargla", "Carya glabra", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Carova", "Carya ovata", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Faggra", "Fagus grandifolia", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Hamvir", "Hamamelis virginiana", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Popdel", "Populus deltoides", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Quealb", "Quercus alba", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Querub", "Quercus rubra", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Tilame", "Tilia americana", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Vaccor", "Vaccinium corymbosum", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Vibnud", "Viburnum nudum", gddplot.bb$species.name)
+
+cols <- colorRampPalette(brewer.pal(3,"Dark2"))(2)
+gddbarbb <- ggplot(gddplot.bb, aes(x=species.name, y=gddmean, fill=method.name)) + 
   geom_bar(stat="identity", position=position_dodge()) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax),width = 0.2, position=position_dodge(0.9)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -100,6 +120,7 @@ gddbarbb <- ggplot(gddplot.bb, aes(x=spp, y=gddmean, fill=method)) +
 quartz()
 gddbarbb
 
+if(FALSE){
 gddbardvr <- ggplot(gddplot.dvr, aes(x=spp, y=gddmean, fill=method)) + 
   geom_bar(stat="identity", position=position_dodge()) +
   geom_errorbar(aes(ymin=ymin, ymax=ymax),width = 0.2, position=position_dodge(0.9)) +
@@ -115,18 +136,34 @@ gddbardvr <- ggplot(gddplot.dvr, aes(x=spp, y=gddmean, fill=method)) +
 
 quartz()
 gddbardvr
+}
 
-cols <- colorRampPalette(brewer.pal(11,"Set3"))(11)
+cols <- viridis_pal(option="C")(11)
+#cols <- colorRampPalette(brewer.pal(11, "Accent"))(11)
 cols <- c(cols, "black")
 
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb2", "arb02", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb3", "arb03", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb4", "arb04", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb7", "arb07", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb8", "arb08", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="arb9", "arb09", gddplot.bb$method)
+
 bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=method)) + geom_point() +
-  geom_line() + scale_color_manual(name="Method", values=cols, 
-                                   labels=c("Hobo #10", "Hobo #11",
-                                            "Hobo #12", "Hobo #14",
-                                            "Hobo #15", "Hobo #2",
-                                            "Hobo #3", "Hobo #4",
-                                            "Hobo #7", "Hobo #8",
-                                            "Hobo #9", "Weather Station")) + 
+  geom_line() + scale_color_manual(name="Method", values=cols,
+                                   labels=c("arb02"="#02 - Lindens",
+                                            "arb03"="#03 - Maples",
+                                            "arb04"="#04 - Buckeyes",
+                                            #"arb5"="#5 - Rose Collection",
+                                            "arb07"="#07 - Centre Street Gate",
+                                            "arb08"="#08 - Hickories",
+                                            "arb09"="#09 - Oaks",
+                                            "arb10"="#10 - Hemlock Hill", 
+                                            "arb11"="#11 - Peter's Hill (Linden)",
+                                            "arb12"="#12 - Cottonwoods", 
+                                            "arb14"="#14 - Peter's Hill (Oak)",
+                                            "arb15"="#15 - Peter's Hill (top)", 
+                                            "gdd_bb"="Weather Station")) + 
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         #legend.position = "none",

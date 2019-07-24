@@ -10,6 +10,10 @@ library(tidyr)
 library(ggplot2)
 library(rstan)
 library(brms)
+library(lubridate)
+library(anytime)
+library(weathermetrics)
+library(measurements)
 
 # Set Working Directory
 setwd("~/Documents/git/microclimates/analyses")
@@ -92,11 +96,12 @@ ts.stan <- left_join(ts.stan, prov)
 
 ##### Let's add in climate!!
 d <- ts
-d$type <- "Treespotters"
+d$climatetype <- "Treespotters"
 source("calculating/clean_addinclimate.R")
 
 ts.stan$mst <- NA
 springtemps <- vector()
+cc <- cc.arb
 for(i in unique(cc$year)) {
   springtemps <- cc$tmean[(cc$year==i & cc$doy>=60 & cc$doy<=151)] # average spring temp from March 1-May 31
   springtemps <- springtemps[!is.na(springtemps)]
@@ -130,11 +135,21 @@ flo.stan <- subset(ts.stan, select=c("flofruittime", "flowers", "fruits", "ripef
 flo.stan$spp <- paste(substr(flo.stan$genus, 0, 3), substr(flo.stan$species, 0, 3), sep="")
 flo.stan <- flo.stan[!(flo.stan$flofruittime<=0),]
 
+flo.stan$ripetime <- flo.stan$ripefruits - flo.stan$fruits
+
+ripe.stan <- flo.stan[(flo.stan$ripetime>0),]
+
 #flo.stan <- flo.stan[!(flo.stan$species=="hamvir"),]
 
 #mod <- brm(flofruittime ~ leaves + mst + provenance.lat + (1|spp), 
  #          data = flo.stan, control=list(max_treedepth = 12,adapt_delta = 0.99) )
 
+ripe.stan <- ripe.stan[!is.na(ripe.stan$ripetime),]
+ripe.stan <- ripe.stan[!is.na(ripe.stan$leaves),]
+ripe.stan <- ripe.stan[!is.na(ripe.stan$provenance.lat),]
+
+mod.ripe <- brm(ripetime ~ provenance.lat + (provenance.lat|spp), data=ripe.stan,
+                iter=4000, warmup=2500, control=list(max_treedepth = 15,adapt_delta = 0.99))
 
 
 
@@ -145,6 +160,9 @@ fft.stan <- fft.stan[!is.na(fft.stan$mst),]
 fft.stan <- fft.stan[!is.na(fft.stan$leaves),]
 fft.stan <- fft.stan[!is.na(fft.stan$provenance.lat),]
 
+mod.flo <- 
+
+
 
 datalist.ff <- with(fft.stan, 
                        list(y = flofruittime, 
@@ -152,8 +170,8 @@ datalist.ff <- with(fft.stan,
                             lo = leaves, 
                             lat = provenance.lat,
                             sp = as.numeric(as.factor(spp)),
-                            N = nrow(flo.stan),
-                            n_sp = length(unique(flo.stan$spp))
+                            N = nrow(fft.stan),
+                            n_sp = length(unique(fft.stan$spp))
                        )
 )
 
