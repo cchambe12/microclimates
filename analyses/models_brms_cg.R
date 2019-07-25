@@ -38,6 +38,10 @@ cg19.lo <- cg19[!is.na(cg19$leafout),]
 ht.mod.lo <- brm(ht.diff ~ leafout + provenance.lat + (leafout + provenance.lat|spp), data=cg19.lo,
               control=list(max_treedepth = 15,adapt_delta = 0.99),
               iter=4000, warmup=2500)
+
+#ht.mod.lo_winter <- brm(ht.diff ~ leafout + provenance.lat + leafout:provenance.lat + (leafout + provenance.lat|spp), data=cg19.lo,
+ #                control=list(max_treedepth = 15,adapt_delta = 0.99),
+  #               iter=4000, warmup=2500)
 #save(ht.mod.lo, file="stan/htcglo.Rdata")
 }
 
