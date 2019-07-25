@@ -33,7 +33,7 @@ ht.mod <- brm(ht.diff ~ risk + provenance.lat + (risk + provenance.lat|spp), dat
               iter=4000, warmup=2500)
 }
 
-if(FALSE){
+if(TRUE){
 cg19.lo <- cg19[!is.na(cg19$leafout),]
 ht.mod.lo <- brm(ht.diff ~ leafout + provenance.lat + (leafout + provenance.lat|spp), data=cg19.lo,
               control=list(max_treedepth = 15,adapt_delta = 0.99),
@@ -49,6 +49,7 @@ ht.mod.bb <- brm(ht.diff ~ budburst + provenance.lat + (budburst + provenance.la
 
 }
 
+if(FALSE){
 gdd <- read.csv("output/clean_gdd_bbanddvr.csv", header=TRUE)
 
 gdd <- subset(gdd, gdd$type=="Common Garden")
@@ -65,4 +66,4 @@ ht.mod.ggdlo <- brm(ht.diff ~ gdd_lo + provenance.lat + (budburst + provenance.l
                  control=list(max_treedepth = 15,adapt_delta = 0.99),
                  iter=4000, warmup=2500)
 
-
+}
