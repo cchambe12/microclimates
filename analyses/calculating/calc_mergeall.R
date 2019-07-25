@@ -30,7 +30,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 
@@ -53,6 +53,10 @@ if(use.hobos==TRUE){
 setwd("~/Documents/git/microclimates/analyses")
 }
 source("calculating/calc_forceBB.R") ### This part can take a while depending on how many years of data you have and how many loggers
+
+# 2. Let's add in Forcing data for leafoutnow. We will again use February 15 as the start
+# of calculating GDD. Easy to fix if necessary in the gdd.start column
+source("calculating/calc_forceLO.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
 
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information

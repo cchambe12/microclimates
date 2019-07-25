@@ -80,7 +80,8 @@ if(is.data.frame(d)){
   forcedvr <- forcedvr[!duplicated(forcedvr),]
   
   force <- left_join(forcebb, forcedvr)
-  force <- dplyr::select(force, -leafout)
+  force <- left_join(force, forcelo)
+  #force <- dplyr::select(force, -leafout)
   
   gdd.stan <- left_join(d, force)
   
