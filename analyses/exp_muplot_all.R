@@ -13,10 +13,10 @@ muplotfx <- function(modelhere, nameforfig, width, height, ylim, xlim, leg1, leg
   par(mar=c(5,7,3,10))
   plot(x=NULL,y=NULL, xlim=xlim, yaxt='n', ylim=ylim,
        xlab=xlab, ylab="", main=nameforfig)
-  axis(2, at=1:3, labels=rev(c("Common \nGarden", "Harvard Forest", "Provenance \nLatitude")),las=1)
+  axis(2, at=1:3, labels=rev(c("Mean \nTemp (°C)", "Accumulated \nPrecip (mm)", "Provenance \nLatitude")),las=1)
   abline(v=0, lty=2, col="darkgrey")
-  rownameshere <- c("sitecg", "sitehf", "provenance.lat")
-  ppeffects <- c("sitecg", "sitehf", "provenance.lat") # or 1:4 here...
+  rownameshere <- c("gstmean", "precipgs", "provenance.lat")
+  ppeffects <- c("gstmean", "precipgs", "provenance.lat") # or 1:4 here...
   for(i in 1:3){#i=1
     pos.y<-(3:1)[i]
     pos.x<-modoutput[(modoutput$term==rownameshere[i]),"estimate"]

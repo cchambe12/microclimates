@@ -48,30 +48,35 @@
 \definecolor{errorcolor}{rgb}{1, 0, 0}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
-\usepackage{alltt}
+\usepackage{alltt}[12pt]
 \usepackage{Sweave}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{siunitx}
+\usepackage{amssymb} % for math symbols
+\usepackage{amsmath} % for aligning equations
 \usepackage{mdframed}
 \usepackage{natbib}
-%\bibliographystyle{..//papers/styles/besjournals.bst}
+%\bibliographystyle{..//bib/styles/gcb}
+\usepackage[hyphens]{url}
 \usepackage[small]{caption}
-\setkeys{Gin}{width=0.8\textwidth}
 \setlength{\captionmargin}{30pt}
 \setlength{\abovecaptionskip}{0pt}
 \setlength{\belowcaptionskip}{10pt}
 \topmargin -1.5cm        
-\oddsidemargin -0.015cm   
-\evensidemargin -0.015cm
-\textwidth 16cm
-\textheight 21cm 
+\oddsidemargin -0.04cm   
+\evensidemargin -0.04cm
+\textwidth 16.59cm
+\textheight 21.94cm 
 %\pagestyle{empty} %comment if want page numbers
 \parskip 7.2pt
 \renewcommand{\baselinestretch}{2}
-\parindent 20pt
-\usepackage{indentfirst} 
+\parindent 0pt
+\usepackage{lineno}
+\linenumbers
+\usepackage{setspace}
+\doublespacing
 
 \newmdenv[
   topline=true,
@@ -107,6 +112,17 @@
   \end{enumerate}
 \end{enumerate}
 
+\large{\textbf{Side Saga:}}
+\begin{enumerate}
+\item Again, using phenology observations for the Arnold Arboretum (2015-2018), Harvard Forest (2015-2018) and a common garden (2017-2018) we see that, overall, there is variation across sites in growing season length (Figure \ref{fig:gssites}). 
+  \begin{enumerate}
+  \item Overall, individuals from the common garden had longer growing seasons -- with variation among species -- and individuals from Harvard Forest had shorter growing seasons.
+  \item Across all three sites, individuals from more northern provenance latitudes had longer growing seasons. 
+  \end{enumerate}
+\item And finally, individuals exposed to higher mean temperatures between leafout and leafdrop had shorter growing seasons but, again, individuals from more northern provenances had longer growing seasons (Figure \ref{fig:gsclim}). 
+\item Accumulated precipitation from leafout to leafdrop had little affect on growing season length.
+\end{enumerate}
+
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=16cm]{..//analyses/figures/muplot_compare_lo.pdf}
@@ -117,21 +133,35 @@
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/cg_height.pdf}
-  -\caption{Model output for amount of growth over a season (cm). Dots and lines show means and 50\% uncertainty intervals.}\label{fig:cg}
+  -\caption{Model output for amount of growth over a season (cm). Dots and lines show means and 25\% uncertainty intervals.}\label{fig:cg}
   -\end{center}
   -\end{figure}}
 
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=16cm]{..//analyses/figures/muplot_compare_dvr.pdf}
-  -\caption{Model output for growing degree days from budburst to leafout using weather station data (A) and hobo logger data (B). Dots and lines show means and 50\% uncertainty intervals. Note the x-axis scales are differently to see the estimates more clearly.}\label{fig:dvr}
+  -\caption{Model output for growing degree days from budburst to leafout using weather station data (A) and hobo logger data (B). Dots and lines show means and 25\% uncertainty intervals. Note the x-axis scales are different to see the estimates more clearly.}\label{fig:dvr}
   -\end{center}
   -\end{figure}}
   
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/site_prov_all.pdf}
-  -\caption{Model output for growing degree days to leafout using weather station data comparing three different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 50\% uncertainty intervals.}\label{fig:allsites}
+  -\caption{Model output for growing degree days to leafout using weather station data comparing three different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 25\% uncertainty intervals.}\label{fig:allsites}
+  -\end{center}
+  -\end{figure}}
+  
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/muplot_gsall.pdf}
+  -\caption{Model output for growing season length (from leafout to last observation) comparing three different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 25\% uncertainty intervals.}\label{fig:gssites}
+  -\end{center}
+  -\end{figure}}
+  
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/site_prov_all.pdf}
+  -\caption{Model output for growing season length using weather station data comparing mean temperatures and precipitation among the different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 25\% uncertainty intervals.}\label{fig:gsclim}
   -\end{center}
   -\end{figure}}
 
