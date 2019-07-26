@@ -30,7 +30,7 @@ if(is.data.frame(d)){
   cc.arb<-cc.arb[!duplicated(cc.arb),]
   
   ## If we deem necessary later on in analysis we can add precip back in
-  if(FALSE){
+  if(TRUE){
     cc.arb$Rain.in<-ave(cc.arb$Rain.in, cc.arb$date, FUN=sum)
     cc.arb$precip<-conv_unit(cc.arb$Rain.in, "inch", "mm")
   }
@@ -60,14 +60,14 @@ if(is.data.frame(d)){
   cc.hf$climatetype <- "harvardforest"
   
   ## If we deem necessary later on in analysis we can add precip back in
-  if(FALSE){
-    cc.hf$prec<-ave(cc.hf$prec, cc.arb$date, FUN=sum)
+  if(TRUE){
+    cc.hf$precip<-ave(cc.hf$prec, cc.hf$date, FUN=sum)
   }
   
   cc.hf$year<-as.integer(cc.hf$year)
   cc.hf <- cc.hf[(cc.hf$year>yearlim),]
   
-  commoncols <- c("date", "year", "doy", "hour", "tmin", "tmax", "tmean", "climatetype")
+  commoncols <- c("date", "year", "doy", "hour", "tmin", "tmax", "tmean", "climatetype", "precip")
   cc.arb <- subset(cc.arb, select=commoncols)
   cc.hf <- subset(cc.hf, select=commoncols)
   

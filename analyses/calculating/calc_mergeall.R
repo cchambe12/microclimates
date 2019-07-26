@@ -58,9 +58,17 @@ source("calculating/calc_forceBB.R") ### This part can take a while depending on
 # of calculating GDD. Easy to fix if necessary in the gdd.start column
 source("calculating/calc_forceLO.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
-
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
 source("calculating/calc_forceDVR.R") ### This part can take a while depending on how many years of data you have and how many loggers
+
+if(use.hobos==FALSE){
+  # 4. Let's add in tmean for the growing season for each individual - does climate play a roll on growing season length?
+  source("calculating/calc_gstmean.R")
+}
+if(use.hobos==FALSE){
+  # 5. Finally, let's add in precip for the growing season for each individual - does precip play a roll on growing season length?
+  source("calculating/calc_precip.R")
+}
 
 if(use.hobos==FALSE){
 ## If using 1a)...

@@ -37,7 +37,12 @@ if(is.data.frame(d)){
   climandpheno$budburst<-ave(climandpheno$doy, climandpheno$id, climandpheno$year, FUN=min) ## Warnings can be ignored - data is clean and checked
   
   ## Add Climate data back in 
-  cc<-dplyr::select(cc, year, doy, tmean, hour, climatetype)
+  if(use.hobos==FALSE){
+    cc<-dplyr::select(cc, year, doy, tmean, hour, climatetype, precip)
+  }
+  if(use.hobos==TRUE){
+    cc<-dplyr::select(cc, year, doy, tmean, hour, climatetype)
+  }
   cc$hour <- as.numeric(cc$hour)
   
   climandpheno<-full_join(climandpheno, cc)
