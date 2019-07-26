@@ -162,8 +162,14 @@ if(is.data.frame(d)){
   cg$provenance.lat <- ifelse(cg$site == "SH", 45.932675, cg$provenance.lat)
   cg$provenance.long <- ifelse(cg$site == "SH", -74.025070, cg$provenance.long)
   
-  cg <- subset(cg, select=colstokeep)
+  eos <- read.csv("input/cg_endofseason.csv", header=TRUE)
+  eos$id <- paste(eos$Individual, eos$Plot, sep="_")
+  eos$last.obs <- eos$eos
+  eos$Individual<-eos$plot<-eos$eos<-NULL
   
+  cg <- left_join(cg, eos)
+  
+  cg <- subset(cg, select=colstokeep)
   
   d <- full_join(d, cg)
   

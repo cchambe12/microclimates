@@ -102,7 +102,7 @@ if(is.data.frame(d)){
   
   ts <- full_join(prov, phenos)
   
-  colstokeep <- c("id", "provenance.lat", "provenance.long", "genus", "species", "year", "budburst", "leafout", "yr.end", "gdd.start", "type")
+  colstokeep <- c("id", "provenance.lat", "provenance.long", "genus", "species", "year", "budburst", "leafout", "last.obs", "yr.end", "gdd.start", "type")
   d <- subset(ts, select=colstokeep)
   d <- d[!is.na(d$genus),]
   

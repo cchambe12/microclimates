@@ -67,21 +67,21 @@
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/cg_height.pdf}
-  -\caption{Model output for amount of growth over a season (cm). Dots and lines show means and 50\% uncertainty intervals.}\label{fig:cg}
+  -\caption{Model output for amount of growth over a season (cm). Dots and lines show means and 25\% uncertainty intervals.}\label{fig:cg}
   -\end{center}
   -\end{figure}}
 
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=16cm]{..//analyses/figures/muplot_compare_dvr.pdf}
-  -\caption{Model output for growing degree days from budburst to leafout using weather station data (A) and hobo logger data (B). Dots and lines show means and 50\% uncertainty intervals. Note the x-axis scales are differently to see the estimates more clearly.}\label{fig:dvr}
+  -\caption{Model output for growing degree days from budburst to leafout using weather station data (A) and hobo logger data (B). Dots and lines show means and 25\% uncertainty intervals. Note the x-axis scales are differently to see the estimates more clearly.}\label{fig:dvr}
   -\end{center}
   -\end{figure}}
   
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/site_prov_all.pdf}
-  -\caption{Model output for growing degree days to leafout using weather station data comparing three different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 50\% uncertainty intervals.}\label{fig:allsites}
+  -\caption{Model output for growing degree days to leafout using weather station data comparing three different sites. The Arnold Arboretum is the intercept. Dots and lines show means and 25\% uncertainty intervals.}\label{fig:allsites}
   -\end{center}
   -\end{figure}}
 

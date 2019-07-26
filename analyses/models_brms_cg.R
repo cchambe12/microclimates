@@ -71,3 +71,23 @@ ht.mod.ggdlo <- brm(ht.diff ~ gdd_lo + provenance.lat + (budburst + provenance.l
                  iter=4000, warmup=2500)
 
 }
+
+if(FALSE){
+d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)  
+cg18 <- d %>%
+  filter(year==2018) %>%
+  filter(type=="Common Garden")
+
+cg18 <- subset(cg18, select=c("id", "leafout", "last.obs"))
+cg18$gs <- cg18$last.obs - cg18$leafout
+cg18 <- subset(cg18, select=c("id", "gs"))
+names(cg18) <- c("Individual", "gs")
+
+cg.gs <- left_join(cg19, cg18)
+  
+cg.gs <- cg.gs[!is.na(cg.gs$gs),]
+ht.gs <- brm(ht.diff ~ gs + provenance.lat + (gs + provenance.lat|spp), data=cg.gs,
+                    control=list(max_treedepth = 15,adapt_delta = 0.99),
+                    iter=4000, warmup=2500)
+
+}
