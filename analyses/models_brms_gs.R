@@ -9,6 +9,9 @@ options(stringsAsFactors = FALSE)
 library(rstan)
 library(brms)
 
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
 ## Set working directory
 setwd("~/Documents/git/microclimates/analyses")
 
@@ -39,6 +42,7 @@ save(modgsall, file="stan/gsall.Rdata")
 
 ### Let's try a new one now...
 gs <- read.csv("output/clean_gdd_bbanddvr.csv", header=TRUE)
+#gs <- read.csv("/n/wolkovich_lab/Lab/Cat/clean_gdd_bbanddvr.csv", header=TRUE)
 
 gs$gs <- gs$last.obs - gs$leafout
 gs.stan <- gs[!is.na(gs$gs),]
@@ -50,6 +54,7 @@ gs.stan$spp <- paste(substr(gs.stan$genus, 0, 3), substr(gs.stan$species, 0, 3),
 
 modgsclim <- brm(gs ~ gstmean + precipgs + provenance.lat + (gstmean + precipgs + provenance.lat|spp), data=gs.stan, 
                   control=list(max_treedepth = 15,adapt_delta = 0.99),
-                  iter=4000, warmup=2500)
+                  iter=4000, warmup=2500, cores=4)
 
 save(modgsclim, file="stan/modgsclim.Rdata")
+#save(modgsclim, file="/n/wolkovich_lab/Lab/Cat/modgsclim.Rdata")

@@ -11,11 +11,14 @@ library(egg)
 library(brms)
 library(ggplot2)
 library(viridis)
+library(broom)
+library(dplyr)
+library(tidyr)
 
 ## Set working directory
 setwd("~/Documents/git/microclimates/analyses")
 
-gs <- read.csv("output/clean_budburstandleafout.csv")
+gs <- read.csv("output/clean_gdd_bbanddvr.csv", header=TRUE)
 
 gs$gs <- gs$last.obs - gs$leafout
 gs.stan <- gs[!is.na(gs$gs),]
@@ -43,10 +46,10 @@ allspp <- unique(paste(gs.stan$genus, gs.stan$species))
 
 spp <- allspp
 
-modelhere <- modgsall
+modelhere <- modgsclim
 
-gsallsites<-as.data.frame(tidy(modgsall, prob=0.5))
-modoutput <- gsallsites #modelhere
+gsclim<-as.data.frame(tidy(modgsclim, prob=0.5))
+modoutput <- gsclim #modelhere
 
 modoutput<-modoutput[c(2:4, 45:131),]
 modoutput$lower <- modoutput$lower
@@ -100,8 +103,5 @@ df <- gs.stan ### dataframe here!!!!
 speciesnames <- allspp ### species here!!!
 
 
-#modoutput <- tidy(modelhere, prob=c(0.5))
-#quartz()
-#muplotfx(modelhere, "", 8, 8, c(0,5), c(-10, 10) , 10.5, 3.5)
 source("exp_muplot_all.R")
-muplotfx(modelhere, "", 8, 8, c(0,3), c(-45, 45) , 50, 3)
+muplotfx(modelhere, "", 8, 8, c(0,3), c(-20, 20) , 22, 3)
