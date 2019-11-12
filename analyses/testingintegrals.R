@@ -36,8 +36,6 @@ bbswpost <- bbsw[(bbsw$Year>1960),]
 
 bbswtest <- bbswpre[(bbswpre$spatial==1),]
 
-
-
 foo <- approxfun(density(bbsw$bb_mean))
 plot(density(bbsw$bb_mean))
 
@@ -61,3 +59,57 @@ for(i in 1:length(unique(bbsw$spatial))) { # i=1
   
 }
 
+testing <- bpest[!duplicated(bpest),]
+
+
+### Okay now let's test the integral theory...
+tall <- runif(100, min=90, max=100)
+med <- runif(100, min=70, max=120)
+short <- runif(100, min=50, max=140)
+
+
+tall <- data.frame(bb=as.numeric(tall), site=1)
+med <- data.frame(bb=as.numeric(med), site=2)
+short <- data.frame(bb=as.numeric(short), site=3)
+
+all <- rbind(tall, med, short)
+
+
+bbvarest <- data.frame(siteslist=numeric(), integrals=numeric())
+
+for(i in 1:length(unique(all$site))) { # i=1
+  testfunc <- approxfun(density(all$bb[(all$site==i)]))
+  min <- min(all$bb[(all$site==i)])
+  max <- max(all$bb[(all$site==i)])
+  integrals <- integrate(testfunc, min, max)
+  integrals <- integrals$value
+  
+  bbvarestadd <- data.frame(siteslist=all$site[(all$site==i)], integrals=integrals)
+  
+  bbvarest <- rbind(bbvarest, bbvarestadd)
+  
+}
+
+intsforsites <- bbvarest[!duplicated(bbvarest),]
+
+quartz()
+par(mfrow=c(2,2))
+allplot <- plot(density(all$bb))
+tallplot <- plot(density(tall$bb))
+medplot <- plot(density(med$bb))
+shortplot <- plot(density(short$bb))
+
+#### siteslist integrals
+# siteslist integrals
+#   1       0.9102204
+#   2       0.9062445
+#   3       0.8819444
+
+
+if(FALSE){
+##### Now let's compare to kertosis
+library(e1071)
+kurtosis(tall$bb) ## -1.244842
+kurtosis(med$bb) ## -1.065756
+kurtosis(short$bb) ## -1.388553
+}
