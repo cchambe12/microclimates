@@ -85,4 +85,9 @@ if(is.data.frame(d)){
   print("Error: d not a data.frame")
 }
 
-stop("Not an error, climate is now added to dataframe.")
+print(file.info("input/weldhill.csv")$ctime)
+print(file.info("input/hf001-10-15min-m.csv")$ctime)
+stop("Not an error, climate is now added to dataframe. If these dates are too old, please follow the directions above to download more recent weather data.")
+
+
+

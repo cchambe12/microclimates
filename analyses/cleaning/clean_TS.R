@@ -12,6 +12,8 @@
 # Press 'Set Groups' and NEXT
 # 5) Select 'Output fields' tab on left: and select 'ObservedBy Person ID', 'Multiple Observers',
                                         ## `NumYs_in_Series' and `Multiple_FirstY'
+  # Press 'Set Output Fields' then click the box next to 'I have read and acknowledged...' on the right and then click 'Download'
+# 6) Go to your Downloads and unzip the datasheet_XX.zip. Move the `individual_phenometrics_data.csv' to analyses/input/
 
 
 # Load from bb_cleanmergeall.R (including libraries)
@@ -112,7 +114,8 @@ if(is.data.frame(d)){
   print("Error: ts not a data.frame")
 }
 
-stop("Not an error, treespotters data is clean.")
+print(file.info("input/individual_phenometrics_data.csv")$ctime)
+stop("Not an error, treespotters data is clean. If this date is too old, please follow the directions above to download more recent NPN data.")
 
 
 

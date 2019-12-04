@@ -2,12 +2,11 @@
 ## Fresh start to adding in climate data
 # Trying to calculate chilling and forcing for budburst and leafout
 
-## Updated 15 July 2019 with new TS data & 15 July 2019 for Climate data
-### Weather data downloaded from... http://labs.arboretum.harvard.edu/weather/
+### Weather data for the Arboretum downloaded from... http://labs.arboretum.harvard.edu/weather/ 
+##  not using hobo loggers
 
-## Data download: https://data.usanpn.org/observations/get-started
-## Individual Phenometrics -> Set Date -> Set Partner Groups -> Output fields (ObservedBy Person ID, Multiple Observers)
-
+### Weather data for Harvard Forests downloaded from... http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001 
+## and select 'hf001-10' - not using hobo loggers. Takes a while to download.
 
 # ## housekeeping
 rm(list=ls()) 
@@ -30,7 +29,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 

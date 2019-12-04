@@ -23,6 +23,12 @@ ok18$year <- 2018
 ok18$FPST <- as.character(ok18$FPST)
 ok18$LFIN <- as.character(ok18$LFIN)
 jok <- full_join(jok, ok18)
+ok19<-read.csv("output/okeefe2019.csv", header=TRUE)
+ok19$year <- 2019
+ok19$FPST <- as.character(ok19$FPST)
+ok19$LFIN <- as.character(ok19$LFIN)
+ok19$FOPN <- as.integer(ok19$FOPN)
+jok <- full_join(jok, ok19)
 
 } else {
   print("Error: jok not a data.frame")

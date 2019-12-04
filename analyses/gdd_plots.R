@@ -32,8 +32,8 @@ range(gdd$diffbb, na.rm=TRUE)
 }
 
 
-gdd.stan <- gdd.stan[(gdd.stan$type=="Treespotters"),]
-gdd.hobo <- gdd.hobo[(gdd.hobo$type=="Treespotters"),]
+gdd.stan <- gdd.stan[(gdd.stan$type=="Harvard Forest"),] ### CHANGE BASED ON TYPE
+gdd.hobo <- gdd.hobo[(gdd.hobo$type=="Harvard Forest"),]
 
 gdd.hobo$gdd_bb_hobo <- gdd.hobo$gdd_bb
 gdd.hobo$gdd_dvr_hobo <- gdd.hobo$gdd_dvr
@@ -87,6 +87,7 @@ gddplot.dvr$ymin <- gddplot.dvr$gddmean-gddplot.dvr$gddsd
 gddplot.dvr$ymax <- gddplot.dvr$gddmean+gddplot.dvr$gddsd
 
 gddplot.bb$species.name <- NA
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Acepen", "Acer pensylvanicum", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Acerub", "Acer rubrum", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Acesac", "Acer saccharum", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Aesfla", "Aesculus flava", gddplot.bb$species.name)
@@ -95,6 +96,7 @@ gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Betnig", "Betula nigra", gddp
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Cargla", "Carya glabra", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Carova", "Carya ovata", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Faggra", "Fagus grandifolia", gddplot.bb$species.name)
+gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Fraame", "Fraxinus americana", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Hamvir", "Hamamelis virginiana", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Popdel", "Populus deltoides", gddplot.bb$species.name)
 gddplot.bb$species.name <- ifelse(gddplot.bb$spp=="Quealb", "Quercus alba", gddplot.bb$species.name)
@@ -138,17 +140,28 @@ quartz()
 gddbardvr
 }
 
-cols <- viridis_pal(option="C")(11)
+cols <- viridis_pal(option="C")(10) ### 10 for HF, 11 for Arb
 #cols <- colorRampPalette(brewer.pal(11, "Accent"))(11)
 cols <- c(cols, "black")
 
+if(FALSE){
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb2", "arb02", gddplot.bb$method)
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb3", "arb03", gddplot.bb$method)
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb4", "arb04", gddplot.bb$method)
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb7", "arb07", gddplot.bb$method)
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb8", "arb08", gddplot.bb$method)
 gddplot.bb$method<-ifelse(gddplot.bb$method=="arb9", "arb09", gddplot.bb$method)
+}
 
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf1", "hf01", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf3", "hf03", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf4", "hf04", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf5", "hf05", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf6", "hf06", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf7", "hf07", gddplot.bb$method)
+gddplot.bb$method<-ifelse(gddplot.bb$method=="hf9", "hf09", gddplot.bb$method)
+
+if(FALSE){
 bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=method)) + geom_point() +
   geom_line() + scale_color_manual(name="Method", values=cols,
                                    labels=c("arb02"="#02 - Lindens",
@@ -164,6 +177,31 @@ bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=met
                                             "arb14"="#14 - Peter's Hill (Oak)",
                                             "arb15"="#15 - Peter's Hill (top)", 
                                             "gdd_bb"="Weather Station")) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        legend.text.align = 0,
+        #legend.position = "none",
+        #axis.text.x = element_text(angle=45, hjust=1),
+        legend.key = element_rect(colour = "transparent", fill = "white")) +
+  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE)
+
+quartz()
+bb.loggers
+}
+
+gddplot.bb$method <- ifelse(gddplot.bb$method=="gdd_bb", "zgdd_bb", gddplot.bb$method)
+bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=method)) + geom_point() +
+  geom_line() + scale_color_manual(name="Method", values=cols,
+                                   labels=c("hf01"="Hobo #01",
+                                            "hf03"="Hobo #03",
+                                            "hf04"="Hobo #04",
+                                            "hf05"="Hobo #05",
+                                            "hf06"="Hobo #06",
+                                            "hf07"="Hobo #07",
+                                            "hf09"="Hobo #09",
+                                            "hf11"="Hobo #11", 
+                                            "hf12"="Hobo #12",
+                                            "hf13"="Hobo #13",
+                                            "zgdd_bb"="Weather Station")) + 
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         #legend.position = "none",
