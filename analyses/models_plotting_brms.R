@@ -44,7 +44,7 @@ modoutput$clean.25 <- ifelse(modoutput$term!="Intercept",
 modoutput$clean.75 <- ifelse(modoutput$term!="Intercept",
                              modoutput$`75%` + modoutput$int.75, modoutput$`75%`)
 
-#estimates<-c("Acer rubrum", "Acer saccharum", "Aesculus flava", "Betula alleghaniense", "Betula nigra", "Carya glabra", "Carya ovata",
+#estimates<-c("Acer rubrum", "Acer saccharum", "Aesculus flava", "Betula alleghaniensis", "Betula nigra", "Carya glabra", "Carya ovata",
  #            "Fagus grandifolia", "Hamamelis virginiana", "Populus deltoides", "Quercus alba", "Quercus rubra", "Tilia americana",
   #           "Vaccinium corymbosum", "Viburnum nudum") #### For Tree Spotters
 
@@ -59,7 +59,7 @@ muplot.station<-ggplot(modoutput, aes(x=`clean.25`, xend=`clean.75`, y=Jvar, yen
   geom_segment(arrow = arrow(length = unit(0.00, "npc"))) +
   guides(size=FALSE) +
   scale_y_discrete(limits = sort(unique(modoutput$term)), labels=estimates) +
-  xlab("Change in growing degree days from \nbudburst to leafout") + ### change based on time
+  xlab("Model estimate of change in growing degree days \nfrom budburst to leafout") + ### change based on time
   ylab("") + theme_linedraw() +
   theme(legend.text=element_text(size=5), legend.title = element_text(size=9), legend.background = element_rect(linetype="solid", color="grey", size=0.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
@@ -77,7 +77,7 @@ muplot.hobo<-ggplot(modoutput, aes(x=`clean.25`, xend=`clean.75`, y=Jvar, yend=J
   geom_segment(arrow = arrow(length = unit(0.00, "npc"))) +
   guides(size=FALSE) +
   scale_y_discrete(limits = sort(unique(modoutput$term)), labels=estimates) +
-  xlab("Change in growing degree days from \nbudburst to leafout") + ylab("") + theme_linedraw() +
+  xlab("Model estimate of change in growing degree days \nfrom budburst to leafout") + ylab("") + theme_linedraw() +
   theme(legend.text=element_text(size=5), legend.title = element_text(size=9), legend.background = element_rect(linetype="solid", color="grey", size=0.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 

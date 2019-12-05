@@ -32,8 +32,8 @@ range(gdd$diffbb, na.rm=TRUE)
 }
 
 
-gdd.stan <- gdd.stan[(gdd.stan$type=="Harvard Forest"),] ### CHANGE BASED ON TYPE
-gdd.hobo <- gdd.hobo[(gdd.hobo$type=="Harvard Forest"),]
+gdd.stan <- gdd.stan[(gdd.stan$type=="Treespotters"),] ### CHANGE BASED ON TYPE
+gdd.hobo <- gdd.hobo[(gdd.hobo$type=="Treespotters"),]
 
 gdd.hobo$gdd_bb_hobo <- gdd.hobo$gdd_bb
 gdd.hobo$gdd_dvr_hobo <- gdd.hobo$gdd_dvr
@@ -117,7 +117,7 @@ gddbarbb <- ggplot(gddplot.bb, aes(x=species.name, y=gddmean, fill=method.name))
   xlab("") + 
   ylab("Growing degree days to budburst") + 
   scale_fill_manual(name="Method", values=cols,
-                    labels=c("Weather Station", "Hobo Logger")) + coord_cartesian(expand=c(0,0))
+                    labels=c("Weather Station", "Hobo Logger")) + coord_cartesian(expand=c(0,0), ylim=c(0,600))
   
 quartz()
 gddbarbb
@@ -140,7 +140,8 @@ quartz()
 gddbardvr
 }
 
-cols <- viridis_pal(option="C")(10) ### 10 for HF, 11 for Arb
+cols <- viridis_pal(option="C")(11) ### 10 for HF, 11 for Arb
+#cols <-cols[-c(1:2)] ### for HF ONLY!
 #cols <- colorRampPalette(brewer.pal(11, "Accent"))(11)
 cols <- c(cols, "black")
 
@@ -182,7 +183,8 @@ bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=met
         #legend.position = "none",
         #axis.text.x = element_text(angle=45, hjust=1),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
-  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE)
+  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE) +
+  coord_cartesian(ylim=c(100,700))
 
 quartz()
 bb.loggers
@@ -207,7 +209,8 @@ bb.loggers <- ggplot(gddplot.bb, aes(x=budburst, y=gdd, col=method, linetype=met
         #legend.position = "none",
         #axis.text.x = element_text(angle=45, hjust=1),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
-  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE)
+  xlab("Day of budburst") + ylab("Growing degree days") + guides(linetype=FALSE) +
+  coord_cartesian(ylim=c(100,700))
 
 quartz()
 bb.loggers
