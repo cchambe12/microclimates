@@ -30,60 +30,21 @@ coordinates(pnw)=~long+lat
 proj4string(pnw)<- CRS("+proj=longlat +datum=WGS84")
 pnwshp<-spTransform(pnw,CRS("+proj=longlat"))
 
-ne <- data.frame(long=c(-123,  -123,  -119, -119), lat= c(52, 46, 52, 46))
-coordinates(pnw)=~long+lat
-proj4string(pnw)<- CRS("+proj=longlat +datum=WGS84")
-pnwshp<-spTransform(pnw,CRS("+proj=longlat"))
+ne <- data.frame(long=c(-76,  -76,  -72, -72), lat= c(48, 42, 48, 42))
+coordinates(ne)=~long+lat
+proj4string(ne)<- CRS("+proj=longlat +datum=WGS84")
+neshp<-spTransform(ne,CRS("+proj=longlat"))
 
-pnw <- data.frame(long=c(-123,  -123,  -119, -119), lat= c(52, 46, 52, 46))
-coordinates(pnw)=~long+lat
-proj4string(pnw)<- CRS("+proj=longlat +datum=WGS84")
-pnwshp<-spTransform(pnw,CRS("+proj=longlat"))
+eur <- data.frame(long=c(6,  6,  10, 10), lat= c(52, 46, 52, 46))
+coordinates(eur)=~long+lat
+proj4string(eur)<- CRS("+proj=longlat +datum=WGS84")
+eurshp<-spTransform(eur,CRS("+proj=longlat"))
 
+climshps <- list(c(pnw, ne, eur))
 
-## read in list of species with distribution shapefiles
-# get a list of the polygon shapefiles in the .zip with the maps
-zipped_names <- grep('\\.shp', unzip("/n/wolkovich_lab/Lab/Cat/NA_range_files/NA_ranges.zip",
-                                     list=TRUE)$Name,ignore.case=TRUE, value=TRUE)
-
-# generate a list of species with maps in the .zip  
-species.list.maps <- unlist(zipped_names)
-species.list.maps <- gsub(pattern = "(.*/)(.*)(.shp.*)", replacement = "\\2", x = species.list.maps)
-
-## Now I need to rename these folders to match the ospree info
-names(species.list.maps) <- c("Betula_lenta", "Populus_grandidentata", "Fagus_grandifolia", "Quercus_rubra", 
-                              "Acer_pensylvanicum", "Betula_papyrifera", "Fraxinus_excelsior", "Alnus_rubra",
-                              "Pseudotsuga_menziesii", "Prunus_pensylvanica", "Betula_alleghaniensis",
-                              "Acer_saccharum", "Alnus_incana", "Acer_rubrum", "Cornus_cornuta", "Picea_glauca")
-
-# get a list of species in ospree for which we have EU maps
-ospreespslist <- species.list[which(species.list %in% names(species.list.maps))]
-## This takes out:
-# Alnus rubra
-ospreespslist <- c(ospreespslist, "Alnus_rubra")
-
-if(FALSE){
-  ### Attempt to stack raster layers for princeton to maybe make more streamlined...
-  allclimyrs <- 1980:2016
-  tmaxlist <- sapply(list.files(path=paste(climatedrive,nafiles, sep="/"), pattern=paste0("tmax",allclimyrs, collapse="|"), full.names = TRUE), raster)
-  tmaxstack <- stack(tmaxlist)
-  tmaxall <- brick(tmaxstack)
-  #plot(tmax[[1]])
-  tminlist <- sapply(list.files(path=paste(climatedrive,nafiles, sep="/"), pattern=paste0("tmin",allclimyrs,collapse="|"), full.names = TRUE), raster)
-  tminstack <- stack(tminlist)
-  tminall <- brick(tminstack)
-  #tmaxtest <- raster::stack(tmaxlist, varname="tmax",sep="")
-  
-  tmaxall <- rotate(tmaxall)
-  tminall <- rotate(tminall)
-  
-  e <- extent(-180, -50, 25, 80)
-  tmaxall <- crop(tmaxall, e)
-  tminall <- crop(tminall, e)
-}
 
 # define period
-period<-1980:2016
+period<-1950:2016
 #period<-2009:2010
 
 
@@ -93,10 +54,11 @@ extractchillforce<-function(spslist,tmin,tmax,period){
   ## define array to store results ## i=1
   nsps<-length(spslist) #nsps<-length(spslist)
   nyears<-length(period)
-  chillforcespsyears<-array(NA,dim=c(nyears,6,nsps))
+  chillforcespsyears<-array(NA,dim=c(nyears,9,nsps))
   row.names(chillforcespsyears)<-period
-  colnames(chillforcespsyears)<-c("GDD", "GDD.sd", "UtahChill", "UtahChill.sd", "ChillPortions",
-                                  "ChillPortions.sd")
+  colnames(chillforcespsyears)<-c("Mean Temp", "Sd Temp", "Variance Temp",
+                                  "GDD", "GDD.sd", "UtahChill", "UtahChill.sd", 
+                                  "ChillPortions","ChillPortions.sd")
   #dimnames(chillforcespsyears)<-spslist
   
   mins <- maxs <- vector()
@@ -133,13 +95,8 @@ extractchillforce<-function(spslist,tmin,tmax,period){
     for (i in 1:nsps){#i=1 #spslist=ospreespslist[i]
       print(c(i, j))
       
-      ## load shape
-      path.source.i <- "NA_range_files/NA_ranges.zip"
-      
-      zipped_name.i <- grep('\\.shp', unzip(path.source.i,
-                                            list=TRUE)$Name,ignore.case=TRUE, value=TRUE)
       # load shapefile
-      spsshape <- shapefile(zipped_name.i[i])
+      spsshape <- shapefile(spslist[i])
       
       e <- extent(spsshape)
       tmaxshpforce <- crop(tmax[[forcestart:forceend]], e)
