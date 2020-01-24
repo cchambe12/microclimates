@@ -49,7 +49,7 @@ climshps <- list(c(pnwshp, neshp, eurshp))
 
 
 # define period
-period<-1980:2016
+period<-1980:1990
 #period<-2009:2010
 
 
@@ -308,14 +308,12 @@ extractchillforce<-function(spslist,tmin,tmax,period){
 Climate.in.range<-extractchillforce(pnwshp,tmin,tmax,period)
 
 
-
-
 ## saving outputs
 #save(Climate.in.range, file = paste("output/Climate.in.range",ospreespslist[4],
 #                                    period[1],max(period),"RData",sep="."))
 
 
-write.csv(Climate.in.range, file = "/n/wolkovich_lab/Lab/Cat/climatepnw.csv", row.names = FALSE)
+write.csv(Climate.in.range, file = "/n/wolkovich_lab/Lab/Cat/climatepnw_1980to1990.csv", row.names = FALSE)
 if(FALSE){
   ## attempt to parallelize code
   n = 2 # modify according to your RAM memory
