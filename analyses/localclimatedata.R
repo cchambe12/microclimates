@@ -51,6 +51,7 @@ climshps <- list(c(pnwshp, neshp, eurshp))
 # define period
 #period<-1980:1990
 #period<-1990:2000
+#period<-2002:2005 ran
 period<-2000:2010
 #period<-2009:2010
 
