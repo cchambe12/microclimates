@@ -49,11 +49,8 @@ climshps <- list(c(pnwshp, neshp, eurshp))
 
 
 # define period
-#period<-1980:1990
-#period<-1990:2000
-#period<-2002:2005 ran
-period<-2000:2010
-#period<-2009:2010
+#period<-1980:1998
+period<-1999:2016
 
 
 ## set function
@@ -69,6 +66,7 @@ extractchillforce<-function(spslist,tmin,tmax,period){
                                   "GDD", "GDD.sd", "UtahChill", "UtahChill.sd", 
                                   "ChillPortions","ChillPortions.sd")
   
+  yearlyresults<-array(NA,dim=c(length(period),12))
   for(j in c(period)) { # j = 1980
     print(j)
     
@@ -95,7 +93,6 @@ extractchillforce<-function(spslist,tmin,tmax,period){
     forceend <- ifelse(j%in%leapyears,152,151)
     yrend <- ifelse((j-1)%in%leapyears,366,365)
 
-    yearlyresults<-array(NA,dim=c(length(period),12))
     ## commence loop  
     for (i in 1:nsps){#i=1 #spslist=climshps[[i]]
       print(c(i, j))
@@ -316,7 +313,7 @@ Climate.in.range<-extractchillforce(pnwshp,tmin,tmax,period)
 #                                    period[1],max(period),"RData",sep="."))
 
 
-write.csv(Climate.in.range, file = "/n/wolkovich_lab/Lab/Cat/climatepnw_1980to1990.csv", row.names = FALSE)
+write.csv(Climate.in.range, file = "/n/wolkovich_lab/Lab/Cat/climatepnw_1999to2016.csv", row.names = FALSE)
 if(FALSE){
   ## attempt to parallelize code
   n = 2 # modify according to your RAM memory
