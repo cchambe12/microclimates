@@ -38,11 +38,21 @@ model {
 	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);  
 
         mu_a_sp ~ normal(700, 200);
-        sigma_a_sp ~ uniform(0, 50);
+        sigma_a_sp ~ normal(0, 200);
 
         mu_b_tx_sp ~ normal(50, 10);
         sigma_b_tx_sp ~ normal(0, 5);
 
 	y ~ normal(yhat, sigma_y);
+
+}
+
+generated quantities{
+   real y_ppc[N];
+   for (n in 1:N)
+      y_ppc[n] = a_sp[sp[n]] + 
+		b_tx[sp[n]] * tx[n];
+    for (n in 1:N)
+      y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
 }

@@ -38,7 +38,7 @@ model {
 	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);  
 
         mu_a_sp ~ normal(600, 50);
-        sigma_a_sp ~ uniform(0, 50);
+        sigma_a_sp ~ normal(0, 50);
 
         mu_b_tx_sp ~ normal(50, 10);
         sigma_b_tx_sp ~ normal(0, 5);
