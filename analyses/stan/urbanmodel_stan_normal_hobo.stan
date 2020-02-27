@@ -38,11 +38,11 @@ model {
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);  
 
-        mu_a_sp ~ normal(600, 50);
-        sigma_a_sp ~ normal(0, 50);
+        mu_a_sp ~ normal(250, 100);
+        sigma_a_sp ~ normal(0, 100);
 
-        mu_b_tx_sp ~ normal(50, 10);
-        sigma_b_tx_sp ~ normal(0, 5);
+        mu_b_tx_sp ~ normal(50, 30);
+        sigma_b_tx_sp ~ normal(0, 10);
 
 	y ~ normal(yhat, sigma_y);
 
