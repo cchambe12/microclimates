@@ -223,12 +223,12 @@ ggplot(data3, aes(x=gdd, y=wip)) +
 ### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff
 #  1) Let's make the observations much higher than the actual data to build a good model.
 nsp = 20 # number of species
-ntot = 100 # numbers of obs per species. 
+ntot = 500 # numbers of obs per species. 
 
 sample_a <- list(site.env = rbinom(1000, 1, 0.5))
 
-model.parameters <- list(intercept = 300,
-                         urban.coef = 50)
+model.parameters <- list(intercept = 400,
+                         urban.coef = -150)
 
 #  2) Now, we will make varying intercepts
 env.samples <- sapply(sample_a, FUN = function(x){
@@ -241,12 +241,14 @@ parameters.temp <- matrix(unlist(model.parameters), ncol = length(model.paramete
 # Which parameters are random?
 random.regex <- grep(pattern = paste(c("intercept", "urban.coef"), collapse = "|"), x = names(model.parameters))
 # Generate random parameters (by species)
-for(i in 1:length(random.regex)){
-  parameters.temp[, i] <- sapply(1:nsp, FUN = function(x){
-    rep(rnorm(n = 1, mean = model.parameters[[random.regex[i]]], sd = 50), ntot)})}
+
+parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
+    rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 100), ntot)})
+parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 50), ntot)})
 # Calculate response
 response <- sapply(1:nrow(env.samples), FUN = function(x){
-    rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 20)})
+    rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 10)})
 
 fakedata_ws_urb <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
                                 gdd = response, urban = env.samples[,1]))
