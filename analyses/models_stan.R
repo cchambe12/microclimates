@@ -27,7 +27,7 @@ source("source/stan_utility.R")
 ws <- read.csv("output/fakedata_ws.csv")
 hobo <- read.csv("output/fakedata_hl.csv")
 
-
+if(FALSE){
 datalist.ws <- with(ws, 
                        list(y = gdd, 
                             sp = as.numeric(as.factor(species)),
@@ -41,7 +41,7 @@ datalist.ws <- with(ws,
 ws_fake = stan('stan/weather_stan_normal.stan', data = datalist.ws,
                    iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
 
-if(FALSE){
+
 get_prior(gdd ~ 1 + (1|species), data=ws)
 
 ws_fake_brms <- brm(gdd ~ 1 + (1|species),  
@@ -50,7 +50,7 @@ ws_fake_brms <- brm(gdd ~ 1 + (1|species),
 
 mcmc_areas(ws_fake_brms)
 pp_check(ws_fake_brms)
-}
+
 
 check_all_diagnostics(ws_fake)
 
@@ -82,7 +82,7 @@ hl_fake.sum[grep("mu_", rownames(hl_fake.sum)),]
 hl_fake.sum[grep("sigma_", rownames(hl_fake.sum)),]
 
 launch_shinystan(hl_fake)
-
+}
 
 
 
@@ -115,9 +115,23 @@ ws_urb_fake.sum <- summary(ws_urb_fake)$summary
 ws_urb_fake.sum[grep("mu_", rownames(ws_urb_fake.sum)),]
 ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
 
-save(ws_urb_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan.Rdata")
 
-launch_shinystan(ws_urb_fake)
+if(FALSE){
+library(brms)
+get_prior(gdd ~ urban + (urban | species), data=ws_urb)
+
+ws_urb_brm <- brm(gdd ~ urban + (urban | species), data=ws_urb,
+                  iter=5000, warmup=2000, chains=2, 
+                  control=list(max_treedepth=15, adapt_delta=0.99),
+                  prior = prior(normal(400, 100), class=Intercept) +
+                    prior(normal(0, 100), class=b) +
+                    prior(normal(0, 100), class=sigma))
+ws_urb_brm
+}
+
+#save(ws_urb_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan.Rdata")
+
+#launch_shinystan(ws_urb_fake)
 
 
 if(FALSE){
@@ -168,7 +182,9 @@ launch_shinystan(hl_urb_fake)
 ws_urb <- read.csv("output/clean_gdd_bbanddvr.csv")
 hobo_urb <- read.csv("output/clean_gdd_bbanddvr_hobo.csv")
 
-ws_urb$urban <- ifelse(ws_urb$type=="Harvard Forest", 0, 1)
+ws_urb$urban <- NA
+ws_urb$urban <- ifelse(ws_urb$type=="Harvard Forest", 0, ws_urb$urban)
+ws_urb$urban <- ifelse(ws_urb$type=="Treespotters", 1, ws_urb$urban)
 #ws_urb <- ws_urb[(ws_urb$year>=2019),]
 
 ws_urb.stan <- subset(ws_urb, select=c(gdd_bb, urban, genus, species))
@@ -222,7 +238,10 @@ save(wsall_urb_mod, file="~/Documents/git/microclimates/analyses/stan/wsall_urba
 
 hobo_urb <- read.csv("output/clean_gdd_bbanddvr_hobo.csv")
 
-hobo_urb$urban <- ifelse(hobo_urb$type=="Harvard Forest", 0, 1)
+hobo_urb$urban <- NA
+hobo_urb$urban <- ifelse(hobo_urb$type=="Harvard Forest", 0, hobo_urb$urban)
+hobo_urb$urban <- ifelse(hobo_urb$type=="Treespotters", 1, hobo_urb$urban)
+#ws_urb <- ws_urb[(ws_urb$year>=2019),]
 
 hobo_urb.stan <- subset(hobo_urb, select=c(gdd_bb, urban, genus, species))
 hobo_urb.stan <- hobo_urb.stan[(complete.cases(hobo_urb.stan)),]
@@ -252,6 +271,9 @@ check_all_diagnostics(hobo_urb_mod)
 hobo_urb_mod.sum <- summary(hobo_urb_mod)$summary
 hobo_urb_mod.sum[grep("mu_", rownames(hobo_urb_mod.sum)),]
 hobo_urb_mod.sum[grep("sigma_", rownames(hobo_urb_mod.sum)),]
+
+wsall_urb_mod.sum[grep("mu_", rownames(wsall_urb_mod.sum)),]
+wsall_urb_mod.sum[grep("sigma_", rownames(wsall_urb_mod.sum)),]
 
 save(hobo_urb_mod, file="~/Documents/git/microclimates/analyses/stan/hobo_urban_mod.Rdata")
 
