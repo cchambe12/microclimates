@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{Sweave}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{amssymb} % for math symbols
+\usepackage{amsmath} % for aligning equations
+\usepackage{textcomp}
+\usepackage{mdframed}
+\usepackage{natbib}
+\bibliographystyle{..//references/styles/besjournals.bst}
+\usepackage[small]{caption}
+\setlength{\captionmargin}{30pt}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+\topmargin -1.5cm        
+\oddsidemargin -0.04cm   
+\evensidemargin -0.04cm
+\textwidth 16.59cm
+\textheight 21.94cm 
+%\pagestyle{empty} %comment if want page numbers
+\parskip 7.2pt
+\renewcommand{\baselinestretch}{1.5}
+\parindent 0pt
+%\usepackage{lineno}
+%\linenumbers
+
+\newmdenv[
+  topline=true,
+  bottomline=true,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{siderules}
+
+%% R Script
+<<label=libraries, echo=FALSE, results="asis", message=FALSE, warning=FALSE>>=
+  options(stringsAsFactors=FALSE)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+@
+
+\begin{document}
+
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\labelitemi}{$-$}
+\setkeys{Gin}{width=0.8\textwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Let's check out some models}
+
+
+\begin{align*}
+y_i &= \alpha_{species[i]} + \beta_{urban_{season[i]}} + \epsilon_i\\
+\end{align*}
+\begin{align*}
+\epsilon_i & \sim N(0,\sigma^2_y) \\
+\end{align*}
+\begin{align*}
+\alpha_{species} & \sim N(\mu_{\alpha}, \sigma_{\alpha}) \\
+\beta_{urban{species}} & \sim N(\mu_{urban}, \sigma_{urban}) \\
+\end{align*}
+
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/muplotws_urb.pdf}
+  -\caption{Effect of site on growing degree days until budburst using weather station data. More positive values indicate an increase in growing degree days whereas more negative values suggest fewer growing degree days. Dots and lines show means and 50\% uncertainty intervals.}
+  -\end{center}
+  -\end{figure}}
+
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/muplothobo_urb.pdf}
+  -\caption{Effect of site on growing degree days until budburst using hobo logger data. More positive values indicate an increase in growing degree days whereas more negative values suggest fewer growing degree days. Dots and lines show means and 50\% uncertainty intervals.}
+  -\end{center}
+  -\end{figure}}
+  
+And then I build a model with phylogeny as a grouping factor and removed urban as an effect. Next move is to incorporate site somehow... but here's the tree. 
+
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/phylooutput}
+  -\end{center}
+  -\end{figure}}
+
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/phylomod_treenourban.pdf}
+  -\end{center}
+  -\end{figure}}
+  
+  And then I added in site just now...
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/phylowithurban}
+  -\end{center}
+  -\end{figure}}
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/urbaneffect.pdf}
+  -\end{center}
+  -\end{figure}}
+  
+  
+\section*{Next steps:}
+
+\begin{enumerate}
+\item Add in site to the phylogeny model and work through that more
+\item Look at gridded climate data and compare!
+\item Then do this all again for chilling!!
+\item And then if we find that gridded climate data or weather station data is fairly good, maybe think about looking at all years of data and building phylogenetic models for all three cues. 
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
