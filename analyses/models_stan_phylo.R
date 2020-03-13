@@ -16,7 +16,7 @@ rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
 use.hobos = FALSE
-use.allyears = TRUE
+use.allyears = FALSE
 use.allsites = FALSE
 
 if(use.hobos==FALSE & use.allyears == FALSE){
@@ -104,7 +104,7 @@ gdd.stan$spps<-gdd.stan$phylo
 
 use.urban = TRUE
 ## fitting models for GDD for weather station all years
-if(use.urban = TRUE){ # Not sure how to add it variation among sites...
+if(use.urban == TRUE & use.hobos == FALSE & use.allyears == FALSE){ # Not sure how to add it variation among sites...
 ### ADD IN SITE PREDICTOR
 ### ## ad mean of predictor across species and within species
 gdd.stan$species_mean <- 
@@ -129,11 +129,40 @@ model_phylo <- brm(
   iter = 5000, warmup = 2000
 )
 
-save(model_phylo, file="~/Documents/git/microclimates/analyses/stan/phylomod_urban.Rdata")
+save(model_phylo, file="~/Documents/git/microclimates/analyses/stan/ws_phylomod_urban.Rdata")
 
 }
 
-if(use.urban = FALSE){
+if(use.urban == TRUE & use.hobos==TRUE & use.allyears == FALSE){ # Not sure how to add it variation among sites...
+  ### ADD IN SITE PREDICTOR
+  ### ## ad mean of predictor across species and within species
+  gdd.stan$species_mean <- 
+    with(gdd.stan, sapply(split(urban, phylo), mean)[phylo])
+  
+  gdd.stan$within_species <- 
+    gdd.stan$urban - gdd.stan$species_mean
+  
+  model_phylo <- brm(
+    gdd_bb ~ urban +      ## fixed effs
+      (1 +  urban|phylo) + (1|spps),  ## rnd effs 
+    data = gdd.stan, 
+    family = gaussian(), cov_ranef = list("phylo:urban" = A),
+    prior = c(
+      prior(normal(0, 400), "b"),
+      prior(normal(0, 400), "Intercept"),
+      prior(student_t(3, 0, 100), "sd"),
+      prior(student_t(3, 0, 100), "sigma")
+    )
+    ,sample_prior = TRUE, chains = 4,
+    control=list(max_treedepth = 15,adapt_delta = 0.99),
+    iter = 5000, warmup = 2000
+  )
+  
+  save(model_phylo, file="~/Documents/git/microclimates/analyses/stan/hobo_phylomod_urban.Rdata")
+  
+}
+
+if(use.urban == FALSE){
 model_phylo <- brm(
   gdd_bb ~ 1 +      ## fixed effs
     (1|phylo) + (1|spps),  ## rnd effs 
@@ -204,7 +233,7 @@ hyp.site <- paste(
 
 library(broom)
 mod.summary <- tidy(model_phylo)
-positions = grep(",Intercept]", mod.summary$term)
+positions = grep(",urban]", mod.summary$term)
 site.slopes <- mod.summary[positions,] 
 site.slopes$phylo <- sort(unique(gdd.stan$spps))
 
@@ -215,7 +244,7 @@ site.slopes$phylo <- sort(unique(gdd.stan$spps))
 
 site = site.slopes$estimate
 names(site)=site.slopes$phylo
-species <- unique(gdd.stan$spps)
+species <- unique(ws_urb.stan$spp)
 pruned.tree<-drop.tip(phylo,phylo$tip.label[-match(species, phylo$tip.label)])
 pruned.tree=multi2di(pruned.tree)
 obj.site<-contMap(pruned.tree,site,plot=FALSE)
@@ -227,6 +256,7 @@ obj.site<-setMap(obj.site,colors=c("yellow","darkcyan","purple"))
 ## plotting
 
 ## combined plot of three phylogenies and cues
+quartz()
 par(mfrow=c(2,1))
 layout.matrix <- matrix(c(1, 2))
 layout(mat = layout.matrix,
