@@ -4,7 +4,7 @@
 # Load from calc_mergeall.R (including libraries)
 
 if(is.data.frame(d)){
-  yearlim <- 2018
+  yearlim <- 2017
   ## Now it's time to bring in climate data from Weld Hill...
   # Clean up the dataframe 
   cc.arb<-read.csv("input/weldhill.csv", header=TRUE)

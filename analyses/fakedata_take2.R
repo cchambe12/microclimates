@@ -19,8 +19,8 @@ library(lme4)
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
-ws <- read.csv("output/clean_gdd_bbanddvr.csv")
-hobo <- read.csv("output/clean_gdd_bbanddvr_hobo.csv")
+ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
 
 # We will focus on Harvard Forest to start
 hf.ws <- ws[(ws$type=="Harvard Forest"),]

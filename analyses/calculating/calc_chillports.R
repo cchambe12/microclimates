@@ -10,10 +10,13 @@ if(is.data.frame(d)){
   
   leaps <- seq(2000, 2050, by=4)
   
-  d$chill.startprev <- d$last.obs
-  d$chill.endprev <- ifelse(d$year%in%leaps, 366, 365)
+  d$prevyear <- d$year-1
+  d$chill.startprev <- NA
+  d$chill.startprev <- ifelse(!is.na(d$last.obs) & d$prevyear%in%leaps, d$last.obs, 275)
+  d$chill.startprev <- ifelse(!is.na(d$last.obs) & !d$prevyear%in%leaps, d$last.obs, 274)
+  d$chill.endprev <- ifelse(d$prevyear%in%leaps, 366, 365)
   d$chill.startthis <- 1
-  d$chill.endthis <- 46
+  d$chill.endthis <- 31
   
   d <- d[!(d$chill.endthis>d$budburst),]
   d <- d[!is.na(d$budburst) | !is.na(d$chill.endthis),]
@@ -61,7 +64,7 @@ if(is.data.frame(d)){
   climandpheno$climatetype <- as.character(climandpheno$climatetype)
   climandpheno$doy <- as.numeric(climandpheno$doy)
   
-  climandpheno$chill.endthis<-46
+  climandpheno$chill.endthis<-31
   climandpheno$chill.startthis <- 1
   
   climandphenoprev <- separate(data = addhrsprev, col = id_yr_day, into = c("id", "prevyear", "climatetype", "doy"), sep = "\\ ")
@@ -70,7 +73,7 @@ if(is.data.frame(d)){
   climandphenoprev$climatetype <- as.character(climandphenoprev$climatetype)
   climandphenoprev$doy <- as.numeric(climandphenoprev$doy)
   
-  climandphenoprev$chill.startprev <- ifelse(climandphenoprev$prevyear%in%leaps, 275, 274)
+  climandphenoprev$chill.startprev <- ave(climandphenoprev$doy, climandphenoprev$id, climandphenoprev$prevyear, FUN=min)
   climandphenoprev$chill.endprev <- ifelse(climandphenoprev$prevyear%in%leaps, 366, 365)
   
   ## Add Climate data back in 
@@ -86,28 +89,37 @@ if(is.data.frame(d)){
   climandpheno<-climandpheno[!duplicated(climandpheno),]
   climandpheno$id_year <- paste(climandpheno$id, climandpheno$year, sep="_")
   
-  climandphenoprev$year <- climandphenoprev$prevyear
+  climandphenoprev$year <- climandphenoprev$prevyear ### need to set up to get appropriate climate data
   climandphenoprev <- full_join(climandphenoprev, cc)
   climandphenoprev<-climandphenoprev[!duplicated(climandphenoprev),]
-  climandphenoprev$id_year <- paste(climandphenoprev$id, climandpheno$year, sep="_")
+  climandphenoprev$year <- as.numeric(climandphenoprev$year) + 1 ### need to put it back on the same page with other climandpheno
+  climandphenoprev$id_year <- paste(climandphenoprev$id, climandphenoprev$year, sep="_")
   
   climandphenoall <- full_join(climandpheno, climandphenoprev)
   
   bb_climandpheno<-full_join(climandphenoall, d)
   
   bb_chilling_all <- subset(bb_climandpheno, select=c("id", "doy", "prevyear", "year", "tmean", "id_year"))
-  bb_chilling_all <- na.omit(bb_chilling_all)
+  #bb_chilling_all <- na.omit(bb_chilling_all)
+  bb_chilling_all <- bb_chilling_all[!is.na(bb_chilling_all$tmean),]
+  bb_chilling_all <- bb_chilling_all[!is.na(bb_chilling_all$id),]
   
   bb_chilling_all <- bb_chilling_all[(bb_chilling_all$year>2015),]
   
   ### Start with Treespotters and Harvard Forest
-  tt <- as.data.frame(table(bb_chilling_all$id, bb_chilling_all$year))
-  rms <- subset(tt, tt$Freq==0)
-  rms <- as.vector(unique(rms$Var1))
+  if(use.hobos==TRUE){
+    rms <- subset(bb_chilling_all, bb_chilling_all$year==2018)
+    rms <- unique(rms$id)
+  }
+  if(use.hobos==FALSE){
+    tt <- as.data.frame(table(bb_chilling_all$id, bb_chilling_all$year))
+    rms <- subset(tt, tt$Freq==0)
+    rms <- as.vector(unique(rms$Var1))
+  }
   
   bb_chilling <- subset(bb_chilling_all, !bb_chilling_all$id %in% rms) ## need to do common garden inds after!!
   
-  period<-2016:2019
+  period<-2019
   nyears <- length(period)
   ids<-bb_chilling[!duplicated(bb_chilling$id),]
   ids <- ids[!duplicated(ids$id),]
@@ -116,31 +128,41 @@ if(is.data.frame(d)){
   
   idlisttomerge <- subset(ids, select=c("id", "idslist"))
   bb_chilling <- full_join(bb_chilling, idlisttomerge)
+  bb_chilling$doy <- as.numeric(bb_chilling$doy)
   
+  bb_chilling$base <- ifelse(!is.na(bb_chilling$prevyear), 
+                             ave(bb_chilling$doy, bb_chilling$id, bb_chilling$prevyear, FUN=min), NA)
+  
+  bb_chilling$doy2 <- NA
+  bb_chilling$doy2 <- ifelse(!bb_chilling$prevyear%in%leaps & !is.na(bb_chilling$prevyear), bb_chilling$doy-273, bb_chilling$doy2)
+  bb_chilling$doy2 <- ifelse(!bb_chilling$prevyear%in%leaps & !is.na(bb_chilling$prevyear), bb_chilling$doy-273, bb_chilling$doy2)
+  bb_chilling$doy2 <- ifelse(is.na(bb_chilling$prevyear), bb_chilling$doy+92, bb_chilling$doy2)
+  
+  bb_chilling$tmean <- round(bb_chilling$tmean, digits=3)
   #bb_forcing <- bb_forcing[!is.na(bb_forcing$doy),]
   
   extractchill<-function(tavg,period){
     
     chillingyears<-array(NA,dim=c(nyears, 1, ninds))
     row.names(chillingyears)<-period
-    colnames(chillingyears)<-c("utah", "portions")
+    colnames(chillingyears)<-c("utah")
     
-    yearlyresults<-array(NA,dim=c(length(period),2))
+    yearlyresults<-array(NA,dim=c(length(period),1))
     
-    for(i in 1:ninds){
+    for(i in 1:ninds){ #i=2
       print(i)
       
-      for(j in period){
+      for(j in period){ #j=2019
         print(paste(i,j))
         
-        days<-bb_chilling$doy[bb_chilling$idslist==i & bb_chilling$year==j] #number of days of climate data
+        days <- bb_chilling$doy2[bb_chilling$idslist==i & bb_chilling$year==j] #number of days of climate data
         
         tavg <- bb_chilling$tmean[bb_chilling$idslist==i & bb_chilling$year==j]
         
         hrly.temp =
           data.frame(
             Temp = tavg,
-            Year = j,
+            Year = rep(j, length(tavg)),
             JDay = sort(days)
           )
         
@@ -148,7 +170,7 @@ if(is.data.frame(d)){
         chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
         
         yearlyresults[which(period==j),1] <- chillcalc.mn$Utah_Model[which(chillcalc.mn$End_year==j)]
-        yearlyresults[which(period==j),2] <- chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
+        #yearlyresults[which(period==j),2] <- chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
         
         
       }
@@ -163,9 +185,9 @@ if(is.data.frame(d)){
   
   allyears<-as.data.frame(chill_all)
   
-  allyears <- gather(allyears, idslist, utah, portions)
-  allyears$year <- seq(2016, 2019, by=1)
-  allyears$idslist <- as.numeric(substr(allyears$idslist, 5, 7))
+  allyears <- gather(allyears, idslist, utah)
+  allyears$year <- 2019
+  allyears$idslist <- as.numeric(substr(allyears$idslist, 6, 8))
   
   bb_chilling <- subset(bb_chilling, select=c("id", "year", "idslist"))
   bb_chilling <- bb_chilling[!duplicated(bb_chilling),]
@@ -174,21 +196,30 @@ if(is.data.frame(d)){
   
   allyears <- dplyr::select(allyears, -idslist)
   
+  if(use.hobos==FALSE){
   #############################
   ### Now for Common Garden ###
   #############################
   bb_chilling_cg <- subset(bb_chilling_all, bb_chilling_all$id %in% rms)
-  bb_chilling_cg <- subset(bb_chilling_cg, bb_chilling_cg$year%in%c(2018,2019))
+  bb_chilling_cg <- subset(bb_chilling_cg, bb_chilling_cg$year%in%2018)
   
-  period_cg<-2018:2019
+  period_cg<-2018
   nyears <- length(period_cg)
   ids_cg<-bb_chilling_cg[!duplicated(bb_chilling_cg$id),]
   ids_cg <- ids_cg[!duplicated(ids_cg$id),]
   ninds_cg <- length(ids_cg$id)
-  ids_cg$idslist<-1:ninds
+  ids_cg$idslist<-1:ninds_cg
   
   idlisttomerge_cg <- subset(ids_cg, select=c("id", "idslist"))
   bb_chilling_cg <- full_join(bb_chilling_cg, idlisttomerge_cg)
+  bb_chilling_cg$doy <- as.numeric(bb_chilling_cg$doy)
+  
+  bb_chilling_cg$doy2 <- NA
+  bb_chilling_cg$doy2 <- ifelse(bb_chilling_cg$prevyear%in%leaps, bb_chilling_cg$doy-274, bb_chilling_cg$doy2)
+  bb_chilling_cg$doy2 <- ifelse(!bb_chilling_cg$prevyear%in%leaps & !is.na(bb_chilling_cg$prevyear), bb_chilling_cg$doy-273, bb_chilling_cg$doy2)
+  bb_chilling_cg$doy2 <- ifelse(is.na(bb_chilling_cg$prevyear), bb_chilling_cg$doy+92, bb_chilling_cg$doy2)
+  
+  bb_chilling_cg$tmean <- round(bb_chilling_cg$tmean, digits=3)
   
   bb_chilling_cg <- bb_chilling_cg[!is.na(bb_chilling_cg$doy),]
   
@@ -196,32 +227,32 @@ if(is.data.frame(d)){
     
     chillingyears_cg<-array(NA,dim=c(nyears, 1, ninds_cg))
     row.names(chillingyears_cg)<-period_cg
-    colnames(chillingyears_cg)<-c("utah", "portions")
+    colnames(chillingyears_cg)<-c("utah")
     
     yearlyresults_cg<-array(NA,dim=c(length(period_cg),1))
     
-    for(i in 1:ninds_cg){
+    for(i in 1:ninds_cg){ #i=1
       print(i)
       
-      for(j in period_cg){
+      for(j in period_cg){ #j=2018
         print(paste(i,j))
         
-        days<-bb_chilling_cg$doy[bb_chilling_cg$idslist==i & bb_chilling_cg$year==j] #number of days of climate data
+        days <- bb_chilling_cg$doy2[bb_chilling_cg$idslist==i & bb_chilling_cg$year==j] #number of days of climate data
         
         tavg_cg <- bb_chilling_cg$tmean[bb_chilling_cg$idslist==i & bb_chilling_cg$year==j]
         
         hrly.temp =
           data.frame(
             Temp = tavg_cg,
-            Year = j,
+            Year = rep(j, length(days)),
             JDay = sort(days)
           )
         
         
         chillcalc.mn<-chilling(hrly.temp, hrly.temp$JDay[1], hrly.temp$JDay[nrow(hrly.temp[1])]) 
         
-        yearlyresults[which(period==j),1] <- chillcalc.mn$Utah_Model[which(chillcalc.mn$End_year==j)]
-        yearlyresults[which(period==j),2] <- chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
+        yearlyresults_cg[which(period_cg==j),1] <- chillcalc.mn$Utah_Model[which(chillcalc.mn$End_year==j)]
+        #yearlyresults[which(period==j),2] <- chillcalc.mn$Chill_portions[which(chillcalc.mn$End_year==j)]
         
         
       }
@@ -235,9 +266,9 @@ if(is.data.frame(d)){
   chill_all_cg <- extractchill_cg(ninds_cg, period_cg)  
   
   oneyear<-as.data.frame(chill_all_cg)
-  oneyear <- gather(oneyear, idslist, utah, portions)
-  oneyear$year <- seq(2018, 2019, by=1)
-  oneyear$idslist <- as.numeric(substr(oneyear$idslist, 5, 7))
+  oneyear <- gather(oneyear, idslist, utah)
+  oneyear$year <- 2018
+  oneyear$idslist <- as.numeric(substr(oneyear$idslist, 6, 8))
   
   bb_chilling_cg <- subset(bb_chilling_cg, select=c("id", "year", "idslist"))
   bb_chilling_cg <- bb_chilling_cg[!duplicated(bb_chilling_cg),]
@@ -247,6 +278,13 @@ if(is.data.frame(d)){
   oneyear <- dplyr::select(oneyear, -idslist)
   
   chillbb <- full_join(allyears, oneyear)
+  }
+  
+  if(use.hobos==TRUE){
+    chillbb <- allyears
+  }
+  
+  gdd.stan <- left_join(gdd.stan, chillbb)
   
 } else {
   print("Error: chillbb not a data.frame")
