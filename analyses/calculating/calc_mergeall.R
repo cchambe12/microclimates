@@ -29,7 +29,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 
@@ -59,6 +59,11 @@ source("calculating/calc_forceLO.R") ### This part can take a while depending on
 
 # 3. Now let's add in forcing from budburst to leafout!! And also add in false spring information
 source("calculating/calc_forceDVR.R") ### This part can take a while depending on how many years of data you have and how many loggers
+
+
+# 4. Let's add in Chilling data for budburst now. We will use February 15 as the end
+# of calculating chill and start with last observation from prev season. Easy to fix if necessary in the chill.startthis column
+source("calculating/calc_chillports.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
 if(use.hobos==FALSE){
   # 4. Let's add in tmean for the growing season for each individual - does climate play a roll on growing season length?
