@@ -458,7 +458,7 @@ ggplot(one.post, aes(bb.post, bb)) + geom_point(aes(col=species, shape=species))
 
 
 
-
+ggplot(one, aes(x=bb, group=as.factor(species))) + geom_histogram(aes(fill=as.factor(species)))
 
 
 save(one_sampfreq.mod, file="~/Documents/git/microclimates/analyses/stan/ws_urban_mod_chill.Rdata")
