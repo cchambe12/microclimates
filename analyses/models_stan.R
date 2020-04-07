@@ -278,5 +278,49 @@ wsall_urb_mod.sum[grep("sigma_", rownames(wsall_urb_mod.sum)),]
 save(hobo_urb_mod, file="~/Documents/git/microclimates/analyses/stan/hobo_urban_mod.Rdata")
 
 
+###############################################################################################################
+################################ URBAN MODELS with FAKE chill data ############################################
+###############################################################################################################
+ws_urb_chill <- read.csv("output/fakedata_ws_urb_chill.csv")
+hobo_urb_chill <- read.csv("output/fakedata_hl_urb_chill.csv")
+
+datalist.wsurb.chill <- with(ws_urb_chill, 
+                       list(y = utah, 
+                            tx = urban, 
+                            sp = as.numeric(as.factor(species)),
+                            N = nrow(ws_urb_chill),
+                            n_sp = length(unique(ws_urb_chill$species))
+                       )
+)
 
 
+ws_urb_fake_chill = stan('stan/urbanchill_stan_normal_weather.stan', data = datalist.wsurb.chill,
+                   iter = 5000, warmup=2000) ### 
+
+
+check_all_diagnostics(ws_urb_fake_chill)
+
+ws_urb_fake_chill.sum <- summary(ws_urb_fake_chill)$summary
+ws_urb_fake_chill.sum[grep("mu_", rownames(ws_urb_fake_chill.sum)),]
+ws_urb_fake_chill.sum[grep("sigma_", rownames(ws_urb_fake_chill.sum)),]
+
+
+datalist.hlurb.chill <- with(hl_urb_chill, 
+                             list(y = utah, 
+                                  tx = urban, 
+                                  sp = as.numeric(as.factor(species)),
+                                  N = nrow(hl_urb_chill),
+                                  n_sp = length(unique(hl_urb_chill$species))
+                             )
+)
+
+
+hl_urb_fake_chill = stan('stan/urbanchill_stan_normal_hobo.stan', data = datalist.hlurb.chill,
+                         iter = 5000, warmup=2000) ### 
+
+
+check_all_diagnostics(hl_urb_fake_chill)
+
+hl_urb_fake_chill.sum <- summary(hl_urb_fake_chill)$summary
+hl_urb_fake_chill.sum[grep("mu_", rownames(hl_urb_fake_chill.sum)),]
+hl_urb_fake_chill.sum[grep("sigma_", rownames(hl_urb_fake_chill.sum)),]
