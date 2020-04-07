@@ -12,14 +12,15 @@ data {
 	}
 
 parameters {
-  real mu_a_sp;   
-  real mu_b_tx_sp;     
+  real mu_a_sp;     
+  real mu_b_tx_sp;
   real<lower=0> sigma_a_sp; 
   real<lower=0> sigma_b_tx_sp; 
   real<lower=0> sigma_y; 
+  
 
   real a_sp[n_sp]; // intercept for species
-  real b_tx[n_sp]; // slope of urban effect 
+  real b_tx[n_sp]; // slope of urban effect
 
 	}
 
@@ -28,20 +29,20 @@ transformed parameters {
   
        	for(i in 1:N){
             yhat[i] = a_sp[sp[i]] + // indexed with species
-		b_tx[sp[i]] * tx[i];
+            b_tx[sp[i]] * tx[i];
 	}
 }
 
 model {
 
-	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);  
+	a_sp ~ normal(mu_a_sp, sigma_a_sp);
+	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);
 
-        mu_a_sp ~ normal(1000, 200);
-        sigma_a_sp ~ normal(0, 200);
-
-        mu_b_tx_sp ~ normal(0, 200);
-        sigma_b_tx_sp ~ normal(0, 50);
+        mu_a_sp ~ normal(50, 10);
+        sigma_a_sp ~ normal(0, 10);
+        
+        mu_b_tx_sp ~ normal(0, 10);
+        sigma_b_tx_sp ~ normal(0, 5);
 
 	y ~ normal(yhat, sigma_y);
 
