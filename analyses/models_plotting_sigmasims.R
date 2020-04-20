@@ -20,6 +20,7 @@ setwd("~/Documents/git/microclimates/analyses/")
 
 figpath <- "figures"
 
+use.sims = TRUE
 use.hobo = FALSE ### We expect less species variation using weather station data, so if use.hobo=TRUE, then sigma will be loaded on overall error not on species
 use.urban = TRUE
 use.provenance = FALSE

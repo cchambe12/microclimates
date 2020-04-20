@@ -28,9 +28,10 @@ mean(hobo$gdd_bb, na.rm=TRUE) ## 250
 
 set.seed(12221)
 
+use.sims = TRUE
 use.hobo = FALSE ### We expect less species variation using weather station data, so if use.hobo=TRUE, then sigma will be loaded on overall error not on species
 use.urban = TRUE
-use.provenance = FALSE
+use.provenance = TRUE
 use.highsitevariation = FALSE ## Not sure if I will use these but here just in case
 use.highprovvariation = FALSE
 
@@ -116,7 +117,7 @@ if (use.hobo==FALSE & use.urban==TRUE & use.provenance==TRUE &
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
                             tx = urban,
-                            prov = prov,
+                            prov = provenance,
                             sp = as.numeric(as.factor(species)),
                             N = nrow(gdd.stan),
                             n_sp = length(unique(gdd.stan$species))
@@ -147,7 +148,7 @@ if (use.hobo==TRUE & use.urban==TRUE & use.provenance==TRUE &
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
                             tx = urban,
-                            prov = prov,
+                            prov = provenance,
                             sp = as.numeric(as.factor(species)),
                             N = nrow(gdd.stan),
                             n_sp = length(unique(gdd.stan$species))
@@ -158,17 +159,13 @@ if (use.hobo==TRUE & use.urban==TRUE & use.provenance==TRUE &
   hl_urb_prov_fake = stan('stan/urbanmodel_stan_normal_prov.stan', data = datalist.gdd,
                           iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
   
-  if(check.diags==TRUE){
-    check_all_diagnostics(hl_urb_prov_fake)
-  }
+  check_all_diagnostics(hl_urb_prov_fake)
   
   hl_urb_prov_fake.sum <- summary(hl_urb_prov_fake)$summary
   hl_urb_prov_fake.sum[grep("mu_", rownames(hl_urb_prov_fake.sum)),]
   hl_urb_prov_fake.sum[grep("sigma_", rownames(hl_urb_prov_fake.sum)),]
   
-  if(save.stan==TRUE){
-    save(hl_urb_prov_fake, file="~/Documents/git/microclimates/analyses/stan/hl_urban_prov_stan_sims.Rdata")
-  }                     
+  save(hl_urb_prov_fake, file="~/Documents/git/microclimates/analyses/stan/hl_urban_prov_stan_sims.Rdata")
 }
 
 
