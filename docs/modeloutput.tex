@@ -101,14 +101,15 @@
 
 
 \begin{align*}
-y_i &= \alpha_{species[i]} + \beta_{urban_{season[i]}} + \epsilon_i\\
+y_i &= \alpha_{species[i]} + \beta_{urban_{species[i]}}U + \beta_{provenance_{species[i]}}P + \epsilon_i\\
 \end{align*}
 \begin{align*}
-\epsilon_i & \sim N(0,\sigma^2_y) \\
+\epsilon_i & \sim N(0,\sigma_y) \\
 \end{align*}
 \begin{align*}
 \alpha_{species} & \sim N(\mu_{\alpha}, \sigma_{\alpha}) \\
 \beta_{urban{species}} & \sim N(\mu_{urban}, \sigma_{urban}) \\
+\beta_{provenance{species}} & \sim N(\mu_{provenance}, \sigma_{provenance}) \\
 \end{align*}
 
 {\begin{figure} [H]

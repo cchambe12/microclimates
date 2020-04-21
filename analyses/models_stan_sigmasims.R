@@ -38,18 +38,17 @@ use.highprovvariation = FALSE
 #check.diags = TRUE ## Do you want to check diagnostics?
 #save.stan = TRUE  ## Do you want to save your model?
 
-if(use.urban==FALSE & use.highsitevariation==TRUE){
+if(use.urban==TRUE & use.provenance==TRUE){
   print("Error was made in flags!! Adjust accordingly!")
 }
 
-if(use.provenance==FALSE & use.highprovvariation==TRUE){
+if(use.provenance==FALSE & use.urban==FALSE){
   print("Error was made in flags!! Adjust accordingly!")
 }
 
 
 ########################################################################
-if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE){
   
   gdd.stan <- read.csv("output/fakedata_ws_urb.csv")
   
@@ -63,8 +62,8 @@ if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE &
   )
                       
                       
-  ws_urb_fake = stan('stan/urbanmodel_stan_normal_weather.stan', data = datalist.gdd,
-                     iter = 2000, warmup=1500) ### 
+  ws_urb_fake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                     iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(ws_urb_fake)
   
@@ -72,14 +71,14 @@ if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE &
   ws_urb_fake.sum[grep("mu_", rownames(ws_urb_fake.sum)),]
   ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
   
-  save(ws_urb_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_sims.Rdata")
+  save(ws_urb_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_sims_ncp.Rdata")
   
 }
 
 
 ########################################################################
-if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==FALSE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==FALSE){
+  
   gdd.stan <- read.csv("output/fakedata_hl_urb.csv")
   
   datalist.gdd <- with(gdd.stan, 
@@ -92,8 +91,8 @@ if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==FALSE &
   )
   
   
-  hl_urb_fake = stan('stan/urbanmodel_stan_normal_weather.stan', data = datalist.gdd,
-                     iter = 2000, warmup=1500) ### 
+  hl_urb_fake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                     iter = 5000, warmup=2000) ### 
   
   
   check_all_diagnostics(hl_urb_fake)
@@ -110,13 +109,12 @@ if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==FALSE &
 
 
 ########################################################################
-if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==TRUE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==TRUE & use.hobo==FALSE & use.urban==FALSE & use.provenance==TRUE){
+  
   gdd.stan <- read.csv("output/fakedata_ws_urb_prov.csv")
   
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
-                            tx = urban,
                             prov = provenance,
                             sp = as.numeric(as.factor(species)),
                             N = nrow(gdd.stan),
@@ -125,29 +123,28 @@ if (use.sims==TRUE & use.hobo==FALSE & use.urban==TRUE & use.provenance==TRUE &
   )
   
   
-  ws_urb_prov_fake = stan('stan/urbanmodel_stan_normal_prov.stan', data = datalist.gdd,
+  ws_prov_fake = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
                      iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
   
-  check_all_diagnostics(ws_urb_prov_fake)
+  check_all_diagnostics(ws_prov_fake)
   
-  ws_urb_prov_fake.sum <- summary(ws_urb_prov_fake)$summary
-  ws_urb_prov_fake.sum[grep("mu_", rownames(ws_urb_prov_fake.sum)),]
-  ws_urb_prov_fake.sum[grep("sigma_", rownames(ws_urb_prov_fake.sum)),]
+  ws_prov_fake.sum <- summary(ws_prov_fake)$summary
+  ws_prov_fake.sum[grep("mu_", rownames(ws_prov_fake.sum)),]
+  ws_prov_fake.sum[grep("sigma_", rownames(ws_prov_fake.sum)),]
   
-  save(ws_urb_prov_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_prov_stan_sims.Rdata")
+  save(ws_prov_fake, file="~/Documents/git/microclimates/analyses/stan/ws_prov_stan_sims.Rdata")
                        
 }
 
 
 
 ########################################################################
-if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==TRUE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==TRUE & use.hobo==TRUE & use.urban==FALSE & use.provenance==TRUE){
+  
   gdd.stan <- read.csv("output/fakedata_hl_urb_prov.csv")
   
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
-                            tx = urban,
                             prov = provenance,
                             sp = as.numeric(as.factor(species)),
                             N = nrow(gdd.stan),
@@ -156,73 +153,21 @@ if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==TRUE &
   )
   
   
-  hl_urb_prov_fake = stan('stan/urbanmodel_stan_normal_prov.stan', data = datalist.gdd,
+  hl_prov_fake = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
                           iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
   
-  check_all_diagnostics(hl_urb_prov_fake)
+  check_all_diagnostics(hl_prov_fake)
   
-  hl_urb_prov_fake.sum <- summary(hl_urb_prov_fake)$summary
-  hl_urb_prov_fake.sum[grep("mu_", rownames(hl_urb_prov_fake.sum)),]
-  hl_urb_prov_fake.sum[grep("sigma_", rownames(hl_urb_prov_fake.sum)),]
+  hl_prov_fake.sum <- summary(hl_prov_fake)$summary
+  hl_prov_fake.sum[grep("mu_", rownames(hl_prov_fake.sum)),]
+  hl_prov_fake.sum[grep("sigma_", rownames(hl_prov_fake.sum)),]
   
-  save(hl_urb_prov_fake, file="~/Documents/git/microclimates/analyses/stan/hl_urban_prov_stan_sims.Rdata")
+  save(hl_prov_fake, file="~/Documents/git/microclimates/analyses/stan/hl_prov_stan_sims.Rdata")
 }
 
-########################################################################
-if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==TRUE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
-  
-  ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
-  
-  ws <- ws[!(ws$type=="Common Garden"),]
-  
-  ws$provenance <- as.numeric(ws$provenance.lat)
-  ws$urban <- ifelse(ws$type=="Harvard Forest", 0, 1)
-  
-  ws$spp <- paste(ws$genus, ws$species, sep="_")
-  
-  gdd.stan <- subset(ws, select=c(gdd_bb, urban, provenance, spp))
-  gdd.stan <- gdd.stan[complete.cases(gdd.stan),]
-  
-  gdd.stan <- gdd.stan[!duplicated(gdd.stan),]
-  
-  datalist.gdd <- with(gdd.stan, 
-                       list(y = gdd_bb, 
-                            tx = urban,
-                            prov = provenance,
-                            sp = as.numeric(as.factor(spp)),
-                            N = nrow(gdd.stan),
-                            n_sp = length(unique(gdd.stan$spp))
-                       )
-  )
-  
-  
-  ws_urb_prov = stan('stan/urbanmodel_stan_normal_prov.stan', data = datalist.gdd,
-                          iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
-  #### This rstan model has lots of divergent transitions ~100-200 
-  
-  ws_urb_prov = stan('stan/urbanmodel_stan_normal_prov_ncp.stan', data = datalist.gdd,
-                     iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ###
-  #### This rstan model is better! ~29 divergent transitions. Next step: add a vcov matrix?
-  
-  
-  ws_urb_prov_brm <- brm(gdd_bb ~ urban + provenance + (urban + provenance|spp), data=gdd.stan,
-                         iter=5000, warmup=2500, 
-                         control=list(max_treedepth=15, adapt_delta=0.99))
-  ### BRMS code has a few divergent transitions ~20
-  
-  check_all_diagnostics(ws_urb_prov)
-  
-  ws_urb_prov.sum <- summary(ws_urb_prov)$summary
-  ws_urb_prov.sum[grep("mu_", rownames(ws_urb_prov.sum)),]
-  ws_urb_prov.sum[grep("sigma_", rownames(ws_urb_prov.sum)),]
-  
-  save(hl_urb_prov_fake, file="~/Documents/git/microclimates/analyses/stan/hl_urban_prov_stan_sims.Rdata")
-}
 
 ########################################################################
-if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE){
   
   ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
   
@@ -248,30 +193,22 @@ if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE 
   
   
   ws_urb = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                     iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
-  #### This rstan model has lots of divergent transitions ~51 but adding ncp removes divergences!!
+                iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
   
+  check_all_diagnostics(ws_urb)
   
-  ws_urb_brm <- brm(gdd_bb ~ urban + (urban|spp), data=gdd.stan,
-                         iter=5000, warmup=2500, 
-                         control=list(max_treedepth=15, adapt_delta=0.99))
-  ### BRMS code is smooth sailing. Try ncp in stan code
-  
-  check_all_diagnostics(ws_urb_prov)
-  
-  hl_urb_prov_fake.sum <- summary(hl_urb_prov_fake)$summary
-  hl_urb_prov_fake.sum[grep("mu_", rownames(hl_urb_prov_fake.sum)),]
-  hl_urb_prov_fake.sum[grep("sigma_", rownames(hl_urb_prov_fake.sum)),]
+  ws_urb.sum <- summary(ws_urb)$summary
+  ws_urb.sum[grep("mu_", rownames(ws_urb.sum)),]
+  ws_urb.sum[grep("sigma_", rownames(ws_urb.sum)),]
   
   save(ws_urb, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan.Rdata")
 }
 
 
 ########################################################################
-if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE &
-    use.highsitevariation==FALSE & use.highprovvariation==FALSE){
+if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE){
   
-  hl <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+  hl <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
   
   hl <- hl[!(hl$type=="Common Garden"),]
   
@@ -296,20 +233,92 @@ if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE 
   
   hl_urb = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
                 iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
-  #### This rstan model has lots of divergent transitions ~67 but adding ncp removes!
   
+  check_all_diagnostics(hl_urb)
   
-  hl_urb_brm <- brm(gdd_bb ~ urban + (urban|spp), data=gdd.stan,
-                    iter=5000, warmup=2500, 
-                    control=list(max_treedepth=15, adapt_delta=0.99))
-  ### BRMS code is smooth sailing. Try ncp in stan code
-  
-  check_all_diagnostics(hl_urb_prov)
-  
-  hl_urb_prov_fake.sum <- summary(hl_urb_prov_fake)$summary
-  hl_urb_prov_fake.sum[grep("mu_", rownames(hl_urb_prov_fake.sum)),]
-  hl_urb_prov_fake.sum[grep("sigma_", rownames(hl_urb_prov_fake.sum)),]
+  hl_urb.sum <- summary(hl_urb)$summary
+  hl_urb.sum[grep("mu_", rownames(hl_urb.sum)),]
+  hl_urb.sum[grep("sigma_", rownames(hl_urb.sum)),]
   
   save(hl_urb, file="~/Documents/git/microclimates/analyses/stan/hl_urban_stan.Rdata")
+}
+
+
+########################################################################
+if (use.sims==FALSE & use.hobo==FALSE & use.urban==FALSE & use.provenance==TRUE){
+  
+  ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+  
+  ws <- ws[!(ws$type=="Common Garden"),]
+  
+  ws$provenance <- as.numeric(ws$provenance.lat)
+  
+  ws$spp <- paste(ws$genus, ws$species, sep="_")
+  
+  gdd.stan <- subset(ws, select=c(gdd_bb, provenance, spp))
+  gdd.stan <- gdd.stan[complete.cases(gdd.stan),]
+  
+  gdd.stan <- gdd.stan[!duplicated(gdd.stan),]
+  
+  datalist.gdd <- with(gdd.stan, 
+                       list(y = gdd_bb, 
+                            prov = provenance,
+                            sp = as.numeric(as.factor(spp)),
+                            N = nrow(gdd.stan),
+                            n_sp = length(unique(gdd.stan$spp))
+                       )
+  )
+  
+  
+  ws_prov = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                 iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+  
+  check_all_diagnostics(ws_prov)
+  
+  ws_prov.sum <- summary(ws_prov)$summary
+  ws_prov.sum[grep("mu_", rownames(ws_prov.sum)),]
+  ws_prov.sum[grep("sigma_", rownames(ws_prov.sum)),]
+  
+  save(ws_prov, file="~/Documents/git/microclimates/analyses/stan/ws_prov_stan.Rdata")
+}
+
+
+
+########################################################################
+if (use.sims==FALSE & use.hobo==TRUE & use.urban==FALSE & use.provenance==TRUE){
+  
+  hl <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
+  
+  hl <- hl[!(hl$type=="Common Garden"),]
+  
+  hl$provenance <- as.numeric(hl$provenance.lat)
+  
+  hl$spp <- paste(hl$genus, hl$species, sep="_")
+  
+  gdd.stan <- subset(hl, select=c(gdd_bb, provenance, spp))
+  gdd.stan <- gdd.stan[complete.cases(gdd.stan),]
+  
+  gdd.stan <- gdd.stan[!duplicated(gdd.stan),]
+  
+  datalist.gdd <- with(gdd.stan, 
+                       list(y = gdd_bb, 
+                            prov = provenance,
+                            sp = as.numeric(as.factor(spp)),
+                            N = nrow(gdd.stan),
+                            n_sp = length(unique(gdd.stan$spp))
+                       )
+  )
+  
+  
+  hl_prov = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                 iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+  
+  check_all_diagnostics(hl_prov)
+  
+  hl_prov.sum <- summary(hl_prov)$summary
+  hl_prov.sum[grep("mu_", rownames(hl_prov.sum)),]
+  hl_prov.sum[grep("sigma_", rownames(hl_prov.sum)),]
+  
+  save(hl_prov, file="~/Documents/git/microclimates/analyses/stan/hl_prov_stan.Rdata")
 }
 
