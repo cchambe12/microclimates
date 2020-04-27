@@ -32,11 +32,6 @@ use.sims = TRUE
 use.hobo = FALSE ### We expect less species variation using weather station data, so if use.hobo=TRUE, then sigma will be loaded on overall error not on species
 use.urban = TRUE
 use.provenance = TRUE
-use.highsitevariation = FALSE ## Not sure if I will use these but here just in case
-use.highprovvariation = FALSE
-
-#check.diags = TRUE ## Do you want to check diagnostics?
-#save.stan = TRUE  ## Do you want to save your model?
 
 if(use.urban==TRUE & use.provenance==TRUE){
   print("Error was made in flags!! Adjust accordingly!")
@@ -111,7 +106,7 @@ if (use.sims==TRUE & use.hobo==TRUE & use.urban==TRUE & use.provenance==FALSE){
 ########################################################################
 if (use.sims==TRUE & use.hobo==FALSE & use.urban==FALSE & use.provenance==TRUE){
   
-  gdd.stan <- read.csv("output/fakedata_ws_urb_prov.csv")
+  gdd.stan <- read.csv("output/fakedata_ws_prov.csv")
   
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
@@ -141,7 +136,7 @@ if (use.sims==TRUE & use.hobo==FALSE & use.urban==FALSE & use.provenance==TRUE){
 ########################################################################
 if (use.sims==TRUE & use.hobo==TRUE & use.urban==FALSE & use.provenance==TRUE){
   
-  gdd.stan <- read.csv("output/fakedata_hl_urb_prov.csv")
+  gdd.stan <- read.csv("output/fakedata_hl_prov.csv")
   
   datalist.gdd <- with(gdd.stan, 
                        list(y = gdd, 
@@ -154,7 +149,7 @@ if (use.sims==TRUE & use.hobo==TRUE & use.urban==FALSE & use.provenance==TRUE){
   
   
   hl_prov_fake = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                          iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+                          iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(hl_prov_fake)
   
@@ -193,7 +188,7 @@ if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE)
   
   
   ws_urb = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+                iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(ws_urb)
   
@@ -232,7 +227,7 @@ if (use.sims==FALSE & use.hobo==FALSE & use.urban==TRUE & use.provenance==FALSE)
   
   
   hl_urb = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                iter = 5000, warmup=3000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+                iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(hl_urb)
   
@@ -271,7 +266,7 @@ if (use.sims==FALSE & use.hobo==FALSE & use.urban==FALSE & use.provenance==TRUE)
   
   
   ws_prov = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                 iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+                 iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(ws_prov)
   
@@ -311,7 +306,7 @@ if (use.sims==FALSE & use.hobo==TRUE & use.urban==FALSE & use.provenance==TRUE){
   
   
   hl_prov = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                 iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
+                 iter = 5000, warmup=2000) ### 
   
   check_all_diagnostics(hl_prov)
   
