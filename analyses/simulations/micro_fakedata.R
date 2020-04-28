@@ -20,25 +20,27 @@ library(dplyr)
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
-set.seed(12221)
+set.seed(12321)
 
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 mean(ws$gdd_bb, na.rm=TRUE) ## 292
 sd(ws$gdd_bb, na.rm = TRUE) ## 116
 
+cc <- read.csv("output/")
+
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-daysperyr <- 50 
+daysperyr <- 80 
 nspps <- 12 #12
 ninds <- 10 
 nobs <- nspps*ninds
 nmicros <- 10
 
 dayz <- rep(1:daysperyr, nobs)
-cc.arb <- 13
-sigma.arb <- 4
+cc.arb <- 11 ## based off weather station data
+sigma.arb <- 10 ## based off weather station data
 
-cc.hf <- 12
-sigma.hf <- 3
+cc.hf <- 9  ## based off weather station data
+sigma.hf <- 11  ## based off weather station data
 
 provenance.arb <- round(rnorm(nobs, 42.5, 10), digits=2)
 provenance.hf <- 42.5
@@ -129,6 +131,27 @@ bbhl <- bbhl[!duplicated(bbhl),]
 bball <- full_join(bbws, bbhl)
 
 
+
+quartz()
+par(mfrow=c(1,2))
+my.pal <- rep(brewer.pal(n = 8, name = "Dark2"), 2)
+my.pch <- rep(15:16, each=10)
+plot(bbws.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$species)], data = bball, main="Weather Station",
+     ylab="GDD")
+abline(h=mean(bball$bbws.gdd), lwd=3)
+
+plot(bbhl.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$species)], data = bball, main="Hobo Logger",
+     ylab="GDD")
+abline(h=mean(bball$bbhl.gdd), lwd=3)
+
+bball$urban <- ifelse(bball$site=="arb", 1, 0)
+modtest <- lmer(bbws.gdd ~ urban + (urban|species), data=bball)
+arm::display(modtest)
+
+modtest.hl <- lmer(bbhl.gdd ~ urban + (urban|species), data=bball)
+arm::display(modtest.hl)
+
+
 if(FALSE){
   #### Before moving on, let's look at the data a bit
   cols <- brewer.pal(n = 8, name = "Dark2")
@@ -154,13 +177,13 @@ datalist.gdd <- with(bball,
 )
 
 
-ws_urb_fake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
+ws_urb_buildfake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
                    iter = 4000, warmup=2000) ### 
 
-check_all_diagnostics(ws_urb_fake)
+check_all_diagnostics(ws_urb_buildfake)
 
-ws_urb_fake.sum <- summary(ws_urb_fake)$summary
+ws_urb_fake.sum <- summary(ws_urb_buildfake)$summary
 ws_urb_fake.sum[grep("mu_", rownames(ws_urb_fake.sum)),]
 ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
 
-save(ws_urb_fake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_sims_ncp.Rdata")
+save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
