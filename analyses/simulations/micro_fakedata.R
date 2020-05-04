@@ -13,137 +13,93 @@ options(stringsAsFactors = FALSE)
 ## Let's start with Question 1 first...
 #library(rethinking)
 library(RColorBrewer)
+library(viridis)
 library(lme4)
 library(ggplot2)
 library(dplyr)
+library(gridExtra)
+library(rstan)
 
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
-
-set.seed(12321)
 
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 mean(ws$gdd_bb, na.rm=TRUE) ## 292
 sd(ws$gdd_bb, na.rm = TRUE) ## 116
 
-cc <- read.csv("output/")
+
+use.urban = TRUE
+use.provenance = FALSE
+
+if(use.urban == TRUE & use.provenance == TRUE){
+  print("Error has occurred. Can't have both urban and provenance equal TRUE!")
+}
+
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-daysperyr <- 80 
-nspps <- 12 #12
+daysperyr <- 200 #### just to make sure we don't get any NAs
+nspps <- 12 
 ninds <- 10 
 nobs <- nspps*ninds
+nsites <- 2
 nmicros <- 10
 
+urbeffect <- -75
+urbsd <- 20 ### only used when using provenance
+
+fstar <- 250
+fstarspeciessd <- 20
+fstarindsd <- 10
+  
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11 ## based off weather station data
-sigma.arb <- 10 ## based off weather station data
+mean.microarb <- 2
+sigma.arb <- 8 
+sigma.microarb <- 1
 
 cc.hf <- 9  ## based off weather station data
-sigma.hf <- 11  ## based off weather station data
+mean.microhf <- 2
+sigma.hf <- 8  
+sigma.microhf <- 1
 
-provenance.arb <- round(rnorm(nobs, 42.5, 10), digits=2)
-provenance.hf <- 42.5
+source("simulations/micro_databuildfx.R") ### warning messages are okay - outdated package warning but still works
 
-fstar <- round(rnorm(nspps, 300, 75), digits=0)
-df.fstar <- as.data.frame(cbind(species=1:nspps, fstar, bb=rep("Y", nspps)))
-df.fstar$fstar <- as.numeric(df.fstar$fstar)
-
-# Step 2: find GDDs
-dailytemp.arb <- rnorm(daysperyr*nobs, cc.arb, sigma.arb) 
-dailytemp.hf <- rnorm(daysperyr*nobs, cc.hf, sigma.hf) 
-
-# Step 3: Make a data frame and get the mean temp per year (to double check the data)
-df.arb <- data.frame(cbind(doy=dayz, tmean=round(dailytemp.arb, digits=2), 
-                       species=as.character(rep(1:nspps, each=daysperyr)),
-                       ind=as.character(rep(1:ninds, each=daysperyr*nspps)),
-                       site="arb",
-                       provenance = rep(provenance.arb, each=daysperyr)))
-
-df.hf <- data.frame(cbind(doy=dayz, tmean=round(dailytemp.hf, digits=2), 
-                           species=as.character(rep(1:nspps, each=daysperyr)),
-                           ind=as.character(rep(1:ninds, each=daysperyr*nspps)),
-                           site="hf",
-                          provenance = provenance.hf))
-
-df <- full_join(df.arb, df.hf)
-df$tmean <- as.numeric(df$tmean)
-
-df$microsite <- paste0(df$site, df$ind)
-df$tmean.ws <- ave(df$tmean, df$doy, df$site)
+cols <-viridis_pal(option="viridis")(3)
+## Just a quick check on GDDs
+quartz()
+ggplot(df.fstar, aes(x=fstar.new)) + geom_histogram(aes(fill=site)) + theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site)))
 
 
-df$sp_ind <- paste(df$species, df$ind, sep="_")
+### Okay, first let's check on site level varition in temperature
+#### Before moving on, let's look at the data a bit
+ws <- ggplot(df, aes(x=tmean.ws)) + geom_histogram(aes(fill=site)) + theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site))) + ggtitle("Weather Station") +
+  coord_cartesian(xlim=c(-25, 42))
 
-df$gdd.ws <- ave(df$tmean.ws, df$sp_ind, df$site, FUN=cumsum)
-df$gdd.hl <- ave(df$tmean, df$sp_ind, df$microsite, FUN=cumsum)
-
-
-#### Now we find budburst day...
-# Step 4: Now, in a very slow, painful way I get the BB date
-df$bb.ws <- NA
-
-for(i in c(1:nrow(df))){ # This loop just makes a Yes/No vector for budburst
-  for(j in c(1:nrow(df.fstar))) 
-    if(df$species[i]==df.fstar$species[j] && df$gdd.ws[i]<df.fstar$fstar[j]){
-      df$bb.ws[i] <- "N"
-    } else if (df$species[i]==df.fstar$species[j] && df$gdd.ws[i]>=df.fstar$fstar[j]) {
-      df$bb.ws[i] <- "Y"
-    } else {
-      df$bb.ws[i] <- df$bb.ws[i]
-    }
-}
-
-
-df$bb.hl <- NA
-
-for(i in c(1:nrow(df))){ # This loop just makes a Yes/No vector for budburst
-  for(j in c(1:nrow(df.fstar))) 
-    if(df$species[i]==df.fstar$species[j] && df$gdd.hl[i]<df.fstar$fstar[j]){
-      df$bb.hl[i] <- "N"
-    } else if (df$species[i]==df.fstar$species[j] && df$gdd.hl[i]>=df.fstar$fstar[j]) {
-      df$bb.hl[i] <- "Y"
-    } else {
-      df$bb.hl[i] <- df$bb.hl[i]
-    }
-}
-
-df$doy <- as.numeric(df$doy)
-
-bbws <- df[(df$bb.ws=="Y"),]
-bbws <- subset(bbws, select=c("species", "ind", "sp_ind", "site", "microsite", "doy", "gdd.ws", "bb.ws"))
-bbws$bbws.doy <- ave(bbws$doy, bbws$sp_ind, bbws$site, FUN=min)
-bbws$bbws.gdd <- ave(bbws$gdd.ws, bbws$sp_ind, bbws$site, FUN=min)
-bbws$doy <- NULL
-bbws$gdd.ws <- NULL
-bbws$bb.ws <- NULL
-bbws <- bbws[!duplicated(bbws),]
-
-bbhl <- df[(df$bb.hl=="Y"),]
-bbhl <- subset(bbhl, select=c("species", "ind", "sp_ind", "site", "microsite", "doy", "gdd.hl", "bb.hl"))
-bbhl$bbhl.doy <- ave(bbhl$doy, bbhl$sp_ind, bbhl$microsite, FUN=min)
-bbhl$bbhl.gdd <- ave(bbhl$gdd.hl, bbhl$sp_ind, bbhl$microsite, FUN=min)
-bbhl$doy <- NULL
-bbhl$gdd.hl <- NULL
-bbhl$bb.hl <- NULL
-bbhl <- bbhl[!duplicated(bbhl),]
-
-bball <- full_join(bbws, bbhl)
-
-
+hl <- ggplot(df, aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site))) + ggtitle("Hobo Logger") +
+  coord_cartesian(xlim=c(-25, 42))
 
 quartz()
+grid.arrange(ws, hl, ncol=2)
+
+
+### Now let's look at GDD differences between methods
+quartz()
 par(mfrow=c(1,2))
-my.pal <- rep(brewer.pal(n = 8, name = "Dark2"), 2)
-my.pch <- rep(15:16, each=10)
-plot(bbws.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$species)], data = bball, main="Weather Station",
+my.pal <- viridis_pal(option="magma")(12)
+my.pch <- c(15:16)
+plot(bbws.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball, main="Weather Station",
      ylab="GDD")
 abline(h=mean(bball$bbws.gdd), lwd=3)
 
-plot(bbhl.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$species)], data = bball, main="Hobo Logger",
+plot(bbhl.gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball, main="Hobo Logger",
      ylab="GDD")
 abline(h=mean(bball$bbhl.gdd), lwd=3)
 
+
+### Next, we can take a quick glimpse at results
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
 modtest <- lmer(bbws.gdd ~ urban + (urban|species), data=bball)
 arm::display(modtest)
@@ -151,20 +107,14 @@ arm::display(modtest)
 modtest.hl <- lmer(bbhl.gdd ~ urban + (urban|species), data=bball)
 arm::display(modtest.hl)
 
-
 if(FALSE){
-  #### Before moving on, let's look at the data a bit
-  cols <- brewer.pal(n = 8, name = "Dark2")
-  
-  ggplot(df, aes(x=tmean.ws)) + geom_histogram(aes(fill=site)) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site)))
-  
-  ggplot(df, aes(x=tmean)) + geom_histogram(aes(fill=microsite)) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$microsite)))
+library(sjPlot)
+quartz()
+sjPlot::tab_model(modtest, modtest.hl)
 }
+ 
 
-################### Modelling time ######################
-library(rstan)
+#####And finally... it's modelling time!
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
 
 datalist.gdd <- with(bball, 
@@ -178,12 +128,43 @@ datalist.gdd <- with(bball,
 
 
 ws_urb_buildfake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
-                   iter = 4000, warmup=2000) ### 
+                   iter = 4000, warmup=2000, control=list(adapt_delta = 0.99)) ### 
 
-check_all_diagnostics(ws_urb_buildfake)
+#check_all_diagnostics(ws_urb_buildfake)
 
 ws_urb_fake.sum <- summary(ws_urb_buildfake)$summary
 ws_urb_fake.sum[grep("mu_", rownames(ws_urb_fake.sum)),]
 ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
 
-save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
+#save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
+
+
+
+
+datalist.gdd <- with(bball, 
+                     list(y = bbhl.gdd, 
+                          tx = urban,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(bball),
+                          n_sp = length(unique(bball$species))
+                     )
+)
+
+
+hl_urb_buildfake = stan('stan/urbanmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                        iter = 4000, warmup=2000, control=list(adapt_delta = 0.99)) ### 
+
+#check_all_diagnostics(hl_urb_buildfake)
+
+hl_urb_fake.sum <- summary(hl_urb_buildfake)$summary
+hl_urb_fake.sum[grep("mu_", rownames(hl_urb_fake.sum)),]
+hl_urb_fake.sum[grep("sigma_", rownames(hl_urb_fake.sum)),]
+
+#save(hl_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/hl_urban_stan_builtsims_ncp.Rdata")
+
+### Compare side by side
+ws_urb_fake.sum[grep("mu_", rownames(ws_urb_fake.sum)),]
+hl_urb_fake.sum[grep("mu_", rownames(hl_urb_fake.sum)),]
+
+ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
+hl_urb_fake.sum[grep("sigma_", rownames(hl_urb_fake.sum)),]
