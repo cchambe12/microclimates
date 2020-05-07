@@ -35,17 +35,27 @@ if(use.urban == TRUE & use.provenance == TRUE){
   print("Error has occurred. Can't have both urban and provenance equal TRUE!")
 }
 
+if(use.urban == FALSE & use.provenance == FALSE){
+  print("Error has occurred. Can't have both urban and provenance equal TRUE!")
+}
+
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-daysperyr <- 200 #### just to make sure we don't get any NAs
+daysperyr <- 250 #### just to make sure we don't get any NAs
 nspps <- 12 
 ninds <- 10 
 nobs <- nspps*ninds
 nsites <- 2
 nmicros <- 10
 
+if(use.urban==TRUE){
 urbeffect <- -75
-urbsd <- 20 ### only used when using provenance
+#urbsd <- 20 ### only used when using provenance
+}
+
+if(use.provenance==TRUE){
+proveffect <- -10
+}
 
 fstar <- 250
 fstarspeciessd <- 20
@@ -100,12 +110,23 @@ abline(h=mean(bball$bbhl.gdd), lwd=3)
 
 
 ### Next, we can take a quick glimpse at results
+if(use.urban==TRUE){
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
 modtest <- lmer(bbws.gdd ~ urban + (urban|species), data=bball)
 arm::display(modtest)
 
 modtest.hl <- lmer(bbhl.gdd ~ urban + (urban|species), data=bball)
 arm::display(modtest.hl)
+}
+
+if(use.provenance==TRUE){
+  bball$provenance <- as.numeric(bball$provenance)
+  modtest <- lmer(bbws.gdd ~ provenance + (provenance|species), data=bball)
+  arm::display(modtest)
+  
+  modtest.hl <- lmer(bbhl.gdd ~ provenance + (provenance|species), data=bball)
+  arm::display(modtest.hl)
+}
 
 if(FALSE){
 library(sjPlot)
@@ -115,6 +136,7 @@ sjPlot::tab_model(modtest, modtest.hl)
  
 
 #####And finally... it's modelling time!
+if(use.urban==TRUE){
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
 
 datalist.gdd <- with(bball, 
@@ -168,3 +190,61 @@ hl_urb_fake.sum[grep("mu_", rownames(hl_urb_fake.sum)),]
 
 ws_urb_fake.sum[grep("sigma_", rownames(ws_urb_fake.sum)),]
 hl_urb_fake.sum[grep("sigma_", rownames(hl_urb_fake.sum)),]
+}
+
+
+##### Provenance Model!
+if(use.provenance==TRUE){
+  bball$provenance <- as.numeric(bball$provenance)
+  
+  datalist.gdd <- with(bball, 
+                       list(y = bbws.gdd, 
+                            prov = provenance,
+                            sp = as.numeric(as.factor(species)),
+                            N = nrow(bball),
+                            n_sp = length(unique(bball$species))
+                       )
+  )
+  
+  
+  ws_prov_buildfake = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                          iter = 4000, warmup=2000, control=list(adapt_delta = 0.99)) ### BAD MODEL!!!
+  
+  #check_all_diagnostics(ws_prov_buildfake)
+  
+  ws_prov_fake.sum <- summary(ws_prov_buildfake)$summary
+  ws_prov_fake.sum[grep("mu_", rownames(ws_prov_fake.sum)),]
+  ws_prov_fake.sum[grep("sigma_", rownames(ws_prov_fake.sum)),]
+  
+  #save(ws_prov_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_prov_stan_builtsims_ncp.Rdata")
+  
+  
+
+  datalist.gdd <- with(bball, 
+                       list(y = bbhl.gdd, 
+                            prov = provenance,
+                            sp = as.numeric(as.factor(species)),
+                            N = nrow(bball),
+                            n_sp = length(unique(bball$species))
+                       )
+  )
+  
+  
+  hl_prov_buildfake = stan('stan/provmodel_stan_normal_ncp.stan', data = datalist.gdd,
+                          iter = 4000, warmup=2000, control=list(adapt_delta = 0.99)) ### Better but still bad
+  
+  #check_all_diagnostics(hl_prov_buildfake)
+  
+  hl_prov_fake.sum <- summary(hl_prov_buildfake)$summary
+  hl_prov_fake.sum[grep("mu_", rownames(hl_prov_fake.sum)),]
+  hl_prov_fake.sum[grep("sigma_", rownames(hl_prov_fake.sum)),]
+  
+  #save(hl_prov_buildfake, file="~/Documents/git/microclimates/analyses/stan/hl_prov_stan_builtsims_ncp.Rdata")
+  
+  ### Compare side by side
+  ws_prov_fake.sum[grep("mu_", rownames(ws_prov_fake.sum)),]
+  hl_prov_fake.sum[grep("mu_", rownames(hl_prov_fake.sum)),]
+  
+  ws_prov_fake.sum[grep("sigma_", rownames(ws_prov_fake.sum)),]
+  hl_prov_fake.sum[grep("sigma_", rownames(hl_prov_fake.sum)),]
+}

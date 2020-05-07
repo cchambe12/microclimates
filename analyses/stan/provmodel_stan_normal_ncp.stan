@@ -42,14 +42,14 @@ model {
 
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	//b_prov ~ normal(mu_b_prov_sp, sigma_b_prov_sp);  
-	      b_prov_ncp ~ normal(0,200);
-	      sigma_b_prov_ncp ~ normal(0, 100);
+	      b_prov_ncp ~ normal(0,20);
+	      sigma_b_prov_ncp ~ normal(0, 10);
 
         mu_a_sp ~ normal(400, 200);
         sigma_a_sp ~ normal(0, 200);
 
-        mu_b_prov_sp ~ normal(0, 200);
-        sigma_b_prov_sp ~ normal(0, 100);
+        mu_b_prov_sp ~ normal(0, 20);
+        sigma_b_prov_sp ~ normal(0, 10);
 
 	y ~ normal(yhat, sigma_y);
 
