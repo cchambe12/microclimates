@@ -49,7 +49,7 @@ if(use.urban == FALSE & use.provenance == FALSE){
 
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-daysperyr <- 365 #### just to make sure we don't get any NAs
+daysperyr <- 200 #### just to make sure we don't get any NAs
 nspps <- 20 
 ninds <- 10 
 nobs <- nspps*ninds

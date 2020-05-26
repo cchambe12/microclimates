@@ -34,8 +34,8 @@ mean(ws$budburst[ws$type=="Harvard Forest"]) ## 132.75
 mean(ws$budburst[ws$type=="Treespotters"]) ## 112.45
 }
 
-use.urban = FALSE
-use.provenance = TRUE
+use.urban = TRUE
+use.provenance = FALSE
 
 if(use.urban == TRUE & use.provenance == TRUE){
   print("Error has occurred. Can't have both urban and provenance equal TRUE!")
@@ -55,10 +55,12 @@ nsites <- 2
 nmicros <- 10
 nmethods <- 2 ## weather station and hobo logger to start (want to eventually add in gridded climate data)
 
+if(use.urban==TRUE){
 urbeffect <- -50  ### mu_b_tx_sp
-urbsd <- 10 ## sigma_b_tx_sp
+urbsd <- 0 ## sigma_b_tx_sp
 methodeffect <- 100 ## mu_b_method_sp
-methodsd <- 20 ## sigma_b_method_sp
+methodsd <- 0 ## sigma_b_method_sp
+}
 
 if(use.provenance==TRUE){
 proveffect <- -5
@@ -73,12 +75,12 @@ fstarindsd <- 20 ## sigma_y
 
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11 ## based off weather station data
-microarb.effect <- -2
+microarb.effect <- -5
 sigma.arb <- 2 
-microsigmaarb.effect <- 1   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
+microsigmaarb.effect <- 4   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 cc.hf <- 9  ## based off weather station data
-microhf.effect <- -4
+microhf.effect <- -5
 sigma.hf <- 2  
 microsigmahf.effect <- 4  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
@@ -196,7 +198,7 @@ if(use.provenance==TRUE){
   
   provmethod_fake.sum <- summary(provmethod_fake)$summary
   provmethod_fake.sum[grep("mu_", rownames(provmethod_fake.sum)),]
-  provmethod_fake.sum[grep("sigma_", rownames(provmethod_fake.sum)),]
+  provmethod_fake.sum[grep("sigma_", rownames(provmethod_fake.sum))[1:4],]
   
   #save(ws_prov_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_prov_stan_builtsims_ncp.Rdata")
 }  
