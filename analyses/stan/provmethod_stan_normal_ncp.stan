@@ -37,7 +37,7 @@ transformed parameters {
   vector[n_sp] b_method;
   vector[N] yhat;
 
-   b_prov = mu_b_prov_sp + sigma_prov_sp*b_prov_ncp;
+   b_prov = mu_b_prov_sp + sigma_prov_ncp*b_prov_ncp;
    b_method = mu_b_method_sp + sigma_method_ncp*b_method_ncp; 
   
        	for(i in 1:N){

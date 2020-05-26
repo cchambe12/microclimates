@@ -9,53 +9,45 @@ set.seed(12321)
 if(use.urban==TRUE){
   
   spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
+  provenance.arb <- round(rnorm(nobs, 42.5, 5), digits=2)
   provenance.hf <- 42.5
-  provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
   
   df.prov <- as.data.frame(cbind(sp_ind = rep(spind, nsites), 
-                           site = rep(c("arb", "hf"), each=nobs),
-                           provenance = c(provenance.arb, rep(provenance.hf, 200))))
+                                 site = rep(c("arb", "hf"), each=nobs),
+                                 provenance = c(provenance.arb, rep(provenance.hf, 200))))
   
   fstar <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
   df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
                                   fstar=rep(fstar, each=ninds*nsites*nmethods),
-                                site=rep(c("arb", "hf"), each=ninds*nmethods),
-                                method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
+                                  site=rep(c("arb", "hf"), each=ninds*nmethods),
+                                  method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
   
   df.fstar$fstar <- as.numeric(df.fstar$fstar)
   df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
   
   df.fstar <- full_join(df.fstar, df.prov)
   
-  urbeffectall <- rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], urbeffect, urbsd)
-  methodeffectall <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="hf"], methodeffect, methodsd)
-  urbandmethod <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="arb"], methodeffect + urbeffect, methodsd + urbsd)
+  urbeffectall <- rnorm(df.fstar$inds[df.fstar$site=="arb"], urbeffect, urbsd)
+  methodeffectall <- rnorm(df.fstar$inds[df.fstar$method=="ws"], methodeffect, methodsd)
   
   for(i in c(1:nrow(df.fstar))){
     if(df.fstar$site[i]=="hf" && df.fstar$method[i]=="hobo") {
-    
+      
       df.fstar$fstar.new[df.fstar$site=="hf" & df.fstar$method=="hobo"] <- 
-          rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="hobo"], 
+        rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="hobo"], 
               df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="hobo"], fstarindsd)
-    
-    } else if (df.fstar$site[i]=="arb" && df.fstar$method[i]=="hobo") {
-    
-      df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="hobo"] <- 
-          rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], 
-              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="hobo"] + urbeffectall, fstarindsd)
-    
-    } else if (df.fstar$site[i]=="hf" && df.fstar$method[i]=="ws") {
-    
-      df.fstar$fstar.new[df.fstar$site=="hf" & df.fstar$method=="ws"] <- 
-          rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="ws"], 
-              df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="ws"] + methodeffectall, fstarindsd)
-    
-    } else if (df.fstar$site[i]=="arb" && df.fstar$method[i]=="ws") {
-    
-      df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="ws"] <- 
-          rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="ws"], 
-              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + urbandmethod, fstarindsd)
-    
+      
+    } else if (df.fstar$site[i]=="arb") {
+      
+      df.fstar$fstar.new[df.fstar$site=="arb"] <- 
+        rnorm(df.fstar$inds[df.fstar$site=="arb"], 
+              df.fstar$fstar[df.fstar$site=="arb"] + urbeffectall, fstarindsd)
+      
+    } else if (df.fstar$method[i]=="ws") {
+      
+      df.fstar$fstar.new[df.fstar$method=="ws"] <- 
+        rnorm(df.fstar$inds[df.fstar$method=="ws"], 
+              df.fstar$fstar[df.fstar$method=="ws"] + methodeffectall, fstarindsd)
     }
   }
   
@@ -64,8 +56,8 @@ if(use.urban==TRUE){
 if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
   
   spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
+  provenance.arb <- round(rnorm(nobs, 42.5, 10), digits=2)
   provenance.hf <- 42.5
-  provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
   
   df.prov <- as.data.frame(cbind(sp_ind = rep(spind, nsites), 
                                  site = rep(c("arb", "hf"), each=nobs),
@@ -86,12 +78,6 @@ if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
   #lowlat <- min(df.fstar$provenance)
   df.fstar$prov.adj <- ifelse(df.fstar$site!=provenance.hf, df.fstar$provenance-provenance.hf, 0)
   
-  proveffectall <- rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], 
-                         (proveffect*df.fstar$prov.adj[df.fstar$site=="arb" & df.fstar$method=="hobo"]), provsd)
-  methodeffectall <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="hf"], methodeffect, methodsd)
-  provandmethod <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="arb"], methodeffect + 
-                           (proveffect*df.fstar$prov.adj[df.fstar$method=="ws" & df.fstar$site=="arb"]), methodsd + provsd)
-  
   for(i in c(1:nrow(df.fstar))){
     if(df.fstar$site[i]=="hf" && df.fstar$method[i]=="hobo") {
       
@@ -103,19 +89,21 @@ if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
       
       df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="hobo"] <- 
         rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], 
-              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="hobo"] + proveffectall, fstarindsd)
+              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="hobo"] + 
+                (proveffect*df.fstar$prov.adj[df.fstar$site=="arb" & df.fstar$method=="hobo"]), fstarindsd + provsd)
       
     } else if (df.fstar$site[i]=="hf" && df.fstar$method[i]=="ws") {
       
       df.fstar$fstar.new[df.fstar$site=="hf" & df.fstar$method=="ws"] <- 
         rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="ws"], 
-              df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="ws"] + methodeffect, fstarindsd)
+              df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="ws"] + methodeffect, fstarindsd + methodsd)
       
     } else if (df.fstar$site[i]=="arb" && df.fstar$method[i]=="ws") {
       
       df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="ws"] <- 
         rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="ws"], 
-              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + provandmethod, fstarindsd)
+              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + methodeffect + 
+                (proveffect*df.fstar$prov.adj[df.fstar$site=="arb" & df.fstar$method=="ws"]), fstarindsd + provsd + methodsd)
       
     }
   }
@@ -125,7 +113,7 @@ if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
 
 # Step 2: find GDDs
 
-  ## 2a) Arboretum climate data
+## 2a) Arboretum climate data
 arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
                       species = as.character(rep(c(1:nspps), each=daysperyr*nmicros*nmethods)), 
                       day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
@@ -136,7 +124,7 @@ arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),n
 arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(arbclim$day, cc.arb + microarb.effect, sigma.arb + microsigmaarb.effect), rnorm(arbclim$day, cc.arb, sigma.arb)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
 
 
-  ## 2b) Harvard Forest climate data
+## 2b) Harvard Forest climate data
 hfclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
                      species = as.character(rep(c(1:nspps), each=daysperyr*nmicros*nmethods)), 
                      day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
