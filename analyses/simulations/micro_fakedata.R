@@ -19,10 +19,11 @@ library(ggplot2)
 library(gridExtra)
 library(rstan)
 
-if(FALSE){
+
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
+if(FALSE){
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 mean(ws$gdd_bb, na.rm=TRUE) ## 292
 sd(ws$gdd_bb, na.rm = TRUE) ## 116
@@ -55,30 +56,33 @@ nmicros <- 10
 nmethods <- 2 ## weather station and hobo logger to start (want to eventually add in gridded climate data)
 
 if(use.urban==TRUE){
-urbeffect <- -50  ### so arb is 75 GDD less 
-urbsd <- 5
-methodeffect <- 100 ## weather station adds 100 GDD
-methodsd <- 10
+urbeffect <- -50  ### mu_b_tx_sp
+urbsd <- 0 ## sigma_b_tx_sp
+methodeffect <- 100 ## mu_b_method_sp
+methodsd <- 0 ## sigma_b_method_sp
 }
 
 if(use.provenance==TRUE){
 proveffect <- -10
+provsd <- 0 ## sigma_b_tx_sp
+methodeffect <- 100 ## mu_b_method_sp
+methodsd <- 0 ## sigma_b_method_sp
 }
 
-fstar <- 400 ## day of budburst now (this should be intercept)
-fstarspeciessd <- 50 ### This should be sigma_a_sp
-fstarindsd <- 20 ## this should be sigma_y
+fstar <- 400 ## day of budburst now (this should be mu_a_sp)
+fstarspeciessd <- 50 ### sigma_a_sp
+fstarindsd <- 20 ## sigma_y
   
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11 ## based off weather station data
-cc.arbmicro <- 9
+microarb.effect <- 0
 sigma.arb <- 2 
-sigma.arbmicro <- 4   #### by keeping the sigmas the same for the microsites we assume that the microclimatic effects are the same across sites
+microsigmaarb.effect <- 4   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 cc.hf <- 9  ## based off weather station data
-cc.hfmicro <- 7
+microhf.effect <- 0
 sigma.hf <- 2  
-sigma.hfmicro <- 4   #### by keeping the sigmas the same for the microsites we assume that the microclimatic effects are the same across sites
+microsigmahf.effect <- 4   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 source("simulations/micro_databuildfx.R") ### warning messages are okay - outdated package warning but still works
 
@@ -120,13 +124,14 @@ abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
 ### Next, we can take a quick glimpse at results
 if(use.urban==TRUE){
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
-modtest <- lmer(gdd ~ urban + (urban|species), data=bball[(bball$method=="ws"),])
-arm::display(modtest)
+bball$type <- ifelse(bball$method=="ws", 1, 0)
+#modtest <- lmer(gdd ~ urban + (urban|species), data=bball[(bball$method=="ws"),])
+#arm::display(modtest)
 
-modtest.hl <- lmer(gdd ~ urban + (urban|species), data=bball[(bball$method=="hobo"),])
-arm::display(modtest.hl)
+#modtest.hl <- lmer(gdd ~ urban + (urban|species), data=bball[(bball$method=="hobo"),])
+#arm::display(modtest.hl)
 
-modall <- lmer(gdd ~ urban + method + (urban + method|species), data=bball)
+modall <- lmer(gdd ~ urban + type + (urban + type|species), data=bball)
 arm::display(modall)
 }
 
@@ -153,7 +158,7 @@ bball$type <- ifelse(bball$method=="ws", 1, 0)
 datalist.gdd <- with(bball, 
                      list(y = gdd, 
                           tx = urban,
-                          method = as.numeric(as.factor(type)),
+                          method = type,
                           sp = as.numeric(as.factor(species)),
                           N = nrow(bball),
                           n_sp = length(unique(bball$species))
@@ -163,13 +168,13 @@ datalist.gdd <- with(bball,
 
 if(use.urban==TRUE){
 urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
-                   iter = 4000, warmup=2000, control=list(adapt_delta=0.9)) ### 
+                   iter = 1000, warmup=500, chains=2)#, control=list(adapt_delta=0.99)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
 
 urbmethod_fake <- summary(urbmethod_fake)$summary
 urbmethod_fake[grep("mu_", rownames(urbmethod_fake)),]
-urbmethod_fake[grep("sigma_", rownames(urbmethod_fake)),]
+urbmethod_fake[grep("sigma_", rownames(urbmethod_fake))[1:4],]
 
 #save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
 }

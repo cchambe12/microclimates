@@ -3,18 +3,17 @@
 // Level: Species on INTERCEPTS and SLOPES
 
 data {
-  
 	int<lower=1> N;
 	int<lower=1> n_sp;
 	int<lower=1, upper=n_sp> sp[N];
 	vector[N] y; 		// response
 	vector[N] tx; 	// urban predictor
 	vector[N] method; 	// method predictor
+	
 		
 	}
 
 parameters {
-  
   real mu_a_sp;   
   real mu_b_tx_sp;     
   real mu_b_method_sp;
@@ -22,48 +21,39 @@ parameters {
   real<lower=0> sigma_b_tx_sp;
   real<lower=0> sigma_b_method_sp;
   real<lower=0> sigma_y; 
-  
+
   real a_sp[n_sp]; // intercept for species
-  
-  vector[n_sp] b_tx_ncp; // NCP slope of urban effect
-  vector[n_sp] b_method_ncp; // NCP slope of method effect
-  
-  real<lower=0> sigma_tx_ncp;  
-  real<lower=0> sigma_method_ncp;
+  real b_tx[n_sp]; // slope of urban effect 
+  real b_method[n_sp]; // slope of urban effect 
 
 	}
 
 transformed parameters {
-  vector[n_sp] b_tx; 
-  vector[n_sp] b_method;
   vector[N] yhat;
-
-  b_tx = mu_b_tx_sp + sigma_tx_ncp*b_tx_ncp; 
-  b_method = mu_b_method_sp + sigma_method_ncp*b_method_ncp; 
-       	
-  for(i in 1:N){    
-    yhat[i] = a_sp[sp[i]] + // indexed with species
-		          b_tx[sp[i]] * tx[i] + 
-		          b_method[sp[i]] * method[i];
-	      }
-	      
+  
+  for(i in 1:N){
+            yhat[i] = a_sp[sp[i]] + // indexed with species
+		b_tx[sp[i]] * tx[i] + 
+		b_method[sp[i]] * method[i];
+	}
 }
 
 model {
 
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	
-	b_tx ~ normal(0, 75);
-	b_method ~ normal(0, 150);
+	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);
+	b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
 	      
-        mu_a_sp ~ normal(400, 50);
-        sigma_a_sp ~ normal(0, 50);
+        mu_a_sp ~ normal(400, 100);
+        sigma_a_sp ~ normal(0, 10);
 
         mu_b_tx_sp ~ normal(0, 75);
         sigma_b_tx_sp ~ normal(0, 10);
         
         mu_b_method_sp ~ normal(0, 150);
-        sigma_b_method_sp ~ normal(0, 10);
+        sigma_b_method_sp ~ normal(0, 20);
+        
+        
 	      
 	y ~ normal(yhat, sigma_y);
 

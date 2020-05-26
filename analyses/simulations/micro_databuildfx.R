@@ -12,7 +12,8 @@ if(use.urban==TRUE){
   provenance.hf <- 42.5
   
   fstar <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
-  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), fstar=rep(fstar, each=ninds*nsites*nmethods),
+  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
+                                  fstar=rep(fstar, each=ninds*nsites*nmethods),
                                 site=rep(c("arb", "hf"), each=ninds*nmethods),
                                 method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
   df.fstar$fstar <- as.numeric(df.fstar$fstar)
@@ -41,7 +42,7 @@ if(use.urban==TRUE){
     
       df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="ws"] <- 
           rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="ws"], 
-              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + methodeffect + urbeffect, fstarindsd + methodsd + urbsd)
+              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + methodeffect + urbeffect, fstarindsd + urbsd + methodsd)
     
     }
   }
@@ -53,17 +54,43 @@ if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
   provenance.hf <- 42.5
   
   fstar <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
-  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites), inds=1:ninds, fstar=rep(fstar, each=ninds*nsites),
-                                  site=rep(c("arb", "hf"), each=ninds)))
+  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
+                                  fstar=rep(fstar, each=ninds*nsites*nmethods),
+                                  site=rep(c("arb", "hf"), each=ninds*nmethods),
+                                  method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
   df.fstar$fstar <- as.numeric(df.fstar$fstar)
   df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
   
   df.fstar$provenance <- ifelse(df.fstar$site=="hf", provenance.hf, provenance.arb)
   df.fstar$prov.adj <- ifelse(df.fstar$provenance!=provenance.hf, df.fstar$provenance-provenance.hf, 0)
   
-  df.fstar$fstar.new <- round(ifelse(df.fstar$site=="hf", rnorm(df.fstar$inds, df.fstar$fstar, fstarindsd), 
-                                     rnorm(df.fstar$inds, df.fstar$fstar+(df.fstar$prov.adj*proveffect), fstarindsd)), digits=0)
-  
+  for(i in c(1:nrow(df.fstar))){
+    if(df.fstar$site[i]=="hf" && df.fstar$method[i]=="hobo") {
+      
+      df.fstar$fstar.new[df.fstar$site=="hf" & df.fstar$method=="hobo"] <- 
+        rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="hobo"], 
+              df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="hobo"], fstarindsd)
+      
+    } else if (df.fstar$site[i]=="arb" && df.fstar$method[i]=="hobo") {
+      
+      df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="hobo"] <- 
+        rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], 
+              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="hobo"] + (df.fstar$prov.adj*proveffect), fstarindsd + provsd)
+      
+    } else if (df.fstar$site[i]=="hf" && df.fstar$method[i]=="ws") {
+      
+      df.fstar$fstar.new[df.fstar$site=="hf" & df.fstar$method=="ws"] <- 
+        rnorm(df.fstar$inds[df.fstar$site=="hf" & df.fstar$method=="ws"], 
+              df.fstar$fstar[df.fstar$site=="hf" & df.fstar$method=="ws"] + methodeffect, fstarindsd + methodsd)
+      
+    } else if (df.fstar$site[i]=="arb" && df.fstar$method[i]=="ws") {
+      
+      df.fstar$fstar.new[df.fstar$site=="arb" & df.fstar$method=="ws"] <- 
+        rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="ws"], 
+              df.fstar$fstar[df.fstar$site=="arb" & df.fstar$method=="ws"] + methodeffect + (df.fstar$prov.adj*urbeffect), fstarindsd + provsd + methodsd)
+      
+    }
+  }
   
 }
 
@@ -78,7 +105,7 @@ arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),n
                       site = as.character("arb"))
 
 
-arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(arbclim$day, cc.arbmicro, sigma.arbmicro), rnorm(arbclim$day, cc.arb, sigma.arb)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
+arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(arbclim$day, cc.arb + microarb.effect, sigma.arb + microsigmaarb.effect), rnorm(arbclim$day, cc.arb, sigma.arb)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
 
 
   ## 2b) Harvard Forest climate data
@@ -89,7 +116,7 @@ hfclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),ns
                      site = as.character("hf"))
 
 
-hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hfmicro, sigma.hfmicro), rnorm(hfclim$day, cc.hf, sigma.hf)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
+hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf + microhf.effect, sigma.hf + microsigmahf.effect), rnorm(hfclim$day, cc.hf, sigma.hf)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
 
 # Step 3: Make a data frame and get the mean temp per year (to double check the data)
 df <- full_join(arbclim, hfclim)
