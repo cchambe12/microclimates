@@ -4,11 +4,12 @@
 
 data {
 	int<lower=1> N;
+	int<lower=1> K;
 	int<lower=1> n_sp;
 	int<lower=1, upper=n_sp> sp[N];
-	vector[N] y; 		// response
-	vector[N] tx; 	// urban predictor
-	vector[N] method; 	// method predictor
+	real y[N]; 		// response
+	vector[N] tx[K]; 	// urban predictor
+	//vector[N] method; 	// method predictor
 	
 		
 	}
@@ -59,7 +60,7 @@ model {
 
 }
 
-generated quantities{
+/*generated quantities{
    real y_ppc[N];
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
@@ -68,4 +69,4 @@ generated quantities{
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
-}
+}*/

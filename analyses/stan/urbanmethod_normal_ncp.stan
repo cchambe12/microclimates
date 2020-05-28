@@ -25,22 +25,17 @@ parameters {
   
   real a_sp[n_sp]; // intercept for species
   
-  vector[n_sp] b_tx_ncp; // NCP slope of urban effect
-  vector[n_sp] b_method_ncp; // NCP slope of method effect
+  vector[n_sp] b_tx_ncp; // slope of urban effect 
+  vector[n_sp] b_method_ncp; // slope of method effect 
   
-  real<lower=0> sigma_tx_ncp;  
-  real<lower=0> sigma_method_ncp;
-
 	}
 
 transformed parameters {
-  vector[n_sp] b_tx; 
-  vector[n_sp] b_method;
   vector[N] yhat;
 
-  b_tx = mu_b_tx_sp + sigma_tx_ncp*b_tx_ncp; 
-  b_method = mu_b_method_sp + sigma_method_ncp*b_method_ncp; 
-       	
+  vector[n_sp] b_tx = mu_b_tx_sp + sigma_b_tx_sp*b_tx_ncp; 
+  vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
+  
   for(i in 1:N){    
     yhat[i] = a_sp[sp[i]] + // indexed with species
 		          b_tx[sp[i]] * tx[i] + 
@@ -50,21 +45,20 @@ transformed parameters {
 }
 
 model {
-
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	target += normal_lpdf(b_tx | 0, 75);
-	target += normal_lpdf(b_method | 0, 150);
+	b_tx_ncp ~ normal(0, 1);
+	b_method_ncp ~ normal(0, 1);
 	      
         mu_a_sp ~ normal(400, 50);
         sigma_a_sp ~ normal(0, 50);
 
-        //mu_b_tx_sp ~ normal(0, 75);
-        sigma_b_tx_sp ~ normal(0, 10);
+        mu_b_tx_sp ~ normal(0, 75);
+        sigma_b_tx_sp ~ normal(0, 20);
         
-        //mu_b_method_sp ~ normal(0, 150);
-        sigma_b_method_sp ~ normal(0, 10);
+        mu_b_method_sp ~ normal(0, 150);
+        sigma_b_method_sp ~ normal(0, 20);
         
-        //sigma_y ~ normal(0, 100);
+        sigma_y ~ normal(0, 50);
 	      
 	y ~ normal(yhat, sigma_y);
 
