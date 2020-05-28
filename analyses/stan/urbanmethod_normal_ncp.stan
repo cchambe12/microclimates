@@ -64,7 +64,7 @@ model {
 
 }
 
-/*generated quantities{
+generated quantities{
    real y_ppc[N];
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
@@ -73,4 +73,4 @@ model {
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
-}*/
+}
