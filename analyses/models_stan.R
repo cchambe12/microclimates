@@ -12,79 +12,39 @@ options(stringsAsFactors = FALSE)
 # 2) GDDlo ~ urban + (urban|species) - do once with weather station data and once with hobo logger data
 
 ## Let's start with Question 1 first...
-library(bayesplot) ## for plotting
-library(egg) ## for plotting
 library(shinystan)
-library(rstanarm)
 library(rstan)
-library(brms)
 
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
-source("source/stan_utility.R")
+#source("source/stan_utility.R")
 
-ws <- read.csv("output/fakedata_ws.csv")
-hobo <- read.csv("output/fakedata_hl.csv")
+urb <- read.csv("output/testdata_urbmethod.csv")
 
-if(FALSE){
-datalist.ws <- with(ws, 
-                       list(y = gdd, 
-                            sp = as.numeric(as.factor(species)),
-                            N = nrow(ws),
-                            n_sp = length(unique(ws$species))
-                       )
+#yreal <- urb$gdd
+
+datalist.urb <- with(urb, 
+                     list(y = gdd, 
+                          tx = urban,
+                          method = method,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(urb),
+                          n_sp = length(unique(species))
+                     )
 )
 
 
+urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.urb,
+                        iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+  
+#check_all_diagnostics(ws_urb_buildfake)
+  
+urbmethod_fakesum <- summary(urbmethod_fake)$summary
+urbmethod_fakesum[grep("mu_", rownames(urbmethod_fakesum)),]
+urbmethod_fakesum[grep("sigma_", rownames(urbmethod_fakesum))[1:4],]
 
-ws_fake = stan('stan/weather_stan_normal.stan', data = datalist.ws,
-                   iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
-
-
-get_prior(gdd ~ 1 + (1|species), data=ws)
-
-ws_fake_brms <- brm(gdd ~ 1 + (1|species),  
-               data=ws, chains=4,family=gaussian(), iter = 4000, warmup=2500,
-               prior = prior(normal(700, 200), class = "Intercept") + prior(normal(0, 200), class = "sd"))
-
-mcmc_areas(ws_fake_brms)
-pp_check(ws_fake_brms)
-
-
-check_all_diagnostics(ws_fake)
-
-ws_fake.sum <- summary(ws_fake)$summary
-ws_fake.sum[grep("mu_", rownames(ws_fake.sum)),]
-ws_fake.sum[grep("sigma_", rownames(ws_fake.sum)),]
-
-launch_shinystan(ws_fake)
-
-datalist.hl <- with(hl, 
-                    list(y = gdd, 
-                         sp = as.numeric(as.factor(species)),
-                         N = nrow(hl),
-                         n_sp = length(unique(hl$species))
-                    )
-)
-
-
-
-hl_fake = stan('stan/hobo_stan_normal.stan', data = datalist.hl,
-               iter = 5000, warmup=2000, control=list(max_treedepth = 15,adapt_delta = 0.99)) ### 
-
-
-
-check_all_diagnostics(hl_fake)
-
-hl_fake.sum <- summary(hl_fake)$summary
-hl_fake.sum[grep("mu_", rownames(hl_fake.sum)),]
-hl_fake.sum[grep("sigma_", rownames(hl_fake.sum)),]
-
-launch_shinystan(hl_fake)
-}
-
-
+launch_shinystan(urbmethod_fake)  
 
 ################################################################################################
 ################################ URBAN MODELS NOW!! ############################################

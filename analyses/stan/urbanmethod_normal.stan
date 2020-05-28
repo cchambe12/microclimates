@@ -32,14 +32,14 @@ transformed parameters {
   vector[N] yhat;
   
   for(i in 1:N){
-            yhat[i] = a_sp[sp[i]] + // indexed with species
+          yhat[i] = a_sp[sp[i]] + // indexed with species
 		b_tx[sp[i]] * tx[i] + 
 		b_method[sp[i]] * method[i];
 	}
+	
 }
 
 model {
-
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	b_tx ~ normal(mu_b_tx_sp, sigma_b_tx_sp);
 	b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
@@ -53,13 +53,13 @@ model {
         mu_b_method_sp ~ normal(0, 150);
         sigma_b_method_sp ~ normal(0, 20);
         
+        sigma_y ~ normal(0, 100);
         
-	      
-	y ~ normal(yhat, sigma_y);
+        y ~ normal(yhat, sigma_y);
 
 }
 
-generated quantities{
+/*generated quantities{
    real y_ppc[N];
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
@@ -68,4 +68,4 @@ generated quantities{
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
-}
+}*/
