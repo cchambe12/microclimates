@@ -20,7 +20,7 @@ setwd("~/Documents/git/microclimates/analyses/")
 
 #source("source/stan_utility.R")
 
-urb <- read.csv("output/testdata_urbmethod.csv")
+urb <- read.csv("output/testdata_urbmethod_intrxn.csv")
 
 #yreal <- urb$gdd
 
@@ -35,24 +35,27 @@ datalist.gdd <- with(urb,
 )
 
 
-urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
-                        iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+#urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
+ #                       iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+
+urbmethod_fake_intrxn = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                      iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
   
 #check_all_diagnostics(ws_urb_buildfake)
   
-urbmethod_fakesum <- summary(urbmethod_fake)$summary
+urbmethod_fakesum <- summary(urbmethod_fake_intrxn)$summary
 urbmethod_fakesum[grep("mu_", rownames(urbmethod_fakesum)),]
 urbmethod_fakesum[grep("sigma_", rownames(urbmethod_fakesum)),]
 
 yraw <- urb$gdd
 
-launch_shinystan(urbmethod_fake)  
+launch_shinystan(urbmethod_fake_intrxn)  
 
 #### Now with real data
-ws <- read.csv("output/clean_gdd_bbanddvr.csv")
+ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 ws$method <- 1
 
-ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species"))
+ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
 ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
 ws_urb <- ws_urb[(ws_urb$year=="2019"),]
 
@@ -91,7 +94,7 @@ datalist.gdd <- with(bball.stan,
 )
 
 
-urbmethod = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
+urbmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                       iter = 4000, warmup=2500, control=list(adapt_delta=0.90)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
@@ -99,5 +102,7 @@ urbmethod = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
 urbmethod_sum <- summary(urbmethod)$summary
 urbmethod_sum[grep("mu_", rownames(urbmethod_sum)),]
 urbmethod_sum[grep("sigma_", rownames(urbmethod_sum)),]
+
+yraw <- na.omit(bball$gdd_bb)
 
 launch_shinystan(urbmethod)

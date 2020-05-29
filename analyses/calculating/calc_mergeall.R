@@ -63,8 +63,9 @@ source("calculating/calc_forceDVR.R") ### This part can take a while depending o
 
 # 4. Let's add in Chilling data for budburst now. We will use February 15 as the end
 # of calculating chill and start with last observation from prev season. Easy to fix if necessary in the chill.startthis column
-source("calculating/calc_chillports.R") ### This part can take a while depending on how many years of data you have and how many loggers
+source("calculating/calc_chilling.R") ### This part can take a while depending on how many years of data you have and how many loggers
 
+if(FALSE){
 if(use.hobos==FALSE){
   # 4. Let's add in tmean for the growing season for each individual - does climate play a roll on growing season length?
   source("calculating/calc_gstmean.R")
@@ -72,6 +73,7 @@ if(use.hobos==FALSE){
 if(use.hobos==FALSE){
   # 5. Finally, let's add in precip for the growing season for each individual - does precip play a roll on growing season length?
   source("calculating/calc_precip.R")
+}
 }
 
 if(use.hobos==FALSE){

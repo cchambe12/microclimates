@@ -37,7 +37,7 @@ parameters {
   vector[n_sp] b_urban_ncp; // slope of urban effect 
   vector[n_sp] b_method_ncp; // slope of method effect 
   
-  vector[n_sp] b_um;
+  vector[n_sp] b_um_ncp;
   
 	}
 
@@ -46,6 +46,7 @@ transformed parameters {
 
   vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
   vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
+  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp;
   
   for(i in 1:N){    
     yhat[i] = a_sp[sp[i]] + // indexed with species
@@ -60,7 +61,7 @@ model {
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	b_urban_ncp ~ normal(0, 1);
 	b_method_ncp ~ normal(0, 1);
-	b_um ~ normal(mu_b_um_sp, sigma_b_um_sp);
+	b_um_ncp ~ normal(0, 1);
 	
 	mu_b_um_sp ~ normal(0, 10);
 	sigma_b_um_sp ~ normal(0, 10);

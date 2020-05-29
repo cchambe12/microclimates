@@ -7,35 +7,27 @@
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
 
-#### Questions to address:
-## Compare GDDs between hobo loggers and weather station data
-# GDDlo ~ urban + (urban|species) - do once with weather station data and once with hobo logger data
 
-## Let's start with Question 1 first...
-#library(rethinking)
 library(RColorBrewer)
 library(lme4)
 
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
-ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
-hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
+#ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+#hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
 
 # We will focus on Harvard Forest to start
-hf.ws <- ws[(ws$type=="Harvard Forest"),]
-hf.hobo <- hobo[(hobo$type=="Harvard Forest"),]
+#hf.ws <- ws[(ws$type=="Harvard Forest"),]
+#hf.hobo <- hobo[(hobo$type=="Harvard Forest"),]
 
-mean(hf.ws$gdd_lo, na.rm=TRUE) ## 877.41
-mean(hf.hobo$gdd_lo, na.rm=TRUE) ## 541.2
+#mean(hf.ws$gdd_lo, na.rm=TRUE) ## 877.41
+#mean(hf.hobo$gdd_lo, na.rm=TRUE) ## 541.2
 ## Big difference between the two means!! Without looking at the data too much, I will assume the hobo logger data
 # has less variance than the weather station data
 
 set.seed(12221)
 
-####################### NOW LET'S TRY TO ADDRESS QUESTION #2
-# Compare urban effect using weather station data and then hobo logger data
-# 2) GDDlo ~ urban + (urban|species) - do once with weather station data and once with hobo logger data
 
 ### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff
 #  1) Let's make the observations much higher than the actual data to build a good model.
@@ -79,6 +71,68 @@ write.csv(testdata_urbmethod, file="output/testdata_urbmethod.csv", row.names = 
 
 #  7) Let's do a quick lmer model to test the fake data
 modtest <- lmer(gdd ~ urban + method + (urban + method|species), data=testdata_urbmethod) ## Quick look looks good!
+
+
+
+####################### NOW LET'S ADD AN INTERACTION!! #####################
+### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff
+#  1) Let's make the observations much higher than the actual data to build a good model.
+nsp = 20 # number of species
+ntot = 200 # numbers of obs per species. 
+
+sample_a <- list(urban.env = rbinom(1000, 1, 0.5),
+                 method.env = rbinom(1000, 1, 0.5))
+
+model.parameters <- list(intercept = 400,
+                         urban.coef = -50,
+                         method.coef = -100,
+                         urbanxmethod = 10)
+
+#  2) Now, we will make varying intercepts
+env.samples <- sapply(sample_a, FUN = function(x){
+  sample(x, size = nsp * ntot, replace = TRUE)})
+
+# Determine which environmental variables interact
+intrxnname <- names(model.parameters)[4] # interaction terms
+names.temp <- gsub("x", "|", names.temp) # remove text to align with colnames
+env.pairs <- sapply(1:length(interact.regex), FUN = function(X){
+  grep(pattern = names.temp[X], x = colnames(env.samples))
+})
+# Add these interactions (product) to env.samples        
+env.interactions <- sapply(1:ncol(env.pairs), FUN = function(X){
+  apply(env.samples[, env.pairs[, X]], MARGIN = 1, FUN = prod)
+})
+env.samples2 <- cbind(env.samples, env.interactions)
+# Create model matrix
+mm <- model.matrix(~env.samples2)
+
+#  4) We need to make a random intercept model for each species
+parameters.temp <- matrix(unlist(model.parameters), ncol = length(model.parameters), nrow = nsp * ntot, byrow = TRUE)
+
+# Which parameters are random?
+random.regex <- grep(pattern = paste(c("intercept", "urban.coef", "method.coef", "urbanxmethod"), collapse = "|"), x = names(model.parameters))
+
+# Generate random parameters (by species)
+parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 50), ntot)})
+parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 10), ntot)})
+parameters.temp[, 3] <- sapply(1:nsp, FUN = function(x){
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 20), ntot)})
+parameters.temp[, 4] <- sapply(1:nsp, FUN = function(x){
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 3), ntot)})
+# Calculate response
+response <- sapply(1:nrow(env.samples), FUN = function(x){
+  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 20)})
+
+testdata_urbmethod_intrxn <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
+                                       gdd = response, urban = env.samples[,1], method = env.samples[,2]))
+
+write.csv(testdata_urbmethod_intrxn, file="output/testdata_urbmethod_intrxn.csv", row.names = FALSE)
+
+#  7) Let's do a quick lmer model to test the fake data
+modtest <- lmer(gdd ~ urban + method + urban*method + (urban + method + urban*method|species), data=testdata_urbmethod_intrxn) ## Quick look looks good!
+
 
 
 #################################################################################################
