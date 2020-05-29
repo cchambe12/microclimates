@@ -51,20 +51,21 @@ yraw <- urb$gdd
 
 launch_shinystan(urbmethod_fake_intrxn)  
 
-#### Now with real data
+############################################################################
+######################## Now with real data ################################
+############################################################################
+
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 ws$method <- 1
 
 ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
 ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
-ws_urb <- ws_urb[(ws_urb$year=="2019"),]
 
-hobo <- read.csv("output/clean_gdd_bbanddvr_hobo.csv")
+hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
 hobo$method <- 0
 
-hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species"))
+hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
 hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
-hobo_urb <- hobo_urb[(hobo_urb$year=="2019"),]
 
 bball <- dplyr::full_join(ws_urb, hobo_urb)
 
@@ -72,7 +73,7 @@ bball$urban <- NA
 bball$urban <- ifelse(bball$type=="Harvard Forest", 0, bball$urban)
 bball$urban <- ifelse(bball$type=="Treespotters", 1, bball$urban)
 
-
+bball.stan <- bball[(bball$year=="2019"),]
 bball.stan <- subset(bball, select=c(gdd_bb, urban, method, genus, species))
 bball.stan <- bball.stan[(complete.cases(bball.stan)),]
 bball.stan <- bball.stan[!is.na(bball.stan$gdd_bb),]
@@ -106,3 +107,189 @@ urbmethod_sum[grep("sigma_", rownames(urbmethod_sum)),]
 yraw <- na.omit(bball$gdd_bb)
 
 launch_shinystan(urbmethod)
+
+
+
+############################################################################
+######################## Now let's check out chilling ######################
+############################################################################
+
+chilling <- read.csv("output/testdata_chill_intrxn.csv")
+
+
+datalist.chill <- with(chilling, 
+                     list(y = chill, 
+                          urban = urban,
+                          method = method,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(chilling),
+                          n_sp = length(unique(species))
+                     )
+)
+
+
+chill_fake_intrxn = stan('stan/chill_normal_ncp_inter.stan', data = datalist.chill,
+                             iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+
+#check_all_diagnostics(ws_urb_buildfake)
+
+chill_fakesum <- summary(chill_fake_intrxn)$summary
+chill_fakesum[grep("mu_", rownames(chill_fakesum)),]
+chill_fakesum[grep("sigma_", rownames(chill_fakesum)),]
+
+yraw <- chill$chill
+
+launch_shinystan(chill_fake_intrxn)  
+
+############################################################################
+########################## Real data chilling ##############################
+############################################################################
+### THIS MODEL IS NOT WORKING!!! FAR TOO MUCH VARIATION!!!!
+
+ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+ws$method <- 1
+
+ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
+
+hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
+hobo$method <- 0
+
+hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
+
+bball <- dplyr::full_join(ws_urb, hobo_urb)
+
+bball$urban <- NA
+bball$urban <- ifelse(bball$type=="Harvard Forest", 0, bball$urban)
+bball$urban <- ifelse(bball$type=="Treespotters", 1, bball$urban)
+
+bball.stan <- bball[(bball$year=="2019"),]
+bball.stan <- subset(bball, select=c(utah, urban, method, genus, species))
+bball.stan <- bball.stan[(complete.cases(bball.stan)),]
+bball.stan <- bball.stan[!is.na(bball.stan$utah),]
+bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
+
+yraw <- bball$utah
+yraw <- na.omit(yraw)
+
+
+datalist.chill <- with(bball.stan, 
+                     list(y = utah, 
+                          urban = urban, 
+                          method = method,
+                          sp = as.numeric(as.factor(spp)),
+                          N = nrow(bball.stan),
+                          n_sp = length(unique(bball.stan$spp))
+                     )
+)
+
+
+chillmod = stan('stan/chill_normal_ncp_inter.stan', data = datalist.chill,
+                 iter = 4000, warmup=2500, control=list(adapt_delta=0.90)) ### 
+
+#check_all_diagnostics(ws_urb_buildfake)
+
+chillmod_sum <- summary(chillmod)$summary
+chillmod_sum[grep("mu_", rownames(chillmod_sum)),]
+chillmod_sum[grep("sigma_", rownames(chillmod_sum)),]
+
+yraw <- na.omit(bball.stan$utah)
+
+launch_shinystan(chillmod)
+
+
+############################################################################
+## Quick BRMS model checks:
+
+# 1) Is there more chilling at the Arboretum?
+chillurb <- brm(utah ~ urban + (urban | species), data=bball)
+
+# 2) Does more chilling mean less forcing is needed ?
+bballchill <- bball[(complete.cases(bball)),]
+
+chillgdd <- brm(gdd_bb ~ utah + (utah | species), data=bballchill)
+
+
+
+############################################################################
+######################## Finally, provenance model #########################
+############################################################################
+
+provdata <- read.csv("output/testdata_provmethod_intrxn.csv")
+
+datalist.gdd <- with(provdata, 
+                     list(y = gdd, 
+                          prov = provenance,
+                          method = method,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(provdata),
+                          n_sp = length(unique(species))
+                     )
+)
+
+
+provmethod_fake_intrxn = stan('stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                             iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+
+#check_all_diagnostics(ws_urb_buildfake)
+
+provmethod_fakesum <- summary(provmethod_fake_intrxn)$summary
+provmethod_fakesum[grep("mu_", rownames(provmethod_fakesum)),]
+provmethod_fakesum[grep("sigma_", rownames(provmethod_fakesum)),]
+
+yraw <- provdata$gdd
+
+launch_shinystan(provmethod_fake_intrxn)  
+
+############################################################################
+######################## Now with real data ################################
+############################################################################
+
+ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+ws$method <- 1
+
+ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance"))
+ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
+
+hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
+hobo$method <- 0
+
+hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance"))
+hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
+
+bball <- dplyr::full_join(ws_urb, hobo_urb)
+
+bball$provenance <- as.numeric(bball$provenance)
+
+bball.stan <- bball[(bball$year=="2019"),]
+bball.stan <- subset(bball, select=c(gdd_bb, provenance, method, genus, species))
+bball.stan <- bball.stan[(complete.cases(bball.stan)),]
+bball.stan <- bball.stan[!is.na(bball.stan$gdd_bb),]
+bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
+
+bball.stan <- bball.stan[(bball.stan$gdd_bb<=1000),]
+
+yraw <- bball.stan$gdd_bb
+
+datalist.gdd <- with(bball.stan, 
+                     list(y = gdd_bb, 
+                          prov = provenance, 
+                          method = method,
+                          sp = as.numeric(as.factor(spp)),
+                          N = nrow(bball.stan),
+                          n_sp = length(unique(bball.stan$spp))
+                     )
+)
+
+
+provmethod = stan('stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                 iter = 4000, warmup=2500, control=list(adapt_delta=0.90)) ### 
+
+#check_all_diagnostics(ws_urb_buildfake)
+
+provmethod_sum <- summary(provmethod)$summary
+provmethod_sum[grep("mu_", rownames(provmethod_sum)),]
+provmethod_sum[grep("sigma_", rownames(provmethod_sum)),]
+
+launch_shinystan(provmethod)
