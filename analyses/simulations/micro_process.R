@@ -55,8 +55,8 @@ nsites <- 2
 nmicros <- 10
 nmethods <- 2 ## weather station and hobo logger to start (want to eventually add in gridded climate data)
 
-doybbfstar <- 80 ## day of budburst now (this should be mu_a_sp)
-doybbfstarsd <- 10 ### sigma_a_sp
+doybbfstar <- 70 ## day of budburst now (this should be mu_a_sp)
+doybbfstarsd <- 0 ### sigma_a_sp
 
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 6
@@ -64,7 +64,7 @@ microarb.effect <- 0
 sigma.arb <- 2 
 microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
-cc.hf <- 6
+cc.hf <- 4
 microhf.effect <- 0
 sigma.hf <- 2  
 microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
@@ -76,7 +76,7 @@ cols <-viridis_pal(option="viridis")(3)
 ## Just a quick check on GDDs
 quartz(width=4, height=4)
 
-ggplot(bball, aes(x=bb)) + geom_histogram(aes(fill=site)) + theme_classic() +
+ggplot(bball, aes(x=gdd)) + geom_histogram(aes(fill=site)) + theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site)))
 
 
@@ -149,18 +149,18 @@ datalist.gdd <- with(bball,
 )
 }
 
-if(use.urban==TRUE){
+
 urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
-                   iter = 1000, warmup=500, chains=2)#, control=list(adapt_delta=0.99)) ### 
+                   iter = 2000, warmup=1000, chains=4)#, control=list(adapt_delta=0.99)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
 
 urbmethod_fake <- summary(urbmethod_fake)$summary
 urbmethod_fake[grep("mu_", rownames(urbmethod_fake)),]
-urbmethod_fake[grep("sigma_", rownames(urbmethod_fake))[1:4],]
+urbmethod_fake[grep("sigma_", rownames(urbmethod_fake)),]
 
 #save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
-}
+
 
 
 ##### Provenance Model!

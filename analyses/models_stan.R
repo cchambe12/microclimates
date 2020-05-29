@@ -24,9 +24,9 @@ urb <- read.csv("output/testdata_urbmethod.csv")
 
 #yreal <- urb$gdd
 
-datalist.urb <- with(urb, 
+datalist.gdd <- with(urb, 
                      list(y = gdd, 
-                          tx = urban,
+                          urban = urban,
                           method = method,
                           sp = as.numeric(as.factor(species)),
                           N = nrow(urb),
@@ -35,7 +35,7 @@ datalist.urb <- with(urb,
 )
 
 
-urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.urb,
+urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
                         iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
   
 #check_all_diagnostics(ws_urb_buildfake)
@@ -82,7 +82,7 @@ yraw <- na.omit(yraw)
 
 datalist.gdd <- with(bball.stan, 
                        list(y = gdd_bb, 
-                            tx = urban, 
+                            urban = urban, 
                             method = method,
                             sp = as.numeric(as.factor(spp)),
                             N = nrow(bball.stan),
@@ -99,7 +99,5 @@ urbmethod = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
 urbmethod_sum <- summary(urbmethod)$summary
 urbmethod_sum[grep("mu_", rownames(urbmethod_sum)),]
 urbmethod_sum[grep("sigma_", rownames(urbmethod_sum)),]
-
-#y_ppc <- urbmethod_sum[grep("y_ppc", rownames(urbmethod_sum)),]
 
 launch_shinystan(urbmethod)

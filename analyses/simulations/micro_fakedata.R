@@ -58,17 +58,17 @@ nmicros <- 10
 nmethods <- 2 ## weather station and hobo logger to start (want to eventually add in gridded climate data)
 
 if(use.urban==TRUE & use.fstar==TRUE){
-urbeffect <- -50  ### mu_b_tx_sp
-urbsd <- 10 ## sigma_b_tx_sp
-methodeffect <- 100 ## mu_b_method_sp
+urbeffect <- -75  ### mu_b_tx_sp
+urbsd <- 20 ## sigma_b_tx_sp
+methodeffect <- -75 ## mu_b_method_sp
 methodsd <- 20 ## sigma_b_method_sp
 }
 
 if(use.urban==TRUE & use.doy==TRUE){
-  urbeffect <- -5  ### mu_b_tx_sp
-  urbsd <- 2 ## sigma_b_tx_sp
-  methodeffect <- 10 ## mu_b_method_sp
-  methodsd <- 5 ## sigma_b_method_sp
+  urbeffect <- -10  ### mu_b_tx_sp
+  urbsd <- 3 ## sigma_b_tx_sp
+  methodeffect <- 0 ## mu_b_method_sp
+  methodsd <- 3 ## sigma_b_method_sp
 }
 
 if(use.provenance==TRUE){
@@ -85,21 +85,21 @@ fstarindsd <- 20 ## sigma_y
 }
 
 if(use.doy==TRUE){
-doybb <- 120 ## day of budburst now (this should be mu_a_sp)
-doybbspeciessd <- 10 ### sigma_a_sp
-doybbindsd <- 5 ## sigma_y
+doybb <- 80 ## day of budburst now (this should be mu_a_sp)
+doybbspeciessd <- 5### sigma_a_sp
+doybbindsd <- 2 ## sigma_y
 }
   
 dayz <- rep(1:daysperyr, nobs)
-cc.arb <- 11 ## based off weather station data
-microarb.effect <- -2
+cc.arb <- 6 ## based off weather station data
+microarb.effect <- 0
 sigma.arb <- 2 
-microsigmaarb.effect <- 1   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
+microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
-cc.hf <- 9  ## based off weather station data
-microhf.effect <- -4
+cc.hf <- 4  ## based off weather station data
+microhf.effect <- 0
 sigma.hf <- 2  
-microsigmahf.effect <- 4  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
+microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 #source("simulations/micro_databuildfx.R") 
 source("simulations/micro_databuildfx_doy.R") 
@@ -175,7 +175,7 @@ bball$type <- ifelse(bball$method=="ws", 1, 0)
 
 datalist.gdd <- with(bball, 
                      list(y = gdd, 
-                          tx = urban,
+                          urban = urban,
                           method = type,
                           sp = as.numeric(as.factor(species)),
                           N = nrow(bball),
@@ -184,18 +184,18 @@ datalist.gdd <- with(bball,
 )
 }
 
-if(use.urban==TRUE){
-urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
+
+urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                    iter = 1000, warmup=500, chains=2)#, control=list(adapt_delta=0.99)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
 
 urbmethod_fake <- summary(urbmethod_fake)$summary
 urbmethod_fake[grep("mu_", rownames(urbmethod_fake)),]
-urbmethod_fake[grep("sigma_", rownames(urbmethod_fake))[1:4],]
+urbmethod_fake[grep("sigma_", rownames(urbmethod_fake)),]
 
 #save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
-}
+
 
 
 ##### Provenance Model!
