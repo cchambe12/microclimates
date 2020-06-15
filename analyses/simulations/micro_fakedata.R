@@ -36,15 +36,15 @@ mean(ws$budburst[ws$type=="Treespotters"]) ## 112.45
 
 use.urban = TRUE
 use.provenance = FALSE
-use.fstar = FALSE
-use.doy = TRUE
+use.fstar = FALSE ### This is hypothesis B: Hobos are less accurate measures of effectively the same weather
+use.doy = TRUE ### This is Hypoth A: Hobos better estimate true GDD -- capture microclimate and/or they capture treatments (urban, prov, method) better…
 
 if(use.urban == TRUE & use.provenance == TRUE){
   print("Error has occurred. Can't have both urban and provenance equal TRUE!")
 }
 
-if(use.urban == FALSE & use.provenance == FALSE){
-  print("Error has occurred. Can't have both urban and provenance equal TRUE!")
+if(use.fstar == TRUE & use.doy == TRUE){
+  print("Error has occurred. Can't have both fstar and doy equal TRUE!")
 }
 
 
@@ -65,10 +65,10 @@ methodsd <- 20 ## sigma_b_method_sp
 }
 
 if(use.urban==TRUE & use.doy==TRUE){
-  urbeffect <- -10  ### mu_b_tx_sp
+  urbeffect <- 50  ### mu_b_tx_sp
   urbsd <- 3 ## sigma_b_tx_sp
-  methodeffect <- 0 ## mu_b_method_sp
-  methodsd <- 3 ## sigma_b_method_sp
+  methodeffect <- 10 ## mu_b_method_sp
+  methodsd <- 10 ## sigma_b_method_sp
 }
 
 if(use.provenance==TRUE){
@@ -78,11 +78,10 @@ methodeffect <- 100 ## mu_b_method_sp
 methodsd <- 0 ## sigma_b_method_sp
 }
 
-if(use.fstar==TRUE){
-fstar <- 400 ## day of budburst now (this should be mu_a_sp)
+
+fstar <- 300 ## day of budburst now (this should be mu_a_sp)
 fstarspeciessd <- 50 ### sigma_a_sp
 fstarindsd <- 20 ## sigma_y
-}
 
 if(use.doy==TRUE){
 doybb <- 80 ## day of budburst now (this should be mu_a_sp)
@@ -92,31 +91,38 @@ doybbindsd <- 2 ## sigma_y
   
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 6 ## based off weather station data
-microarb.effect <- 0
+microarb.effect <- -2
 sigma.arb <- 2 
-microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
+microsigmaarb.effect <- 1   #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 cc.hf <- 4  ## based off weather station data
-microhf.effect <- 0
+microhf.effect <- -2
 sigma.hf <- 2  
-microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
+microsigmahf.effect <- 1  #### by keeping the sigmas the same for the microsites (line 76 & 81) we assume that the microclimatic effects are the same across sites
 
 #source("simulations/micro_databuildfx.R") 
-source("simulations/micro_databuildfx_doy.R") 
+if(use.fstar==TRUE){
+source("simulations/micro_databuildfx.R") 
+}
+
+if(use.doy==TRUE){
+  source("simulations/micro_databuildfx_doy.R") 
+}
 
 cols <-viridis_pal(option="viridis")(3)
 ## Just a quick check on GDDs
 quartz(width=4, height=4)
 if(use.fstar==TRUE){
-ggplot(df.fstar, aes(x=fstar.new)) + geom_histogram(aes(fill=site)) + theme_classic() +
-  scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site)))
+ggplot(df.fstar, aes(x=df.fstar$gdd)) + geom_histogram(aes(fill=site)) + theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=sort(unique(df.fstar$site)))
 }
 if(use.doy==TRUE){
-  ggplot(df.doybb, aes(x=doybb.new)) + geom_histogram(aes(fill=site)) + theme_classic() +
+  ggplot(bball, aes(x=gdd.obs)) + geom_histogram(aes(fill=site)) + theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site)))
 }
 
 
+if(use.doy == TRUE){
 ### Okay, first let's check on site level varition in temperature
 #### Before moving on, let's look at the data a bit
 ws <- ggplot(df[(df$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
@@ -129,7 +135,7 @@ hl <- ggplot(df[(df$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=s
 
 quartz(width=6, height=4)
 grid.arrange(ws, hl, ncol=2)
-
+}
 
 ### Now let's look at GDD differences between methods
 quartz(width=6, height=5)
@@ -137,11 +143,11 @@ par(mfrow=c(1,2))
 my.pal <- viridis_pal(option="magma")(20)
 my.pch <- c(15:16)
 plot(gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="ws"),], main="Weather Station",
-     ylab="GDD", ylim=c(200, 700))
+     ylab="GDD", ylim=c(0, 600))
 abline(h=mean(bball$gdd[bball$method=="ws"]), lwd=3)
 
 plot(gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="hobo"),], main="Hobo Logger",
-     ylab="GDD", ylim=c(200, 700))
+     ylab="GDD", ylim=c(0, 600))
 abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
 
 

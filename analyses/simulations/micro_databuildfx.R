@@ -27,6 +27,7 @@ if(use.urban==TRUE){
   
   df.fstar <- full_join(df.fstar, df.prov)
   
+  if(FALSE){
   urbeffectall <- rnorm(df.fstar$inds[df.fstar$site=="arb" & df.fstar$method=="hobo"], urbeffect, urbsd)
   methodeffectall <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="hf"], methodeffect, methodsd)
   urbandmethod <- rnorm(df.fstar$inds[df.fstar$method=="ws" & df.fstar$site=="arb"], methodeffect + urbeffect, methodsd + urbsd)
@@ -58,6 +59,14 @@ if(use.urban==TRUE){
     
     }
   }
+  
+  df.fstar$gdd <- df.fstar$fstar.new
+  
+  bball <- df.fstar
+  
+  }
+  
+  
   
 }
 
@@ -123,8 +132,32 @@ if(use.provenance==TRUE){ ##### NEED TO REVAMP!!!
 }
 
 
+if(TRUE){
+#### Now revamp according tso Lizzie's approach:
+df.fstar$urbtx <- ifelse(df.fstar$site=="hf", 0, 1)
+df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
+
+
+urb_noise <- lapply(1:nspps, FUN = function(x){
+  rep(rnorm(n = 1, mean = urbeffect, sd = urbsd), nobs*nmethods)})
+
+df.fstar$gdd_obs <- ifelse(df.fstar$tx==1, (df.fstar$gdd_noise + rnorm(df.fstar$inds[df.fstar$tx==1], methodeffect, methodsd)), 
+                       df.fstar$gdd_noise)
+
+df.fstar$fstarnoise <- sapply(1:nrow(df.fstar), FUN = function(x){
+  rnorm(n = 1, mean = 0, sd = 20)})
+df.fstar$gdd <- df.fstar$gdd_obs + df.fstar$fstarnoise
+
+#df.fstar$gddnew <- rnorm(df.fstar$inds, df.fstar$gdd, fstarindsd)
+
+bball <- df.fstar
+
+}
+
+
 # Step 2: find GDDs
 
+if(FALSE){
   ## 2a) Arboretum climate data
 arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
                       species = as.character(rep(c(1:nspps), each=daysperyr*nmicros*nmethods)), 
@@ -174,4 +207,4 @@ bball <- df[(df$day==df$doybb),]
 
 bball <- subset(bball, select=c("site", "microsite", "method", "ind", "species", "provenance", "day", "gdd"))
 colnames(bball) <- c("site", "microsite", "method", "ind", "species", "provenance", "bb", "gdd")
-
+}

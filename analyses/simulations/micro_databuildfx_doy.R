@@ -9,58 +9,45 @@ set.seed(12321)
 
 if(use.urban==TRUE){
   
-  spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
-  provenance.arb <- round(rnorm(nobs, 42.5, 5), digits=2)
+  spind <- paste(rep(c(1:nspps), each=10), rep(1:ninds, 20), sep="_")
   provenance.hf <- 42.5
+  provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
+  
+  df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
+                                 site = rep(c("arb", "hf"), each=nobs*nmethods),
+                                 provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                                 method = rep(c("ws", "hobo"), nsites*nobs)))
+  df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
+  
+  df.doybb <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
+                                  doybb=NA,
+                                  site=rep(c("arb", "hf"), each=ninds*nmethods),
+                                  method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
+  
+  df.doybb$doybb <- round(rnorm(nrow(df.doybb), doybb, doybbspeciessd), digits=0)
+  df.doybb$sp_ind <- paste(df.doybb$species, df.doybb$inds, sep="_")
+  
+  df.doybb$dayz <- df.doybb$doybb
+  
+  spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
+  provenance.hf <- 42.5
+  provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
   
   df.prov <- as.data.frame(cbind(sp_ind = rep(spind, nsites), 
                                  site = rep(c("arb", "hf"), each=nobs),
                                  provenance = c(provenance.arb, rep(provenance.hf, 200))))
   
-  doybb <- round(rnorm(nspps, doybb, doybbspeciessd), digits=0)
-  df.doybb <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
-                                  doybb=rep(doybb, each=ninds*nsites*nmethods),
+  fstar <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
+  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
+                                  fstar=rep(fstar, each=ninds*nsites*nmethods),
                                   site=rep(c("arb", "hf"), each=ninds*nmethods),
                                   method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
   
-  df.doybb$doybb <- as.numeric(df.doybb$doybb)
-  df.doybb$sp_ind <- paste(df.doybb$species, df.doybb$inds, sep="_")
+  df.fstar$fstar <- as.numeric(df.fstar$fstar)
+  df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
   
-  df.doybb <- full_join(df.doybb, df.prov)
+  df.fstar <- full_join(df.fstar, df.prov)
   
-  urbeffectall <- rnorm(df.doybb$inds[df.doybb$site=="arb" & df.doybb$method=="hobo"], urbeffect, urbsd)
-  methodeffectall <- rnorm(df.doybb$inds[df.doybb$method=="ws" & df.doybb$site=="hf"], methodeffect, methodsd)
-  urbandmethod <- rnorm(df.doybb$inds[df.doybb$method=="ws" & df.doybb$site=="arb"], methodeffect + urbeffect, methodsd + urbsd)
-  
-  for(i in c(1:nrow(df.doybb))){
-    if(df.doybb$site[i]=="hf" && df.doybb$method[i]=="hobo") {
-      
-      df.doybb$doybb.new[df.doybb$site=="hf" & df.doybb$method=="hobo"] <- 
-        rnorm(df.doybb$inds[df.doybb$site=="hf" & df.doybb$method=="hobo"], 
-              df.doybb$doybb[df.doybb$site=="hf" & df.doybb$method=="hobo"], doybbindsd)
-      
-    } else if (df.doybb$site[i]=="arb" && df.doybb$method[i]=="hobo") {
-      
-      df.doybb$doybb.new[df.doybb$site=="arb" & df.doybb$method=="hobo"] <- 
-        rnorm(df.doybb$inds[df.doybb$site=="arb" & df.doybb$method=="hobo"], 
-              df.doybb$doybb[df.doybb$site=="arb" & df.doybb$method=="hobo"] + urbeffectall, doybbindsd)
-      
-    } else if (df.doybb$site[i]=="hf" && df.doybb$method[i]=="ws") {
-      
-      df.doybb$doybb.new[df.doybb$site=="hf" & df.doybb$method=="ws"] <- 
-        rnorm(df.doybb$inds[df.doybb$site=="hf" & df.doybb$method=="ws"], 
-              df.doybb$doybb[df.doybb$site=="hf" & df.doybb$method=="ws"] + methodeffectall, doybbindsd)
-      
-    } else if (df.doybb$site[i]=="arb" && df.doybb$method[i]=="ws") {
-      
-      df.doybb$doybb.new[df.doybb$site=="arb" & df.doybb$method=="ws"] <- 
-        rnorm(df.doybb$inds[df.doybb$site=="arb" & df.doybb$method=="ws"], 
-              df.doybb$doybb[df.doybb$site=="arb" & df.doybb$method=="ws"] + urbandmethod, doybbindsd)
-      
-    }
-  }
-  
-  df.doybb$dayz <- round(df.doybb$doybb.new, digits=0)
   
 }
 
@@ -91,7 +78,7 @@ arb.doybb <- df.doybb[(df.doybb$site=="arb"),]
 hf.doybb <- df.doybb[(df.doybb$site=="hf"),]
 
 arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
-                      species = as.character(rep(c(1:nspps), each=daysperyr*nmicros*nmethods)), 
+                      species = rep(c(1:nspps), each=daysperyr*nmicros*nmethods), 
                       dayz=rep(arb.doybb$dayz, each=daysperyr),
                       day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
                       method=rep(rep(c("ws", "hobo"), each=daysperyr),nspps*ninds),
@@ -104,7 +91,7 @@ arbclim <- arbclim[(arbclim$day<=arbclim$dayz),]
 
 
 hfclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
-                     species = as.character(rep(c(1:nspps), each=daysperyr*nmicros*nmethods)), 
+                     species = rep(c(1:nspps), each=daysperyr*nmicros*nmethods), 
                      dayz=rep(hf.doybb$dayz, each=daysperyr),
                      day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
                      method=rep(rep(c("ws", "hobo"), each=daysperyr),nspps*ninds),
@@ -115,25 +102,38 @@ hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf + microhf.
 hfclim <- hfclim[(hfclim$day<=hfclim$dayz),]
 
 # Step 3: Make a data frame and get the mean temp per year (to double check the data)
-df <- full_join(arbclim, hfclim)
+df <- dplyr::full_join(arbclim, hfclim)
 df$tmean <- as.numeric(df$tmean)
-
-df$microsite <- paste0(df$site, df$ind)
 
 df$sp_ind <- paste(df$species, df$ind, sep="_")
 
-df$gdd <- ave(df$tmean, df$sp_ind, df$site, df$method, FUN=cumsum)
+df$gdd.obs <- ave(df$tmean, df$sp_ind, df$site, df$method, FUN=cumsum)
 
-df.doybb.sub <- subset(df.doybb, select=c("site", "method", "provenance", "sp_ind", "doybb.new"))
-df <- full_join(df.doybb.sub, df)
+df$urbtx <- ifelse(df$site=="arb", 1, 0)
+
+df$gdd <- df$gdd.obs + df$urbtx * urbeffect + urbsd
+
+df$tx <- ifelse(df$method=="ws", 1, 0)
+
+df$gdd <- df$gdd + df$tx * methodeffect + methodsd
+
+df$species <- as.character(df$species)
+df <- left_join(df, df.fstar)
+
+bbs <- df[(df$gdd >= df$fstar),]
+bbs$bb <- ave(bbs$day, bbs$sp_ind, bbs$site, bbs$method, bbs$microsite, FUN=first)
+
+df.bb <- subset(bbs, select=c("site", "method", "species", "ind", "bb", "gdd", "gdd.obs", "fstar", "provenance"))
+df.bb$species <- as.numeric(df.bb$species)
+
+bball <- df.bb[!duplicated(c(df.bb$site,df.bb$method, df.bb$species, df.bb$ind, df.bb$bb, df.bb$fstar, df.bb$provenance)),]
 
 #### Now we simplify the dataset..
-bball <- df[(df$day==df$dayz),]
+#bball <- subset(bball, select=c("site", "method", "species", "ind", "provenance", "dayz", "gdd"))
+#colnames(bball) <- c("site", "method", "species", "ind", "provenance", "bb", "gdd")
 
-bball <- subset(bball, select=c("site", "method", "microsite", "ind", "species", "provenance", "day", "gdd"))
-colnames(bball) <- c("site", "method", "microsite", "ind", "species", "provenance", "bb", "gdd")
+#bball <- bball[!duplicated(bball),]
 
-bball <- bball[!duplicated(bball),]
 
 
 
