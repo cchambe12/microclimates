@@ -45,8 +45,8 @@ mean(ws$budburst[ws$type=="Treespotters"]) ## 112.45
 
 use.urban = TRUE
 use.provenance = FALSE
-hypothA = TRUE
-hypothB = FALSE
+hypothA = FALSE
+hypothB = TRUE
 
 if(use.urban == TRUE & use.provenance == TRUE){
   print("Error has occurred. Can't have both urban and provenance equal TRUE!")
@@ -70,7 +70,7 @@ if(use.urban==TRUE){
 urbeffect <- -50  ### mu_b_urban_sp      ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE ARBORETUM REQUIRES FEWER GDD! Maybe because chilling is higher?
 urbsd <- 10 ## sigma_b_urban_sp
 methodeffect <- 0 ## mu_b_method_sp    ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE STATION MEASURES FEWER GDD! Maybe because it is hotter, thus accumulating GDD faster
-methodsd <- 20 ## sigma_b_method_sp 
+methodsd <- 0 ## sigma_b_method_sp 
 }
 
 
@@ -91,12 +91,12 @@ dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11 ## based off weather station data
 microarb.effect <- 0
 sigma.arb <- 2 
-microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+microsigmaarb.effect <- 2   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
-cc.hf <- 11  ## based off weather station data
+cc.hf <- 7  ## based off weather station data
 microhf.effect <- 0
 sigma.hf <- 2  
-microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+microsigmahf.effect <- 2  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
 source("simulations/micro_databuildfx_doy.R") 
 
@@ -145,9 +145,9 @@ abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
 ### Next, we can take a quick glimpse at results
 if(use.urban==TRUE){
 bball$urban <- ifelse(bball$site=="arb", 1, 0)
-bball$type <- ifelse(bball$method=="hobo", 1, 0)
+bball$hobo <- ifelse(bball$method=="hobo", 1, 0)
 
-modall <- lmer(gdd ~ urban + type + urban*type + (urban + type + urban*type|species), data=bball)
+modall <- lmer(gdd ~ urban + hobo + urban*hobo + (urban + hobo + urban*hobo|species), data=bball)
 arm::display(modall)
 }
 
