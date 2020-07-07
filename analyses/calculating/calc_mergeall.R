@@ -5,7 +5,7 @@
 ### Weather data for the Arboretum downloaded from... http://labs.arboretum.harvard.edu/weather/ 
 ##  not using hobo loggers
 
-### Weather data for Harvard Forests downloaded from... http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf001 
+### Weather data for Harvard Forests downloaded from... https://harvardforest1.fas.harvard.edu/exist/apps/datasets/showData.html?id=HF001 
 ## and select 'hf001-10' - not using hobo loggers. Takes a while to download.
 
 # ## housekeeping
@@ -29,7 +29,7 @@ setwd("~/Documents/git/microclimates/analyses")
 d <- read.csv("output/clean_budburstandleafout.csv", header=TRUE)
 
 ## Flags for question
-use.hobos <- TRUE ## make false if want to use main station climate data rather than the hobo loggers
+use.hobos <- FALSE ## make false if want to use main station climate data rather than the hobo loggers
 
 ### For #1, must choose whether you want hobo logger data or main climate towers
 
