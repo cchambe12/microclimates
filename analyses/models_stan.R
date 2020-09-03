@@ -108,6 +108,7 @@ yraw <- na.omit(bball$gdd_bb)
 
 launch_shinystan(urbmethod)
 
+save(urbmethod, file="~/Documents/git/microclimates/analyses/stan/urbmethod_inter.Rdata")
 
 
 ############################################################################
@@ -201,6 +202,7 @@ launch_shinystan(chillmod)
 
 ############################################################################
 ## Quick BRMS model checks:
+library(brms)
 
 # 1) Is there more chilling at the Arboretum?
 chillurb <- brm(utah ~ urban + (urban | species), data=bball)
@@ -249,13 +251,13 @@ launch_shinystan(provmethod_fake_intrxn)
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 ws$method <- 1
 
-ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance"))
+ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance.lat"))
 ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
 
 hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
 hobo$method <- 0
 
-hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance"))
+hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance.lat"))
 hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
 
 bball <- dplyr::full_join(ws_urb, hobo_urb)
@@ -293,3 +295,5 @@ provmethod_sum[grep("mu_", rownames(provmethod_sum)),]
 provmethod_sum[grep("sigma_", rownames(provmethod_sum)),]
 
 launch_shinystan(provmethod)
+
+save(provmethod, file="~/Documents/git/microclimates/analyses/stan/provmethod_inter.Rdata")
