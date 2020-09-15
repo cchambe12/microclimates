@@ -174,9 +174,11 @@ bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
 yraw <- bball$utah
 yraw <- na.omit(yraw)
 
+bball.stan$utah.cen <- bball.stan$utah/240
+
 
 datalist.chill <- with(bball.stan, 
-                     list(y = utah, 
+                     list(y = utah.cen, 
                           urban = urban, 
                           method = method,
                           sp = as.numeric(as.factor(spp)),
@@ -205,7 +207,10 @@ launch_shinystan(chillmod)
 library(brms)
 
 # 1) Is there more chilling at the Arboretum?
-chillurb <- brm(utah ~ urban + (urban | species), data=bball)
+chillurb <- brm(utah ~ urban + method + (urban + method | species), data=bball.stan,
+                iter = 4000, warmup=2500, control=list(adapt_delta=0.90))
+
+save(chillurb, file="~/Documents/git/microclimates/analyses/stan/chillurbmethod_inter.Rdata")
 
 # 2) Does more chilling mean less forcing is needed ?
 bballchill <- bball[(complete.cases(bball)),]

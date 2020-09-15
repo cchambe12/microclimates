@@ -19,26 +19,28 @@ library(rstanarm)
 library(rstan)
 library(brms)
 library(RColorBrewer)
+library(viridis)
 library(dplyr)
 
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
 
 figpath <- "figures"
-figpathmore <- "ws_phylo_urb"
+figpathmore <- "ws_method_urb_real"
 
-#source("source/microurban_muplot.R")
-source("source/microurban_phylo_muplot.R")
+source("source/microurban_muplot.R")
+#source("source/microurban_phylo_muplot.R")
 
 # Set up colors
 cols <- adjustcolor("indianred3", alpha.f = 0.3) 
-my.pal <- rep(brewer.pal(n = 11, name = "Spectral"), 4)
-my.pal <- my.pal[my.pal!=c("#FFFFBF", "#FEE08B", "#E6F598")]
+my.pal <-rep(viridis_pal(option="viridis")(9),2)
+#my.pal <- rep(brewer.pal(n = 8, name = "Dark2"), 3)
+#my.pal <- my.pal[my.pal!=c("#FFFFBF", "#FEE08B", "#E6F598")]
 # display.brewer.all()
 my.pch <- rep(15:18, each=10)
 alphahere = 0.4
 
-
+if(FALSE){
 if(figpathmore=="ws_urb" | figpathmore=="ws_phylo_urb"){
 ws_urb <- read.csv("output/clean_gdd_bbanddvr.csv")
 ws_urb$species <- ifelse(ws_urb$genus=="Acer" & ws_urb$species=="rubra", "rubrum", ws_urb$species)
@@ -67,27 +69,53 @@ ws_urb.stan <- ws_urb.stan[(ws_urb.stan$gdd_bb<=1000),]
   hobo_urb.stan$spp <- paste(hobo_urb.stan$genus, hobo_urb.stan$species, sep="_")
   hobo_urb.stan <- hobo_urb.stan[(hobo_urb.stan$gdd_bb<=1000),]
 }
-
+}
 
 # Load fitted stan model: no interactions
 #load("stan/hobo_urban_mod.Rdata") 
 #load("stan/ws_urban_mod.Rdata") 
 #load("stan/wsall_urban_mod.Rdata")
-load("stan/ws_phylomod_urban.Rdata")
+#load("stan/ws_phylomod_urban.Rdata")
+load("stan/urbmethod_inter.Rdata")
 
-
-use.stan=FALSE
+use.stan=TRUE
 
 if(use.stan==TRUE){
-sumer.ws <- summary(model_phylo)$summary
+  ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+  ws$method <- 1
+  
+  ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+  ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
+  
+  hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
+  hobo$method <- 0
+  
+  hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+  hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
+  
+  bball <- dplyr::full_join(ws_urb, hobo_urb)
+  
+  bball$urban <- NA
+  bball$urban <- ifelse(bball$type=="Harvard Forest", 0, bball$urban)
+  bball$urban <- ifelse(bball$type=="Treespotters", 1, bball$urban)
+  
+  bball.stan <- bball[(bball$year=="2019"),]
+  bball.stan <- subset(bball, select=c(gdd_bb, urban, method, genus, species))
+  bball.stan <- bball.stan[(complete.cases(bball.stan)),]
+  bball.stan <- bball.stan[!is.na(bball.stan$gdd_bb),]
+  bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
+  
+  bball.stan <- bball.stan[(bball.stan$gdd_bb<=1000),]
+  
+sumer.ws <- summary(urbmethod)$summary
 sumer.ws[grep("mu_", rownames(sumer.ws)),]
 
-unique(ws_urb.stan$spp) # numbers are alphabetical
-sort(unique(ws_urb.stan$spp))
+unique(bball.stan$spp) # numbers are alphabetical
+sort(unique(bball.stan$spp))
 
 # m1.bb <- m2l.ni
-modelhere <- model_phylo
-muplotfx(modelhere, "", 7, 8, c(0,2), c(-400, 700) , 750, 2)
+modelhere <- urbmethod
+muplotfx(modelhere, "", 7, 7, c(0,3), c(-150, 50), 60, 3)
 }
 
 
