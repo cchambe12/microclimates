@@ -46,8 +46,9 @@ bball.sub$species <- ifelse(bball.sub$genus=="Acer" & bball.sub$species=="rubra"
 bball.sub$species.name <- paste(bball.sub$genus, bball.sub$species, sep=" ")
 
 
-
-#### Now to first look at differences between sites...
+###########################################################
+#### Now to first look at differences between sites... ####
+###########################################################
 samespp <- c("Acer rubrum", "Betula alleghaniensis","Fagus grandifolia", 
              "Hamamelis virginiana", "Quercus alba", "Quercus rubra")
 
@@ -75,7 +76,9 @@ pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "gdd_sitecompar
 gddcomparebb
 dev.off()
 
-#### And now between methods...
+####################################
+#### And now between methods... ####
+####################################
 badspp <- c("Carya glabra", "Carya ovata","Populus deltoides", 
              "Viburnum nudum")
 
@@ -83,8 +86,6 @@ bball.method <- bball.sub[!(bball.sub$species.name%in%badspp),]
 bball.method$type <- ifelse(bball.method$method==1, "Weather Station", "Hobo Logger")
 bball.method$codegdd <- reorder(bball.method$species.name, bball.method$gdd_bb)
 
-
-#cols <- colorRampPalette(brewer.pal(3,"Dark2"))(2)
 cols <- viridis_pal(option="viridis")(3)
 gddcomparebb <- ggplot(bball.method, aes(x=codegdd, y=gdd_bb, fill=type)) + 
   geom_boxplot() +
@@ -104,11 +105,12 @@ pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "gdd_comparemet
 gddcomparebb
 dev.off()
 
-#### And finally, we want to plot the interaction between methods...
+#########################################################################  
+#### And finally, we want to plot the interaction between methods... #### 
+#########################################################################
 bball.site$methodtype <- ifelse(bball.site$method==1, "\nWeather \nStation", "\nHobo \nLogger")
 
-#cols <- colorRampPalette(brewer.pal(3,"Dark2"))(2)
-cols <- viridis_pal(option="viridis")(3)
+cols <- viridis_pal(option="plasma")(3)
 gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd_bb, group=type, fill=type)) + 
   geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
               aes(fill = type, group = type)) +
