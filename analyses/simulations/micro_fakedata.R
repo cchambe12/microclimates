@@ -33,20 +33,20 @@ library(rstan)
 setwd("~/Documents/git/microclimates/analyses/")
 
 if(FALSE){
-ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
-mean(ws$gdd_bb, na.rm=TRUE) ## 292
-sd(ws$gdd_bb, na.rm = TRUE) ## 116
-
-mean(ws$budburst) ## 109.15
-sd(ws$budburst) ## 14.22
-mean(ws$budburst[ws$type=="Harvard Forest"]) ## 132.75
-mean(ws$budburst[ws$type=="Treespotters"]) ## 112.45
+  ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
+  mean(ws$gdd_bb, na.rm=TRUE) ## 292
+  sd(ws$gdd_bb, na.rm = TRUE) ## 116
+  
+  mean(ws$budburst) ## 109.15
+  sd(ws$budburst) ## 14.22
+  mean(ws$budburst[ws$type=="Harvard Forest"]) ## 132.75
+  mean(ws$budburst[ws$type=="Treespotters"]) ## 112.45
 }
 
 use.urban = TRUE
 use.provenance = FALSE
-hypothA = FALSE
-hypothB = TRUE
+hypothA = TRUE
+hypothB = FALSE
 
 if(use.urban == TRUE & use.provenance == TRUE){
   print("Error has occurred. Can't have both urban and provenance equal TRUE!")
@@ -67,18 +67,18 @@ nmicros <- 10  ### Number per site so 20 total
 nmethods <- 2
 
 if(use.urban==TRUE){
-urbeffect <- -50  ### mu_b_urban_sp      ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE ARBORETUM REQUIRES FEWER GDD! Maybe because chilling is higher?
-urbsd <- 10 ## sigma_b_urban_sp
-methodeffect <- 0 ## mu_b_method_sp    ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE STATION MEASURES FEWER GDD! Maybe because it is hotter, thus accumulating GDD faster
-methodsd <- 0 ## sigma_b_method_sp 
+  urbeffect <- -50  ### mu_b_urban_sp      ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE ARBORETUM REQUIRES FEWER GDD! Maybe because chilling is higher?
+  urbsd <- 10 ## sigma_b_urban_sp
+  methodeffect <- -20 ## mu_b_method_sp    ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE STATION MEASURES FEWER GDD! Maybe because it is cooler, thus accumulating GDD more slowly
+  methodsd <- 10 ## sigma_b_method_sp 
 }
 
 
 if(use.provenance==TRUE){
-proveffect <- -5
-provsd <- 0 ## sigma_b_tx_sp
-methodeffect <- 100 ## mu_b_method_sp
-methodsd <- 0 ## sigma_b_method_sp
+  proveffect <- -5
+  provsd <- 0 ## sigma_b_tx_sp
+  methodeffect <- 100 ## mu_b_method_sp
+  methodsd <- 0 ## sigma_b_method_sp
 }
 
 fstar <- 300  ### mu_a_sp
@@ -89,14 +89,14 @@ fstarindsd <- 20 ## sigma_y
 # FOR HYPOTH A, THE WEATHER DATA MUST BE IDENTICAL. LINE 91 AND LINE 96 SHOULD BE EQUAL AND LINE 92, 94, 97, 99 SHOULD BE ZERO!!
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11 ## based off weather station data
-microarb.effect <- 0
-sigma.arb <- 2 
-microsigmaarb.effect <- 2   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+microarb.effect <- -4
+sigma.arb <- 5 
+microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
-cc.hf <- 7  ## based off weather station data
-microhf.effect <- 0
-sigma.hf <- 2  
-microsigmahf.effect <- 2  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+cc.hf <- 11  ## based off weather station data
+microhf.effect <- -4
+sigma.hf <- 5  
+microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
 source("simulations/micro_databuildfx_doy.R") 
 
@@ -141,44 +141,61 @@ plot(gdd ~ species, col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(b
      ylab="GDD", ylim=c(0, 600))
 abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
 
+### Finally, let's take a look at GDD accuracy...
+quartz(width=8, height=5)
+par(mfrow=c(1,3))
+bball$type <- ifelse(bball$method=="ws", 1, 0)
+plot(bball$type, bball$gdd_accuracy, col=cols[as.factor(bball$method)])
+legend(0, -20, sort(unique(gsub("_", " ", bball$method))), pch=19,
+       col=cols[as.factor(bball$method)],
+       cex=1, bty="n")
+plot(bball$fstar.new ~ bball$gdd, col=cols[as.factor(bball$method)])
+legend(300, 150, sort(unique(gsub("_", " ", bball$method))), pch=19,
+       col=cols[as.factor(bball$method)],
+       cex=1, bty="n")
+plot(bball$fstar.new ~ bball$gdd, col=cols[as.factor(bball$site)])
+legend(300, 150, sort(unique(gsub("_", " ", bball$site))), pch=19,
+       col=cols[as.factor(bball$site)],
+       cex=1, bty="n")
 
+if(FALSE){
 ### Next, we can take a quick glimpse at results
 if(use.urban==TRUE){
-bball$urban <- ifelse(bball$site=="arb", 1, 0)
-bball$hobo <- ifelse(bball$method=="hobo", 1, 0)
-
-modall <- lmer(gdd ~ urban + hobo + urban*hobo + (urban + hobo + urban*hobo|species), data=bball)
-arm::display(modall)
+  bball$urban <- ifelse(bball$site=="arb", 1, 0)
+  bball$type <- ifelse(bball$method=="ws", 1, 0)
+  
+  modall <- lmer(gdd ~ urban + type + urban*type + (urban + type + urban*type|species), data=bball)
+  arm::display(modall)
 }
 
 if(use.provenance==TRUE){
   bball$provenance <- as.numeric(bball$provenance)
-  bball$type <- ifelse(bball$method=="hobo", 1, 0)
+  bball$type <- ifelse(bball$method=="ws", 1, 0)
   
   modall <- lmer(gdd ~ provenance + type + (provenance + type|species), data=bball)
   arm::display(modall)
 }
- 
+} 
 
 #####And finally... it's modelling time!
 if(use.urban==TRUE){
-bball$urban <- ifelse(bball$site=="arb", 1, 0)
-bball$type <- ifelse(bball$method=="ws", 1, 0)
+  bball$urban <- ifelse(bball$site=="arb", 1, 0)
+  bball$type <- ifelse(bball$method=="ws", 1, 0)
 
-datalist.gdd <- with(bball, 
-                     list(y = gdd, 
-                          urban = urban,
-                          method = type,
-                          sp = as.numeric(as.factor(species)),
-                          N = nrow(bball),
-                          n_sp = length(unique(bball$species))
-                     )
+  datalist.gdd <- with(bball, 
+                       list(y = gdd, 
+                            urban = urban,
+                            method = type,
+                            sp = as.numeric(as.factor(species)),
+                            N = nrow(bball),
+                            n_sp = length(unique(bball$species))
+                       )
 )
 }
 
 
 urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                   iter = 1000, warmup=500, chains=2)#, control=list(adapt_delta=0.99)) ### 
+                   iter = 2500, warmup=1500, chains=4)#, control=list(adapt_delta=0.99)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
 
@@ -192,11 +209,85 @@ methodsd  ## sigma_b_method_sp
 fstarindsd  ## sigma_y_sp
 
 
-urbmethod_fake <- summary(urbmethod_fake)$summary
-urbmethod_fake[grep("mu_", rownames(urbmethod_fake)),]
-urbmethod_fake[grep("sigma_", rownames(urbmethod_fake)),]
+urbmethod_fakesum <- summary(urbmethod_fake)$summary
+urbmethod_fakesum[grep("mu_", rownames(urbmethod_fakesum)),]
+urbmethod_fakesum[grep("sigma_", rownames(urbmethod_fakesum)),]
 
 #save(ws_urb_buildfake, file="~/Documents/git/microclimates/analyses/stan/ws_urban_stan_builtsims_ncp.Rdata")
+
+modpreds <- as.data.frame(rstan::extract(urbmethod_fake), permuted=TRUE)
+yraw <- bball$gdd
+
+if(FALSE){
+###### Now, let's look at a lot of plots to look at model accuracy
+post <- rstan::extract(urbmethod_fake)
+
+str(post)
+names(post)
+
+plot(density(post$mu_a_sp))
+plot(density(post$mu_b_urban_sp))
+plot(density(post$mu_b_method_sp))
+plot(density(post$mu_b_um_sp))
+
+plot(density(data.frame(post$sigma_a_sp)[,1])) 
+plot(density(data.frame(post$sigma_b_urban_sp)[,1])) 
+plot(density(data.frame(post$sigma_b_method_sp)[,1])) 
+plot(density(data.frame(post$sigma_b_um_sp)[,1])) 
+
+plot(density(post$sigma_y))
+
+#Predicted values
+mean_y <- colMeans(data.frame(post$y_ppc))
+sd_y <- apply(data.frame(post$y_ppc), 2, sd) 
+str(sd_y)
+
+ypreds <- data.frame(mean_y)
+head(ypreds)
+ypreds$upper_y <- mean_y + sd_y
+ypreds$lower_y <- mean_y - sd_y
+
+#plot predicted value against method
+#black lines are the mean slopes, colored ones are sd
+
+plot(ypreds$lower_y ~ bball$hobo, col="blue4")
+points(ypreds$upper_y ~ bball$hobo, col="blue4")
+points(ypreds$mean_y ~ bball$hobo, col="black")
+
+#plot predicted values against empirical ones (not including sigma_y)
+#black points are the mean values, colored ones are sd
+
+plot(ypreds$lower_y, bball$gdd, col="red4", type = "p", pch = 16)
+points(ypreds$upper_y, bball$gdd, col="red4", pch = 16)
+points(ypreds$mean_y, bball$gdd, col="black", pch = 16)
+
+#variety effects
+a_sps <- data.frame(post$a_sp)
+mean_asps <- colMeans(a_sps)
+b_urbs <- data.frame(post$b_urban)
+mean_burbs <- colMeans(b_urbs)
+b_mets <- data.frame(post$b_method)
+mean_mets <- colMeans(b_mets)
+
+plot(mean_asps ~ mean_burbs)
+plot(mean_asps ~ mean_mets)
+
+#predictions for each variety 
+library(bayesplot)
+mcmc_intervals(a_sps) + geom_vline(xintercept = fstar, linetype="dotted", color = "grey")  #intercepts 
+mcmc_intervals(b_urbs)+ geom_vline(xintercept = urbeffect, linetype="dotted", color = "grey") #urban preds
+mcmc_intervals(b_mets)+ geom_vline(xintercept = methodeffect, linetype="dotted", color = "grey") #method preds
+
+
+sigma_as <- data.frame(post$sigma_a_sp)
+sigma_urbs <- data.frame(post$sigma_b_urban_sp)
+sigma_methods <- data.frame(post$sigma_b_method_sp)
+
+mcmc_intervals(sigma_as) + geom_vline(xintercept = fstar, linetype="dotted", color = "grey")  #intercepts 
+mcmc_intervals(sigma_urbs)+ geom_vline(xintercept = urbeffect, linetype="dotted", color = "grey") #urban preds
+mcmc_intervals(sigma_methods)+ geom_vline(xintercept = methodeffect, linetype="dotted", color = "grey") #method preds
+}
+
 
 
 

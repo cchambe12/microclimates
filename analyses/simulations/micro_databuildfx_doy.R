@@ -46,7 +46,7 @@ if(use.urban==TRUE){
     
   
   df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-  df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=0, sd=methodsd), each=ninds*nmethods)  
+  df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)  
   
  
   }
@@ -96,7 +96,7 @@ arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),n
                       species = rep(c(1:nspps), each=daysperyr*nmicros*nmethods), 
                       #dayz=rep(arb.doybb$dayz, each=daysperyr),
                       day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
-                      method=rep(rep(c("ws", "hobo"), each=daysperyr),nspps*ninds),
+                      method=rep(rep(c("ws", "hobo"), each=daysperyr), nspps*ninds),
                       site = as.character("arb"))
 
 
@@ -163,5 +163,16 @@ df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "bb", "gdd",
 df.bb$species <- as.numeric(df.bb$species)
 
 bball <- df.bb[!duplicated(df.bb),]
+
+
+##### Now let's do some checks...
+bball$gdd_accuracy <- bball$fstar.new - bball$gdd
+
+
+
+
+
+
+
 
 
