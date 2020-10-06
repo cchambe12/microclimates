@@ -1,4 +1,27 @@
+### Started 23 April 2020 by Cat
+## Building new dataframe with fake data to try and better understand hobo logger data versus microclimate data
+
+# Maybe I should use estimates for fstar from real models?
+
+# housekeeping
+rm(list=ls()) 
+options(stringsAsFactors = FALSE)
+
+#### Overall model:
+# GDD ~ urban + method + method*urban + (urban + method + method*urban|species) 
+
+library(RColorBrewer)
+library(viridis)
+library(lme4)
+library(ggplot2)
+library(gridExtra)
+library(rstan)
 library(shiny)
+
+source("~/Documents/git/microclimates/analyses/source/shinyapp_sourcedata.R")
+source("~/Documents/git/microclimates/analyses/source/microurban_muplot.R")
+#source("~/Documents/git/bayes2020/Projects/Cat/source/shinyapp_sourcedata.R")
+
 
 ui <- fluidPage(
 
@@ -10,12 +33,14 @@ ui <- fluidPage(
            selectInput("Hypothesis", "Hypothesis",
                        choices = c("---Choose One---",
                          "Hypothesis A: more variation in hobo loggers with same climate", 
-                                   "Hypothesis B: hobo loggers are more accurate")),
+                                   "Hypothesis B: hobo loggers are more accurate"),
+                       selected = ("Hypothesis A: more variation in hobo loggers with same climate")),
            
            selectInput("Question", "Question",
                        choices = c("---Choose One---",
                          "Urban Model: Arb vs HF", 
-                                   "Provenance Model: Provenance latitude")),
+                                   "Provenance Model: Provenance latitude"),
+                       selected="Urban Model: Arb vs HF"),
            
            sliderInput(inputId = "UrbanEffect",
                        label = "Urban Effect",
@@ -40,232 +65,149 @@ ui <- fluidPage(
            sliderInput(inputId = "HFMicroEffect",
                        label = "HF Micro Effect",
                        value = 0, min = -10, max = 10),
-           submitButton()
+           submitButton("View Plots")
            )       
   ),
   
-  column(8,
-         plotOutput("gddsites"),
-         plotOutput("climtypes"),
-         plotOutput("gdd_accuracy")
-         )
-  
+  mainPanel(
+    tabsetPanel(
+      tabPanel("Climate Data", plotOutput("climtypes")),#, verbatimTextOutput("use.urban")), 
+      tabPanel("GDDs across Species", plotOutput("gddsites")), 
+      tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
+      tabPanel("Site Accuracy", plotOutput("site_accuracy")),
+      tabPanel("Site x Method \nInteraction", plotOutput("interaction")),
+      tabPanel("Model Output", actionButton("go" ,"Run Model and View muplot"), plotOutput("muplot"))
+    )
+  )
   
 )
 
 
 server <- function(input, output) {
   
-  bbfunc <- function(urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim){
-    
-    # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-    daysperyr <- 100 #### just to make sure we don't get any NAs
-    nspps <- 20 
-    ninds <- 10 
-    nobs <- nspps*ninds
-    nsites <- 2  ### Arboretum versus the Forest
-    nmicros <- 10  ### Number per site so 20 total 
-    nmethods <- 2
-    
-    urbeffect <- urbeff ### mu_b_urban_sp      ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE ARBORETUM REQUIRES FEWER GDD! Maybe because chilling is higher?
-    urbsd <- 10 ## sigma_b_urban_sp
-    methodeffect <- methodeff ## mu_b_method_sp    ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE STATION MEASURES FEWER GDD! Maybe because it is cooler, thus accumulating GDD more slowly
-    methodsd <- 10 ## sigma_b_method_sp 
-    
-    
-    fstar <- 300  ### mu_a_sp
-    fstarspeciessd <- 50 ### sigma_a_sp
-    fstarindsd <- 20 ## sigma_y
-    
-    
-    # FOR HYPOTH A, THE WEATHER DATA MUST BE IDENTICAL. LINE 91 AND LINE 96 SHOULD BE EQUAL AND LINE 92, 94, 97, 99 SHOULD BE ZERO!!
-    dayz <- rep(1:daysperyr, nobs)
-    cc.arb <- arbclim ## based off weather station data
-    microarb.effect <- arbmicroclim
-    sigma.arb <- 5 
-    microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
-    
-    cc.hf <- hfclim ## based off weather station data
-    microhf.effect <- hfmicroclim
-    sigma.hf <- 5  
-    microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
-    
-    
-    
-    ### Started 25 May 2020 by Cat
-    ## Source file to build fake data simulations for urban versus provenance lat effects
-    ## TAKE II: randomizing day of budburst and then calculate GDD from there
-    
-    
-    library(dplyr)
-    library(tidyr)
-    
-    set.seed(12321)
-    
-    
-    #### Here, I set up provenance for each individual
-    spind <- paste(rep(c(1:nspps), each=10), rep(1:ninds, 20), sep="_")
-    provenance.hf <- 42.5
-    provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
-    
-    df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
-                                   site = rep(c("arb", "hf"), each=nobs*nmethods),
-                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
-                                   method = rep(c("ws", "hobo"), nsites*nobs)))
-    df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
-    
-    
-    #### Next I set up an fstar or a GDD threshold for each individual
-    spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
-    provenance.hf <- 42.5
-    provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
-    
-    df.prov <- as.data.frame(cbind(sp_ind = rep(spind, nsites), 
-                                   site = rep(c("arb", "hf"), each=nobs),
-                                   provenance = c(provenance.arb, rep(provenance.hf, 200))))
-    
-    fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
-    df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
-                                    fstarspp=rep(fstarspp, each=ninds*nsites*nmethods),
-                                    site=rep(c("arb", "hf"), each=ninds*nmethods),
-                                    method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
-    
-    df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
-    df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
-    
-    
-    df.fstar$urbtx <- ifelse(df.fstar$site=="arb", 1, 0)
-    df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
-    
-    
-    df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)  
-    
-    
-    df.fstar$fstar.new <- rnorm(df.fstar$inds, df.fstar$gdd.noise, fstarindsd)
-    
-    
-    df.fstar <- full_join(df.fstar, df.prov)
-    
-    
-    
-    # Step 2: find GDDs
-    #### Now I set up climate data for the Arboretum
-    arbclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
-                          species = rep(c(1:nspps), each=daysperyr*nmicros*nmethods), 
-                          #dayz=rep(arb.doybb$dayz, each=daysperyr),
-                          day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
-                          method=rep(rep(c("ws", "hobo"), each=daysperyr), nspps*ninds),
-                          site = as.character("arb"))
-    
-    
-    ### This is how I get weather station data versus hobo logger data
-    arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(arbclim$day, cc.arb + microarb.effect, sigma.arb + microsigmaarb.effect), rnorm(arbclim$day, cc.arb, sigma.arb)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
-    
-    
-    #### Harvard Forest climate data
-    hfclim <- data.frame(microsite=rep(rep(c(1:nmicros), each=daysperyr*nmethods),nspps), ind=rep(rep(c(1:ninds), each=daysperyr*nmethods), nspps),
-                         species = rep(c(1:nspps), each=daysperyr*nmicros*nmethods), 
-                         #dayz=rep(hf.doybb$dayz, each=daysperyr),
-                         day=rep(c(1:daysperyr), nmicros*nspps*nmethods),
-                         method=rep(rep(c("ws", "hobo"), each=daysperyr),nspps*ninds),
-                         site = as.character("hf"))
-    
-    
-    ### Again, where I set up the difference between hobo logger and weather station
-    hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf + microhf.effect, sigma.hf + microsigmahf.effect), rnorm(hfclim$day, cc.hf, sigma.hf)) ### and now we draw from mean and sigma for each day to find daily temp for each microsite
-    
-    
-    # Step 3: Make a data frame and get the mean temp per year (to double check the data)
-    df <- dplyr::full_join(arbclim, hfclim)
-    df$tmean <- as.numeric(df$tmean)
-    
-    df$sp_ind <- paste(df$species, df$ind, sep="_")
-    
-    ### Calculate the OBSERVED GDDs!!!
-    df$gdd.obs <- ave(df$tmean, df$sp_ind, df$site, df$method, FUN=cumsum)
-    
-    
-    ### Let's just tidy everything up
-    df$species <- as.character(df$species)
-    df <- left_join(df, df.fstar)
-    
-    df$spind_site_method <- paste0(df$sp_ind, df$site, df$method)
-    
-    ## Find the day of budburst to find the actual GDD versus the "observed GDD"
-    for(i in c(unique(df$spind_site_method))){ 
-      
-      bb <- which(df$gdd.obs[i==df$spind_site_method] >= df$fstar.new[i==df$spind_site_method])[1]
-      df$bb[i==df$spind_site_method] <- bb
-      
-    }
-    
-    df.bb <- df[(df$bb==df$day),]
-    
-    df.bb$gdd <- df.bb$gdd.obs
-    
-    df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "bb", "gdd", "gdd.noise", "fstar.new", "provenance"))
-    df.bb$species <- as.numeric(df.bb$species)
-    
-    bball <- df.bb[!duplicated(df.bb),]
-    
-    
-    ##### Now let's do some checks...
-    bball$gdd_accuracy <- bball$fstar.new - bball$gdd
-    bball$type <- ifelse(bball$method=="ws", 1, 0)
-    
-    bball <- na.omit(bball)
-    
-    return(bball)
-    
-  }
-  
-  
   get.data <- reactive({
-    bbfunc(as.numeric(input$UrbanEffect), as.numeric(input$MethodEffect), 
+    bbfunc(if(input$Hypothesis=="Hypothesis A: more variation in hobo loggers with same climate" |
+              input$Hypothesis=="---Choose One---")
+      {TRUE}else{FALSE}, 
+              if(input$Question=="Urban Model: Arb vs HF"|
+                 input$Question=="---Choose One---"){TRUE}else{FALSE},
+           as.numeric(input$UrbanEffect), as.numeric(input$MethodEffect), 
            as.numeric(input$ArbClimate), as.numeric(input$ArbMicroEffect), 
            as.numeric(input$HFClimate), as.numeric(input$HFMicroEffect))
   })
   
+  #output$print_data <- renderPrint(get.data())
+  #output$strdata <- renderPrint(str(get.data()))
   
   output$gdd_accuracy <- renderPlot({
-    bball <- get.data()
+    bball <- get.data()[[1]]
+    xtext <- seq(1, 2, by=1)
     cols <-viridis_pal(option="viridis")(3)
-    plot(as.numeric(as.factor(bball$type)), as.numeric(bball$gdd_accuracy), col=cols[as.factor(bball$method)])
+    plot(as.numeric(as.factor(bball$type)), as.numeric(bball$gdd_accuracy), 
+         col=cols[as.factor(bball$method)], ylab="GDD accuracy", xaxt="none",xlab="")
+    axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
     legend(0, -20, sort(unique(gsub("_", " ", bball$method))), pch=19,
            col=cols[as.factor(bball$method)],
            cex=1, bty="n")
   })
   
+  output$site_accuracy <- renderPlot({
+    bball <- get.data()[[1]]
+    xtext <- seq(1, 2, by=1)
+    cols <-viridis_pal(option="viridis")(3)
+    plot(as.numeric(as.factor(bball$site)), as.numeric(bball$gdd_accuracy), 
+         col=cols[as.factor(bball$site)], xlab="", ylab="GDD accuracy", xaxt="none")
+    axis(side=1, at=xtext, labels = c("Arnold Arboretum", "Harvard Forest"))
+    legend(0, -20, sort(unique(gsub("_", " ", bball$site))), pch=19,
+           col=cols[as.factor(bball$site)],
+           cex=1, bty="n")
+  })
+  
   output$gddsites <- renderPlot({
-    bball <- get.data()
+    bball <- get.data()[[1]]
   #quartz(width=6, height=5)
   par(mfrow=c(1,2))
   my.pal <- viridis_pal(option="magma")(20)
   my.pch <- c(15:16)
-  plot(as.numeric(gdd) ~ as.numeric(as.factor(species)), col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="ws"),], main="Weather Station",
-       ylab="GDD", ylim=c(0, 600))
+  plot(as.numeric(bball$gdd) ~ as.numeric(as.factor(bball$species)), col=my.pal[as.factor(bball$species)], 
+       pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="ws"),], main="Weather Station",
+       ylab="GDD", ylim=c(0, 600), xlab="Species")
   abline(h=mean(bball$gdd[bball$method=="ws"]), lwd=3)
   
-  plot(as.numeric(gdd) ~ as.numeric(as.factor(species)), col=my.pal[as.factor(bball$species)], pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="hobo"),], main="Hobo Logger",
-       ylab="GDD", ylim=c(0, 600))
+  plot(as.numeric(gdd) ~ as.numeric(as.factor(species)), col=my.pal[as.factor(bball$species)], 
+       pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="hobo"),], main="Hobo Logger",
+       ylab="GDD", ylim=c(0, 600), xlab="Species")
   abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
   })
   
   output$climtypes <- renderPlot({
-    bball <- get.data()
+    clim <- get.data()[[2]]
     cols <-viridis_pal(option="viridis")(3)
-  ws <- ggplot(df[(df$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site))) + ggtitle("Weather Station") +
-    coord_cartesian(xlim=c(-10, 25))
+  ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=sort(unique(clim$site))) + ggtitle("Weather Station") +
+    coord_cartesian(xlim=c(-10, 25)) + xlab("Mean Temp (C)") + ylab("")
   
-  hl <- ggplot(df[(df$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=sort(unique(df$site))) + ggtitle("Hobo Logger") +
-    coord_cartesian(xlim=c(-10, 25))
+  hl <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site)) + theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=sort(unique(clim$site))) + ggtitle("Hobo Logger") +
+    coord_cartesian(xlim=c(-10, 25)) + xlab("Mean Temp (C)") + ylab("")
   
   #quartz(width=6, height=4)
   grid.arrange(ws, hl, ncol=2)
   })
+  
+  output$interaction <- renderPlot({
+    bball.site <- get.data()[[1]]
+  bball.site$methodtype <- ifelse(bball.site$method=="ws", "\nWeather \nStation", "\nHobo \nLogger")
+  
+  cols <- viridis_pal(option="plasma")(3)
+  gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd, group=as.factor(site), fill=as.factor(site))) + 
+    geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
+                aes(fill = as.factor(site), group = as.factor(site))) +
+    geom_line(stat='smooth', method = "lm", alpha=1, col="black") +
+    theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+          legend.text.align = 0,
+          legend.key = element_rect(colour = "transparent", fill = "white"),
+          plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) +
+    xlab("") + 
+    ylab("Growing degree days to budburst") + 
+    scale_fill_manual(name="Site", values=cols,
+                      labels=c("Arnold Arboretum", "Harvard Forest")) + 
+    coord_cartesian(expand=0, ylim=c(0,700))
+  
+  gddcomparebb
+  })
+  
+  use.urban<-reactive({if(input$Question=="Urban Model: Arb vs HF"|
+                          input$Question=="---Choose One---"){TRUE}else{FALSE}})
+  
+  
+  restmuplot <- eventReactive(input$go, {
+    use.urban <- use.urban()[1]
+  if(use.urban==TRUE){
+    bball <- get.data()[[1]]
+    bball$urban <- ifelse(bball$site=="arb", 1, 0)
+    bball$type <- ifelse(bball$method=="ws", 1, 0)
+    
+    datalist.gdd <- with(bball, 
+                         list(y = gdd, 
+                              urban = urban,
+                              method = type,
+                              sp = as.numeric(as.factor(species)),
+                              N = nrow(bball),
+                              n_sp = length(unique(bball$species))
+                         )
+    )
+  }
+  
+  urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                        iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99)) ### 
+
+  })
+  
+  output$muplot <- renderPlot({ 
+    modelhere <- restmuplot()[[1]]
+    bball.stan <- get.data()[[1]]
+    muplotfx(modelhere, "", 7, 7, c(0,3), c(-150, 50), 60, 3)})
   
 }
 
