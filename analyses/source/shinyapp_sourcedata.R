@@ -7,15 +7,17 @@ library(tidyr)
 
 set.seed(12321)
 
-#urbeff <- -50
-#methodeff <- -30
-#urbmethod <- 
-#arbclim <- 11
-#arbmicroclim <- 0
-#hfclim <- 11
-#hfmicroclim <- 0
-#hypoth = TRUE
-#question = TRUE
+if(TRUE){
+urbeff <- -20
+methodeff <- -25
+urbmethod <- -50
+arbclim <- 11
+arbmicroclim <- 0
+hfclim <- 11
+hfmicroclim <- 0
+hypoth = TRUE
+question = TRUE
+}
 
 
 bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim){
@@ -32,12 +34,15 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   nmicros <- 10  ### Number per site so 20 total 
   nmethods <- 2
   
-  #urbeffect <- -50
+  #urbeffect <- -20
   urbeffect <- urbeff ### mu_b_urban_sp      ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE ARBORETUM REQUIRES FEWER GDD! Maybe because chilling is higher?
-  urbsd <- 10 ## sigma_b_urban_sp
-  #methodeffect <- -30
+  urbsd <- 5 ## sigma_b_urban_sp
+  #methodeffect <- -25
   methodeffect <- methodeff ## mu_b_method_sp    ### IF NEGATIVE, THEN THIS MEANS WE EXPECT THE STATION MEASURES FEWER GDD! Maybe because it is cooler, thus accumulating GDD more slowly
-  methodsd <- 10 ## sigma_b_method_sp 
+  methodsd <- 5 ## sigma_b_method_sp 
+  #urbmethod <- -70
+  urbmethod <- urbmethod
+  urbmethodsd <- 10
   
   
   fstar <- 300  ### mu_a_sp
@@ -111,8 +116,12 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
     df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
     
     
-    df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)  
+    df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods) 
+    
+    df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
+    
     
     
   }
@@ -121,7 +130,7 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
     
     
     df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-    df.fstar$gdd.noise <- df.fstar$fstarspp + df.fstar$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  
+    df.fstar$gdd.noiseintrxn <- df.fstar$fstarspp + df.fstar$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  
     
     
   }
@@ -134,22 +143,53 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
   if(use.urban==FALSE){
     
-    provenance.arb <- round(rnorm(nobs, 42.5, 10), digits=2)
+    spind <- paste(rep(c(1:nspps), each=10), rep(1:ninds, 20), sep="_")
     provenance.hf <- 42.5
+    provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
     
-    doybb <- round(rnorm(nspps, doybb, doybbspeciessd), digits=0)
-    df.doybb <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites), inds=1:ninds, doybb=rep(doybb, each=ninds*nsites),
-                                    site=rep(c("arb", "hf"), each=ninds)))
-    df.doybb$doybb <- as.numeric(df.doybb$doybb)
-    df.doybb$sp_ind <- paste(df.doybb$species, df.doybb$inds, sep="_")
+    df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
+                                   site = rep(c("arb", "hf"), each=nobs*nmethods),
+                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                                   method = rep(c("ws", "hobo"), nsites*nobs)))
+    df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
     
-    df.doybb$provenance <- ifelse(df.doybb$site=="hf", provenance.hf, provenance.arb)
-    df.doybb$prov.adj <- ifelse(df.doybb$provenance!=provenance.hf, df.doybb$provenance-provenance.hf, 0)
     
-    df.doybb$doybb.new <- round(ifelse(df.doybb$site=="hf", rnorm(df.doybb$inds, df.doybb$doybb, doybbindsd), 
-                                       rnorm(df.doybb$inds, df.doybb$doybb+(df.doybb$prov.adj*proveffect), doybbindsd)), digits=0)
+    #### Next I set up an fstar or a GDD threshold for each individual
+    fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
+    df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
+                                    fstarspp=rep(fstarspp, each=ninds*nsites*nmethods),
+                                    site=rep(c("arb", "hf"), each=ninds*nmethods),
+                                    method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
     
-    df.doybb$dayz <- round(df.doybb$doybb.new, digits=0)
+    df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
+    df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
+    
+    df.fstar <- full_join(df.fstar, df.prov)
+    
+    
+    if(hypothA==TRUE){
+      
+      df.fstar$provdiff<- df.fstar$prov - 42.5
+      df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$provdiff * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
+      
+      df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
+      df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods) 
+      
+      df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
+      df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
+      
+    }
+    
+    if(hypothA==FALSE){
+      
+      
+      df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
+      df.fstar$gdd.noiseintrxn <- df.fstar$fstarspp + df.fstar$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  
+      
+      
+    }
+    
+    df.fstar$fstar.new <- rnorm(df.fstar$inds, df.fstar$gdd.noise, fstarindsd)
     
   }
   
@@ -245,4 +285,4 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
 }
 
-#bblist <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+bblist <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
