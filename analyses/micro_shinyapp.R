@@ -75,7 +75,7 @@ ui <- fluidPage(
       tabPanel("GDDs across Species", plotOutput("gddsites")), 
       tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
       tabPanel("Site Accuracy", plotOutput("site_accuracy")),
-      tabPanel("Site x Method \nInteraction", plotOutput("interaction")),
+      tabPanel("Site x Method", plotOutput("interaction")),
       tabPanel("Model Output", actionButton("go" ,"Run Model and View muplot"), plotOutput("muplot"))
     )
   )
@@ -157,31 +157,34 @@ server <- function(input, output) {
   
   output$interaction <- renderPlot({
     bball.site <- get.data()[[1]]
-  bball.site$methodtype <- ifelse(bball.site$method=="ws", "\nWeather \nStation", "\nHobo \nLogger")
-  
-  cols <- viridis_pal(option="plasma")(3)
-  gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd, group=as.factor(site), fill=as.factor(site))) + 
-    geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
-                aes(fill = as.factor(site), group = as.factor(site))) +
-    geom_line(stat='smooth', method = "lm", alpha=1, col="black") +
-    theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
-          legend.text.align = 0,
-          legend.key = element_rect(colour = "transparent", fill = "white"),
-          plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) +
-    xlab("") + 
-    ylab("Growing degree days to budburst") + 
-    scale_fill_manual(name="Site", values=cols,
-                      labels=c("Arnold Arboretum", "Harvard Forest")) + 
-    coord_cartesian(expand=0, ylim=c(0,700))
-  
-  gddcomparebb
+    bball.site$methodtype <- ifelse(bball.site$method=="ws", "\nWeather \nStation", "\nHobo \nLogger")
+    
+    cols <- viridis_pal(option="plasma")(3)
+    gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd, group=as.factor(site), fill=as.factor(site))) + 
+      geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
+                  aes(fill = as.factor(site), group = as.factor(site))) +
+      geom_line(stat='smooth', method = "lm", alpha=1, col="black") +
+      theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+            legend.text.align = 0,
+            legend.key = element_rect(colour = "transparent", fill = "white"),
+            plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) +
+      xlab("") + 
+      ylab("Growing degree days to budburst") + 
+      scale_fill_manual(name="Site", values=cols,
+                        labels=c("Arnold Arboretum", "Harvard Forest")) + 
+      coord_cartesian(expand=0, ylim=c(0,700))
+    
+    gddcomparebb
   })
   
   use.urban<-reactive({if(input$Question=="Urban Model: Arb vs HF"|
                           input$Question=="---Choose One---"){TRUE}else{FALSE}})
   
   
-  restmuplot <- eventReactive(input$go, {
+  #ntext <- eventReactive(input$goButton, {
+   # 
+  output$muplot <- renderPlot({
+    input$go
     use.urban <- use.urban()[1]
   if(use.urban==TRUE){
     bball <- get.data()[[1]]
@@ -202,12 +205,11 @@ server <- function(input, output) {
   urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                         iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99)) ### 
 
+    modelhere <- urbmethod_fake
+    bball.stan <- get.data()[[1]]
+    muplotfx(modelhere, "", 7, 7, c(0,3), c(-150, 50), 60, 3)
   })
   
-  output$muplot <- renderPlot({ 
-    modelhere <- restmuplot()[[1]]
-    bball.stan <- get.data()[[1]]
-    muplotfx(modelhere, "", 7, 7, c(0,3), c(-150, 50), 60, 3)})
   
 }
 

@@ -9,6 +9,7 @@ set.seed(12321)
 
 #urbeff <- -50
 #methodeff <- -30
+#urbmethod <- 
 #arbclim <- 11
 #arbmicroclim <- 0
 #hfclim <- 11
