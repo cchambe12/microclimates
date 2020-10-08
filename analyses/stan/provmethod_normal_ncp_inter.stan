@@ -24,13 +24,14 @@ parameters {
   real mu_a_sp;   
   real mu_b_prov_sp;     
   real mu_b_method_sp;
-  real<lower=0> sigma_a_sp; 
+  real mu_b_pm_sp; // slope of prov x method effect
   real<lower=0> sigma_b_prov_sp;
   real<lower=0> sigma_b_method_sp;
+  real<lower=0> sigma_b_pm_sp;
+  real<lower=0> sigma_a_sp;
   real<lower=0> sigma_y; 
   
-  real mu_b_pm_sp; // slope of prov x method effect
-  real<lower=0> sigma_b_pm_sp;
+  
   
   real a_sp[n_sp]; // intercept for species
   

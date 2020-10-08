@@ -16,7 +16,7 @@ arbmicroclim <- 0
 hfclim <- 11
 hfmicroclim <- 0
 hypoth = TRUE
-question = TRUE
+question = FALSE
 }
 
 
@@ -151,7 +151,7 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
                                    site = rep(c("arb", "hf"), each=nobs*nmethods),
                                    provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
                                    method = rep(c("ws", "hobo"), nsites*nobs)))
-    df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
+    df.prov$species <- as.character(as.numeric(gsub("\\_.*" , "", df.prov$sp_ind)))
     
     
     #### Next I set up an fstar or a GDD threshold for each individual
@@ -169,7 +169,8 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
     
     if(hypothA==TRUE){
       
-      df.fstar$provdiff<- df.fstar$prov - 42.5
+      df.fstar$provenance <- as.numeric(df.fstar$provenance)
+      df.fstar$provdiff<- df.fstar$provenance - 42.5
       df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$provdiff * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
       
       df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
