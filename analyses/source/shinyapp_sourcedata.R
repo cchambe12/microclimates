@@ -2,6 +2,10 @@
 ## Source function to build data for the shiny app
 ### Need to eventually integrate hypothesis tests and provenance vs urban!
 
+# housekeeping
+rm(list=ls()) 
+options(stringsAsFactors = FALSE)
+
 library(dplyr)
 library(tidyr)
 
@@ -286,4 +290,32 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
 }
 
-bblist <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+#bblist200 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+#bblist250 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+bblist300 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+
+
+bb200 <- bblist200[[1]]
+bb250 <- bblist250[[1]]
+bb300 <- bblist300[[1]]
+
+bb200$gdd200 <- bb200$gdd
+bb200$gdd_accuracy200 <- bb200$gdd_accuracy
+bb200$gdd <- bb200$gdd_accuracy <- bb200$gdd.noise <- bb200$fstar.new <- bb200$bb <- NULL
+
+bb250$gdd250 <- bb250$gdd
+bb250$gdd_accuracy250 <- bb200$gdd_accuracy
+bb250$gdd <- bb250$gdd_accuracy <- bb250$gdd.noise <- bb250$fstar.new <- bb250$bb <- NULL
+
+bb <- full_join(bb200, bb250)
+
+bb300$gdd300 <- bb300$gdd
+bb300$gdd_accuracy300 <- bb300$gdd_accuracy
+bb300$gdd <- bb300$gdd_accuracy <- bb300$gdd.noise <- bb300$fstar.new <- bb300$bb <- NULL
+
+bb <- full_join(bb, bb300)
+
+
+ggplot(bb, aes(temp, gdd))
+
+
