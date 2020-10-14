@@ -18,8 +18,8 @@ library(gridExtra)
 library(rstan)
 library(shiny)
 
-source("~/Documents/git/microclimates/analyses/source/shinyapp_sourcedata.R")
-#source("~/Documents/git/bayes2020/Projects/Cat/source/shinyapp_sourcedata.R")
+source("~/Documents/git/microclimates/analyses/source/simulations_sourcedata.R")
+#source("~/Documents/git/bayes2020/Projects/Cat/source/simulations_sourcedata.R")
 
 
 ui <- fluidPage(
@@ -245,20 +245,19 @@ server <- function(input, output) {
     par(mar=c(5,10,3,10))
     plot(x=NULL,y=NULL, xlim=c(-150,50), yaxt='n', ylim=c(0,6),
          xlab="Model estimate change in growing degree days to budburst", ylab="")
-    axis(2, at=1:6, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                 "Sigma Arboretum", "Sigma \nWeather Station", 
-                                 "Sigma Interaction")), las=1)
+    axis(2, at=1:3, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station")), las=1)#,
+                                 #"Sigma Arboretum", "Sigma \nWeather Station", 
+                                 #"Sigma Interaction")
     abline(v=0, lty=2, col="darkgrey")
-    rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
-                      "sigma_b_method_sp", "sigma_b_um_sp")
-    ppeffects <- c("b_urban", "b_method", "b_um")
-    for(i in 1:6){
-      pos.y<-(1:6)[i]
+    rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp")#, "sigma_b_urban_sp",
+                      #"sigma_b_method_sp", "sigma_b_um_sp")
+    for(i in 1:3){
+      pos.y<-(3:1)[i]
       pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
       lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[6:11]#[c(2:3,8,5:6,10)]
+        pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[3:1]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]
@@ -294,7 +293,7 @@ server <- function(input, output) {
       
       
       provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 1000, warmup=500)#, control=list(adapt_delta=0.99)) ### 
+                             iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
       
       
       cols <- adjustcolor("indianred3", alpha.f = 0.3) 
@@ -304,7 +303,6 @@ server <- function(input, output) {
       
       
       modelhere <- provmethod_fake
-      bball <- get.data()[[1]]
       spnum <- length(unique(bball$species))
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
@@ -316,14 +314,13 @@ server <- function(input, output) {
       abline(v=0, lty=2, col="darkgrey")
       rownameshere <- c("mu_b_prov_sp", "mu_b_method_sp", "mu_b_pm_sp", "sigma_b_prov_sp",
                         "sigma_b_method_sp", "sigma_b_pm_sp")
-      ppeffects <- c("b_urban", "b_method", "b_um")
       for(i in 1:6){
-        pos.y<-(1:6)[i]
+        pos.y<-(6:1)[i]
         pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
         lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
-          pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[c(2:7)]
+          pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[7:2]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]

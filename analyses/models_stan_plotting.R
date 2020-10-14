@@ -26,7 +26,7 @@ library(dplyr)
 setwd("~/Documents/git/microclimates/analyses/")
 
 figpath <- "figures"
-figpathmore <- "ws_method_urb_real"
+figpathmore <- "ws_method_urb_realtest"
 
 source("source/microurban_muplot.R")
 #source("source/microurban_phylo_muplot.R")

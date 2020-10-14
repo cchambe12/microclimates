@@ -26,8 +26,8 @@ question = FALSE
 
 bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim){
   
-  hypothA = hypoth
-  use.urban = question
+  hypothA = hypoth  ### This is either TRUE or FALSE
+  use.urban = question  ### This is either TRUE or FALSE
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 100 #### just to make sure we don't get any NAs
@@ -53,8 +53,13 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   fstarspeciessd <- 50 ### sigma_a_sp
   fstarindsd <- 20 ## sigma_y
   
+  if(hypothA==TRUE){
+    hobo_sd <- 10
+  } else if(hypothA==FALSE){
+    ws_sd <- 10
+  }
   
-  # FOR HYPOTH A, THE WEATHER DATA MUST BE IDENTICAL. LINE 91 AND LINE 96 SHOULD BE EQUAL AND LINE 92, 94, 97, 99 SHOULD BE ZERO!!
+  
   dayz <- rep(1:daysperyr, nobs)
   #cc.arb <- 11
   cc.arb <- arbclim ## based off weather station data
@@ -114,38 +119,36 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
   
   
-  if(hypothA==TRUE){
+  ##### Lines 123-130 add in the stan model estimates and parameters. We should get these back.
+  df.fstar$urbtx <- ifelse(df.fstar$site=="arb", 1, 0)
+  df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
+  
+  df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
+  df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)
+  
+  df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
+  df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
+  
+  if(hypothA==TRUE){ ### This should just make the hobo logger less accurate
     
-    df.fstar$urbtx <- ifelse(df.fstar$site=="arb", 1, 0)
-    df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
-    
-    
-    df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
-    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods) 
-    
-    df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
-    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
-    
-    
-    
+    df.fstar$hyp_a <- ifelse(df.fstar$method=="hobo", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$hyp_a * rep(rnorm(n=nspps, mean=0, sd=hobo_sd), each=ninds*nmethods) 
+  
   }
   
-  if(hypothA==FALSE){
+  if(hypothA==FALSE){ ### Whereas this will make the weather station less accurate/the hobo logger more precise
     
-    
-    df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-    df.fstar$gdd.noiseintrxn <- df.fstar$fstarspp + df.fstar$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  
-    
+    df.fstar$hyp_b <- ifelse(df.fstar$method=="ws", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$fstarspp + df.fstar$hyp_b * rep(rnorm(nspps, mean=0, sd=ws_sd), each=ninds*nmethods)  
     
   }
   
   df.fstar$fstar.new <- rnorm(df.fstar$inds, df.fstar$gdd.noise, fstarindsd)
   
-  
   df.fstar <- full_join(df.fstar, df.prov)
   }
   
-  if(use.urban==FALSE){
+  if(use.urban==FALSE){ ### This is the provenance model
     
     spind <- paste(rep(c(1:nspps), each=10), rep(1:ninds, 20), sep="_")
     provenance.hf <- 42.5
@@ -171,25 +174,27 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
     df.fstar <- full_join(df.fstar, df.prov)
     
     
-    if(hypothA==TRUE){
+    ##### Lines 123-130 add in the stan model estimates and parameters. We should get these back.
+    df.fstar$urbtx <- ifelse(df.fstar$site=="arb", 1, 0)
+    df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
+    
+    df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)
+    
+    df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
+    df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
+    
+    if(hypothA==TRUE){ ### This should just make the hobo logger less accurate
       
-      df.fstar$provenance <- as.numeric(df.fstar$provenance)
-      df.fstar$provdiff<- df.fstar$provenance - 42.5
-      df.fstar$gdd.noise  <- df.fstar$fstarspp + df.fstar$provdiff * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
-      
-      df.fstar$tx <- ifelse(df.fstar$method=="ws", 1, 0)
-      df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$tx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods) 
-      
-      df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
-      df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
+      df.fstar$hyp_a <- ifelse(df.fstar$method=="hobo", 1, 0)
+      df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$hyp_a * rep(rnorm(n=nspps, mean=0, sd=hobo_sd), each=ninds*nmethods) 
       
     }
     
-    if(hypothA==FALSE){
+    if(hypothA==FALSE){ ### Whereas this will make the weather station less accurate/the hobo logger more precise
       
-      
-      df.fstar$tx <- ifelse(df.fstar$method=="hobo", 1, 0)
-      df.fstar$gdd.noiseintrxn <- df.fstar$fstarspp + df.fstar$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  
+      df.fstar$hyp_b <- ifelse(df.fstar$method=="ws", 1, 0)
+      df.fstar$gdd.noise <- df.fstar$fstarspp + df.fstar$hyp_b * rep(rnorm(nspps, mean=0, sd=ws_sd), each=ninds*nmethods)  
       
       
     }
@@ -255,22 +260,7 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
   df.bb <- df[(df$bb==df$day),]
   
-  if(hypothA==FALSE){
-    
-    #df.bb$tx <- ifelse(df.bb$method=="ws", 1, 0)
-    #df.bb$gdd.noise <- df.bb$gdd.obs + df.bb$tx * rep(rnorm(nspps, methodeffect, methodsd), each=ninds*nmethods)  ### This "methodsd" isn't being captured
-    
-    df.bb$urbtx <- ifelse(df.bb$site=="arb", 1, 0)
-    df.bb$gdd  <- df.bb$gdd.obs + df.bb$urbtx * rep(rnorm(nspps, urbeffect, urbsd), each=ninds*nmethods)  ### This "urbsd" isn't being captured
-    
-    
-  }
-  
-  if(hypothA==TRUE){
-    
-    df.bb$gdd <- df.bb$gdd.obs
-    
-  }
+  df.bb$gdd <- df.bb$gdd.obs
   
   df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "bb", "gdd", "gdd.noise", "fstar.new", "provenance"))
   df.bb$species <- as.numeric(df.bb$species)
@@ -290,6 +280,8 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
 }
 
+
+if(FALSE){
 #bblist200 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
 #bblist250 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
 bblist300 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
@@ -318,4 +310,9 @@ bb <- full_join(bb, bb300)
 
 ggplot(bb, aes(temp, gdd))
 
+
+
+
+
+}
 

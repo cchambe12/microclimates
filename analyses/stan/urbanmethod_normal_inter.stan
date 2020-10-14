@@ -33,20 +33,14 @@ parameters {
   real<lower=0> sigma_y; 
   
   real a_sp[n_sp]; // intercept for species
-  
-  vector[n_sp] b_urban_ncp; // slope of urban effect 
-  vector[n_sp] b_method_ncp; // slope of method effect 
-  
-  vector[n_sp] b_um_ncp;
+  real b_urban[n_sp];
+  real b_method[n_sp];
+  real b_um[n_sp];
   
 	}
 
 transformed parameters {
   vector[N] yhat;
-
-  vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
-  vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp;
   
   for(i in 1:N){    
     yhat[i] = a_sp[sp[i]] + // indexed with species
@@ -58,28 +52,26 @@ transformed parameters {
 }
 
 model {
-	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	b_urban ~ normal(mu_b_urban_sp, sigma_b_urban_sp); 
-  b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
-	b_um ~ normal(mu_b_um_sp, sigma_b_um_sp);
-	
-	b_urban_ncp ~ normal(0, 10);
-	b_method_ncp ~ normal(0, 10);
-	b_um_ncp ~ normal(0, 10);
 	      
-        mu_a_sp ~ normal(400, 50);
-        sigma_a_sp ~ normal(0, 50);
+    mu_a_sp ~ normal(350, 50); 
+    sigma_a_sp ~ normal(0, 50); 
 
-        mu_b_urban_sp ~ normal(0, 50);
-        sigma_b_urban_sp ~ normal(0, 20);
+    mu_b_urban_sp ~ normal(0, 50);
+    sigma_b_urban_sp ~ normal(0, 10);
+    
+    mu_b_method_sp ~ normal(0, 50);
+    sigma_b_method_sp ~ normal(0, 10);
+    
+    mu_b_um_sp ~ normal(0, 80);
+    sigma_b_um_sp ~ normal(0, 10); //here
+    
+    sigma_y ~ normal(0, 50);
         
-        mu_b_method_sp ~ normal(0, 50);
-        sigma_b_method_sp ~ normal(0, 20);
-        
-        mu_b_um_sp ~ normal(0, 50);
-	      sigma_b_um_sp ~ normal(0, 10);
-        
-        sigma_y ~ normal(0, 50);
+        a_sp ~ normal(mu_a_sp, sigma_a_sp); 
+	
+	      b_urban ~ normal(mu_b_urban_sp, sigma_b_urban_sp);
+        b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
+	      b_um ~ normal(mu_b_um_sp, sigma_b_um_sp);
 	      
 	y ~ normal(yhat, sigma_y);
 

@@ -38,8 +38,10 @@ datalist.gdd <- with(urb,
 #urbmethod_fake = stan('stan/urbanmethod_normal_ncp.stan', data = datalist.gdd,
  #                       iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
 
-urbmethod_fake_intrxn = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                      iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+get_prior(gdd ~ urban + method + urban*method + (urban + method + urban*method | species), data=urb)
+
+urbmethod_fake_intrxn = stan('stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
+                      iter = 4000, warmup=2500, control=list(adapt_delta=0.99)) ### 
   
 #check_all_diagnostics(ws_urb_buildfake)
   

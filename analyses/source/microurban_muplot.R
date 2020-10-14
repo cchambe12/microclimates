@@ -14,7 +14,7 @@ abline(v=0, lty=2, col="darkgrey")
 rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp")
 ppeffects <- c("b_urban", "b_method", "b_um")
 for(i in 1:3){
-  pos.y<-(1:3)[i]
+  pos.y<-(3:1)[i]
   pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
   lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
   points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")

@@ -34,6 +34,9 @@ parameters {
   
   
   real a_sp[n_sp]; // intercept for species
+  real b_prov[n_sp];
+  real b_method[n_sp];
+  real b_pm[n_sp];
   
   vector[n_sp] b_prov_ncp; // slope of prov effect 
   vector[n_sp] b_method_ncp; // slope of method effect 
@@ -45,9 +48,9 @@ parameters {
 transformed parameters {
   vector[N] yhat;
 
-  vector[n_sp] b_prov = mu_b_prov_sp + sigma_b_prov_sp*b_prov_ncp; 
-  vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-  vector[n_sp] b_pm = mu_b_pm_sp + sigma_b_pm_sp*b_pm_ncp;
+  vector[n_sp] b_prov = b_prov + sigma_b_prov_sp*b_prov_ncp; 
+  vector[n_sp] b_method = b_method + sigma_b_method_sp*b_method_ncp; 
+  vector[n_sp] b_pm = b_pm + sigma_b_pm_sp*b_pm_ncp;
   
   for(i in 1:N){    
     yhat[i] = a_sp[sp[i]] + // indexed with species
@@ -63,6 +66,10 @@ model {
 	b_prov_ncp ~ normal(0, 1);
 	b_method_ncp ~ normal(0, 1);
 	b_pm_ncp ~ normal(0, 1);
+	
+	b_prov ~ normal(mu_b_prov_sp, sigma_b_prov_sp);
+	b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
+	b_pm ~ normal(mu_b_pm_sp, sigma_b_pm_sp);
 	
 	mu_b_pm_sp ~ normal(0, 10);
 	sigma_b_pm_sp ~ normal(0, 10);
