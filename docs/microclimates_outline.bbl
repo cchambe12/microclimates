@@ -1,0 +1,105 @@
+\begin{thebibliography}{17}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
+Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
+  indirect effects on insect population dynamics. \emph{Ecology Letters}
+  \textbf{15}, 502--508.
+
+\bibitem[{Chuine \emph{et~al.}(2001)Chuine, Aitken \& Ying}]{Chuine2001}
+Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
+  elongation in provenances of \textit{Pinus contorta}}. \emph{Canadian Journal
+  of Forest Research} \textbf{31}, 1444--1455.
+
+\bibitem[{Cook \emph{et~al.}(2012)Cook, Wolkovich, Davies, Ault, Betancourt,
+  Allen, Bolmgren, Cleland, Crimmins, Kraft \& et~al.}]{Cook2012}
+Cook, B.I., Wolkovich, E.M., Davies, T.J., Ault, T.R., Betancourt, J.L., Allen,
+  J.M., Bolmgren, K., Cleland, E.E., Crimmins, T.M., Kraft, N.J.B. \& et~al.
+  (2012) {Sensitivity of spring phenology to warming across temporal and
+  spatial climate gradients in two independent databases}. \emph{Ecosystems}
+  \textbf{15}, 1283--1294.
+
+\bibitem[{Elmendorf \emph{et~al.}(2019)Elmendorf, Crimmins, Gerst \&
+  Weltzin}]{Elmendorf2019}
+Elmendorf, S.C., Crimmins, T.M., Gerst, K.L. \& Weltzin, J.F. (2019) Time to
+  branch out? application of hierarchical survival models in plant phenology.
+  \emph{Agricultural and Forest Meteorology} \textbf{279}, 107694.
+
+\bibitem[{Gelman \emph{et~al.}(2014)Gelman, Carlin, Stern, Dunson, Vehtari \&
+  Rubin}]{BDA}
+Gelman, A., Carlin, J.B., Stern, H.S., Dunson, D.B., Vehtari, A. \& Rubin, D.B.
+  (2014) \emph{Bayesian Data Analysis}. CRC Press, New York, 3rd edn.
+
+\bibitem[{Grimm \emph{et~al.}(2008)Grimm, Faeth, Golubiewski, Redman, Wu, Bai
+  \& Briggs}]{Grimm2008}
+Grimm, N.B., Faeth, S.H., Golubiewski, N.E., Redman, C.L., Wu, J., Bai, X. \&
+  Briggs, J.M. (2008) Global change and the ecology of cities. \emph{Science}
+  \textbf{319}, 756--760.
+
+\bibitem[{Keenan \emph{et~al.}(2014)Keenan, Gray, Friedl, Toomey, Bohrer,
+  Hollinger, Munger, O'Keefe, Schmid, Wing \& et~al.}]{Keenan2014}
+Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
+  Munger, J.W., O'Keefe, J., Schmid, H.P., Wing, I.S. \& et~al. (2014) Net
+  carbon uptake has increased through warming-induced changes in temperate
+  forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
+
+\bibitem[{Meng \emph{et~al.}(2020)Meng, Mao, Zhou, Richardson, Lee, Thornton,
+  Ricciuto, Li, Dai, Shi \& et~al.}]{Meng2020}
+Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
+  Ricciuto, D.M., Li, X., Dai, Y., Shi, X. \& et~al. (2020) Urban warming
+  advances spring phenology but reduces the response of phenology to
+  temperature in the conterminous united states. \emph{Proceedings of the
+  National Academy of Sciences} \textbf{117}, 4228--4233.
+
+\bibitem[{Pardee \emph{et~al.}(2017)Pardee, Inouye \& Irwin}]{Pardee2017}
+Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of
+  episodic frost on plant growth and reproduction in subalpine wildflowers.
+  \emph{Global Change Biology} \textbf{24}, 848--857.
+
+\bibitem[{Pickett \emph{et~al.}(2011)Pickett, Cadenasso, Grove, Boone,
+  Groffman, Irwin, Kaushal, Marshall, McGrath, Nilon
+  \emph{et~al.}}]{Pickett2011}
+Pickett, S.T., Cadenasso, M.L., Grove, J.M., Boone, C.G., Groffman, P.M.,
+  Irwin, E., Kaushal, S.S., Marshall, V., McGrath, B.P., Nilon, C.H.
+  \emph{et~al.} (2011) Urban ecological systems: Scientific foundations and a
+  decade of progress. \emph{Journal of environmental management} \textbf{92},
+  331--362.
+
+\bibitem[{{R Development Core Team}(2017)}]{R}
+{R Development Core Team} (2017) R: A language and environment for statistical
+  computing. \emph{R Foundation for Statistical Computing, Vienna, Austria} .
+
+\bibitem[{Richardson(2015)}]{Richardson2015}
+Richardson, A.D. (2015) {PhenoCam images and canopy phenology at Harvard Forest
+  since 2008}.
+
+\bibitem[{Richardson \emph{et~al.}(2013)Richardson, Keenan, Migliavacca, Ryu,
+  Sonnentag \& Toomey}]{Richardson2013}
+Richardson, A.D., Keenan, T.F., Migliavacca, M., Ryu, Y., Sonnentag, O. \&
+  Toomey, M. (2013) {Climate change, phenology, and phenological control of
+  vegetation feedbacks to the climate system}. \emph{Agricultural and Forest
+  Meteorology} \textbf{169}, 156 -- 173.
+
+\bibitem[{Schwartz \emph{et~al.}(2006)Schwartz, Ahas \& Aasa}]{Schwartz2006}
+Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
+  across the Northern Hemisphere}. \emph{Global Change Biology} \textbf{12},
+  343--351.
+
+\bibitem[{{Stan Development Team}(2019)}]{rstan2019}
+{Stan Development Team} (2019) Stan user's guide, version 2.19.
+
+\bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
+  Kremer, Chuine \& Delzon}]{Vitasse2011}
+Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.
+  \& Delzon, S. (2011) {Assessing the effects of climate change on the
+  phenology of European temperate trees.} \emph{Agricultural and Forest
+  Meteorology} \textbf{151}, 969--980.
+
+\bibitem[{Williamson \emph{et~al.}(2016)Williamson, Barrio, Hik \&
+  Gamon}]{Williamson2016}
+Williamson, S.N., Barrio, I.C., Hik, D.S. \& Gamon, J.A. (2016) Phenology and
+  species determine growing-season albedo increase at the altitudinal limit of
+  shrub growth in the sub-arctic. \emph{Global Change Biology} \textbf{22},
+  3621--3631.
+
+\end{thebibliography}

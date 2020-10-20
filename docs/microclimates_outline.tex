@@ -1,4 +1,54 @@
-\documentclass{article}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage{Sweave}
 \usepackage{float}
 \usepackage{graphicx}
@@ -37,7 +87,7 @@
   skipabove=\topsep,
   skipbelow=\topsep
 ]{siderules}
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \noindent\textbf{\Large{Understanding growing degree days to predict spring phenology in a warming world}}
@@ -59,26 +109,10 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<<label=numbers, echo=FALSE, results="asis", warning=FALSE, message=FALSE,>>=
-#load models and data to report numbers of things
-options(stringsAsFactors = FALSE)
-library(brms)
 
-## Set Working Directory
-setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
-
-
-@
 
 \section*{Introduction}
 \begin{enumerate}
-\item Need to start even bigger here! In ecology, we have the fundamental issue of understanding and applying methods to accurately predict shifts in climate and the broader impacts of these shifts.
-  \begin{enumerate}
-  \item Often we use mixed models to answer ecological questions, though we do not always understand the intricacies of the model output, nor do we investigate what is missing from the model output.
-  \item Here, we work to understand mixed models using simulation data and test myriad hypotheses through these simulations. 
-  \item These methods can be applied to many ecological questions investigating climate data across global habitats but here we will investigate the effects of climate measurements and site on spring plant phenology. 
-  \end{enumerate}
-  
 \item Understanding and predicting plant phenology in temperate deciduous forests is critical as it both shapes community structure and also influences major ecosystem services such as resource and forest management. 
   \begin{enumerate} 
   \item Climate change and urbanization are advancing spring timing---such as budburst and leafout, which  are strongly cued by temperature, resulting in longer growing seasons \citep{Chuine2001} which ultimately impacts these services.  
@@ -89,8 +123,8 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \item Urbanization has led to the formation of urban heat islands, which have been shown to affect plant phenology and lead to earlier spring leafout \citep{Meng2020}. 
   \begin{enumerate}
   \item These trends are crucial to understand in order to predict plant development with warming. 
-  \item Tracking heat accumulation is one way to measure and forecast spring leafout, which is often predicted through the growing degree day (GDD) model \citep{Cook2012,Crimmins2019,Phillimore2013,Schwartz2006,Vitasse2011}.
-  \item The GDD model simply sums temperatures above a certain threshold---ideally around 0$^{\circ$C as estimates are proven to be more accurate \citep{Man2010}---and different species often require a different number of GDDs to leaf out. 
+  \item Tracking heat accumulation is one way to measure and forecast spring leafout, which is often predicted through the growing degree day (GDD) model \citep{Cook2012,Crimmins2019,Schwartz2006,Vitasse2011}.
+  \item The GDD model simply sums temperatures above a certain threshold (e.g., 0$\circ{}$C) and different species often require a different number of GDDs to leaf out. 
   \item GDDs accumulate at a faster rate when mean temperates are higher, thus different sites or different climate measurement methods may record different GDD thresholds for leafout. 
   \item Spring leafout timing can have cascading effects to pollinators \citep{Boggs2012, Pardee2017}, on carbon dynamics \citep{Richardson2013} and albedo \citep{Williamson2016}, thus integrating the growing degree day model successfully is essential for predicting the effects of climate change on temperate systems. 
   \end{enumerate}
@@ -123,15 +157,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 
 \section*{Methods}
 \subsection*{Sites}
-\begin{enumerate}
-\item We chose two sites---one urban arboretum and one forest---with similar species and climates to compare the number of growing degree days to leafout across species. 
-  \begin{enumerate}
-  \item The urban site is in Boston, MA at the Arnold Arboretum of Harvard University (42$^{\circ}$17' N -71$^{\circ}$8' W).
-  \item The Arnold Arboretum is 281 acres and has a range of elevation of XX to XX
-  \item The forest site is in Petersham, MA at the Harvard Forest (42$^{\circ}$31'53.5' N -72$^{\circ}$11'24.1' W).
-  \item The Harvard Forest is XXX acres and has a range of elevation of XX to XX. 
-  \end{enumerate}
-\end{enumerate}
 
 \subsection*{Simulations}
 
@@ -150,10 +175,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \end{enumerate}
 \end{enumerate}
 \subsection*{Real Data}
-\begin{enumerate}
-\item Phenology observations across the Arnold Arboretum were collected by trained citizen scientists from the Tree Spotters National Phenology Network program \citep{NPN}. 
-  \begin{enumerate}
-  \item The Tree Spotter volunteers observed 15 species with varying phenologies and each species had 5 individuals for a total of 75 trees.
 
 
 \section*{Results}
@@ -172,13 +193,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \end{enumerate}
 
 \section*{Discussion} 
-\begin{enumerate}
-\item Add section here that discusses why maybe using GDD models may not be appropriate for the future with warming \citep{Man2010}. 
-  \begin{enumerate}
-  \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for leafout phenology. 
-  \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here. 
-  \end{enumerate}
-\end{enumerate}
 
 
 
