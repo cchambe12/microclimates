@@ -1,0 +1,359 @@
+\documentclass{article}
+\usepackage{Sweave}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{amssymb} % for math symbols
+\usepackage{amsmath} % for aligning equations
+\usepackage{textcomp}
+\usepackage{mdframed}
+\usepackage{natbib}
+\bibliographystyle{..//references/styles/besjournals.bst}
+\usepackage[small]{caption}
+\setlength{\captionmargin}{30pt}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+\topmargin -1.5cm        
+\oddsidemargin -0.04cm   
+\evensidemargin -0.04cm
+\textwidth 16.59cm
+\textheight 21.94cm 
+%\pagestyle{empty} %comment if want page numbers
+\parskip 7.2pt
+\renewcommand{\baselinestretch}{1.5}
+\parindent 0pt
+%\usepackage{lineno}
+%\linenumbers
+
+%cross referencing:
+\usepackage{xr}
+\usepackage{xr-hyper}
+\externaldocument{/Users/CatherineChamberlain/Documents/git/microclimates/docs/microclimates_supp}
+
+\newmdenv[
+  topline=true,
+  bottomline=true,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{siderules}
+
+\begin{document}
+
+\noindent\textbf{\Large{Understanding growing degree days and plant phenology in a warming world}}
+
+\noindent Authors:\\
+C. J. Chamberlain $^{1,2}$, K. Woodruff $^{1}$ \& E. M. Wolkovich $^{1,2,3}$
+\vspace{2ex}\\
+\emph{Author affiliations:}\\
+$^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA; \\
+$^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA; \\
+$^{3}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4\\
+\vspace{2ex}
+$^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
+
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\labelitemi}{$-$}
+\setkeys{Gin}{width=0.8\textwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<label=numbers, echo=FALSE, results="asis", warning=FALSE, message=FALSE,>>=
+#load models and data to report numbers of things
+options(stringsAsFactors = FALSE)
+library(brms)
+
+## Set Working Directory
+setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
+
+## load the model
+load("stan/dvr_brms.Rdata")
+
+chillfrz <- read.csv("output/clean_dvr_traits.csv", header=TRUE)
+rmspp <- c("NYSSYL", "FAGGRA")
+chillfrz <- chillfrz[!(chillfrz$species%in%rmspp),]
+
+### DVR Model - WITH ENOUGH CHILLING, CAN COMPENSATE FOR TX!!!
+dvrtx<-round(mean(fixef(dvr.mod, pars="tx", summary=FALSE)), digits=2) ### 2.97
+dvrtxsd<-round(mean(fixef(dvr.mod, pars="tx")[2]), digits=2) 
+dvrchill1<-round(mean(fixef(dvr.mod, pars="chill1", summary=FALSE)), digits=2) # -0.53
+dvrchill1sd<-round(mean(fixef(dvr.mod, pars="chill1")[2]), digits=2)
+dvrchill2<-round(mean(fixef(dvr.mod, pars="chill2", summary=FALSE)), digits=2) ### -2.67
+dvrchill2sd<-round(mean(fixef(dvr.mod, pars="chill2")[2]), digits=2) # 1.14
+
+dvrtxchill1<-round(mean(fixef(dvr.mod, pars="tx:chill1", summary=FALSE)), digits=2) 
+dvrtxchill1sd<-round(mean(fixef(dvr.mod, pars="tx:chill1")[2]), digits=2) # 1.14
+dvrtxchill1 <- dvrtx + dvrchill1 + dvrtxchill1 ### 1.53
+
+dvrtxchill2<-round(mean(fixef(dvr.mod, pars="tx:chill2", summary=FALSE)), digits=2) 
+dvrtxchill2sd<-round(mean(fixef(dvr.mod, pars="tx:chill2")[2]), digits=2) # 1.08
+dvrtxchill2 <- dvrtx + dvrchill2 + dvrtxchill2 # 0.92
+
+
+
+@
+
+\section*{Introduction}
+\begin{enumerate}
+\item Understanding and predicting plant phenology in temperate deciduous forests is critical as it both shapes community structure and also influences major ecosystem services such as resource and forest management. 
+  \begin{enumerate} 
+  \item Climate change and urbanization are advancing spring timing---such as budburst and leafout, which  are strongly cued by temperature, resulting in longer growing seasons \citep{Chuine2001} which ultimately impacts these services.  
+  \item Temperate forests sequester carbon and help mitigate the negative effects of climate change and, with earlier spring phenology and longer growing seasons, there has been an increase in carbon uptake \citep{Keenan2014}.
+  \item But our understanding of how climate change is impacting this timing of spring is incomplete, especially in urban versus natural forest habitats. 
+  \end{enumerate}
+  
+\item Urbanization has led to the formation of urban heat islands, which have been shown to affect plant phenology and lead to earlier spring leafout \citep{Meng2020}. 
+  \begin{enumerate}
+  \item These trends are crucial to understand in order to predict plant development with warming. 
+  \item Tracking heat accumulation is one way to measure and forecast spring leafout, which is often predicted through the growing degree day model \citep{Cook2012,Crimmins2019,Schwartz2006,Vitasse2011}.
+  \item The growing degree day model simply sums temperatures above a certain threshold (e.g., 0$\circ{}$C)
+  \item Spring leafout timing can have cascading effects to pollinators \citep{Boggs2012, Pardee2017}, on carbon dynamics \citep{Richardson2013} and albedo \citep{Williamson2016}, thus integrating the growing degree day model successfully is essential for predicting the effects of climate change on temperate systems. 
+  \end{enumerate}
+
+\item Phenology is often measured through satellite, remote sensing or PhenoCam images to detect spring `green-up' \citep{Meng2020, Liu2019, RichardsonXXXX} but these methods fail to detect the species---or even site-level---nuances in leafout timing \citep{Elmendorf2019}.
+  \begin{enumerate}
+  \item Intensive, on the ground observations of individual budburst and leafout timing is the most effective way to implement new methods in calculating growing degree days and predicting future phenology. 
+  \item Urban environments additionally provide a natural laboratory for assessing the effects of warming on temperate tree and shrub species as these sites are warming at a faster rate than more rural habitats \citep{Pickett2011, Grimm2008}.
+  \end{enumerate}
+  
+\item Warmer winters may also play a critical role in the future of forests as they directly impact one of the  major cues plants use to time budburst: over-winter cold temperatures (chilling), (in addition to warming spring temperatures (forcing) and longer daylengths).
+  \begin{enumerate}
+  \item Many temperate plants have evolved chilling requirements to avoid leafout during warm snaps in the middle of the winter, but with climate change chilling requirements may not be met. 
+  \item  If chilling is not met, plants may leaf out much slower or incompletely, which can in turn affect freeze tolerance. 
+  \item Thus, understanding the interplay of warming winters and false spring risk is critical to predict how temperate forests will change in the future.
+  \end{enumerate} 
+  
+  
+\item This interaction between winter chilling and false springs may vary across species within a community, as species have likely evolved along a trade-off of risking spring frosts for early access to resources.
+  \begin{enumerate}
+  \item Ideally, all individuals of all species would evolve to require high levels of chilling to delay budburst and ultimately diminish false spring risk but competition for nutrients, water and light resources in the early spring pushes individuals to leafout earlier.  % EMW21Jul: Not sure if we mean species instead of individuals here ... ? Made a small tweak.
+  \item Young trees and understory species generally initiate budburst before the canopy trees to benefit from higher light levels \citep {Augspurger2008, Vitasse2013}, which potentially puts these species and individuals at higher risk of freeze damage \citep{Vitasse2014}.
+  \item Thus, successful forest recruitment requires seedlings and saplings to minimize false spring risk while maximizing growth.
+   \end{enumerate}
+ 
+
+\item The combination of species- and lifestage-level differences in responses to false springs and chilling and climate change could reshape the temporal assembly of forest communities. 
+  \begin{enumerate}
+  \item Species typically leafout in a similar sequence, with understory species leafing out earlier and higher canopy trees leafing out last but many studies are predicting substantial shifts in chronological order and reassembly of species' leafout with climate change \citep{Roberts2015, Laube2014}.
+  \item As warming alters winter temperatures and false spring prevalence, phenological cues and their interactions are anticipated to change, which could greatly alter competition and recruitment among forest species for early season resources and ultimately impact species diversity and carbon uptake in temperate forests.
+  \end{enumerate}
+  
+\item Here, we assessed the effects of over-winter chilling length and false springs on seedling phenology and growth across eight temperate tree and shrub species. 
+  \begin{enumerate}
+  \item Individuals were exposed to different levels of over-winter chilling and then half of the individuals were exposed to a false spring event. 
+  \item Individuals were observed for the remainder of the growing season to ask: (1) How does the accumulation of over-winter chilling hours and (2) how do false spring events impact phenology, physical leaf characteristics and growth?
+  \end{enumerate}
+\end{enumerate}
+  
+
+\section*{Methods}
+\subsection*{Plant Selection and Material}
+\begin{enumerate}
+\item We used 8 temperate woody plant tree and shrub species with varying phenologies, that were not used as crops or ornamental species: \textit{Acer saccharinum} L., \textit{Alnus incana rugosa} L., \textit{Betula papyrifera} Marsh., \textit{Betula populifolia} Marsh., \textit{Cornus racemosa} Lam., \textit{Salix purpurea} L., \textit{Sorbus americana} Marsh., and \textit{Viburnum dentatum} L. Two additional species---\textit{Fagus grandifolia} and \textit{Nyssa sylvatica}---were also originally included in the experimental design, but were not delivered in a usable condition and thus could not be used in the experiment.
+  \begin{enumerate}
+  \item We received 48 dormant bare root seedlings---each measuring 6-12 inches---for each species from Cold Stream Farm LLC (Freesoil, MI; 44$^{\circ}$6' N -86$^{\circ}$12' W) for a total of 384 individuals.
+  \item Upon receipt, plants were potted in POT INFO AND SOIL INFO HERE!! and placed in growth chambers at the Weld Hill Research Building of the Arnold Arboretum (Boston, MA; 42$^{\circ}$17' N -71$^{\circ}$8' W) at 4$^{\circ}$C to maintain dormancy.
+  \item After all individuals had leafed out, all seedlings were up-potted to new pots (NEW POT SIZE HERE) and given fertilizer (FERTILIZER INFO HERE).
+  \end{enumerate}
+\end{enumerate}
+\subsection*{Growth Chamber and Greenhouse Conditions}
+\begin{enumerate}
+\item Individuals were randomly selected and placed in six experimental treatments: 4 weeks of chilling at 4$^{\circ}$C x no false spring, 4 weeks of chilling at 4$^{\circ}$C x false spring, 6 weeks of chilling at 4$^{\circ}$C x no false spring, 6 weeks of chilling at 4$^{\circ}$C x false spring,
+8 weeks of chilling at 4$^{\circ}$C x no false spring, 8 weeks of chilling at 4$^{\circ}$C x false spring.
+  \begin{enumerate}
+  \item While individuals were in the growth chamber under chilling conditions, photoperiod was maintained at eight hour days.
+  \item Lighting within the chambers was provided through a combination of T5HO fluorescent lamps with halogen incandescent bulbs at roughly 250 $\mu mol/m^{2}/s$.
+  \item Individuals were rotated within and among growth chambers every two weeks to eliminate possible growth chamber effects.
+  \end{enumerate}
+\item Once chilling was completed, individuals were moved to a greenhouse with mean daytime temperature of 15$^{\circ}$C and a mean nighttime temperature of 10$^{\circ}$C.
+  \begin{enumerate}
+  \item Photoperiod was set to 12 hour days throughout the spring until all individuals reached full leaf expansion.
+  \item After all individuals of all species reached full leaf expansion, greenhouse temperatures and photoperiods were kept ambient (see Supplemental Materials for more information). 
+  \end{enumerate}
+\end{enumerate}
+\subsection*{Phenology and False Spring Treatment}
+\begin{enumerate}
+\item Phenology observations were taken every 2-3 days through full leaf expansion and then recorded weekly over the summer. 
+  \begin{enumerate}
+  \item Budburst was denoted as BBCH stage 07, which is `beginning of sprouting or bud breaking' and monitored until full leaf expansion (BBCH stage 19) in order to evaluate the duration of vegetative risk \citep{Chamberlain2019} for each individual \citep{Finn2007}.
+  \item Individuals in the `false spring treatment' were placed in a growth chamber set to mimic a false spring event during budburst, defined as once at least 50\% of the buds were at BBCH stage 07 but the individual had not yet reached BBCH stage 19 (that is, each individual was exposed to a false spring based on its individual phenological timing). 
+  \item Individuals receiving the false spring treatment were placed in a growth chamber for 14 hours, starting at 6pm. 
+  \item Temperatures in the growth chamber were ramped down over 14 hours (Figure \ref{fig:gccond}).
+  \item After 8am the following day, individuals were collected at placed back in the greenhouse with all of the other plants. 
+  \item Once all individuals reached full leaf expansion (BBCH stage 19), we made weekly phenology observations until August 1st and then we made observations every 2-3 days again to monitor fall phenology.
+  \item Individuals were monitored until complete budset, at which point they were harvested for biomass measurements.
+  \end{enumerate}
+\end{enumerate}
+\subsection*{Growth measurements}
+\begin{enumerate}
+\item Growth was closely measured throughout the entirety of the experiment. 
+  \begin{enumerate}
+  \item Height was measured three times throughout the growing season: the day an individual reached full leaf expansion, 60 days after full leaf out and when an individual reached complete budset. 
+  \item We measured the chlorophyll content of four leaves on each individual 60 days after full leaf out using an atLEAF CHL PLUS Chlorophyll meter.
+  \item The average chlorophyll content was calculated and then converted to mg/cm\textsuperscript{2} using the atLEAF CHL PLUS conversion tool.
+  \item We measured leaf thickness using a Shars Digital Micrometer (scale works to 0.001mm) and leaf toughness in Newtons using a Shimpo Digital Force Gauge on two leaves for each individual.
+  \item Additionally, we visually monitored damage to the shoot apical meristem, which consisted of complete damage or disruption of growth in the main stem and resulted in early dormancy induction or reliance on lateral shoot growth.
+  \item Finally, belowground and aboveground biomass were harvested after an individual reached complete budset to include leaves in our biomass calculations. 
+  \item Belowground and aboveground plant material were separated and then put in a Shel Lab Forced Air Oven at 60$^{\circ}$C for at least 4 days. 
+  \end{enumerate}
+\end{enumerate}
+\subsection*{Data analysis}
+\begin{enumerate}
+\item Using Bayesian hierarchical models with the brms package \citep{brms}, version 2.3.1,  in R \citep{R}, version 3.3.1, we estimated the effects of chilling duration, false spring treatment and all two-way interactions as predictors on: (1) duration of vegetative risk, (2) growing season length, (3) total growth in centimeters, (4) chlorophyll content, (5) leaf thickness, (6) leaf toughness, (7) shoot apical meristem damage and (8) total biomass. % CUT FOR NOW: and (9) belowground to aboveground biomass ratio. 
+  \begin{enumerate} 
+  \item Species were modeled hierarchically as grouping factors, which generates an estimate and posterior distribution of the overall response across the eight species used in our experiment.
+  \item We ran four chains, each with 2 500 warm-up iterations and 4 000 sampling iterations for a total of 6 000 posterior samples for each predictor for each model using weakly informative priors. 
+  \item Increasing priors three-fold did not impact our results.
+  \item We evaluated our model performance based on $\hat{R}$ values that were close to one and did not include models with divergent transitions in our results. 
+  \item We also evaluated high $n_{eff}$ (4000 for most parameters, but as low as 1400 for a couple of parameters in the shoot apical meristem model). 
+  \item We additionally assessed chain convergence and posterior predictive checks visually \citep{BDA}.
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Results}
+\begin{enumerate}
+\item Chilling durations impacted individual phenology. % EMW21Jul: I felt like 2. in our old outline was a little out of place (and it's point (a) didn't really fit), see what you think of these small tweaks.
+  \begin{enumerate}
+  \item As seen in many other studies, we found increases in chilling duration advanced day of budburst by \Sexpr{simpbbchill1} $\pm$ \Sexpr{simpbbchillsd1} days for six weeks of chilling and by \Sexpr{simpbbchill2} $\pm$ \Sexpr{simpbbchillsd2} days for eight weeks of chilling (Table \ref{tab:simpbb}).
+  \item Longer chilling treatments also sped up leafout, reducing the duration of vegetative risk, especially in the eight weeks of chilling cohort (\Sexpr{dvrchill2} $\pm$ \Sexpr{dvrchill2sd} days; Figure \ref{fig:muphen}\textbf{a} and Table \ref{tab:suppmoddvr}).
+  \item With increases in chilling duration, the growing season length decreased for individuals exposed to six and eight weeks of chilling (\Sexpr{gslengthchill1} $\pm$ \Sexpr{gslengthchill1sd} days for six weeks and \Sexpr{gslengthchill2} $\pm$ \Sexpr{gslengthchill2sd} days for eight weeks; Figure \ref{fig:muphen}\textbf{b} and Table \ref{tab:suppmodgs}).
+  \end{enumerate}
+ 
+\item False spring impacted individual phenology. 
+  \begin{enumerate}
+  \item Individuals exposed to the false spring treatment had longer durations of vegetative risk for the four weeks (\Sexpr{dvrtx} $\pm$ \Sexpr{dvrtxsd} days) and slightly for the six weeks of chilling cohort (\Sexpr{dvrtxchill1} $\pm$ \Sexpr{dvrtxchill1sd} days; Figure \ref{fig:muphen}\textbf{a} and Table \ref{tab:suppmoddvr}). 
+  \item Effects on the duration of vegetative risk from false spring (longer durations) and from increased chilling (shorter durations) were generally additive, resulting in no major changes in the durations of vegetative risk for individuals exposed to a false spring that received eight weeks of chilling (\Sexpr{dvrtxchill2} $\pm$ \Sexpr{dvrtxchill2sd} days, Figure \ref{fig:muphen}\textbf{a} and Table \ref{tab:suppmoddvr}). 
+  \end{enumerate}
+  
+\item False springs impacted growth habit and shoot growth but not total biomass. 
+  \begin{enumerate} % EMW21Jul: Can we come up with a simpler phrase that means 'experienced less damage'? Maybe just change 'individuals exposed to false springs experienced" to "false springs led to more damage" (you did an experiment so I think you can say that!) In general here and in the methods we could use sneak in some clearer, simpler language when possible.  
+  \item Across all chilling treatments, especially for the four and eight week cohorts, individuals exposed to false springs experienced more damage to the shoot apical meristem (\Sexpr{meritx.perc}\% increase in probability of damage under false spring treatment or \Sexpr{meritx} $\pm$ \Sexpr{meritxsd} for four weeks, \Sexpr{meritxchill1.perc}\% or a \Sexpr{meritxchill1} $\pm$ \Sexpr{meritxchill1sd} for six weeks and \Sexpr{meritxchill2.perc}\% or a \Sexpr{meritxchill2} $\pm$ \Sexpr{meritxchill2sd} for eight weeks; Figure \ref{fig:mugrowth}\textbf{a} and Table \ref{tab:suppmodmeri}) .
+  \item Shoot growth over the growing season increased with eight weeks of chilling (\Sexpr{htchill2} $\pm$ \Sexpr{htchill2sd} cm) except growth was not affected under false spring conditions (\Sexpr{httxchill2} $\pm$ \Sexpr{httxchill2sd} cm; Figure \ref{fig:mugrowth}\textbf{b} and Table \ref{tab:suppmodht})). 
+  \item Individuals exposed to false spring conditions had slightly lower total biomasses when they were exposed to only four weeks of chilling (\Sexpr{totbiomasstx} $\pm$ \Sexpr{totbiomasstxsd} g) but there was very little change in total biomass under false spring conditions compared to the control for both the six weeks of chilling cohort (\Sexpr{totbiomasstxchill1} $\pm$ \Sexpr{totbiomasstxchill1sd} g) and the eight weeks of chilling cohort (\Sexpr{totbiomasstxchill2} $\pm$ \Sexpr{totbiomasschill2sd} g; Figure \ref{fig:mutotbio} and Table \ref{tab:suppmodtotbio})).
+  \end{enumerate}
+  
+\item False springs affected physical leaf traits.
+  \begin{enumerate}
+  \item Leaf chlorophyll content decreased under false spring conditions with increases in chilling, especially with eight weeks of chilling (\Sexpr{chltxchill1} $\pm$ \Sexpr{chltxchill1sd} mg/cm\textsuperscript{2} for six weeks and \Sexpr{chltxchill2} $\pm$ \Sexpr{chltxchill2sd} mg/cm\textsuperscript{2} for eight weeks; Figure \ref{fig:muchl} and Table \ref{tab:suppmodchl}).
+  \item Leaf toughness decreased across all chilling treatments under false spring conditions (\Sexpr{toughtx} $\pm$ \Sexpr{toughtxsd} N for four weeks of chilling, \Sexpr{toughtxchill1} $\pm$ \Sexpr{toughtxchill1sd} N for six weeks of chilling and \Sexpr{toughtxchill2} $\pm$ \Sexpr{toughtxchill2sd} N for eight weeks of chilling; Figure \ref{fig:muleaf}\textbf{a} and Table \ref{tab:suppmodtough}).
+  \item Additionally, leaf thickness decreased across four and eight week chilling durations under false spring conditions, but there was little change for the six weeks of chilling cohort (\Sexpr{thicktx} $\pm$ \Sexpr{thicktxsd} $\mu$m for four weeks of chilling, \Sexpr{thicktxchill1} $\pm$ \Sexpr{thicktxchill1sd} $\mu$m for six weeks of chilling and \Sexpr{thicktxchill2} $\pm$ \Sexpr{thicktxchill2sd} $\mu$m for eight weeks of chilling; Figure \ref{fig:muleaf}\textbf{b} and Table \ref{tab:suppmodthick}).
+  \end{enumerate}
+  
+  
+\item False springs and chilling duration treatments resulted in only some species-level differences.
+ \begin{enumerate}
+  \item Duration of vegetative risk decreased for most species with long chilling durations (i.e., the eight week cohort), except for \textit{Salix purpurea}, which experienced longer durations of vegetative risk with longer chilling durations (Figure \ref{fig:muphen}\textbf{a}). 
+  \item All species experienced meristem damage under false spring conditions except for \textit{Betula populifolia} and \textit{Sorbus americana}.
+  \item Additionally, \textit{Viburnum dentatum} experienced meristem damage under all treatments (Figure \ref{fig:mugrowth}\textbf{a}). 
+  \item There was a lot of species-level variation with leaf thickness under the longer chilling durations, with \textit{Sorbus americana} and \textit{Viburnum dentatum} having thicker leaves with increases in chilling (Figure \ref{fig:muleaf}\textbf{b}). 
+  \end{enumerate}
+  
+\item Despite large treatment effects on phenology, we found no major effects on phenological rank within the community.
+  \begin{enumerate}
+  \item Order of leafout timing was consistent across all treatments, with \textit{Salix purpurea} always being first to leafout, followed by \textit{Betula papyrifera}, \textit{B. populifolia} and \textit{Cornus racemosa} and finally by \textit{Alnus rugosa}, \textit{Sorbus americana}, \textit{Viburnum dentatum} and \textit{Acer saccharinum} (Figure \ref{fig:rank}).
+  \item \textit{Viburnum dentatum} was the only species to change rank across treatments, though it consistently was grouped with the later-leafout group of species.
+  \item Order of budset timing was also consistent across all treatments, with \textit{Cornus racemosa} and \textit{Sorbus americana} being first to set bud, followed by \textit{Betula papyrifera} and \textit{Acer saccharinum} and finally by \textit{Viburnum dentatum}, \textit{B. populifolia}, \textit{Salix purpurea} and \textit{Alnus rugosa} (Figure \ref{fig:bsetrank}).
+  \item \textit{Acer saccharinum} was the only species to change budset rank across treatments, though it consistently was grouped with \textit{Betula papyrifera} and \textit{Viburnum dentatum}.% EMW21Jul: Check my edit
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Discussion} 
+\begin{enumerate}
+\item Our experiment allowed us to examine the cascading consequences of two major interactive effects of climate change across eight deciduous forest tree species---false springs and chilling. Our results confirmed the major features of false springs---causing plant damage---and chilling---advancing spring phenology---then highlighted how they altered multiple aspects of plant phenology, plant growth and leaf traits. Importantly, we found false springs and chilling have opposing additive effects on the duration of vegetative risk. This suggests that the combination of increased false springs and warmer winters could be especially detrimental to forest communities. 
+
+\subsection*{False springs and chilling interactively determine risk and damage}
+\item Chilling length greatly influences spring phenology during the critical budburst to leafout phases, and thus can compensate for the detrimental effects of false springs on phenology.
+  \begin{enumerate}
+  \item With false springs increasing the duration of vegetative risk, the risk of multiple false springs occurring in one season also increases. 
+  \item But chilling can compensate for this increase in duration of vegetative risk: with increased chilling, the duration of vegetative risk does not increase under false spring conditions.
+  \item This suggests chilling is more important for seedlings in terms of exposure to multiple false springs.
+  \item With climate change and warming temperatures, over-winter chilling is anticipated to decrease and false springs are predicted to increase in certain regions.
+  \item This combination could greatly impact plant performance, survival and shape species distributions, ultimately affecting crucial processes such as carbon uptake and nutrient cycling.
+  \end{enumerate}
+  
+\item False springs impact seedling growth, regardless of chilling duration.
+  \begin{enumerate}
+  \item Past studies suggest early-budburst species can withstand lower temperature thresholds \citep{Lenz2013, Muffler2016, Zohner2020} but our results suggest false springs consistently impair shoot apical meristem growth, regardless of a species phenological order. % EMW21Jul: check my edit
+  \item Damage to the shoot apical meristem can lead to reliance on lateral shoot growth, rendering inefficient growth patterns and---if damage is significant within a stand---it can lead to declines in recruitment \citep{Rhodes2018}. 
+  \item Though overall height increased with more over-winter chilling, false springs impacted all individuals similarly across all chilling treatments, suggesting an interplay between false spring damage to the meristem and overall plant height and thus further emphasizing the detrimental effects of meristem damage. 
+  \end{enumerate}
+  
+\item False springs greatly impact the physical characteristics of the leaf.
+  \begin{enumerate}
+  \item With chlorophyll content, leaf toughness and leaf thickness decreasing, the quality of the leaf dwindled.
+  \item This reduction in quality could subsequently lead to an increase in herbivory risk \citep{Onoda2011}.
+  \item We found that increased chilling levels actually decreased leaf toughness and decreased chlorophyll content under false spring conditions.
+  \item Further studies that assess the secondary compounds and total phenolic content \citep{Ayres1993, Webber2016} as well as photosynthetic rate of the leaves exposed to false springs after varying durations of chilling, are needed to better understand the level of herbivory risk and the overall quality of the leaf.
+  \end{enumerate}
+
+\subsection*{False springs and chilling do not reshape temporal assembly}
+\item Climate model projections and no chilling treatments in growth chamber studies predict substantial shifts in species leafout order under climate change conditions \citep{Roberts2015, Laube2014}, other studies using long-term phenology observations suggest leafout phenology order is consistent across years \citep{Wesolowski2006}.
+  \begin{enumerate}
+  \item We did not find major shifts in species leafout order---thus consistent with observational studies \citep{Wesolowski2006}---except for in \textit{Viburnum dentatum}, though it still leafed out within the later cohort of species across all treatments.
+  \item Therefore, we do not predict major reassembly of forest communities due to winter warming or false spring incidence. 
+  \item As was evident from a growth chamber study, most treatments did not render substantial phenological reordering, except under no chilling treatments \citep{Laube2014}. Our results differ from projections---and this no chilling treatment---and this is likely due to greater decreases in over-winter chilling under future climate conditions, which was not fully captured in our experimental design. % EMW21Jul: What do you mean by no-chill treatment? Are you trying to say that the conditions that induced ro-ordering in the Laube paper required no chill? We could say this more clearly when we write it up, it will just take more space, but seems an important point if that is what you mean
+    \end{enumerate}
+    
+\item Phenological rank remains consistent across all false spring and chilling treatments, as long as all species are affected equally.
+  \begin{enumerate}
+  \item In nature, not all of our study species are at equal risk of false springs, with early-budburst species (e.g., \textit{Salix americana} or \textit{Betula papyrifera}) generally more at risk than later-budburst species (e.g., \textit{Acer saccharinum} or \textit{Viburnum dentatum}). 
+  \item This suggests we could in fact expect climate change to reshape forest communities, but it may not come from temporal assembly directly. 
+  \item Instead it might come from the damage and leaf trait impacts of false springs and decrease in chilling duration. % EMW21Jul: Could add a little more on how species differ in their traits (throw in some traits lit) and thus our results suggest it will be the complex interplay of changing climate and species-specific mosaics of traits that will matter. 
+  \end{enumerate}
+
+\item Understanding the impacts of false springs coupled with reduced over-winter chilling is essential for forecasting forest recruitment. % EMW21Jul: One thing to be careful fo when writing is when you are talking more about species or individuals within a species! Or if you are really just speaking of lifestages. Readers need extra guidance to know what we mean. Some edits below and above to help.
+  \begin{enumerate}
+    \item Understanding recruitment and inter- and intraspecific competition with false springs is crucial. 
+  \item With over-winter chilling decreasing with climate change, seedlings---which generally leafout earlier than later lifestages to gain access to light (CITE)---are likely more at risk of sustaining damage from false spring events. 
+  \item This could lead to dieback of seedlings, most especially of early-budbursting species, in temperate forests with climate change. % EMW21Jul: Maybe -- but doesn't it depend on which species' seedlings experience the biggest CHANGE in false spring? It could be that early-spring species were always hit hard, so changes might more hit middle rank species' seedlings. See below for where I think you could sneak this in.
+  \item Thus, climate change could greatly impact early-budburst species, which will likely see increases in durations of vegetative risk with the dual effects of lower chilling and heightened false spring risk. 
+  % EMW21Jul: Here you might add a caveat that these predictions assume false spring change is greatest for early species and their seedlings ... but we don't know (or do we?)  ... I would add more here from what you know and have read! 
+  \item By integrating the additive and adverse effects of decreasing over-winter chilling and increasing false spring risk, we can better predict shifts in forest communities and recruitment under climate change.   % EMW21Jul: But it require better projections of exactly HOW false springs are changing and how equally---or not---that effects different species and their seedlings. 
+  \end{enumerate} % EMW21Jul: One last question! Do you mean seedling or sapling? Should you define seedling somewhere quickly? My thought is that seedling can mean germinant to some people and I think 99% of those die, so it doesn't really matter if their false springs change a little for germinants. I'd just check and define your terminology somewhere (methods even would work).
+\end{enumerate}
+
+
+
+
+\bibliography{..//references/chillfreeze.bib}
+
+\section*{Tables and Figures}
+
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/growthchamber.pdf}
+  -\caption{False spring treament temperature regime in the growth chamber}\label{fig:gccond}
+  -\end{center}
+  -\end{figure}}
+
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/leafoutorder_byrank.pdf} 
+  -\caption{Understanding rank order of leafout across all species using (a) mean trends and (b) raw estimates. }\label{fig:rank}
+  -\end{center}
+  -\end{figure}}
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=18cm]{..//analyses/figures/mu_phen.pdf} 
+  -\caption{Effects of false spring treatment, six weeks of chilling and eight weeks of chilling on a) duration of vegetative risk (days) and b) growing season length (days). Dots and lines show means and 90\% uncertainty intervals.}\label{fig:muphen}
+  -\end{center}
+  -\end{figure}}
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=18cm]{..//analyses/figures/mu_growth.pdf} 
+  -\caption{Effects of false spring treatment, six weeks of chilling and eight weeks of chilling on a) shoot apical meristem damage and b) total shoot growth (cm). Dots and lines show means and 90\% uncertainty intervals. }\label{fig:mugrowth}
+  -\end{center}
+  -\end{figure}}
+  
+  {\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=18cm]{..//analyses/figures/mu_leaftraits.pdf} 
+  -\caption{Effects of false spring treatment, six weeks of chilling and eight weeks of chilling on a) leaf toughness (N) and b) leaf thickness ($\\mu$m). Dots and lines show means and 90\% uncertainty intervals. }\label{fig:muleaf}
+  -\end{center}
+  -\end{figure}}
+  
+
+\end{document}

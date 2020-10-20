@@ -83,9 +83,9 @@ sample_a <- list(urban.env = rbinom(1000, 1, 0.5),
                  method.env = rbinom(1000, 1, 0.5))
 
 model.parameters <- list(intercept = 400,
-                         urban.coef = -50,
-                         method.coef = -100,
-                         urbanxmethod = 10)
+                         urban.coef = -30,
+                         method.coef = -20,
+                         urbanxmethod = -40)
 
 #  2) Now, we will make varying intercepts
 env.samples <- sapply(sample_a, FUN = function(x){
@@ -113,13 +113,13 @@ random.regex <- grep(pattern = paste(c("intercept", "urban.coef", "method.coef",
 
 # Generate random parameters (by species)
 parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 50), ntot)})
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 20), ntot)})
 parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
   rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 10), ntot)})
 parameters.temp[, 3] <- sapply(1:nsp, FUN = function(x){
   rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 20), ntot)})
 parameters.temp[, 4] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 3), ntot)})
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 10), ntot)})
 # Calculate response
 response <- sapply(1:nrow(env.samples), FUN = function(x){
   rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 20)})

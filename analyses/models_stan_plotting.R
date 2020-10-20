@@ -114,7 +114,7 @@ unique(bball.stan$spp) # numbers are alphabetical
 sort(unique(bball.stan$spp))
 
 # m1.bb <- m2l.ni
-modelhere <- urbmethod
+modelhere <- urbmethod_fake_intrxn
 muplotfx(modelhere, "", 7, 7, c(0,3), c(-150, 50), 60, 3)
 }
 

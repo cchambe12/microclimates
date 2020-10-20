@@ -12,19 +12,21 @@ library(tidyr)
 set.seed(12321)
 
 if(TRUE){
-urbeff <- -20
-methodeff <- -25
-urbmethod <- -50
-arbclim <- 11
-arbmicroclim <- 0
-hfclim <- 11
-hfmicroclim <- 0
-hypoth = TRUE
-question = FALSE
+  hypoth = TRUE  ## if TRUE then hobos are less accurate, if FALSE then hobos are more precise
+  question = TRUE ## if TRUE then testing urban effect, if FALSE then testing provenance
+  hypoth.sd <- 10  ### This just adds that amount of imprecision to the hypothesis question
+  fstar.num <- 300  ## GDD threshold
+  urbeff <- -30   ### effect of arboretum
+  methodeff <- -20  ### effect of weather station
+  urbmethod <- -40  ### interaction
+  arbclim <- 11   ### tmean arb climate
+  arbmicroclim <- 1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
+  hfclim <- 9  ## tmean hf climate
+  hfmicroclim <- -1  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
 }
 
 
-bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim){
+bbfunc <- function(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, urbmethod, arbclim, arbmicroclim, hfclim, hfmicroclim){
   
   hypothA = hypoth  ### This is either TRUE or FALSE
   use.urban = question  ### This is either TRUE or FALSE
@@ -49,14 +51,14 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   urbmethodsd <- 10
   
   
-  fstar <- 300  ### mu_a_sp
+  fstar <- fstar.num  ### mu_a_sp
   fstarspeciessd <- 50 ### sigma_a_sp
   fstarindsd <- 20 ## sigma_y
   
   if(hypothA==TRUE){
-    hobo_sd <- 10
+    hobo_sd <- hypoth.sd
   } else if(hypothA==FALSE){
-    ws_sd <- 10
+    ws_sd <- hypoth.sd
   }
   
   
@@ -129,7 +131,7 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
   df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
   
-  if(hypothA==TRUE){ ### This should just make the hobo logger less accurate
+  if(hypothA==TRUE){ ### I think this should just make the hobo logger less accurate...??? I hope.
     
     df.fstar$hyp_a <- ifelse(df.fstar$method=="hobo", 1, 0)
     df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$hyp_a * rep(rnorm(n=nspps, mean=0, sd=hobo_sd), each=ninds*nmethods) 
@@ -184,7 +186,7 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
     df.fstar$urbmethodtx <- ifelse(df.fstar$method=="ws" & df.fstar$site=="arb", 1, 0)
     df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$urbmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=urbmethodsd), each=ninds*nmethods)  
     
-    if(hypothA==TRUE){ ### This should just make the hobo logger less accurate
+    if(hypothA==TRUE){ ### I think this should just make the hobo logger less accurate... I hope! Should not come out of model directly
       
       df.fstar$hyp_a <- ifelse(df.fstar$method=="hobo", 1, 0)
       df.fstar$gdd.noise <- df.fstar$gdd.noise + df.fstar$hyp_a * rep(rnorm(n=nspps, mean=0, sd=hobo_sd), each=ninds*nmethods) 
@@ -280,11 +282,15 @@ bbfunc <- function(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, h
   
 }
 
+bblist <- bbfunc(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, urbmethod, arbclim, arbmicroclim, hfclim, hfmicroclim)
 
-if(FALSE){
-#bblist200 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
-#bblist250 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
-bblist300 <- bbfunc(hypoth, question, urbeff, methodeff, arbclim, arbmicroclim, hfclim, hfmicroclim)
+bball <- bblist[[1]]
+df <- bblist[[2]]
+
+if(FALSE){ ### This is to make the varying GDD plots... to move elsewhere later. 
+#bblist200 <- bbfunc(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, urbmethod, arbclim, arbmicroclim, hfclim, hfmicroclim)
+#bblist250 <- bbfunc(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, urbmethod, arbclim, arbmicroclim, hfclim, hfmicroclim)
+bblist300 <- bbfunc(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, urbmethod, arbclim, arbmicroclim, hfclim, hfmicroclim)
 
 
 bb200 <- bblist200[[1]]

@@ -19,7 +19,7 @@ for(i in 1:3){
   lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
   points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
 for(spsi in 1:spnum){
-  pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[6:8]
+  pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[2:4]
   jitt<-(spsi/40) + 0.08
   pos.y.sps.i<-pos.y-jitt
   pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]

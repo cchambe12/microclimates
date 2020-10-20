@@ -33,41 +33,41 @@ ui <- fluidPage(
                        choices = c("---Choose One---",
                                    "Hypothesis A: more variation in hobo loggers with same climate", 
                                    "Hypothesis B: hobo loggers are more accurate"),
-                       selected = ("Hypothesis A: more variation in hobo loggers with same climate")),
+                       selected = ("---Choose One---")),
            
            selectInput("Question", "Question",
                        choices = c("---Choose One---",
                                    "Urban Model: Arb vs HF", 
                                    "Provenance Model: Provenance latitude"),
-                       selected="Urban Model: Arb vs HF"),
+                       selected="---Choose One---"),
            
            sliderInput(inputId = "UrbanEffect",
                        label = "Urban Effect",
-                       value = -20, min = -100, max = 100),
+                       value = -30, min = -100, max = 100),
            
            sliderInput(inputId = "MethodEffect",
                        label = "Method Effect",
-                       value = -25, min = -100, max = 100),
+                       value = -20, min = -100, max = 100),
            
            sliderInput(inputId = "UrbMethod",
                        label = "Urban x Method Effect",
-                       value = -50, min = -100, max = 100),
+                       value = -40, min = -100, max = 100),
            
            sliderInput(inputId = "ArbClimate",
                        label = "Arb Climate",
-                       value = 10, min = 0, max = 20),
+                       value = 11, min = 0, max = 20),
            
            sliderInput(inputId = "HFClimate",
                        label = "HF Climate",
-                       value = 10, min = 0, max = 20),
+                       value = 9, min = 0, max = 20),
            
            sliderInput(inputId = "ArbMicroEffect",
                        label = "Arb Micro Effect",
-                       value = 0, min = -10, max = 10),
+                       value = 1, min = -10, max = 10),
            
            sliderInput(inputId = "HFMicroEffect",
                        label = "HF Micro Effect",
-                       value = 0, min = -10, max = 10),
+                       value = -1, min = -10, max = 10),
            actionButton("run", "View Plots",
                         style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
            actionButton("go" ,"Run Model and View muplot")
@@ -77,7 +77,7 @@ ui <- fluidPage(
   mainPanel(
     tabsetPanel(
       tabPanel("Climate Data", plotOutput("climtypes"), 
-               plotOutput("hist")),#, verbatimTextOutput("use.urban")), 
+               plotOutput("hist"), verbatimTextOutput("urb")), 
       tabPanel("GDDs across Species", plotOutput("gddsites")), 
       tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
       tabPanel("Site Accuracy", plotOutput("site_accuracy")),
@@ -92,12 +92,10 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   
-  get.data <- eventReactive(input$run, {bbfunc(if(input$Hypothesis=="Hypothesis A: more variation in hobo loggers with same climate" |
-                                                  input$Hypothesis=="---Choose One---")
-  {TRUE}else{FALSE}, 
-  if(input$Question=="Urban Model: Arb vs HF"|
-     input$Question=="---Choose One---"){TRUE}else{FALSE},
-  as.numeric(input$UrbanEffect), as.numeric(input$MethodEffect), 
+  get.data <- eventReactive(input$run, {bbfunc(if(input$Hypothesis=="Hypothesis A: more variation in hobo loggers with same climate")
+  {TRUE}else if(input$Hypothesis=="Hypothesis B: hobo loggers are more accurate"){FALSE}, 
+  if(input$Question=="Urban Model: Arb vs HF"){TRUE}else if(input$Question=="Provenance Model: Provenance latitude"){FALSE},
+  as.numeric(input$UrbanEffect), as.numeric(input$MethodEffect),  as.numeric(input$UrbMethod),
   as.numeric(input$ArbClimate), as.numeric(input$ArbMicroEffect), 
   as.numeric(input$HFClimate), as.numeric(input$HFMicroEffect))
   })
@@ -207,8 +205,10 @@ server <- function(input, output) {
   })
   #})
   
-  use.urban <- eventReactive(input$go,{if(input$Question=="Urban Model: Arb vs HF"|
-                                          input$Question=="---Choose One---"){TRUE}else{FALSE}})
+  use.urban <- eventReactive(input$go,{if(input$Question=="Urban Model: Arb vs HF"){TRUE}
+    else if(input$Question=="Provenance Model: Provenance latitude"){FALSE}})
+  
+  output$urb <- renderPrint({use.urban()[1]})
   
   #observeEvent(input$go, {
   output$muplot <- renderPlot({
@@ -229,8 +229,8 @@ server <- function(input, output) {
       )
     }
     
-    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99)) ### 
+    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
+                          iter = 4000, warmup=2500, chains=4, control=list(adapt_delta=0.99)) ### 
     
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -245,19 +245,19 @@ server <- function(input, output) {
     par(mar=c(5,10,3,10))
     plot(x=NULL,y=NULL, xlim=c(-150,50), yaxt='n', ylim=c(0,6),
          xlab="Model estimate change in growing degree days to budburst", ylab="")
-    axis(2, at=1:3, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station")), las=1)#,
-                                 #"Sigma Arboretum", "Sigma \nWeather Station", 
-                                 #"Sigma Interaction")
+    axis(2, at=1:6, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                 "Sigma Arboretum", "Sigma \nWeather Station", 
+                                 "Sigma Interaction")), las=1)
     abline(v=0, lty=2, col="darkgrey")
-    rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp")#, "sigma_b_urban_sp",
-                      #"sigma_b_method_sp", "sigma_b_um_sp")
-    for(i in 1:3){
-      pos.y<-(3:1)[i]
+    rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                      "sigma_b_method_sp", "sigma_b_um_sp")
+    for(i in 1:6){
+      pos.y<-(6:1)[i]
       pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
       lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[3:1]
+        pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[2:7]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]
@@ -292,7 +292,7 @@ server <- function(input, output) {
       )
       
       
-      provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
+      provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_inter.stan', data = datalist.gdd,
                              iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
       
       
