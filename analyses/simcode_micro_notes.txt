@@ -1,0 +1,81 @@
+Started 26 October 2020
+By Lizzie
+Reviewing simulation code for Cat's microclimate project
+
+Notes throughout, see "# emw"
+
+My notes say hypothesis B is easier so I started there (but later I realized it's reversed in my notes ... though I felt like my notes matched what the code did, so we should work on that too!)
+
+hypoth_b_simple.R 
+
+HYPOTHESIS B: hobo loggers better capture the urban effects (or provenance effects)
+line 57: deleted "df.fstar$gdd.noise +" which I think was just an error
+line 60: I think we're adding more error than we want to here, see my notes
+line 88: Missing a step I think -- no climate data calculated yet to take the mean of
+
+
+hypoth_a_simple.R
+
+HYPOTHESIS A:  hobo loggers are less accurate measures of the same weather
+
+line 13: This code looks to test the OTHER hypothesis to me
+line 30: stopping here, I don't think we need a line like this in both sets of R code ... to discuss! (Also this code errors also)
+
+<><><><><><><><><>
+My spring notes
+22 April 2020 (updated 30 May with some additional notes)
+
+
+A few hypotheses going around:
+
+Some are about interesting ‘treatments’ if you will:
+- Hypothesis: urban effect 
+- Hypothesis: provenance effect
+
+But, we also have hypotheses specific to the hobo versus weather station data. Different estimates form Hobo model for two reasons
+- Hypothesis A: They better estimate true GDD -- capture microclimate and/or they capture treatments better…
+	Hyp A1: They capture provenance diffs
+	Hyp A2: They capture the urban effect better
+- Hypothesis B: They less accurate measures of effectively the same weather
+
+Assume for now:
+	n_ind <- 10
+	n_species <- 10
+	N is then 10*10*2 = 200 
+
+Note that I think you can skip your treatments just now … they don’t vary in Hyp A or Hyp B, do they? I kept them in as that seems safest (we don’t think they should change, but if we leave them in we can check that assumption!), but I wanted to mention this here to check that we don’t think they vary due to these hypotheses.
+
+To test Hyp B (easier than A so let’s start here):
+	- Give every species a different GDD
+		- Set up a mu_a and sigma_a (the distribution from which you draw the GDD value for each species)
+		- Draw one (n species long) set of these values for your hobo and WS data
+	- Also assign a treatment (urban versus forest) effect — it doesn’t matter too much what it is, but it should be the same across WS and Hobo; your statistical model allows it to vary by species — so you would assign a mu_treatment and sigma_treatment then take one value PER species from that distribution as that species treatment effect. 
+	- Assign a number of individuals per species per site (you can keep it even for now, say it’s 10)
+	- Now, you can do this lots of ways but you to end up with a data frame that is 200 rows with columns (actually I think you end up with two — one for WS and one for Hobo, right?):
+		- species name
+		- species GDD (identical for now across sites, and identical for each species)
+		- treatment (make it 0 or 1 depending on site, then the math below is easier) (treatCol)
+		- treatment value given species (treatVal)
+	- You should have one data frame (call it your WS one) where you SKIP the next step …
+	- Next create a GDD_noise column — and make it be df$gdd plus noise from an rnorm(0, some sigma)
+	- Now, create your y column …for the hobo date, it should be the gdd_noise + treatCol* treatVal + your sigma_y added on; for the WS, it’s the same but use the gdd regular column (no noise)
+	* So, you do set up all the model params *— sigma_y, mu_a, sigma_a, mu_treatment, sigma_treatment but you add in some noise for GDDs for the Hobo data. [In this case I can sort of see how you could add one parameter to your model to try to model this.]
+
+To test Hyp A, we found it helpful to walk through the BIOLOGICAL example:
+- Imagine there ARE microclimates …
+	- (Again) Give every species a different GDD
+		- Set up a mu_a and sigma_a (the distribution from which you draw the GDD value for each species)
+		- Draw one (n species long) set of these values for your hobo and WS data
+	- You model a bunch of microclimates (x —> climate data for each one)
+	- You have each plant leafout at its species-assigned GDD (the actual date will vary across space due to microclimate)
+	- The weather stn data is the mean of all your x values (per day) — we expect it might estimate more variation in each tree because it sees those different leafout days and assigns them different GDDs, but I am getting ahead of myself!
+	- Now you have *the data to build the GDDs that you observe!* … so next you:
+		- Estimate each tree’s GDD based on the WS climate
+		- Estimate each tree’s GDD based on the hobo climate
+	- Okay, now — using the observed GDDs … you build the dataframes (WS and Hobo ones) with 200 rows with columns:
+		- species name
+		- species GDD 
+		- treatment (make it 0 or 1 depending on site, then the math below is easier) (treatCol)
+		- treatment value given species (treatVal)
+	- Now, create your y column … it should be the gdd_observed + treatCol* treatVal + your sigma_y added on
+	* So, you do set up all the model params * — sigma_y, mu_a, sigma_a, mu_treatment, sigma_treatment but in this case, you again permute the GDDs. [Getting your statistical model to match this model I think would be more complex than above.]
