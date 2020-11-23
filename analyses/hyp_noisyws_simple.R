@@ -1,5 +1,4 @@
-#### Simulations code for Hypothesis B: hobo loggers better capture the urban effects (or provenance effects)
-## I will just examine the urban effect here, so comparing the Arboretum to the Forest
+#### Simulations code for Hypothesis B: hobo loggers better capture the actual GDD
 # Simple, Noisy method, without microclimates
 
 # housekeeping
