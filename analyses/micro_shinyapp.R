@@ -229,7 +229,10 @@ server <- function(input, output) {
       )
     }
     
-    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal.stan', data = datalist.gdd,
+    #### Notes from Cat on 5 Jan 2021: when running this model with just method, the results are pretty good, the sigma_y is high (~10) but otherwise not bad
+    ### when running this model with urbanmethod, the model can't differentiate between sigma_urban and sigma_method and they end up both being ~15... not sure how this is even happening
+    
+    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/method_normal.stan', data = datalist.gdd,
                           iter = 4000, warmup=3000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
     
     

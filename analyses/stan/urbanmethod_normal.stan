@@ -8,7 +8,7 @@ data {
 	int<lower=1> n_sp;
 	int<lower=1, upper=n_sp> sp[N];
 	vector[N] y; 		// response
-	vector[N] urban; 	// method predictor
+	vector[N] urban; 	// urban predictor
 	vector[N] method; 	// method predictor
 		
 	}
