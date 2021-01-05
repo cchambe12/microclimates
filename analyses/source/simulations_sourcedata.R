@@ -103,14 +103,6 @@ bbfunc <- function(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, ur
   
   
   #### Next I set up an fstar or a GDD threshold for each individual
-  spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
-  provenance.hf <- 42.5
-  provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
-  
-  df.prov <- as.data.frame(cbind(sp_ind = rep(spind, nsites), 
-                                 site = rep(c("arb", "hf"), each=nobs),
-                                 provenance = c(provenance.arb, rep(provenance.hf, 200))))
-  
   fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
   df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), inds=rep(1:ninds, nmethods), 
                                   fstarspp=rep(fstarspp, each=ninds*nsites*nmethods),

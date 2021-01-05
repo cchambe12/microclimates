@@ -229,8 +229,12 @@ server <- function(input, output) {
       )
     }
     
+    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal.stan', data = datalist.gdd,
+                          iter = 4000, warmup=3000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+    
+    
     urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
-                          iter = 4000, warmup=2500, chains=4, control=list(adapt_delta=0.99)) ### 
+                          iter = 4000, warmup=3000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
     
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
