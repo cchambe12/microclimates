@@ -18,9 +18,10 @@ parameters {
   real mu_a_sp;   
   real mu_b_urban_sp;     
   real mu_b_method_sp;
-  real<lower=0> sigma_a_sp; 
+  
   real<lower=0> sigma_b_urban_sp;
   real<lower=0> sigma_b_method_sp;
+  real<lower=0> sigma_a_sp; 
   real<lower=0> sigma_y; 
   
   real a_sp[n_sp]; // intercept for species
@@ -45,20 +46,23 @@ transformed parameters {
 }
 
 model {
-	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	b_urban_ncp ~ normal(0, 1);
+  b_urban_ncp ~ normal(0, 1);
 	b_method_ncp ~ normal(0, 1);
+	
+	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
+	//b_urban ~ normal(mu_b_urban_sp, sigma_b_urban_sp); 
+  //b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
 	      
-        mu_a_sp ~ normal(400, 50);
+        mu_a_sp ~ normal(400, 75);
         sigma_a_sp ~ normal(0, 50);
 
-        mu_b_urban_sp ~ normal(0, 50);
+        mu_b_urban_sp ~ normal(0, 75);
         sigma_b_urban_sp ~ normal(0, 20);
         
-        mu_b_method_sp ~ normal(0, 50);
+        mu_b_method_sp ~ normal(0, 75);
         sigma_b_method_sp ~ normal(0, 20);
         
-        sigma_y ~ normal(0, 50);
+        sigma_y ~ normal(0, 100);
 	      
 	y ~ normal(yhat, sigma_y);
 

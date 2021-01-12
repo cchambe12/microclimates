@@ -75,7 +75,7 @@ bball <- df.bb[!duplicated(df.bb),]
 
 
 ##### Now let's do some checks...
-bball$gdd_accuracy <- bball$gdd - bball$gdd.noise
+bball$gdd_accuracy <- bball$gdd - bball$fstarspp
 bball$type <- ifelse(bball$method=="ws", 1, 0)
 
 bball <- na.omit(bball)

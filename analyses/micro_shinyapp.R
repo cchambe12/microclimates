@@ -220,7 +220,7 @@ server <- function(input, output) {
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
-                                urban = urban,
+                                urban = urban, ### for simple: 
                                 method = type,
                                 sp = as.numeric(as.factor(species)),
                                 N = nrow(bball),
@@ -232,8 +232,19 @@ server <- function(input, output) {
     #### Notes from Cat on 5 Jan 2021: when running this model with just method, the results are pretty good, the sigma_y is high (~10) but otherwise not bad
     ### when running this model with urbanmethod, the model can't differentiate between sigma_urban and sigma_method and they end up both being ~15... not sure how this is even happening
     
-    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/method_normal.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+    if(FALSE){### prior predictive checks
+    dat<-list(N=nrow(bball), urban = rbinom(nrow(bball), 1, 0.5), method = rbinom(nrow(bball), 1, 0.5))
+    ## fit model:
+    priorchecks = stan('~/Documents/git/microclimates/analyses/stan/priorchecks_urbanmethod.stan', data = dat,
+                         iter = 2000, warmup=1000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+    
+    ## extract and plot one of the data-sets:
+    y_sim<-extract(priorchecks,pars="y_ppc")
+    plot(y_sim$y_ppc[1, ], bball$gdd)
+    }
+    
+    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                          iter = 2000, warmup=1000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
     
     
     urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
@@ -244,13 +255,15 @@ server <- function(input, output) {
     my.pch <- rep(15:18, each=10)
     alphahere = 0.4
     
+    modoutput <- summary(urbmethod_fake)$summary
+    noncps <- noncps[!grepl("_ncp", rownames(noncps)),]
     
     modelhere <- urbmethod_fake
     bball <- isolate(get.data()[[1]])
     spnum <- length(unique(bball$species))
     par(xpd=FALSE)
     par(mar=c(5,10,3,10))
-    plot(x=NULL,y=NULL, xlim=c(-150,50), yaxt='n', ylim=c(0,6),
+    plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
          xlab="Model estimate change in growing degree days to budburst", ylab="")
     axis(2, at=1:6, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                  "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -260,22 +273,22 @@ server <- function(input, output) {
                       "sigma_b_method_sp", "sigma_b_um_sp")
     for(i in 1:6){
       pos.y<-(6:1)[i]
-      pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
-      lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+      pos.x<-noncps[rownameshere[i],"mean"]
+      lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[2:7]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[3:5]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
-        pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]
-        lines(summary(modelhere)$summary[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+        pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+        lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
               col=alpha(my.pal[spsi], alphahere))
         points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
         
       }
     }
     par(xpd=TRUE) # so I can plot legend outside
-    legend(60, 6, sort(unique(gsub("_", " ", bball$species))), pch=my.pch[1:spnum],
+    legend(120, 6, sort(unique(gsub("_", " ", bball$species))), pch=my.pch[1:spnum],
            col=alpha(my.pal[1:spnum], alphahere),
            cex=1, bty="n", text.font=3)
   })

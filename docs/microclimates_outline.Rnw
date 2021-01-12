@@ -82,7 +82,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \item Understanding and predicting plant phenology in temperate deciduous forests is critical as it both shapes community structure and also influences major ecosystem services such as resource and forest management. 
   \begin{enumerate} 
   \item Climate change and urbanization are advancing spring timing---such as budburst and leafout, which  are strongly cued by temperature, resulting in longer growing seasons \citep{Chuine2001} which ultimately impacts these services.  
-  \item Temperate forests sequester carbon and help mitigate the negative effects of climate change and, with earlier spring phenology and longer growing seasons, there has been an increase in carbon uptake \citep{Keenan2014}.
+  \item Temperate forests sequester carbon and help mitigate the negative effects of climate change and---with earlier spring phenology and longer growing seasons---there has been an increase in carbon uptake \citep{Keenan2014}.
   \item But our understanding of how climate change is impacting this timing of spring is incomplete, especially in urban versus natural forest habitats. 
   \end{enumerate}
   

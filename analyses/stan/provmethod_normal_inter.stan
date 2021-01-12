@@ -61,20 +61,20 @@ model {
     mu_a_sp ~ normal(400, 50); 
     sigma_a_sp ~ normal(0, 50); 
 
-    mu_b_prov_sp ~ normal(0, 50);
-    sigma_b_prov_sp ~ normal(0, 20);
+    mu_b_prov_sp ~ normal(0, 10);
+    sigma_b_prov_sp ~ normal(0, 5);
     
     mu_b_method_sp ~ normal(0, 50);
     sigma_b_method_sp ~ normal(0, 20);
     
-    mu_b_pm_sp ~ normal(0, 50);
-    sigma_b_pm_sp ~ normal(0, 20);
+    mu_b_pm_sp ~ normal(0, 10);
+    sigma_b_pm_sp ~ normal(0, 5);
     
     sigma_y ~ normal(0, 20);
         
         a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	
-	      b_prov ~ normal(mu_b_urban_sp, sigma_b_prov_sp);
+	      b_prov ~ normal(mu_b_prov_sp, sigma_b_prov_sp);
         b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
         b_pm ~ normal(mu_b_pm_sp, sigma_b_pm_sp);
 	      

@@ -36,17 +36,51 @@ parameters {
   
   vector[n_sp] b_urban_ncp; // slope of urban effect 
   vector[n_sp] b_method_ncp; // slope of method effect 
-  
   vector[n_sp] b_um_ncp;
   
+  //vector[n_sp] b_urban;
+  //vector[n_sp] b_method;
+  //vector[n_sp] b_um;
+  
 	}
-
-transformed parameters {
-  vector[N] yhat;
-
+	
+transformed parameters{
   vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
   vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp;
+  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp; 
+  
+}
+
+model {
+  //vector[n_sp] b_urban;
+  vector[N] yhat;
+  
+  b_urban_ncp ~ normal(0, 1);
+	b_method_ncp ~ normal(0, 1);
+	b_um_ncp ~ normal(0, 1);
+	
+	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
+	//for(j in 1:n_sp){
+	 //b_urban[j] = normal_lpdf(mu_b_urban_sp | 0, 75) + 
+	                   // normal_lpdf(sigma_b_urban_sp | 0, 20) * normal_lpdf(b_urban_ncp[j] | 0, 1);
+	//}
+	//target += normal_lpdf(to_vector(b_method) | 0, 75);
+	//target += normal_lpdf(to_vector(b_method) | 0, 75);
+	//target += normal_lpdf(to_vector(b_um) | 0, 75);
+	      
+        mu_a_sp ~ normal(400, 75);
+        sigma_a_sp ~ normal(0, 50);
+
+        mu_b_urban_sp ~ normal(0, 75);
+        sigma_b_urban_sp ~ normal(0, 30);
+        
+        mu_b_method_sp ~ normal(0, 75);
+        sigma_b_method_sp ~ normal(0, 30);
+        
+        mu_b_um_sp ~ normal(0, 75);
+	      sigma_b_um_sp ~ normal(0, 30);
+        
+        sigma_y ~ normal(0, 100);
   
   for(i in 1:N){    
     yhat[i] = a_sp[sp[i]] + // indexed with species
@@ -55,42 +89,22 @@ transformed parameters {
 		          b_um[sp[i]] *  inter_urbanmethod[i];
 	      }
 	      
-}
-
-model {
-	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	b_urban ~ normal(mu_b_urban_sp, sigma_b_urban_sp); 
-  b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
-	b_um ~ normal(mu_b_um_sp, sigma_b_um_sp);
-	
-	b_urban_ncp ~ normal(0, 10);
-	b_method_ncp ~ normal(0, 10);
-	b_um_ncp ~ normal(0, 10);
-	      
-        mu_a_sp ~ normal(400, 50);
-        sigma_a_sp ~ normal(0, 50);
-
-        mu_b_urban_sp ~ normal(0, 50);
-        sigma_b_urban_sp ~ normal(0, 20);
-        
-        mu_b_method_sp ~ normal(0, 50);
-        sigma_b_method_sp ~ normal(0, 20);
-        
-        mu_b_um_sp ~ normal(0, 50);
-	      sigma_b_um_sp ~ normal(0, 10);
-        
-        sigma_y ~ normal(0, 50);
-	      
 	y ~ normal(yhat, sigma_y);
+
 
 }
 
 generated quantities{
    real y_ppc[N];
+   //vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
+   //vector[n_sp] b_method_post = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
+   //vector[n_sp] b_um_post = mu_b_um_sp + sigma_b_um_sp*b_um_ncp; 
+   
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
 		b_urban[sp[n]] * urban[n] +
-		b_method[sp[n]] * method[n];
+		b_method[sp[n]] * method[n] +
+		b_um[sp[n]] *  inter_urbanmethod[n];
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 

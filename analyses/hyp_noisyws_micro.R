@@ -143,7 +143,24 @@ df.bb$fstar.new <- NA
 
 df.bb$gdd <- df.bb$gdd.obs
 
-df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "bb", "gdd", "gdd.noise", "fstar.new"))
+##### Now add in provenance so better able to compare to other simulations
+spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
+provenance.hf <- 42.5
+provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
+
+df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
+                               site = rep(c("arb", "hf"), each=nobs*nmethods),
+                               provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                               method = rep(c("ws", "hobo"), nsites*nobs)))
+df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
+
+df.fstar$species <- as.numeric(df.fstar$species)
+
+df.bb <- full_join(df.fstar, df.prov)
+
+df.bb <- subset(df.bb, select=c("site", "method", "species", "fstarspp", "inds", "gdd.noise", "fstar.new", "provenance"))
 df.bb$species <- as.numeric(df.bb$species)
 
 bball <- df.bb[!duplicated(df.bb),]
+bball$gdd <- bball$fstar.new
+
