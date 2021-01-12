@@ -47,13 +47,21 @@ parameters {
 transformed parameters{
   vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
   vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp; 
+  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp;
+  
+  vector[N] yhat;
+  
+  for(i in 1:N){    
+    yhat[i] = a_sp[sp[i]] + // indexed with species
+		          b_urban[sp[i]] * urban[i] + 
+		          b_method[sp[i]] * method[i] +
+		          b_um[sp[i]] *  inter_urbanmethod[i];
+	      }
   
 }
 
 model {
   //vector[n_sp] b_urban;
-  vector[N] yhat;
   
   b_urban_ncp ~ normal(0, 1);
 	b_method_ncp ~ normal(0, 1);
@@ -64,9 +72,9 @@ model {
 	 //b_urban[j] = normal_lpdf(mu_b_urban_sp | 0, 75) + 
 	                   // normal_lpdf(sigma_b_urban_sp | 0, 20) * normal_lpdf(b_urban_ncp[j] | 0, 1);
 	//}
-	//target += normal_lpdf(to_vector(b_method) | 0, 75);
-	//target += normal_lpdf(to_vector(b_method) | 0, 75);
-	//target += normal_lpdf(to_vector(b_um) | 0, 75);
+	target += normal_lpdf(to_vector(b_urban) | 0, 75);
+	target += normal_lpdf(to_vector(b_method) | 0, 75);
+	target += normal_lpdf(to_vector(b_um) | 0, 75);
 	      
         mu_a_sp ~ normal(400, 75);
         sigma_a_sp ~ normal(0, 50);
@@ -82,12 +90,7 @@ model {
         
         sigma_y ~ normal(0, 100);
   
-  for(i in 1:N){    
-    yhat[i] = a_sp[sp[i]] + // indexed with species
-		          b_urban[sp[i]] * urban[i] + 
-		          b_method[sp[i]] * method[i] +
-		          b_um[sp[i]] *  inter_urbanmethod[i];
-	      }
+
 	      
 	y ~ normal(yhat, sigma_y);
 
@@ -96,9 +99,9 @@ model {
 
 generated quantities{
    real y_ppc[N];
-   //vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
-   //vector[n_sp] b_method_post = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-   //vector[n_sp] b_um_post = mu_b_um_sp + sigma_b_um_sp*b_um_ncp; 
+   vector[n_sp] b_urban_post = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
+   vector[n_sp] b_method_post = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
+   vector[n_sp] b_um_post = mu_b_um_sp + sigma_b_um_sp*b_um_ncp; 
    
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
