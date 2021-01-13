@@ -13,7 +13,7 @@ library(tidyr)
 set.seed(12321)
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-daysperyr <- 100 #### just to make sure we don't get any NAs
+daysperyr <- 300 #### just to make sure we don't get any NAs
 nspps <- 20 
 ninds <- 10 
 nobs <- nspps*ninds
@@ -35,13 +35,13 @@ ws_sd <- 20  ### adds variation to weather station estimates, rendering hobo log
 dayz <- rep(1:daysperyr, nobs)
 cc.arb <- 11
 sigma.arb <- 5 
-microarb.effect <- 0
-microsigmaarb.effect <- 0   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+microarb.effect <- 2
+microsigmaarb.effect <- 10   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
 cc.hf <- 9
 sigma.hf <- 5
-microhf.effect <- 0
-microsigmahf.effect <- 0  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+microhf.effect <- -2
+microsigmahf.effect <- 10  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
 
 
 #### Next I set up an fstar or a GDD threshold for each individual
@@ -61,6 +61,7 @@ df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$inds, sep="_")
 
 ####### QUESTION HERE... AND ALSO ON LINES 133-140, do I add this here or after the climate data?
 ########################### ADDING IN HYPOTHESIS HERE! ################################
+if(FALSE){
 ### I think this should just make the weather station less accurate...??? I hope.
 df.fstar$hyp_b <- ifelse(df.fstar$method=="ws", 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
 ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
@@ -68,7 +69,7 @@ df.fstar$gdd.noise <- df.fstar$hyp_b * rep(rnorm(n=nspps, mean=0, sd=ws_sd), eac
 
 df.fstar$fstar.new <- df.fstar$fstarspp + df.fstar$gdd.noise + rnorm(nrow(df.fstar), mean=0, sd=sigma_y)
 
-
+}
 
 ### # Step 2: find GDDs
 #### Now I set up climate data for the Arboretum, this is the weather station data
@@ -120,14 +121,14 @@ df$spind_site_method <- paste0(df$sp_ind, df$site, df$method)
 ## Find the day of budburst to find the actual GDD versus the "observed GDD"
 for(i in c(unique(df$spind_site_method))){ 
   
-  bb <- which(df$gdd.obs[i==df$spind_site_method] >= df$fstar.new[i==df$spind_site_method])[1]
+  bb <- which(df$gdd.obs[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
   df$bb[i==df$spind_site_method] <- bb
   
 }
 
 df.bb <- df[(df$bb==df$day),]
 
-if(FALSE){
+if(TRUE){
 ####### QUESTION HERE... AND ALSO ON LINES 64-71, do I add this here or before the climate data?
 ## After a series of tests, it seems to be BEFORE the climate data
 ########################### ADDING IN HYPOTHESIS HERE! ################################
@@ -138,10 +139,8 @@ df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(n=nspps, mean=0, sd=ws_sd), each=nind
 
 df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(nrow(df.bb), mean=0, sd=sigma_y)
 
-df.bb$fstar.new <- NA
 }
 
-df.bb$gdd <- df.bb$gdd.obs
 
 ##### Now add in provenance so better able to compare to other simulations
 spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
@@ -154,13 +153,14 @@ df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods),
                                method = rep(c("ws", "hobo"), nsites*nobs)))
 df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
 
-df.fstar$species <- as.numeric(df.fstar$species)
+df.bb$species <- as.numeric(df.bb$species)
 
-df.bb <- full_join(df.fstar, df.prov)
+df.bb <- left_join(df.bb, df.prov)
 
-df.bb <- subset(df.bb, select=c("site", "method", "species", "fstarspp", "inds", "gdd.noise", "fstar.new", "provenance"))
+df.bb <- subset(df.bb, select=c("site", "method", "species", "fstarspp", "inds", "gdd.noise", "provenance", "gdd"))
 df.bb$species <- as.numeric(df.bb$species)
 
 bball <- df.bb[!duplicated(df.bb),]
-bball$gdd <- bball$fstar.new
+bball <- na.omit(bball)
+#bball$gdd <- bball$fstar.new
 

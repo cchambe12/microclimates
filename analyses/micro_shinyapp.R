@@ -256,11 +256,12 @@ server <- function(input, output) {
     alphahere = 0.4
     
     modoutput <- summary(urbmethod_fake)$summary
-    noncps <- noncps[!grepl("_ncp", rownames(noncps)),]
+    noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
     
     modelhere <- urbmethod_fake
     bball <- isolate(get.data()[[1]])
     spnum <- length(unique(bball$species))
+    quartz()
     par(xpd=FALSE)
     par(mar=c(5,10,3,10))
     plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
@@ -277,7 +278,7 @@ server <- function(input, output) {
       lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[3:5]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[2:4]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]

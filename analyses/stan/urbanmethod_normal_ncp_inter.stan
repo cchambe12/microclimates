@@ -97,7 +97,7 @@ model {
 
 }
 
-generated quantities{
+/*generated quantities{
    real y_ppc[N];
    vector[n_sp] b_urban_post = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
    vector[n_sp] b_method_post = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
@@ -111,4 +111,4 @@ generated quantities{
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
-}
+}*/
