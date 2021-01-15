@@ -27,11 +27,11 @@ fstarspeciessd <- 50 ### sigma_a_sp in model output
 sigma_y <- 2 
 
 #### This is where I test our hypothesis. This doesn't come out of the model directly
-ws_sd <- 20  ### adds variation to weather station estimates, rendering hobo loggers more accurate measures and therefore better able to capture urban effects
-
+prov_effect <- 10  ## provenance effect, this is saying that if sites are from 1 degree north, they require 5 fewer GDD
+prov_sd <- 2 ## prov effect sd
 
 #### Next I set up an fstar or a GDD threshold for each individual
-spind <- paste(rep(1:nspps, each=ninds), rep(1:ninds, nspps), sep="_")
+#spind <- paste(rep(1:nspps, each=ninds), rep(1:ninds, nspps), sep="_")
 
 fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
 df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), ind=rep(1:ninds, nmethods), 
@@ -42,33 +42,29 @@ df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods)
 table(df.fstar$species, df.fstar$site, df.fstar$method) # emw -- checking
 
 df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
-df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$ind, sep="_")
-
-
-########################### ADDING IN HYPOTHESIS HERE! ################################
-### I think this should just make the weather station less accurate...??? I hope.
-df.fstar$hyp_b <- ifelse(df.fstar$method=="ws", 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
-
-### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-df.fstar$gdd.noise <- df.fstar$hyp_b * rep(rnorm(n=nspps, mean=0, sd=ws_sd), each=ninds*nsites)
-
-df.fstar$gdd <- df.fstar$fstarspp + df.fstar$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
-df.fstar$species <- as.numeric(df.fstar$species)
+#df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$ind, sep="_")
 
 ##### Now add in provenance so better able to compare to other simulations
 spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
 provenance.hf <- 42.5
-provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
+provenance.arb <- round(rnorm(nobs, provenance.hf, 2), digits=2)
 
 df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                site = rep(c("arb", "hf"), each=nobs*nmethods),
-                               provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                               provenance = as.numeric(c(rep(provenance.arb, each=nmethods), rep(provenance.hf, nobs*nmethods))),
                                method = rep(c("ws", "hobo"), nsites*nobs)))
 df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
 df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
 df.prov$sp_ind <- NULL
+df.fstar$species <- as.numeric(df.fstar$species)
 
 df.bb <- full_join(df.fstar, df.prov)
+df.bb$provenance <- as.numeric(df.bb$provenance)
+df.bb$hyp_diff <- ifelse(df.bb$provenance==42.5, 0, (42.5-df.bb$provenance))
+
+df.bb$gdd.noise <- df.bb$hyp_diff * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
+
+df.bb$gdd <- df.bb$fstarspp + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
 
 ##### Clean up the dataframe to prepare for analyses
 df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "gdd.noise", "fstarspp", "gdd", "provenance")) # 

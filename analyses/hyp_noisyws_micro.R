@@ -152,7 +152,8 @@ df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods),
                                provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
                                method = rep(c("ws", "hobo"), nsites*nobs)))
 df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
-
+df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
+df.prov$sp_ind <- NULL
 df.bb$species <- as.numeric(df.bb$species)
 
 df.bb <- left_join(df.bb, df.prov)

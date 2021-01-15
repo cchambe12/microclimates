@@ -246,10 +246,6 @@ server <- function(input, output) {
     urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                           iter = 2000, warmup=1000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
     
-    
-    urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
-    
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
     my.pch <- rep(15:18, each=10)
@@ -312,9 +308,8 @@ server <- function(input, output) {
                            )
       )
       
-      
       provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_inter.stan', data = datalist.gdd,
-                             iter = 2000, warmup=1000)#, control=list(adapt_delta=0.99)) ### 
+                             iter = 2000, warmup=1000, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
       
       
       cols <- adjustcolor("indianred3", alpha.f = 0.3) 
@@ -325,6 +320,7 @@ server <- function(input, output) {
       
       modelhere <- provmethod_fake
       spnum <- length(unique(bball$species))
+      quartz()
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
       plot(x=NULL,y=NULL, xlim=c(-150,100), yaxt='n', ylim=c(0,6),
@@ -341,7 +337,7 @@ server <- function(input, output) {
         lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
-          pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[7:2]
+          pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[2:4]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]

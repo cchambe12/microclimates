@@ -34,13 +34,9 @@ parameters {
   
   
   real a_sp[n_sp]; // intercept for species
-  real b_prov[n_sp];
-  real b_method[n_sp];
-  real b_pm[n_sp];
   
   vector[n_sp] b_prov_ncp; // slope of prov effect 
   vector[n_sp] b_method_ncp; // slope of method effect 
-  
   vector[n_sp] b_pm_ncp;
   
 	}
@@ -62,26 +58,26 @@ transformed parameters {
 }
 
 model {
-	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
 	b_prov_ncp ~ normal(0, 1);
 	b_method_ncp ~ normal(0, 1);
 	b_pm_ncp ~ normal(0, 1);
 	
-	b_prov ~ normal(mu_b_prov_sp, sigma_b_prov_sp);
-	b_method ~ normal(mu_b_method_sp, sigma_b_method_sp);
-	b_pm ~ normal(mu_b_pm_sp, sigma_b_pm_sp);
-	
-	mu_b_pm_sp ~ normal(0, 10);
-	sigma_b_pm_sp ~ normal(0, 10);
+	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
+	target += normal_lpdf(to_vector(b_prov) | 0, 75);
+	target += normal_lpdf(to_vector(b_method) | 0, 75);
+	target += normal_lpdf(to_vector(b_pm) | 0, 75);
 	      
-        mu_a_sp ~ normal(400, 50);
+        mu_a_sp ~ normal(400, 75);
         sigma_a_sp ~ normal(0, 50);
 
-        mu_b_prov_sp ~ normal(0, 30);
-        sigma_b_prov_sp ~ normal(0, 10);
+        mu_b_prov_sp ~ normal(0, 75);
+        sigma_b_prov_sp ~ normal(0, 30);
         
-        mu_b_method_sp ~ normal(0, 100);
+        mu_b_method_sp ~ normal(0, 75);
         sigma_b_method_sp ~ normal(0, 30);
+        
+        mu_b_pm_sp ~ normal(0, 75);
+	      sigma_b_pm_sp ~ normal(0, 30);
         
         sigma_y ~ normal(0, 100);
 	      
@@ -89,7 +85,7 @@ model {
 
 }
 
-generated quantities{
+/*generated quantities{
    real y_ppc[N];
    for (n in 1:N)
       y_ppc[n] = a_sp[sp[n]] + 
@@ -98,4 +94,4 @@ generated quantities{
     for (n in 1:N)
       y_ppc[n] = normal_rng(y_ppc[n], sigma_y);
 
-}
+}*/
