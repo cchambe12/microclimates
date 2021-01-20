@@ -11,8 +11,8 @@ library(tidyr)
 set.seed(12321)
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-nspps <- 20 
-ninds <- 24 
+nspps <- 15 
+ninds <- 18 
 ninds_perprov <- 6 ## This means I want 6 individuals per species to have the same prov at the Arboretum to make it easier on the model
 nobs <- nspps*ninds
 nsites <- 2  ### Arboretum versus the Forest
@@ -48,7 +48,7 @@ df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
 ##### Now add in provenance so better able to compare to other simulations
 spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
 provenance.hf <- 42.5
-provenance.arb <- round(rep(rnorm(nspps*(ninds/6), provenance.hf, 2),each=6), digits=2)
+provenance.arb <- round(rep(rnorm(nspps*(ninds/ninds_perprov), provenance.hf, 2),each=ninds_perprov), digits=2)
 
 df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                site = rep(c("arb", "hf"), each=nobs*nmethods),
