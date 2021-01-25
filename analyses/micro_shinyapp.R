@@ -297,6 +297,7 @@ server <- function(input, output) {
     if(use.urban==FALSE){
       bball <- get.data()[[1]]
       bball$type <- ifelse(bball$method=="ws", 1, 0)
+      bball$prov.z <- (bball$provenance-mean(bball$provenance,na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
@@ -309,7 +310,7 @@ server <- function(input, output) {
       )
       
       provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_inter.stan', data = datalist.gdd,
-                             iter = 2000, warmup=1000, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+                             iter = 5000, warmup=4500, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
       
       
       cols <- adjustcolor("indianred3", alpha.f = 0.3) 
