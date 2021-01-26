@@ -69,14 +69,14 @@ model {
         mu_a_sp ~ normal(300, 50);
         sigma_a_sp ~ normal(0, 30);
 
-        mu_b_prov_sp ~ normal(0, 50);
+        /*mu_b_prov_sp ~ normal(0, 50);
         sigma_b_prov_sp ~ normal(0, 20);
         
         mu_b_method_sp ~ normal(0, 50);
         sigma_b_method_sp ~ normal(0, 20);
         
         mu_b_pm_sp ~ normal(0, 50);
-	      sigma_b_pm_sp ~ normal(0, 20);
+	      sigma_b_pm_sp ~ normal(0, 20);*/
         
         sigma_y ~ normal(0, 30);
 	      

@@ -297,7 +297,6 @@ server <- function(input, output) {
     use.urban <- use.urban()[1]
     if(use.urban==FALSE){
       bball <- get.data()[[1]]
-      bball$type <- ifelse(bball$method=="ws", 1, 0)
       bball$prov.z <- (bball$provenance-mean(bball$provenance,na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
       bball$type.z <- (bball$type-mean(bball$type,na.rm=TRUE))/(2*sd(bball$type,na.rm=TRUE))
       
