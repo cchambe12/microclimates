@@ -198,16 +198,16 @@ modtest <- lmer(chill ~ urban + method + urban*method + (urban + method + urban*
 #################################################################################################
 
 #  1) Let's make the observations much higher than the actual data to build a good model.
-nsp = 20 # number of species
-ntot = 200 # numbers of obs per species. 
+nsp = 10 # number of species
+ntot = 100 # numbers of obs per species. 
 
 sample_a <- list(prov.env = rnorm(1000, 42.5, 5),
                  method.env = rbinom(1000, 1, 0.5))
 
-model.parameters <- list(intercept = 400,
-                         prov.coef = -10,
-                         method.coef = -100,
-                         urbanxmethod = 5)
+model.parameters <- list(intercept = 300,
+                         prov.coef = -30,
+                         method.coef = -75,
+                         provxmethod = 5)
 
 #  2) Now, we will make varying intercepts
 env.samples <- sapply(sample_a, FUN = function(x){

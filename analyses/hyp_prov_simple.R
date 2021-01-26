@@ -11,9 +11,9 @@ library(tidyr)
 set.seed(12321)
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-nspps <- 15 
+nspps <- 20 
 ninds <- 18 
-ninds_perprov <- 6 ## This means I want 6 individuals per species to have the same prov at the Arboretum to make it easier on the model
+ninds_perprov <- 1 ## This means I want x individuals per species to have the same prov at the Arboretum to make it easier on the model
 nobs <- nspps*ninds
 nsites <- 2  ### Arboretum versus the Forest
 nmicros <- 10  ### Number microsites per site so 20 total 

@@ -278,12 +278,13 @@ bball.stan <- bball.stan[!is.na(bball.stan$gdd_bb),]
 bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
 
 bball.stan <- bball.stan[(bball.stan$gdd_bb<=1000),]
+bball.stan$prov.z <- (bball.stan$provenance-mean(bball.stan$provenance,na.rm=TRUE))/(sd(bball.stan$provenance,na.rm=TRUE))
 
 yraw <- bball.stan$gdd_bb
 
 datalist.gdd <- with(bball.stan, 
                      list(y = gdd_bb, 
-                          prov = provenance, 
+                          prov = prov.z, 
                           method = method,
                           sp = as.numeric(as.factor(spp)),
                           N = nrow(bball.stan),
@@ -293,7 +294,7 @@ datalist.gdd <- with(bball.stan,
 
 
 provmethod = stan('stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                 iter = 4000, warmup=2500, control=list(adapt_delta=0.90)) ### 
+                 iter = 2000, warmup=1500, control=list(adapt_delta=0.90)) ### 
 
 #check_all_diagnostics(ws_urb_buildfake)
 
