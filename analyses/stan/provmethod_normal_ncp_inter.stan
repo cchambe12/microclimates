@@ -62,23 +62,23 @@ model {
 	b_pm_ncp ~ normal(0, 1);
 	
 	a_sp ~ normal(mu_a_sp, sigma_a_sp); 
-	target += normal_lpdf(to_vector(b_prov) | 0, 75);
-	target += normal_lpdf(to_vector(b_method) | 0, 75);
-	target += normal_lpdf(to_vector(b_pm) | 0, 75);
+	target += normal_lpdf(to_vector(b_prov) | 0, 50);
+	target += normal_lpdf(to_vector(b_method) | 0, 50);
+	target += normal_lpdf(to_vector(b_pm) | 0, 50);
 	      
-        mu_a_sp ~ normal(400, 75);
-        sigma_a_sp ~ normal(0, 50);
+        mu_a_sp ~ normal(300, 50);
+        sigma_a_sp ~ normal(0, 30);
 
-        mu_b_prov_sp ~ normal(0, 75);
-        sigma_b_prov_sp ~ normal(0, 30);
+        mu_b_prov_sp ~ normal(0, 50);
+        sigma_b_prov_sp ~ normal(0, 20);
         
-        mu_b_method_sp ~ normal(0, 75);
-        sigma_b_method_sp ~ normal(0, 30);
+        mu_b_method_sp ~ normal(0, 50);
+        sigma_b_method_sp ~ normal(0, 20);
         
-        mu_b_pm_sp ~ normal(0, 75);
-	      sigma_b_pm_sp ~ normal(0, 30);
+        mu_b_pm_sp ~ normal(0, 50);
+	      sigma_b_pm_sp ~ normal(0, 20);
         
-        sigma_y ~ normal(0, 100);
+        sigma_y ~ normal(0, 30);
 	      
 	y ~ normal(yhat, sigma_y);
 

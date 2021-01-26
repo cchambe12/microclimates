@@ -12,7 +12,7 @@ set.seed(12321)
 
 # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
 nspps <- 20 
-ninds <- 18 
+ninds <- 10 
 ninds_perprov <- 1 ## This means I want x individuals per species to have the same prov at the Arboretum to make it easier on the model
 nobs <- nspps*ninds
 nsites <- 2  ### Arboretum versus the Forest
@@ -28,8 +28,8 @@ fstarspeciessd <- 50 ### sigma_a_sp in model output
 sigma_y <- 2 
 
 #### This is where I test our hypothesis. This doesn't come out of the model directly
-prov_effect <- 5  ## provenance effect, this is saying that if sites are from 1 degree north, they require 5 fewer GDD
-prov_sd <- 0.5 ## prov effect sd
+prov_effect <- 20  ## provenance effect, this is saying that if sites are from 1 degree north, they require 5 fewer GDD
+prov_sd <- 5 ## prov effect sd
 
 #### Next I set up an fstar or a GDD threshold for each individual
 #spind <- paste(rep(1:nspps, each=ninds), rep(1:ninds, nspps), sep="_")
@@ -61,9 +61,11 @@ df.fstar$species <- as.numeric(df.fstar$species)
 
 df.bb <- full_join(df.fstar, df.prov)
 df.bb$provenance <- as.numeric(df.bb$provenance)
-df.bb$hyp_diff <- ifelse(df.bb$provenance==42.5, 0, (42.5-df.bb$provenance))
+df.bb$prov.z <- (df.bb$provenance-mean(df.bb$provenance,na.rm=TRUE))/(2*sd(df.bb$provenance,na.rm=TRUE))
 
-df.bb$gdd.noise <- df.bb$hyp_diff * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
+
+# Generate random parameters (by species)
+df.bb$gdd.noise <- df.bb$prov.z * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
 
 df.bb$gdd <- df.bb$fstarspp + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
 

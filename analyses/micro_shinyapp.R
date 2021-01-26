@@ -6,6 +6,7 @@
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
+options(mc.cores = parallel::detectCores())
 
 #### Overall model:
 # GDD ~ urban + method + method*urban + (urban + method + method*urban|species) 
@@ -18,7 +19,7 @@ library(gridExtra)
 library(rstan)
 library(shiny)
 
-source("~/Documents/git/microclimates/analyses/source/simulations_sourcedata.R")
+#source("~/Documents/git/microclimates/analyses/source/simulations_sourcedata.R")
 #source("~/Documents/git/bayes2020/Projects/Cat/source/simulations_sourcedata.R")
 
 
@@ -298,19 +299,20 @@ server <- function(input, output) {
       bball <- get.data()[[1]]
       bball$type <- ifelse(bball$method=="ws", 1, 0)
       bball$prov.z <- (bball$provenance-mean(bball$provenance,na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
+      bball$type.z <- (bball$type-mean(bball$type,na.rm=TRUE))/(2*sd(bball$type,na.rm=TRUE))
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
-                                prov = provenance,
-                                method = type,
+                                prov = prov.z,
+                                method = type.z,
                                 sp = as.numeric(as.factor(species)),
                                 N = nrow(bball),
                                 n_sp = length(unique(species))
                            )
       )
       
-      provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_inter.stan', data = datalist.gdd,
-                             iter = 5000, warmup=4500, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+      provmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                             iter = 2000, warmup=1500, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
       
       
       cols <- adjustcolor("indianred3", alpha.f = 0.3) 
@@ -320,6 +322,10 @@ server <- function(input, output) {
       
       
       modelhere <- provmethod_fake
+      
+      modoutput <- summary(provmethod_fake)$summary
+      noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+      
       spnum <- length(unique(bball$species))
       quartz()
       par(xpd=FALSE)
@@ -334,15 +340,15 @@ server <- function(input, output) {
                         "sigma_b_method_sp", "sigma_b_pm_sp")
       for(i in 1:6){
         pos.y<-(6:1)[i]
-        pos.x<-summary(modelhere)$summary[rownameshere[i],"mean"]
-        lines(summary(modelhere)$summary[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+        pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
-          pos.sps.i<-which(grepl(paste("[",spsi,"]",sep=""),rownames(summary(modelhere)$summary),fixed=TRUE))[2:4]
+          pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[3:5]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
-          pos.x.sps.i<-summary(modelhere)$summary[pos.sps.i[i],"mean"]
-          lines(summary(modelhere)$summary[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+          pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
           
@@ -353,11 +359,10 @@ server <- function(input, output) {
              col=alpha(my.pal[1:spnum], alphahere),
              cex=1, bty="n", text.font=3)
     }
-  })
   
+})
+
 }
-
-
 
 shinyApp(ui = ui, server = server)
 

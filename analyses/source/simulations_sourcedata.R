@@ -138,6 +138,8 @@ bbfunc <- function(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, ur
   }
   
   df.fstar$fstar.new <- rnorm(df.fstar$inds, df.fstar$gdd.noise, fstarindsd)
+  df.fstar$species <- as.numeric(df.fstar$species)
+  df.prov$species <- as.numeric(df.prov$species)
   
   df.fstar <- full_join(df.fstar, df.prov)
   }
@@ -239,7 +241,7 @@ bbfunc <- function(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, ur
   
   
   ### Let's just tidy everything up
-  df$species <- as.character(df$species)
+  df$species <- as.numeric(df$species)
   df <- left_join(df, df.fstar)
   
   df$spind_site_method <- paste0(df$sp_ind, df$site, df$method)
@@ -268,7 +270,7 @@ bbfunc <- function(hypoth, question, hypoth.sd, fstar.num, urbeff, methodeff, ur
   
   bball <- na.omit(bball)
   
-  mylist <- list(bball, df)
+  mylist <- list(bball, df, hfclim, arbclim)
   
   return(mylist)
   
