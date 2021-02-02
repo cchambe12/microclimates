@@ -79,14 +79,14 @@ model {
         mu_a_sp ~ normal(400, 75);
         sigma_a_sp ~ normal(0, 50);
 
-        mu_b_urban_sp ~ normal(0, 75);
+        /*mu_b_urban_sp ~ normal(0, 75);
         sigma_b_urban_sp ~ normal(0, 30);
         
         mu_b_method_sp ~ normal(0, 75);
         sigma_b_method_sp ~ normal(0, 30);
         
         mu_b_um_sp ~ normal(0, 75);
-	      sigma_b_um_sp ~ normal(0, 30);
+	      sigma_b_um_sp ~ normal(0, 30);*/
         
         sigma_y ~ normal(0, 100);
   

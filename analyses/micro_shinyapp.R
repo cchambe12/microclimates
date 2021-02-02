@@ -18,74 +18,108 @@ library(ggplot2)
 library(gridExtra)
 library(rstan)
 library(shiny)
+library(shinydashboard)
+library(shinythemes)
 
-#source("~/Documents/git/microclimates/analyses/source/simulations_sourcedata.R")
+source("~/Documents/git/microclimates/analyses/source/sims_hypoth_sourcedata.R")
 #source("~/Documents/git/bayes2020/Projects/Cat/source/simulations_sourcedata.R")
 
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("united"),
   
   
-  titlePanel("Modeling GDD Accuracy"),
-  
-  column(4,
-         wellPanel(
-           selectInput("Hypothesis", "Hypothesis",
-                       choices = c("---Choose One---",
-                                   "Hypothesis A: more variation in hobo loggers with same climate", 
-                                   "Hypothesis B: hobo loggers are more accurate"),
-                       selected = ("---Choose One---")),
-           
-           selectInput("Question", "Question",
-                       choices = c("---Choose One---",
-                                   "Urban Model: Arb vs HF", 
-                                   "Provenance Model: Provenance latitude"),
-                       selected="---Choose One---"),
-           
-           sliderInput(inputId = "UrbanEffect",
-                       label = "Urban Effect",
-                       value = -30, min = -100, max = 100),
-           
-           sliderInput(inputId = "MethodEffect",
-                       label = "Method Effect",
-                       value = -20, min = -100, max = 100),
-           
-           sliderInput(inputId = "UrbMethod",
-                       label = "Urban x Method Effect",
-                       value = -40, min = -100, max = 100),
-           
-           sliderInput(inputId = "ArbClimate",
-                       label = "Arb Climate",
-                       value = 11, min = 0, max = 20),
-           
-           sliderInput(inputId = "HFClimate",
-                       label = "HF Climate",
-                       value = 9, min = 0, max = 20),
-           
-           sliderInput(inputId = "ArbMicroEffect",
-                       label = "Arb Micro Effect",
-                       value = 1, min = -10, max = 10),
-           
-           sliderInput(inputId = "HFMicroEffect",
-                       label = "HF Micro Effect",
-                       value = -1, min = -10, max = 10),
-           actionButton("run", "View Plots",
-                        style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-           actionButton("go" ,"Run Model and View muplot")
-         )       
-  ),
-  
-  mainPanel(
-    tabsetPanel(
-      tabPanel("Climate Data", plotOutput("climtypes"), 
-               plotOutput("hist"), verbatimTextOutput("urb")), 
-      tabPanel("GDDs across Species", plotOutput("gddsites")), 
-      tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
-      tabPanel("Site Accuracy", plotOutput("site_accuracy")),
-      tabPanel("Site x Method", plotOutput("interaction")),
-      tabPanel("Model Output", plotOutput("muplot"))
-    )
+  navbarPage("Modeling & Interpreting GDD",
+                 tabPanel("Hypothesis Testing",
+                      sidebarLayout(
+                        sidebarPanel(
+                        tabPanel("Hypothesis Testing",
+                        selectInput("Hypothesis", "Hypothesis",
+                                    choices = c("---Choose One---",
+                                                "Hypothesis Hobo Logger: hobo loggers are more accurate",
+                                                "Hypothesis Urban: urban sites require fewer GDDs",
+                                                "Hypothesis Provenance: more Northern provenances require fewer GDDs"),
+                                    selected = ("---Choose One---")),
+                        sliderInput(inputId = "HypothEffect",
+                                    label = "Hypothesis Effect",
+                                    value = 0, min = -100, max = 100),
+                        sliderInput(inputId = "HypothEffectSD",
+                                    label = "Hypothesis Effect SD",
+                                    value = 10, min = 0, max = 30),
+                        sliderInput(inputId = "Fstar",
+                                    label = "GDD base threshold",
+                                    value = 300, min = 50, max = 400),
+                        sliderInput(inputId = "FstarSD",
+                                    label = "GDD base threshold SD",
+                                    value = 50, min = 0, max = 100),
+                        sliderInput(inputId = "ArbClimate",
+                                    label = "Arb Climate",
+                                    value = 11, min = 0, max = 20),
+                        sliderInput(inputId = "ArbClimateSD",
+                                    label = "Arb Climate SD",
+                                    value = 5, min = 0, max = 10),
+                        sliderInput(inputId = "ArbMicroEffect",
+                                    label = "Arb Micro Effect",
+                                    value = 1, min = -10, max = 10),
+                        sliderInput(inputId = "ArbMicroEffectSD",
+                                    label = "Arb Micro Effect SD",
+                                    value = 10, min = 0, max = 10),
+                        sliderInput(inputId = "HFClimate",
+                                    label = "HF Climate",
+                                    value = 9, min = 0, max = 20),
+                        sliderInput(inputId = "HFClimateSD",
+                                    label = "HF Climate SD",
+                                    value = 2, min = 0, max = 10),
+                        sliderInput(inputId = "HFMicroEffect",
+                                    label = "HF Micro Effect",
+                                    value = -1, min = -10, max = 10),
+                        sliderInput(inputId = "HFMicroEffectSD",
+                                    label = "HF Micro Effect SD",
+                                    value = 10, min = 0, max = 10),
+                        actionButton("run", "View Plots",
+                                     style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                        actionButton("go" ,"Run Model and View muplot")
+                        )
+             ),
+             
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Climate Data", plotOutput("climtypes"), 
+                          plotOutput("hist"), verbatimTextOutput("urb")), 
+                 tabPanel("GDDs across Species", plotOutput("gddsites")), 
+                 tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
+                 tabPanel("Site Accuracy", plotOutput("site_accuracy")),
+                 tabPanel("Site x Method", plotOutput("interaction")),
+                 tabPanel("Model Output", verbatimTextOutput("hypoth"), plotOutput("muplot"))
+               )
+             ))
+             
+             ),
+             tabPanel("Simulation Data: Urban Model",
+                      wellPanel(column(4,
+                                       
+                                       
+                                       selectInput("Question", "Question",
+                                                   choices = c("---Choose One---",
+                                                               "Urban Model: Arb vs HF", 
+                                                               "Provenance Model: Provenance latitude"),
+                                                   selected="---Choose One---"),
+                                       
+                                       sliderInput(inputId = "UrbanEffect",
+                                                   label = "Urban Effect",
+                                                   value = -30, min = -100, max = 100),
+                                       
+                                       sliderInput(inputId = "MethodEffect",
+                                                   label = "Method Effect",
+                                                   value = -20, min = -100, max = 100),
+                                       
+                                       sliderInput(inputId = "UrbMethod",
+                                                   label = "Urban x Method Effect",
+                                                   value = -40, min = -100, max = 100)
+                                       )
+                                )),
+             tabPanel("Simulation Data: Provenance Model")
   )
+          
   
 )
 
@@ -93,12 +127,15 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   
-  get.data <- eventReactive(input$run, {bbfunc(if(input$Hypothesis=="Hypothesis A: more variation in hobo loggers with same climate")
-  {TRUE}else if(input$Hypothesis=="Hypothesis B: hobo loggers are more accurate"){FALSE}, 
-  if(input$Question=="Urban Model: Arb vs HF"){TRUE}else if(input$Question=="Provenance Model: Provenance latitude"){FALSE},
-  as.numeric(input$UrbanEffect), as.numeric(input$MethodEffect),  as.numeric(input$UrbMethod),
-  as.numeric(input$ArbClimate), as.numeric(input$ArbMicroEffect), 
-  as.numeric(input$HFClimate), as.numeric(input$HFMicroEffect))
+  get.data <- eventReactive(input$run, {bbfunc(if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
+    if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}, 
+  as.numeric(input$HypothEffect), as.numeric(input$HypothEffectSD),
+  as.numeric(input$Fstar), as.numeric(input$FstarSD),
+  as.numeric(input$ArbClimate), as.numeric(input$ArbClimateSD),
+  as.numeric(input$ArbMicroEffect), as.numeric(input$ArbMicroEffectSD), 
+  as.numeric(input$HFClimate), as.numeric(input$HFClimateSD), 
+  as.numeric(input$HFMicroEffect), as.numeric(input$HFMicroEffectSD))
   })
   
   #output$print_data <- renderPrint(get.data())
@@ -206,18 +243,18 @@ server <- function(input, output) {
   })
   #})
   
-  use.urban <- eventReactive(input$go,{if(input$Question=="Urban Model: Arb vs HF"){TRUE}
-    else if(input$Question=="Provenance Model: Provenance latitude"){FALSE}})
+  use.hypoth <- eventReactive(input$go,{if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
+    if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}
+    })
   
-  output$urb <- renderPrint({use.urban()[1]})
+  output$hypoth <- renderPrint({use.hypoth()[1]})
   
   #observeEvent(input$go, {
   output$muplot <- renderPlot({
-    use.urban <- use.urban()[1]
-    if(use.urban==TRUE){
+    use.hypoth <- use.hypoth()[1]
+    if(use.hypoth=="hobo" | hypoth=="urban" | hypoth=="prov"){
       bball <- get.data()[[1]]
-      bball$urban <- ifelse(bball$site=="arb", 1, 0)
-      bball$type <- ifelse(bball$method=="ws", 1, 0)
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
@@ -245,7 +282,7 @@ server <- function(input, output) {
     }
     
     urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 2000, warmup=1000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+                          iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
     
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -294,8 +331,8 @@ server <- function(input, output) {
   
   
   output$muplot <- renderPlot({
-    use.urban <- use.urban()[1]
-    if(use.urban==FALSE){
+    use.hypoth <- use.hypoth()[1]
+    if(use.hypoth==FALSE){
       bball <- get.data()[[1]]
       bball$prov.z <- (bball$provenance-mean(bball$provenance,na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
       bball$type.z <- (bball$type-mean(bball$type,na.rm=TRUE))/(2*sd(bball$type,na.rm=TRUE))
