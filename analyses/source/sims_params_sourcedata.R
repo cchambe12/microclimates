@@ -3,15 +3,7 @@
 ### Need to eventually integrate hypothesis tests and provenance vs urban!
 
 # housekeeping
-rm(list=ls()) 
-options(stringsAsFactors = FALSE)
-
-library(dplyr)
-library(tidyr)
-
-set.seed(12321)
-
-if(TRUE){
+if(FALSE){
   question = TRUE ## if TRUE then testing urban effect, if FALSE then testing provenance
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 50
@@ -24,7 +16,7 @@ if(TRUE){
 }
 
 
-bbfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd){
+simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd){
   
   use.urban = question  ### This is either TRUE or FALSE
   
@@ -189,7 +181,7 @@ bbfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, me
   
 }
 
-bblist <- bbfunc(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd)
+#bblist <- bbfunc(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd)
 
-bball <- bblist[[1]]
-df <- bblist[[2]]
+#bball <- bblist[[1]]
+#df <- bblist[[2]]

@@ -19,13 +19,13 @@ if(FALSE){
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 50
   arbclim <- 11   ### tmean arb climate
-  arbclim.sd <- 5
+  arbclim.sd <- 4
   arbmicroclim <- 1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
-  arbmicroclim.sd <- 10
+  arbmicroclim.sd <- 0
   hfclim <- 9  ## tmean hf climate
   hfclim.sd <- 2
   hfmicroclim <- -1  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
-  hfmicroclim.sd <- 10
+  hfmicroclim.sd <- 0
 }
 
 
