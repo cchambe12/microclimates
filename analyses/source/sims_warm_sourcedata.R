@@ -86,6 +86,7 @@ warmfunc <- function(fstar.num, fstar.sd, warming){
   bball$gdd_accuracy <- bball$gdd.obs - bball$fstarspp
   
   bball <- na.omit(bball)
+  bball$warming <- warmcc
   
   mylist <- list(bball, df)  
   

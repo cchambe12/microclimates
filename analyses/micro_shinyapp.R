@@ -188,7 +188,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                                      numericInput(inputId = "warming",
                                                  label = "Increase in Warming (°C)",
                                                  value = 0, min = 0, max = 10),
-                                     actionButton("warming", "Add to Plot",
+                                     actionButton("warmrun", "Add to Plot",
                                                   style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
                             )
                           ),
@@ -254,7 +254,7 @@ server <- function(input, output) {
   
   get.datareal <- df
   
-  get.warmsims <- eventReactive(input$warming, {
+  get.warmsims <- eventReactive(input$warmrun, {
     
     progress <- Progress$new(max = 10)
     on.exit(progress$close())
@@ -730,11 +730,9 @@ server <- function(input, output) {
     })
   })
   
-  get.warm <- eventReactive(input$warming,{ as.numeric(input$warming)})
   
   observeEvent(input$warming, {
     output$gddwarm <- renderPlot({
-      warming <- get.warm()[1]
       gdd.warm <- get.warmsims()[[1]]
       
       ggplot(gdd.warm, aes(y=gdd_accuracy, x=tmean)) + geom_line(aes(col=warming)) + theme_classic()
