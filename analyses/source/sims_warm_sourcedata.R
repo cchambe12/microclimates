@@ -2,15 +2,6 @@
 ## Source function to build data for the shiny app
 ### Need to eventually integrate hypothesis tests and provenance vs urban!
 
-# housekeeping
-rm(list=ls()) 
-options(stringsAsFactors = FALSE)
-
-library(dplyr)
-library(tidyr)
-
-set.seed(12321)
-
 if(FALSE){
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 50
@@ -52,14 +43,15 @@ warmfunc <- function(fstar.num, fstar.sd, warming){
   #### Here, I set up provenance for each individual
   ### # Step 2: find GDDs
   #### Now I set up climate data for the Arboretum, this is the weather station data
-  cc <- data.frame(ind=rep(rep(c(1:ninds), each=daysperyr), nspps),
+  clim <- data.frame(ind=rep(rep(c(1:ninds), each=daysperyr), nspps),
                         species = rep(c(1:nspps), each=daysperyr), 
                         day=rep(c(1:daysperyr), nspps))
   
   
+  clim$tmean <- rnorm(clim$day, cc + as.numeric(warmcc), sigma.cc) 
   
   ##Step 3: Make a data frame and get the mean temp
-  df <- cc
+  df <- clim
   df$tmean <- as.numeric(df$tmean)
   
   df$sp_ind <- paste(df$species, df$ind, sep="_")
@@ -85,18 +77,17 @@ warmfunc <- function(fstar.num, fstar.sd, warming){
   
   df.bb <- df[(df$bb==df$day),]
   
-  df.bb <- subset(df.bb, select=c("site", "method", "species", "ind", "gdd.noise", "fstarspp", "gdd", "provenance", "bb")) # 
+  df.bb <- subset(df.bb, select=c("species", "ind", "tmean", "gdd.obs", "fstarspp", "bb")) # 
   
   bball <- df.bb[!duplicated(df.bb),]
   
   
   ##### Now let's do some checks...
-  bball$gdd_accuracy <- bball$gdd - bball$fstarspp
-  bball$type <- ifelse(bball$method=="ws", 1, 0)
+  bball$gdd_accuracy <- bball$gdd.obs - bball$fstarspp
   
   bball <- na.omit(bball)
   
-  mylist <- list(bball, df, hfclim, arbclim)  
+  mylist <- list(bball, df)  
   
   return(mylist)
   

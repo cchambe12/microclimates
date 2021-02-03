@@ -254,6 +254,25 @@ server <- function(input, output) {
   
   get.datareal <- df
   
+  get.warmsims <- eventReactive(input$warming, {
+    
+    progress <- Progress$new(max = 10)
+    on.exit(progress$close())
+    
+    progress$set(message = "Compiling Simulation Data")
+    for (i in seq_len(10)) {
+      Sys.sleep(0.5)
+      progress$inc(1)
+    }
+    
+    simfunc(if(input$Question=="Urban Model")
+    {TRUE}else if(input$Question=="Provenance Model")
+    {FALSE},
+    as.numeric(input$Fstar), as.numeric(input$FstarSD)
+    )
+    
+  })
+  
   #output$print_data <- eventReactive(input$realgo,{renderPrint(get.datareal)})
   #output$strdata <- renderPrint(str(get.data()))
   
@@ -635,7 +654,7 @@ server <- function(input, output) {
       use.real <- use.real()[1]
       bball <- get.datareal
       bball$treatmenttype <- if(use.real=="urban"){as.numeric(bball$urban)}else if(use.real=="prov"){
-        as.numeric(bball$prov)}
+        as.numeric(bball$provenance)}
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
@@ -711,14 +730,14 @@ server <- function(input, output) {
     })
   })
   
-  get.warm <- eventReactive(input$warming,{warmfunc(as.numeric(input$fstar), as.numeric(input$fstarsd),
-    as.numeric(input$warming))})
+  get.warm <- eventReactive(input$warming,{ as.numeric(input$warming)})
   
   observeEvent(input$warming, {
     output$gddwarm <- renderPlot({
-      get.warm <- get.warm()[1]
+      warming <- get.warm()[1]
+      gdd.warm <- get.warmsims()[[1]]
       
-      ggplot(gdd.warm, aes(y=accuracy, x=warming)) + geom_line(aes(col=warming)) + theme_classic()
+      ggplot(gdd.warm, aes(y=gdd_accuracy, x=tmean)) + geom_line(aes(col=warming)) + theme_classic()
       
     })
   })
