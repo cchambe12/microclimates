@@ -30,7 +30,7 @@ bbfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, me
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 300 #### just to make sure we don't get any NAs
-  nspps <- 20 
+  nspps <- 15 
   ninds <- 10 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest

@@ -36,6 +36,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                         selectInput("Hypothesis", "Hypothesis",
                                     choices = c("---Choose One---",
                                                 "Hypothesis Hobo Logger: hobo loggers are more accurate",
+                                                "Hypothesis Hobo Logger: weather station is more accurate",
                                                 "Hypothesis Urban: urban sites require fewer GDDs",
                                                 "Hypothesis Provenance: more Northern provenances require fewer GDDs"),
                                     selected = ("---Choose One---")),
@@ -75,6 +76,8 @@ ui <- fluidPage(theme = shinytheme("united"),
                         sliderInput(inputId = "HFMicroEffectSD",
                                     label = "HF Micro Effect SD",
                                     value = 10, min = 0, max = 10),
+                        numericInput("steps", "How many steps?", 10),
+                        textOutput("result"),
                         actionButton("run", "View Plots",
                                      style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                         actionButton("go" ,"Run Model and View muplot")
@@ -83,13 +86,15 @@ ui <- fluidPage(theme = shinytheme("united"),
              
              mainPanel(
                tabsetPanel(
-                 tabPanel("Climate Data", plotOutput("climtypes"), 
-                          plotOutput("hist"), verbatimTextOutput("urb")), 
+                 tabPanel("Climate Data", 
+                          #verbatimTextOutput("print_data"), verbatimTextOutput("strdata"),
+                          plotOutput("climtypes"), 
+                          column(8, align="center",plotOutput("hist"))), 
                  tabPanel("GDDs across Species", plotOutput("gddsites")), 
                  tabPanel("Method Accuracy", plotOutput("gdd_accuracy")),
                  tabPanel("Site Accuracy", plotOutput("site_accuracy")),
                  tabPanel("Site x Method", plotOutput("interaction")),
-                 tabPanel("Model Output", verbatimTextOutput("hypoth"), plotOutput("muplot"))
+                 tabPanel("Model Output", plotOutput("muplot"))
                )
              ))
              
@@ -127,18 +132,33 @@ ui <- fluidPage(theme = shinytheme("united"),
 server <- function(input, output) {
   
   
-  get.data <- eventReactive(input$run, {bbfunc(if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
-  {"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
+  get.data <- eventReactive(input$run, {
+    
+    progress <- Progress$new(max = input$steps)
+    on.exit(progress$close())
+    
+    progress$set(message = "Compiling Simulation Data")
+    for (i in seq_len(input$steps)) {
+      Sys.sleep(0.5)
+      progress$inc(1)
+    }
+    
+    bbfunc(if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"hobo"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate")
+    {"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
     if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}, 
+  if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"ws"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate"){"hobo"},
   as.numeric(input$HypothEffect), as.numeric(input$HypothEffectSD),
   as.numeric(input$Fstar), as.numeric(input$FstarSD),
   as.numeric(input$ArbClimate), as.numeric(input$ArbClimateSD),
   as.numeric(input$ArbMicroEffect), as.numeric(input$ArbMicroEffectSD), 
   as.numeric(input$HFClimate), as.numeric(input$HFClimateSD), 
   as.numeric(input$HFMicroEffect), as.numeric(input$HFMicroEffectSD))
+    
   })
   
-  #output$print_data <- renderPrint(get.data())
+  #output$print_data <- renderPrint(get.data()[[2]])
   #output$strdata <- renderPrint(str(get.data()))
   
   #observeEvent(input$run, {
@@ -206,7 +226,7 @@ server <- function(input, output) {
   #})
   
   #observeEvent(input$run, {
-  output$hist <- renderPlot({
+  output$hist <- renderPlot(res=150, height=500, width=500,{
     bball <- get.data()[[1]]
     cols <-viridis_pal(option="plasma")(3)
     ggplot(bball, aes(x=bb)) + geom_histogram(aes(fill=site)) + theme_classic() + theme(legend.position = "none") +
@@ -244,21 +264,30 @@ server <- function(input, output) {
   #})
   
   use.hypoth <- eventReactive(input$go,{if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"hobo"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate")
   {"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
     if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}
     })
   
-  output$hypoth <- renderPrint({use.hypoth()[1]})
+  use.urban <- eventReactive(input$go,{if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
+  {"urban"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate")
+  {"urban"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
+    if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}
+  })
   
-  #observeEvent(input$go, {
-  output$muplot <- renderPlot({
+  #output$hypoth <- renderPrint({use.hypoth()[1]})
+  
+  observeEvent(input$go, {
+  output$muplot <- renderPlot(height=800,{
     use.hypoth <- use.hypoth()[1]
-    if(use.hypoth=="hobo" | hypoth=="urban" | hypoth=="prov"){
+    use.urban <- use.urban()[1]
+    if(use.hypoth=="hobo"){
       bball <- get.data()[[1]]
+      bball$urban <- ifelse(bball$site=="arb", 1, 0)
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
-                                urban = urban, ### for simple: 
+                                urban = use.urban, ### for simple: 
                                 method = type,
                                 sp = as.numeric(as.factor(species)),
                                 N = nrow(bball),
@@ -267,22 +296,19 @@ server <- function(input, output) {
       )
     }
     
-    #### Notes from Cat on 5 Jan 2021: when running this model with just method, the results are pretty good, the sigma_y is high (~10) but otherwise not bad
-    ### when running this model with urbanmethod, the model can't differentiate between sigma_urban and sigma_method and they end up both being ~15... not sure how this is even happening
-    
-    if(FALSE){### prior predictive checks
-    dat<-list(N=nrow(bball), urban = rbinom(nrow(bball), 1, 0.5), method = rbinom(nrow(bball), 1, 0.5))
-    ## fit model:
-    priorchecks = stan('~/Documents/git/microclimates/analyses/stan/priorchecks_urbanmethod.stan', data = dat,
-                         iter = 2000, warmup=1000, chains=4, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
-    
-    ## extract and plot one of the data-sets:
-    y_sim<-extract(priorchecks,pars="y_ppc")
-    plot(y_sim$y_ppc[1, ], bball$gdd)
-    }
-    
+    progress <- Progress$new(max = input$steps)
+    progress$set(message = "Running Model")
     urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                           iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+    
+    for (i in seq_len(input$steps)) {
+      Sys.sleep(0.5)
+      progress$inc(1)
+    }
+    on.exit(progress$close())
+    
+    
+    #output$modoutput <- renderPrint({summary(urbmethod_fake)$summary})
     
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -292,17 +318,21 @@ server <- function(input, output) {
     modoutput <- summary(urbmethod_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
     
+    labs <- ifelse(use.urban=="urban", c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                         "Sigma Arboretum", "Sigma \nWeather Station", 
+                                         "Sigma Interaction"),
+                   c("Provenance", "Weather Station", "Provenance x\nWeather Station",
+                     "Sigma Provenance", "Sigma \nWeather Station", 
+                     "Sigma Interaction"))
+    
     modelhere <- urbmethod_fake
     bball <- isolate(get.data()[[1]])
     spnum <- length(unique(bball$species))
-    quartz()
     par(xpd=FALSE)
     par(mar=c(5,10,3,10))
     plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
          xlab="Model estimate change in growing degree days to budburst", ylab="")
-    axis(2, at=1:6, labels=rev(c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                 "Sigma Arboretum", "Sigma \nWeather Station", 
-                                 "Sigma Interaction")), las=1)
+    axis(2, at=1:6, labels=rev(labs), las=1)
     abline(v=0, lty=2, col="darkgrey")
     rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
                       "sigma_b_method_sp", "sigma_b_um_sp")
@@ -327,12 +357,13 @@ server <- function(input, output) {
            col=alpha(my.pal[1:spnum], alphahere),
            cex=1, bty="n", text.font=3)
   })
-  #})
+  })
   
   
   output$muplot <- renderPlot({
     use.hypoth <- use.hypoth()[1]
     if(use.hypoth==FALSE){
+      input$go
       bball <- get.data()[[1]]
       bball$prov.z <- (bball$provenance-mean(bball$provenance,na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
       bball$type.z <- (bball$type-mean(bball$type,na.rm=TRUE))/(2*sd(bball$type,na.rm=TRUE))
@@ -363,7 +394,6 @@ server <- function(input, output) {
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
       
       spnum <- length(unique(bball$species))
-      quartz()
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
       plot(x=NULL,y=NULL, xlim=c(-150,100), yaxt='n', ylim=c(0,6),

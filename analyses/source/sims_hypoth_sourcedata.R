@@ -12,7 +12,8 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "prov"  ## hobo, urban, prov
+  hypoth <- "hobo"  ## hobo, urban, prov
+  hypoth.para <- "ws"
   hypoth.mu <- 0
   hypoth.sd <- 10  ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
@@ -28,11 +29,11 @@ if(FALSE){
 }
 
 
-bbfunc <- function(hypoth, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd){
+bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 200 #### just to make sure we don't get any NAs
-  nspps <- 20 
+  daysperyr <- 150 #### just to make sure we don't get any NAs
+  nspps <- 15 
   ninds <- 10 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
@@ -135,13 +136,14 @@ bbfunc <- function(hypoth, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, a
   
   if(hypoth=="hobo"){
     #### This is where I test our hypothesis. This doesn't come out of the model directly
-    ws_sd <- hypoth.sd  ### adds variation to weather station estimates, rendering hobo loggers more accurate measures and therefore better able to capture urban effects
-    
+    hypoth_sd <- hypoth.sd  ### adds variation to weather station estimates, rendering hobo loggers more accurate measures and therefore better able to capture urban effects
+    hypoth_mu <- hypoth.mu
+    hypoth_para <- hypoth.para
     ########################### ADDING IN HYPOTHESIS HERE! ################################
     ### I think this should just make the weather station less accurate...??? I hope.
-    df.bb$hyp_b <- ifelse(df.bb$method=="ws", 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
+    df.bb$hyp_b <- ifelse(df.bb$method==hypoth_para, 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
     ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(n=nspps, mean=0, sd=ws_sd), each=ninds*nmethods) 
+    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(n=nspps, mean=hypoth_mu, sd=hypoth_sd), each=ninds*nmethods) 
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(nrow(df.bb), mean=0, sd=sigma_y)
     
@@ -152,7 +154,7 @@ bbfunc <- function(hypoth, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, a
     
     df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                    site = rep(c("arb", "hf"), each=nobs*nmethods),
-                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, ninds*nspps*nmethods)),
                                    method = rep(c("ws", "hobo"), nsites*nobs)))
     df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
     df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
@@ -244,7 +246,7 @@ bbfunc <- function(hypoth, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, a
   
 }
 
-#bblist <- bbfunc(hypoth, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd)
+#bblist <- bbfunc(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd)
 
 #bball <- bblist[[1]]
 #df <- bblist[[2]]
