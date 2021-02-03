@@ -23,6 +23,9 @@ library(shinythemes)
 
 source("~/Documents/git/microclimates/analyses/source/sims_hypoth_sourcedata.R")
 source("~/Documents/git/microclimates/analyses/source/sims_params_sourcedata.R")
+source("~/Documents/git/microclimates/analyses/source/sims_warm_sourcedata.R")
+
+df <- read.csv("~/Documents/git/microclimates/analyses/output/cleanmicro_gdd_2019.csv")
 
 
 ui <- fluidPage(theme = shinytheme("united"),
@@ -100,33 +103,99 @@ ui <- fluidPage(theme = shinytheme("united"),
              ))
              
              ),
-             tabPanel("Simulation Data: Urban Model",
-                      wellPanel(column(4,
-                                       
-                                       
-                                       selectInput("Hypothesis", "Question",
+             tabPanel("Simulation Data for Model Testing",
+                      sidebarLayout(
+                        sidebarPanel(
+                        tabPanel("Simulation Data",
+                            selectInput("Question", "Question",
                                                    choices = c("---Choose One---",
-                                                               "Urban Model: Arb vs HF", 
-                                                               "Provenance Model: Provenance latitude"),
+                                                               "Urban Model", 
+                                                               "Provenance Model"),
                                                    selected="---Choose One---"),
-                                       
                                        sliderInput(inputId = "TXEffect",
                                                    label = "Treatment Effect",
                                                    value = -30, min = -100, max = 100),
+                                       sliderInput(inputId = "TXEffectSD",
+                                                  label = "Treatment Effect SD",
+                                                  value = 5, min = -0, max = 20),
                                        
                                        sliderInput(inputId = "MethodEffect",
                                                    label = "Method Effect",
                                                    value = -20, min = -100, max = 100),
+                                       sliderInput(inputId = "MethodEffectSD",
+                                                  label = "Method Effect SD",
+                                                  value = 5, min = 0, max = 20),
                                        
                                        sliderInput(inputId = "TXMethod",
                                                    label = "Treatment x Method Effect",
                                                    value = -40, min = -100, max = 100),
-                                       actionButton("simsrun", "View Plots",
+                                       sliderInput(inputId = "TXMethodSD",
+                                                  label = "Treatment x Method Effect SD",
+                                                  value = 5, min = 0, max = 20),
+                                       actionButton("simsgo", "View Plots",
                                                     style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
                       )
+                        ),
+                      mainPanel(
+                        tabsetPanel(
+                          tabPanel("GDDs across Species", plotOutput("gddsitessims")), 
+                                tabPanel("Method Accuracy", plotOutput("gdd_accuracysims")),
+                                tabPanel("Site Accuracy", plotOutput("site_accuracysims")),
+                                tabPanel("Site x Method", plotOutput("interactionsims")),
+                                tabPanel("Model Output",
+                                         actionButton("simsrunmod" ,"Run Model and View muplot"),
+                                   plotOutput("simsmuplot"))
                                 ))
   )
-          
+             ),
+  
+  tabPanel("Real Data and Analyze Results",
+           mainPanel(
+             tabsetPanel(
+               tabPanel("GDDs across Species", 
+                        #verbatimTextOutput("print_data"),
+                        plotOutput("gddsitesreal")), 
+               tabPanel("Site x Method", plotOutput("interactionreal")),
+               tabPanel("Model Output",
+                        sidebarLayout(
+                          sidebarPanel(
+                            tabPanel("Real Data",
+                                     selectInput("type", "Question",
+                                                 choices = c("---Choose One---",
+                                                             "Urban Model", 
+                                                             "Provenance Model"),
+                                                 selected="---Choose One---"),
+                                     actionButton("realrunmod", "Run Model",
+                                                  style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                            )
+                          ),
+                        mainPanel(plotOutput("realmuplot"))
+             ))
+  )
+  )
+  ),
+  tabPanel("Forecasting GDD with Warming",
+           tabPanel("Simulating Warming",
+                    sidebarLayout(
+                      sidebarPanel(
+                        tabPanel("Simulating Warming",
+                                 sliderInput(inputId = "fstar",
+                                             label = "GDD base threshold",
+                                             value = 300, min = 50, max = 400),
+                                 sliderInput(inputId = "fstarsd",
+                                             label = "GDD base threshold SD",
+                                             value = 50, min = 0, max = 100),
+                                     numericInput(inputId = "warming",
+                                                 label = "Increase in Warming (°C)",
+                                                 value = 0, min = 0, max = 10),
+                                     actionButton("warming", "Add to Plot",
+                                                  style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                            )
+                          ),
+                          mainPanel(plotOutput("gddwarm"))
+                        ))
+             )
+           )
   
 )
 
@@ -161,7 +230,7 @@ server <- function(input, output) {
   })
   
   if(TRUE){
-  get.data <- eventReactive(input$simsrun, {
+  get.datasims <- eventReactive(input$simsgo, {
     
     progress <- Progress$new(max = 10)
     on.exit(progress$close())
@@ -172,19 +241,20 @@ server <- function(input, output) {
       progress$inc(1)
     }
     
-    simfunc(if(input$Hypothesis=="Urban Model")
-    {TRUE}else if(input$Hypothesis=="Provenance Model")
+    simfunc(if(input$Question=="Urban Model")
+    {TRUE}else if(input$Question=="Provenance Model")
     {FALSE},
-    as.numeric(input$Fstar), as.numeric(input$FstarSD),
     as.numeric(input$TXEffect), as.numeric(input$TXEffectSD),
     as.numeric(input$MethodEffect), as.numeric(input$MethodEffectSD),
-    as.numeric(input$TXMethodEffect), as.numeric(input$TXMethodEffectSD)
+    as.numeric(input$TXMethod), as.numeric(input$TXMethodSD)
     )
     
   })
   }
   
-  #output$print_data <- renderPrint(get.data()[[2]])
+  get.datareal <- df
+  
+  #output$print_data <- eventReactive(input$realgo,{renderPrint(get.datareal)})
   #output$strdata <- renderPrint(str(get.data()))
   
   #observeEvent(input$run, {
@@ -199,11 +269,35 @@ server <- function(input, output) {
            col=cols[as.factor(bball$method)],
            cex=1, bty="n")
   })
+  
+  output$gdd_accuracysims <- renderPlot({
+    bball <- get.datasims()[[1]]
+    xtext <- seq(1, 2, by=1)
+    cols <-viridis_pal(option="viridis")(3)
+    plot(as.numeric(as.factor(bball$type)), as.numeric(bball$gdd_accuracy), 
+         col=cols[as.factor(bball$method)], ylab="GDD accuracy", xaxt="none",xlab="")
+    axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
+    legend(0, -20, sort(unique(gsub("_", " ", bball$method))), pch=19,
+           col=cols[as.factor(bball$method)],
+           cex=1, bty="n")
+  })
   #})
   
   #observeEvent(input$run, {
   output$site_accuracy <- renderPlot({
     bball <- get.data()[[1]]
+    xtext <- seq(1, 2, by=1)
+    cols <-viridis_pal(option="plasma")(3)
+    plot(as.numeric(as.factor(bball$site)), as.numeric(bball$gdd_accuracy), 
+         col=cols[as.factor(bball$site)], xlab="", ylab="GDD accuracy", xaxt="none")
+    axis(side=1, at=xtext, labels = c("Arnold Arboretum", "Harvard Forest"))
+    legend(0, -20, sort(unique(gsub("_", " ", bball$site))), pch=19,
+           col=cols[as.factor(bball$site)],
+           cex=1, bty="n")
+  })
+  
+  output$site_accuracysims <- renderPlot({
+    bball <- get.datasims()[[1]]
     xtext <- seq(1, 2, by=1)
     cols <-viridis_pal(option="plasma")(3)
     plot(as.numeric(as.factor(bball$site)), as.numeric(bball$gdd_accuracy), 
@@ -232,7 +326,40 @@ server <- function(input, output) {
          ylab="GDD", ylim=c(0, 600), xlab="Species")
     abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
   })
+  output$gddsitessims <- renderPlot({
+    bball <- get.datasims()[[1]]
+    #quartz(width=6, height=5)
+    par(mfrow=c(1,2))
+    my.pal <- viridis_pal(option="magma")(20)
+    my.pch <- c(15:16)
+    plot(as.numeric(bball$gdd) ~ as.numeric(as.factor(bball$species)), col=my.pal[as.factor(bball$species)], 
+         pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="ws"),], main="Weather Station",
+         ylab="GDD", ylim=c(0, 600), xlab="Species")
+    abline(h=mean(bball$gdd[bball$method=="ws"]), lwd=3)
+    
+    plot(as.numeric(gdd) ~ as.numeric(as.factor(species)), col=my.pal[as.factor(bball$species)], 
+         pch=my.pch[as.factor(bball$site)], data = bball[(bball$method=="hobo"),], main="Hobo Logger",
+         ylab="GDD", ylim=c(0, 600), xlab="Species")
+    abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
+  })
   #})
+  
+  output$gddsitesreal <- renderPlot({
+    bball <- get.datareal
+    #quartz(width=6, height=5)
+    par(mfrow=c(1,2))
+    my.pal <- viridis_pal(option="magma")(20)
+    my.pch <- c(15:16)
+    plot(as.numeric(bball$gdd) ~ as.numeric(as.factor(bball$spp)), col=my.pal[as.factor(bball$spp)], 
+         pch=my.pch[as.factor(bball$site)], data = bball[(bball$method==1),], main="Weather Station",
+         ylab="GDD", ylim=c(0, 600), xlab="Species")
+    abline(h=mean(bball$gdd[bball$method=="ws"]), lwd=3)
+    
+    plot(as.numeric(gdd) ~ as.numeric(as.factor(spp)), col=my.pal[as.factor(bball$spp)], 
+         pch=my.pch[as.factor(bball$site)], data = bball[(bball$method==0),], main="Hobo Logger",
+         ylab="GDD", ylim=c(0, 600), xlab="Species")
+    abline(h=mean(bball$gdd[bball$method=="hobo"]), lwd=3)
+  })
   
   #observeEvent(input$run, {
   output$climtypes <- renderPlot({
@@ -287,28 +414,63 @@ server <- function(input, output) {
     
     gddcomparebb
   })
-  #})
   
-  #use.hypoth <- eventReactive(input$go,{if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
-  #{"hobo"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate")
-  #{"hobo"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
-  #  if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}
-  #  })
+  output$interactionsims <- renderPlot({
+    bball.site <- get.datasims()[[1]]
+    bball.site$methodtype <- ifelse(bball.site$method=="ws", "\nWeather \nStation", "\nHobo \nLogger")
+    
+    cols <- viridis_pal(option="plasma")(3)
+    gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd, group=as.factor(site), fill=as.factor(site))) + 
+      geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
+                  aes(fill = as.factor(site), group = as.factor(site))) +
+      geom_line(stat='smooth', method = "lm", alpha=1, col="black") +
+      theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+            legend.text.align = 0,
+            legend.key = element_rect(colour = "transparent", fill = "white"),
+            plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) +
+      xlab("") + 
+      ylab("Growing degree days to budburst") + 
+      scale_fill_manual(name="Site", values=cols,
+                        labels=c("Arnold Arboretum", "Harvard Forest")) + 
+      coord_cartesian(expand=0, ylim=c(0,700))
+    
+    gddcomparebb
+  })
+  
+  output$interactionreal <- renderPlot({
+    bball.site <- get.datareal
+    bball.site$methodtype <- ifelse(bball.site$method==1, "\nWeather \nStation", "\nHobo \nLogger")
+    bball.site$site <- bball.site$urban
+    
+    cols <- viridis_pal(option="plasma")(3)
+    gddcomparebb <- ggplot(bball.site, aes(x=methodtype, y=gdd, group=as.factor(site), fill=as.factor(site))) + 
+      geom_ribbon(stat='smooth', method = "lm", se=TRUE, alpha=1, 
+                  aes(fill = as.factor(site), group = as.factor(site))) +
+      geom_line(stat='smooth', method = "lm", alpha=1, col="black") +
+      theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
+            legend.text.align = 0,
+            legend.key = element_rect(colour = "transparent", fill = "white"),
+            plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) +
+      xlab("") + 
+      ylab("Growing degree days to budburst") + 
+      scale_fill_manual(name="Site", values=cols,
+                        labels=c("Arnold Arboretum", "Harvard Forest")) + 
+      coord_cartesian(expand=0, ylim=c(0,700))
+    
+    gddcomparebb
+  })
+  
   
   use.urban <- eventReactive(input$go,{if(input$Hypothesis=="Hypothesis Hobo Logger: hobo loggers are more accurate")
   {"urban"}else if(input$Hypothesis=="Hypothesis Hobo Logger: weather station is more accurate")
   {"urban"}else if(input$Hypothesis=="Hypothesis Urban: urban sites require fewer GDDs"){"urban"}else 
     if(input$Hypothesis=="Hypothesis Provenance: more Northern provenances require fewer GDDs"){"prov"}
-  else if(input$Hypothesis=="Urban Model"){"urban"}else if(input$Hypothesis=="Provenance Latitude Model"){"prov"}
   })
   
-  #output$hypoth <- renderPrint({use.hypoth()[1]})
   
   observeEvent(input$go, {
   output$muplot <- renderPlot(height=650,{
-    #use.hypoth <- use.hypoth()[1]
     use.urban <- use.urban()[1]
-    #if(use.hypoth=="hobo"){
       bball <- get.data()[[1]]
       bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
                                     as.numeric(bball$prov)}
@@ -322,30 +484,17 @@ server <- function(input, output) {
                                 n_sp = length(unique(bball$species))
                            )
       )
-    #}
-    
-    #progress <- Progress$new(max = input$steps)
-    
-    #for (i in seq_len(input$steps)) {
-      #progress$set(message = "Running Model")
-      #on.exit(progress$close())
-      #Sys.sleep(0.5)
-      #progress$inc(0.1)
       
-    withProgress(message = "Running Model", value = 100, {
+      progress <- Progress$new(max=10)
+      on.exit(progress$close())
+      
+      progress$set(message = "Running rStan Model", detail="\nThis may take a while...")
+      
       urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                            iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+                                           iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+                     
       
-      
-    })
-    
-   
-    
-    
-    
-    
-    #output$modoutput <- renderPrint({summary(urbmethod_fake)$summary})
-    
+  
     cols <- adjustcolor("indianred3", alpha.f = 0.3) 
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
     my.pch <- rep(15:18, each=10)
@@ -394,7 +543,188 @@ server <- function(input, output) {
            cex=1, bty="n", text.font=3)
   })
   })
+  
+  use.sims <- eventReactive(input$simsrunmod,{if(input$Question=="Urban Model"){"urban"}else if(input$Question=="Provenance Latitude Model"){"prov"}
+  })
+  
+  observeEvent(input$simsrunmod, {
+    output$simsmuplot <- renderPlot(height=650,{
+      use.sims <- use.sims()[1]
+      bball <- get.datasims()[[1]]
+      bball$treatmenttype <- if(use.sims=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.sims=="prov"){
+        as.numeric(bball$prov)}
+      
+      datalist.gdd <- with(bball, 
+                           list(y = gdd, 
+                                urban = treatmenttype,
+                                method = type,
+                                sp = as.numeric(as.factor(species)),
+                                N = nrow(bball),
+                                n_sp = length(unique(bball$species))
+                           )
+      )
+      
+      
+      progress <- Progress$new(max=10)
+      on.exit(progress$close())
+      
+      progress$set(message = "Running rStan Model", detail="\nThis may take a while...")
+      
+      urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                            iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+      
+      
+        
+        
+      #})
+      
+      cols <- adjustcolor("indianred3", alpha.f = 0.3) 
+      my.pal <-rep(viridis_pal(option="viridis")(9),2)
+      my.pch <- rep(15:18, each=10)
+      alphahere = 0.4
+      
+      modoutput <- summary(urbmethod_fake)$summary
+      noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+      use.sims <- use.sims()[1]
+      labs <- if(use.sims=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                       "Sigma Arboretum", "Sigma \nWeather Station", 
+                                       "Sigma Interaction")}else if(use.sims=="prov"){
+                                         c("Provenance", "Weather Station", "Provenance x\nWeather Station",
+                                           "Sigma Provenance", "Sigma \nWeather Station", 
+                                           "Sigma Interaction")}
+      
+      modelhere <- urbmethod_fake
+      bball <- isolate(get.datasims()[[1]])
+      spnum <- length(unique(bball$species))
+      par(xpd=FALSE)
+      par(mar=c(5,10,3,10))
+      plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
+           xlab="Model estimate change in growing degree days to budburst", ylab="")
+      axis(2, at=1:6, labels=rev(labs), las=1)
+      abline(v=0, lty=2, col="darkgrey")
+      rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                        "sigma_b_method_sp", "sigma_b_um_sp")
+      for(i in 1:6){
+        pos.y<-(6:1)[i]
+        pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+        points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
+        for(spsi in 1:spnum){
+          pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[2:4]
+          jitt<-(spsi/40) + 0.08
+          pos.y.sps.i<-pos.y-jitt
+          pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere))
+          points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
+          
+        }
+      }
+      par(xpd=TRUE) # so I can plot legend outside
+      legend(120, 6, sort(unique(gsub("_", " ", bball$species))), pch=my.pch[1:spnum],
+             col=alpha(my.pal[1:spnum], alphahere),
+             cex=1, bty="n", text.font=3)
+    })
+  })
 
+  use.real <- eventReactive(input$realrunmod,{if(input$type=="Urban Model"){"urban"}else if(input$type=="Provenance Latitude Model"){"prov"}
+  })
+  
+  observeEvent(input$realrunmod, {
+    output$realmuplot <- renderPlot(height=650, width=750,{
+      use.real <- use.real()[1]
+      bball <- get.datareal
+      bball$treatmenttype <- if(use.real=="urban"){as.numeric(bball$urban)}else if(use.real=="prov"){
+        as.numeric(bball$prov)}
+      
+      datalist.gdd <- with(bball, 
+                           list(y = gdd, 
+                                urban = treatmenttype,
+                                method = method,
+                                sp = as.numeric(as.factor(spp)),
+                                N = nrow(bball),
+                                n_sp = length(unique(bball$spp))
+                           )
+      )
+      
+      
+      progress <- Progress$new(max=10)
+      on.exit(progress$close())
+      
+      progress$set(message = "Running rStan Model", 
+                   detail="This may take a while...")
+      
+      urbmethod_fake = stan('~/Documents/git/microclimates/analyses/stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                            iter = 1000, warmup=500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15)) ### 
+      
+      
+      
+      
+      #})
+      
+      cols <- adjustcolor("indianred3", alpha.f = 0.3) 
+      my.pal <-rep(viridis_pal(option="viridis")(9),2)
+      my.pch <- rep(15:18, each=10)
+      alphahere = 0.4
+      
+      modoutput <- summary(urbmethod_fake)$summary
+      noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+      use.real <- use.real()[1]
+      labs <- if(use.real=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                      "Sigma Arboretum", "Sigma \nWeather Station", 
+                                      "Sigma Interaction")}else if(use.real=="prov"){
+                                        c("Provenance", "Weather Station", "Provenance x\nWeather Station",
+                                          "Sigma Provenance", "Sigma \nWeather Station", 
+                                          "Sigma Interaction")}
+      
+      modelhere <- urbmethod_fake
+      bball <- get.datareal
+      spnum <- length(unique(bball$spp))
+      par(xpd=FALSE)
+      par(mar=c(5,10,3,10))
+      plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
+           xlab="Model estimate change in growing degree days to budburst", ylab="")
+      axis(2, at=1:6, labels=rev(labs), las=1)
+      abline(v=0, lty=2, col="darkgrey")
+      rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                        "sigma_b_method_sp", "sigma_b_um_sp")
+      for(i in 1:6){
+        pos.y<-(6:1)[i]
+        pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+        points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
+        for(spsi in 1:spnum){
+          pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[2:4]
+          jitt<-(spsi/40) + 0.08
+          pos.y.sps.i<-pos.y-jitt
+          pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere))
+          points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
+          
+        }
+      }
+      par(xpd=TRUE) # so I can plot legend outside
+      legend(120, 6, sort(unique(gsub("_", " ", bball$spp))), pch=my.pch[1:spnum],
+             col=alpha(my.pal[1:spnum], alphahere),
+             cex=1, bty="n", text.font=3)
+    })
+  })
+  
+  get.warm <- eventReactive(input$warming,{warmfunc(as.numeric(input$fstar), as.numeric(input$fstarsd),
+    as.numeric(input$warming))})
+  
+  observeEvent(input$warming, {
+    output$gddwarm <- renderPlot({
+      get.warm <- get.warm()[1]
+      
+      ggplot(gdd.warm, aes(y=accuracy, x=warming)) + geom_line(aes(col=warming)) + theme_classic()
+      
+    })
+  })
+  
+  
+  
 }
 
 shinyApp(ui = ui, server = server)

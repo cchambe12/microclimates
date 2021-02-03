@@ -60,28 +60,33 @@ launch_shinystan(urbmethod_fake_intrxn)
 ws <- read.csv("output/clean_gdd_chill_bbanddvr.csv")
 ws$method <- 1
 
-ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+ws_urb <- subset(ws, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance.lat"))
 ws_urb <- ws_urb[(ws_urb$type!="Common Garden"),]
 
 hobo <- read.csv("output/clean_gdd_chill_bbanddvr_hobo.csv")
 hobo$method <- 0
 
-hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah"))
+hobo_urb <- subset(hobo, select=c("id", "type", "gdd_bb", "method", "year", "genus", "species", "utah", "provenance.lat"))
 hobo_urb <- hobo_urb[(hobo_urb$type!="Common Garden"),]
 
 bball <- dplyr::full_join(ws_urb, hobo_urb)
+
+bball$provenance <- as.numeric(bball$provenance.lat)
 
 bball$urban <- NA
 bball$urban <- ifelse(bball$type=="Harvard Forest", 0, bball$urban)
 bball$urban <- ifelse(bball$type=="Treespotters", 1, bball$urban)
 
 bball.stan <- bball[(bball$year=="2019"),]
-bball.stan <- subset(bball, select=c(gdd_bb, urban, method, genus, species))
+bball.stan <- subset(bball, select=c(gdd_bb, urban, method, genus, species, provenance))
 bball.stan <- bball.stan[(complete.cases(bball.stan)),]
 bball.stan <- bball.stan[!is.na(bball.stan$gdd_bb),]
 bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
 
 bball.stan <- bball.stan[(bball.stan$gdd_bb<=1000),]
+
+#bball.stan$gdd <- bball.stan$gdd_bb
+#write.csv(bball.stan, file="output/cleanmicro_gdd_2019.csv", row.names = FALSE)
 
 yraw <- bball$gdd_bb
 yraw <- na.omit(yraw)
@@ -279,6 +284,9 @@ bball.stan$spp <- paste(bball.stan$genus, bball.stan$species, sep="_")
 
 bball.stan <- bball.stan[(bball.stan$gdd_bb<=1000),]
 bball.stan$prov.z <- (bball.stan$provenance-mean(bball.stan$provenance,na.rm=TRUE))/(sd(bball.stan$provenance,na.rm=TRUE))
+
+#bball.stan$gdd <- bball.stan$gdd_bb
+#write.csv(bball.stan, file="output/cleanmicro_gdd_2019.csv", row.names = FALSE)
 
 yraw <- bball.stan$gdd_bb
 

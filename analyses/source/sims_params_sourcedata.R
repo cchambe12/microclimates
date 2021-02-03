@@ -5,8 +5,6 @@
 # housekeeping
 if(FALSE){
   question = TRUE ## if TRUE then testing urban effect, if FALSE then testing provenance
-  fstar.num <- 300  ## GDD threshold
-  fstar.sd <- 50
   txeff <- -20   ### effect of urban or provenance
   txeff.sd <- 5
   methodeff <- -20  ### effect of weather station
@@ -16,7 +14,7 @@ if(FALSE){
 }
 
 
-simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd){
+simfunc <- function(question, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd){
   
   use.urban = question  ### This is either TRUE or FALSE
   
@@ -31,8 +29,8 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
   ntot <- nobs * nmethods * nsites
   
   ### These are our fstar thresholds
-  fstar <- fstar.num  ### mu_a_sp in model output
-  fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
+  fstar <- 300 ### mu_a_sp in model output
+  fstarspeciessd <- 50 ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
   sigma_y <- 2
@@ -60,7 +58,6 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
                                     site=rep(c("arb", "hf"), each=ninds*nmethods),
                                     method=rep(rep(c("ws", "hobo"), each=ninds), nsites*nspps)))
     
-    table(df.fstar$species, df.fstar$site, df.fstar$method) # emw -- checking
     
     df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
     df.fstar$sp_ind <- paste(df.fstar$species, df.fstar$ind, sep="_")
@@ -85,7 +82,7 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
     
     df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                    site = rep(c("arb", "hf"), each=nobs*nmethods),
-                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, ninds*nspps*nmethods)),
                                    method = rep(c("ws", "hobo"), nsites*nobs)))
     df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
     df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
@@ -130,7 +127,7 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
     ##### Now add in provenance so better able to compare to other simulations
     spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
     provenance.hf <- 42.5
-    provenance.arb <- round(rep(rnorm(nspps*(ninds/ninds_perprov), provenance.hf, 2),each=ninds_perprov), digits=2)
+    provenance.arb <- round(rnorm(nspps*ninds, provenance.hf, 2), digits=2)
     
     df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                    site = rep(c("arb", "hf"), each=nobs*nmethods),
@@ -147,7 +144,7 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
     
     
     # Generate random parameters (by species)
-    df.bb$gdd.noise <- df.bb$prov.z * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
+    df.bb$gdd.noise <- df.bb$prov.z * rep(rnorm(n=nspps, mean=proveffect, sd=provsd), each=ninds*nsites)
     
     df.bb$gdd <- df.bb$fstarspp + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
     
@@ -155,7 +152,7 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
     df.bb$gdd.noise <- df.bb$gdd.noise + df.bb$wstx * rep(rnorm(n=nspps, mean=methodeffect, sd=methodsd), each=ninds*nmethods)
     
     df.bb$provmethodtx <- ifelse(df.bb$method=="ws" & df.bb$site=="arb", 1, 0)
-    df.bb$gdd.noise <- df.bb$gdd.noise + df.bb$provmethodtx * rep(rnorm(n=nspps, mean=urbmethod, sd=provmethodsd), each=ninds*nmethods)  
+    df.bb$gdd.noise <- df.bb$gdd.noise + df.bb$provmethodtx * rep(rnorm(n=nspps, mean=provmethod, sd=provmethodsd), each=ninds*nmethods)  
     
     df.bb$gdd <- df.bb$fstarspp + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
     df.bb$species <- as.numeric(df.bb$species)
@@ -174,14 +171,14 @@ simfunc <- function(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, m
     
   }
   
-  mylist <- list(bball, df, hfclim, arbclim)
+  mylist <- list(bball, df)
   
   
   return(mylist)
   
 }
 
-#bblist <- bbfunc(question, fstar.num, fstar.sd, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd)
+#bblist <- simfunc(question, txeff, txeff.sd, methodeff, methodeff.sd, txmethod, txmethod.sd)
 
 #bball <- bblist[[1]]
 #df <- bblist[[2]]
