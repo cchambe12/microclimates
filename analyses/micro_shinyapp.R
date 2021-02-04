@@ -265,10 +265,7 @@ server <- function(input, output) {
       progress$inc(1)
     }
     
-    simfunc(if(input$Question=="Urban Model")
-    {TRUE}else if(input$Question=="Provenance Model")
-    {FALSE},
-    as.numeric(input$Fstar), as.numeric(input$FstarSD)
+    warmfunc(as.numeric(input$fstar), as.numeric(input$fstarsd), as.numeric(input$warming)
     )
     
   })
