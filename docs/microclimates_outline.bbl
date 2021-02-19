@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{19}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
@@ -43,6 +43,11 @@ Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
   carbon uptake has increased through warming-induced changes in temperate
   forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
 
+\bibitem[{Man \& Lu(2010)}]{Man2010}
+Man, R. \& Lu, P. (2010) Effects of thermal model and base temperature on
+  estimates of thermal time to bud break in white spruce seedlings.
+  \emph{Canadian Journal of Forest Research} \textbf{40}, 1815--1820.
+
 \bibitem[{Meng \emph{et~al.}(2020)Meng, Mao, Zhou, Richardson, Lee, Thornton,
   Ricciuto, Li, Dai, Shi \& et~al.}]{Meng2020}
 Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
@@ -55,6 +60,13 @@ Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
 Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of
   episodic frost on plant growth and reproduction in subalpine wildflowers.
   \emph{Global Change Biology} \textbf{24}, 848--857.
+
+\bibitem[{Phillimore \emph{et~al.}(2013)Phillimore, Proios, O'Mahony, Bernard,
+  Lord, Atkinson \& Smithers}]{Phillimore2013}
+Phillimore, A.B., Proios, K., O'Mahony, N., Bernard, R., Lord, A.M., Atkinson,
+  S. \& Smithers, R.J. (2013) Inferring local processes from macro‐scale
+  phenological pattern: a comparison of two methods. \emph{Journal of Ecology}
+  \textbf{101}, 774--783.
 
 \bibitem[{Pickett \emph{et~al.}(2011)Pickett, Cadenasso, Grove, Boone,
   Groffman, Irwin, Kaushal, Marshall, McGrath, Nilon
