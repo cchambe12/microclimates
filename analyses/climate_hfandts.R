@@ -13,6 +13,110 @@ library(ggplot2)
 library(RColorBrewer)
 library(egg)
 
+
+cols <- colorRampPalette(brewer.pal(5, "Dark2"))(5)
+colz <- c("salmon3", "royalblue3")
+
+### Let's add in Climate data now
+clim <- read.csv("~/Documents/git/microclimates/analyses/output/clean_addinclimate.csv", header=TRUE)
+#clim <- clim[(clim$climatetype=="harvardforest"),]
+#clim <- clim[(clim$year>2015),]
+clim <- clim[(clim$year==2019),]
+clim <- clim[!duplicated(clim),]
+
+spring <- clim[(clim$doy>=1 & clim$doy<=150),]
+
+climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(aes(col=as.factor(climatetype), fill=as.factor(climatetype)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  scale_color_manual(name = "Site", values=cols, labels = c("Arboretum", "Harvard Forest")) +
+  scale_fill_manual(name = "Site", values=cols, labels = c("Arboretum", "Harvard Forest")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"))
+
+quartz()
+climate
+
+
+######## No longer needed but holding for potential future use...####
+if(FALSE){
+
+climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(year))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(aes(col=as.factor(year), fill=as.factor(year)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"))
+
+clim2016 <- ggplot(spring[(spring$year==2016),], aes(x=doy, y=tmean), col=cols[1]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(col=cols[1], fill=cols[1], stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"),
+                                                                 legend.position = "none")
+clim2017 <- ggplot(spring[(spring$year==2017),], aes(x=doy, y=tmean), col=cols[2]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(col=cols[2], fill=cols[2], stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"),
+                                                                 legend.position = "none")
+
+clim2018 <- ggplot(spring[(spring$year==2018),], aes(x=doy, y=tmean), col=cols[3]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(col=cols[3], fill=cols[3], stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"),
+                                                                 legend.position = "none")
+
+clim2019 <- ggplot(spring[(spring$year==2019),], aes(x=doy, y=tmean), col=cols[4]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(col=cols[4], fill=cols[4], stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"),
+                                                                 legend.position = "none")
+
+clim2020 <- ggplot(spring[(spring$year==2020),], aes(x=doy, y=tmean), col=cols[5]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+  geom_smooth(col=cols[5], fill=cols[5], stat="smooth", method="loess", se=TRUE, span=0.9) + 
+  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
+  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                 legend.text = element_text(size=7),
+                                                                 legend.title = element_text(size=8),
+                                                                 legend.key.size = unit(0.8,"line"),
+                                                                 legend.position = "none")
+
+climall <- ggarrange(clim2016, clim2017, clim2018, clim2019, ncol=4)
+
+
 # Set Working Directory
 setwd("~/Documents/git/microclimates/analyses/output")
 b<-read.csv("clean_budburstandleafout.csv",header=TRUE)
@@ -29,8 +133,6 @@ bhf$lomean<-ave(bhf$lodoy, bhf$year, bhf$speciesname)
 
 
 bhf$code<-reorder(bhf$speciesname, bhf$bbmean)
-cols <- colorRampPalette(brewer.pal(5, "Dark2"))(5)
-colz <- c("salmon3", "royalblue3")
 bhf <- bhf[!duplicated(bhf),]
 bhf.nona <- na.omit(bhf)
 
@@ -117,92 +219,10 @@ dvr2020<-ggplot(bhf.nona[(bhf.nona$year==2020),], aes(x=code, y=mean)) + geom_po
 allyrs <- ggarrange(dvr2016, dvr2017, dvr2018, dvr2019, ncol=4)
 
 
-### Let's add in Climate data now
-clim <- read.csv("~/Documents/git/microclimates/analyses/output/clean_addinclimate.csv", header=TRUE)
-clim <- clim[(clim$climatetype=="harvardforest"),]
-clim <- clim[(clim$year>2015),]
-clim <- clim[!duplicated(clim),]
-
-spring <- clim[(clim$doy>=1 & clim$doy<=150),]
-#spring$year <- as.integer(spring$year)
-#spring$Temp..F <- ave(spring$Temp..F, spring$date)
-#spring <- spring[!duplicated(spring),]
-#spring$tmean <- (spring$Temp..F - 32) * (5/9)
-
-climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(year))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(aes(col=as.factor(year), fill=as.factor(year)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"))
-
-clim2016 <- ggplot(spring[(spring$year==2016),], aes(x=doy, y=tmean), col=cols[1]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(col=cols[1], fill=cols[1], stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"),
-                                                                 legend.position = "none")
-clim2017 <- ggplot(spring[(spring$year==2017),], aes(x=doy, y=tmean), col=cols[2]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(col=cols[2], fill=cols[2], stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"),
-                                                                 legend.position = "none")
-
-clim2018 <- ggplot(spring[(spring$year==2018),], aes(x=doy, y=tmean), col=cols[3]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(col=cols[3], fill=cols[3], stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"),
-                                                                 legend.position = "none")
-
-clim2019 <- ggplot(spring[(spring$year==2019),], aes(x=doy, y=tmean), col=cols[4]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(col=cols[4], fill=cols[4], stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"),
-                                                                 legend.position = "none")
-
-clim2020 <- ggplot(spring[(spring$year==2020),], aes(x=doy, y=tmean), col=cols[5]) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(col=cols[5], fill=cols[5], stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  #scale_color_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  #scale_fill_manual(name = "Year", values=cols, labels = c("2016", "2017", "2018", "2019", "2020")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"),
-                                                                 legend.position = "none")
-
-climall <- ggarrange(clim2016, clim2017, clim2018, clim2019, ncol=4)
 
 
 quartz()
 grid.arrange(allyrs, climall, nrow=3, heights = c(3, 0.5, 1.5), layout_matrix=rbind(c(1, 1, 1, 1),
                                                                                     c(NA),
                                                                                     c(NA, 2, 2, 2, 2, 2, 2, 2, 2, NA)))
+}
