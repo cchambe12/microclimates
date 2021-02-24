@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
@@ -18,6 +18,12 @@ Cook, B.I., Wolkovich, E.M., Davies, T.J., Ault, T.R., Betancourt, J.L., Allen,
   (2012) {Sensitivity of spring phenology to warming across temporal and
   spatial climate gradients in two independent databases}. \emph{Ecosystems}
   \textbf{15}, 1283--1294.
+
+\bibitem[{Crimmins \& Crimmins(2019)}]{Crimmins2020}
+Crimmins, M.A. \& Crimmins, T.M. (2019) Does an early spring indicate an early
+  summer? relationships between intraseasonal growing degree day thresholds.
+  \emph{Journal of Geophysical Research: Biogeosciences} \textbf{124},
+  2628--2641.
 
 \bibitem[{Elmendorf \emph{et~al.}(2019)Elmendorf, Crimmins, Gerst \&
   Weltzin}]{Elmendorf2019}
@@ -43,6 +49,13 @@ Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
   carbon uptake has increased through warming-induced changes in temperate
   forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
 
+\bibitem[{Liu \emph{et~al.}(2018)Liu, Piao, Janssens, Fu, Peng, Lian, Ciais,
+  Myneni, Pe{\~n}uelas \& Wang}]{Liu2018}
+Liu, Q., Piao, S., Janssens, I.A., Fu, Y., Peng, S., Lian, X., Ciais, P.,
+  Myneni, R.B., Pe{\~n}uelas, J. \& Wang, T. (2018) Extension of the growing
+  season increases vegetation exposure to frost. \emph{Nature Communications}
+  \textbf{9}.
+
 \bibitem[{Man \& Lu(2010)}]{Man2010}
 Man, R. \& Lu, P. (2010) Effects of thermal model and base temperature on
   estimates of thermal time to bud break in white spruce seedlings.
@@ -55,6 +68,9 @@ Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
   advances spring phenology but reduces the response of phenology to
   temperature in the conterminous united states. \emph{Proceedings of the
   National Academy of Sciences} \textbf{117}, 4228--4233.
+
+\bibitem[{O'Keefe(2014)}]{OKeefe2014}
+O'Keefe, J. (2014) {Phenology of woody species at Harvard Forest since 1990}.
 
 \bibitem[{Pardee \emph{et~al.}(2017)Pardee, Inouye \& Irwin}]{Pardee2017}
 Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of
@@ -100,6 +116,9 @@ Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
 \bibitem[{{Stan Development Team}(2019)}]{rstan2019}
 {Stan Development Team} (2019) Stan user's guide, version 2.19.
 
+\bibitem[{USA-NPN(2016)}]{USA-NPN2016}
+USA-NPN (2016) {USA National Phenology Network Extended Spring Indices}.
+
 \bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
   Kremer, Chuine \& Delzon}]{Vitasse2011}
 Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.
@@ -113,5 +132,10 @@ Williamson, S.N., Barrio, I.C., Hik, D.S. \& Gamon, J.A. (2016) Phenology and
   species determine growing-season albedo increase at the altitudinal limit of
   shrub growth in the sub-arctic. \emph{Global Change Biology} \textbf{22},
   3621--3631.
+
+\bibitem[{Winston~Chang, Joe~Cheng \& Borges(2021)}]{shiny2021}
+Winston~Chang, Joe~Cheng, J.A.C.S.B.S.Y.X.J.A.J.M.A.D. \& Borges, B. (2021)
+  shiny: Web application framework for r.
+  https://CRAN.R-project.org/package=shiny.
 
 \end{thebibliography}

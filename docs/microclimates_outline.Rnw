@@ -131,7 +131,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item The forest site is in Petersham, MA at the Harvard Forest (42$^{\circ}$31'53.5' N -72$^{\circ}$11'24.1' W).
   \item The Harvard Forest is 1446 acres and has a range of elevation of 220-410m. 
   \end{enumerate}
-\end{enumerate}
 
 \subsection*{Simulations}
 \item We simulate test data in order to test our hypotheses and assess the model output results. 
@@ -145,10 +144,8 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item Next, we apply the same ``microclimatic effect'' as above to test microclimatic variation across the two sites. 
   \item We repeat these steps for the provenance latitude hypothesis by having individuals from more northern provenances requiring fewer GDDS and then apply the ``microclimatic effect''.
   \end{enumerate}
-\end{enumerate}
 
 \subsection*{Real Data}
-\begin{enumerate}
 \item Phenology observations across the Arnold Arboretum were collected by trained citizen scientists from the Tree Spotters National Phenology Network program \citep{USA-NPN2016}. 
   \begin{enumerate}
   \item The Tree Spotter volunteers observed 15 species with varying phenologies and each species had 5 individuals for a total of 75 trees.
@@ -156,13 +153,12 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item In September 2018, we placed 15 hobo loggers around the Tree Spotter route to compare hobo logger temperatures to the weather station temperatures recorded. 
   \item We then used budburst observations for each individual and calculated GDDs until budburst starting from 15 February using both the hobo logger data and then the weather station data. 
   \end{enumerate}
+  
 \item Phenology observations for the Harvard Forest have been collected by Dr John O'Keefe since 1990 \citep{OKeefe2014} along the Prospect Hill Tract. 
   \begin{enumerate}
   \item Species observed by Dr John O'Keefe include \textit{Acer saccharum}, \textit{Acer rubrum}, \textit{Acer pensylvanicum}, \textit{Betula alleghaniensis}, \textit{Fagus grandifolia}, \textit{Fraxinus americana}, \textit{Hamamelis virginiana}, \textit{Quercus alba} and \textit{Quercus rubra} (Figure \ref{fig:phylo}).
   \item The same methods were applied at the Harvard Forest where we placed 15 hobo loggers at regular intervals along the Prospect Hill Tract, calculated GDD estimates from 15 February 2019 until budburst for each individual using hobo logger data and then weather station data. 
   \end{enumerate}
-\end{enumerate}
-
 
 \subsection*{Shiny App}
 \item To show the above simulations, real data and forecasts in one location we use a Shiny Application. 
@@ -170,10 +166,8 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item Using the R package `shiny' \citep{shiny2021}, version 1.6.0, we developed a Shiny App that contains five pages: (1) `Home' which has information on the application, (2) `Hypothesis Testing' which runs the simulation data and allows users to manipulate the inputs, (3) `Simulation Data for Model Testing' which runs simulation data to test the model and make sure the model outputs are accurate, (4) `Real Data and Analyze Results' which uses real data and runs analyses to be used to compare to the `Hypothesis Testing' output and (5) `Forecasting GDD with Warming' which forecasts GDD accuracy under warming. 
   \item The Shiny App is meant for users to understand our suggested approach to model testing and interpreting mixed model results. 
   \end{enumerate}
-\end{enumerate}
 
 \subsection*{Data analysis}
-\begin{enumerate}
 \item Using Bayesian hierarchical models with the rstan package \citep{rstan2019}, version 2.19.2,  in R \citep{R}, version 3.3.1, we estimated the effects of urban or provenance effect and method effect and all two-way interactions as predictors on GDDs until leafout. 
   \begin{enumerate} 
   \item Species were modeled hierarchically as grouping factors, which generates an estimate and posterior distribution of the overall response across the 20 species used in our simulations and 18 species used in our real data.
@@ -183,7 +177,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item We also evaluated high $n_{eff}$ (4000 for most parameters, but as low as 1400 for a couple of parameters in the shoot apical meristem model). 
   \item We additionally assessed chain convergence and posterior predictive checks visually \citep{BDA}.
   \end{enumerate}
-\end{enumerate}
 \end{enumerate}
 
 \section*{Results}
@@ -219,8 +212,15 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 
 {\begin{figure} [H]
   -\begin{center}
-  -\includegraphics[width=12cm]{..//notes/phylodata/microtree_hfandts.pdf}
-  -\caption{}\label{fig:arbclim}
+  -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
+  -\caption{}\label{fig:phylo}
+  -\end{center}
+  -\end{figure}}
+  
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
+  -\caption{}\label{fig:clim}
   -\end{center}
   -\end{figure}}
 
