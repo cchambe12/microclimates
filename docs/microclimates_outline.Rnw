@@ -113,7 +113,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   
 \item Here, we use both simulations, models and real data to test our hypotheses on modeling GDD accuracy in a warming world.
   \begin{enumerate}
-  \item Hobo loggers are less accurate measures of the same weather as weather stations.
+  \item Weather stations are less accurate measures of the same weather than hobo loggers.
   \item Urban environments require fewer GDDs to leafout than forest habitats.
   \item Individuals with provenance latitudes from more northern locations require fewer GDDs to leafout. 
   \item Hobo loggers better capture urban or provenance effects. 
@@ -221,6 +221,13 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
   -\caption{}\label{fig:clim}
+  -\end{center}
+  -\end{figure}}
+  
+{\begin{figure} [H]
+  -\begin{center}
+  -\includegraphics[width=12cm]{..//analyses/figures/sims/hypoth_noisyws_20.pdf}
+  -\caption{}\label{fig:simsnoisyws}
   -\end{center}
   -\end{figure}}
 
