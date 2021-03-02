@@ -2,10 +2,7 @@
 ## Source function to build data for the shiny app
 ### Need to eventually integrate hypothesis tests and provenance vs urban!
 
-# housekeeping
-rm(list=ls()) 
-options(stringsAsFactors = FALSE)
-
+# Load Libraries
 library(dplyr)
 library(tidyr)
 
@@ -13,7 +10,7 @@ set.seed(12321)
 
 if(FALSE){
   hypoth <- "hobo"  ## hobo, urban, prov
-  hypoth.para <- "ws"
+  hypoth.para <- "hobo"
   hypoth.mu <- 0
   hypoth.sd <- 10  ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
@@ -33,11 +30,11 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 150 #### just to make sure we don't get any NAs
-  nspps <- 15 
-  ninds <- 10 
+  nspps <- 12 
+  ninds <- 15 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
-  nmicros <- 10  ### Number microsites per site so 20 total 
+  nmicros <- ninds  ### Number microsites per site so 20 total 
   nmethods <- 2
   ntot <- nobs * nmethods * nsites
   
@@ -62,7 +59,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   
   
   #### Next I set up an fstar or a GDD threshold for each individual
-  spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
+  spind <- paste(rep(1:nspps, each=ninds), rep(1:ninds, nspps), sep="_")
   
   fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
   df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds*nsites*nmethods), 
