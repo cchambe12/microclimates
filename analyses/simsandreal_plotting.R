@@ -645,6 +645,13 @@ plot(as.numeric(as.factor(bball$type)),
 axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
 dev.off()
 
+pdf("figures/gddaccuracy_micros.pdf", width=6, height=4)
+plot(as.numeric(as.factor(bball$type)), 
+     as.numeric(bball$gdd_accuracy), col=cols[as.factor(bball$method)], 
+     ylab="GDD accuracy", xaxt="none",xlab="")
+axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
+dev.off()
+
 pdf("figures/gddaccuracy_raw_sites.pdf", width=6, height=4)
 plot(as.numeric(as.factor(bball$site)), 
      as.numeric(bball$gdd_accuracy_raw), col=cols[as.factor(bball$site)], 
