@@ -2,14 +2,20 @@
 ## Source function to build data for the shiny app
 ### Need to eventually integrate hypothesis tests and provenance vs urban!
 
+#Load Libraries
+library(dplyr)
+library(tidyr)
+
 if(FALSE){
-  fstar.num <- 300  ## GDD threshold
-  fstar.sd <- 50
+  fstar.min <- 50  ## GDD threshold
+  fstar.max <- 550
   warmmax <- 10
+  meantemp <- 10
+  basetemp <- 5
 }
 
 
-warmfunc <- function(fstar.num, fstar.sd, warmmax){
+warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 150 #### just to make sure we don't get any NAs
@@ -17,26 +23,19 @@ warmfunc <- function(fstar.num, fstar.sd, warmmax){
   ninds <- 10 
   nobs <- nspps*ninds
   
-  ### These are our fstar thresholds
-  fstar <- fstar.num  ### mu_a_sp in model output
-  fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
-  
-  ## Sigma_y to be added at the end
-  sigma_y <- 2
-  
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)
-  cc <- 10
+  cc <- meantemp
   sigma.cc <- 2
   warmcc <- warmmax
   
   
   #### Next I set up an fstar or a GDD threshold for each individual
-  spind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
+  sp_ind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
   
-  fstarspp <- round(rnorm(nspps, fstar, fstarspeciessd), digits=0)
-  df.fstar <- as.data.frame(cbind(species=rep(1:nspps, each=ninds), 
-                                  fstarspp=rep(fstarspp, each=ninds)))
+  df.fstar <- as.data.frame(cbind(species=1:nspps, 
+                                  fstarspp=10*round(seq(fstar.min, fstar.max, 
+                                                        by=(fstar.max-fstar.min)/(nspps-1))/10, digits=0)))
   
   df.fstar$fstarspp <- as.numeric(df.fstar$fstarspp)
   
@@ -73,6 +72,18 @@ warmfunc <- function(fstar.num, fstar.sd, warmmax){
   df$tmean9 <- as.numeric(df$tmean9)
   df$tmean10 <- as.numeric(df$tmean10)
   
+  df$tmean0 <- ifelse(df$tmean0>=basetemp, df$tmean0, 0)
+  df$tmean1 <- ifelse(df$tmean1>=basetemp, df$tmean1, 0)
+  df$tmean2 <- ifelse(df$tmean2>=basetemp, df$tmean2, 0)
+  df$tmean3 <- ifelse(df$tmean3>=basetemp, df$tmean3, 0)
+  df$tmean4 <- ifelse(df$tmean4>=basetemp, df$tmean4, 0)
+  df$tmean5 <- ifelse(df$tmean5>=basetemp, df$tmean5, 0)
+  df$tmean6 <- ifelse(df$tmean6>=basetemp, df$tmean6, 0)
+  df$tmean7 <- ifelse(df$tmean7>=basetemp, df$tmean7, 0)
+  df$tmean8 <- ifelse(df$tmean8>=basetemp, df$tmean8, 0)
+  df$tmean9 <- ifelse(df$tmean9>=basetemp, df$tmean9, 0)
+  df$tmean10 <- ifelse(df$tmean10>=basetemp, df$tmean10, 0)
+  
   df$sp_ind <- paste(df$species, df$ind, sep="_")
   
   ### Calculate the OBSERVED GDDs!!!
@@ -94,47 +105,58 @@ warmfunc <- function(fstar.num, fstar.sd, warmmax){
   df <- full_join(df, df.fstar)
   df <- df[!duplicated(df),]
   
-  df$spind_site_method <- paste0(df$sp_ind, df$site, df$method)
-  
   ## Find the day of budburst to find the actual GDD versus the "observed GDD"
-  for(i in c(unique(df$spind_site_method))){ # i="1_1arbws"
+  for(i in c(unique(df$sp_ind))){ # i="1_1" i=1
     
-    bb0 <- which(df$gdd.obs0[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb0[i==df$spind_site_method] <- bb0
-    bb1 <- which(df$gdd.obs1[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb1[i==df$spind_site_method] <- bb1
-    bb2 <- which(df$gdd.obs2[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb2[i==df$spind_site_method] <- bb2
-    bb3 <- which(df$gdd.obs3[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb3[i==df$spind_site_method] <- bb3
-    bb4 <- which(df$gdd.obs4[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb4[i==df$spind_site_method] <- bb4
-    bb5 <- which(df$gdd.obs5[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb5[i==df$spind_site_method] <- bb5
-    bb6 <- which(df$gdd.obs6[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb6[i==df$spind_site_method] <- bb6
-    bb7 <- which(df$gdd.obs7[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb7[i==df$spind_site_method] <- bb7
-    bb8 <- which(df$gdd.obs8[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb8[i==df$spind_site_method] <- bb8
-    bb9 <- which(df$gdd.obs9[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb9[i==df$spind_site_method] <- bb9
-    bb10 <- which(df$gdd.obs10[i==df$spind_site_method] >= df$fstarspp[i==df$spind_site_method])[1]
-    df$bb10[i==df$spind_site_method] <- bb10
+    bb0 <- which(df$gdd.obs0[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb0[i==df$sp_ind] <- bb0
+    bb1 <- which(df$gdd.obs1[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb1[i==df$sp_ind] <- bb1
+    bb2 <- which(df$gdd.obs2[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb2[i==df$sp_ind] <- bb2
+    bb3 <- which(df$gdd.obs3[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb3[i==df$sp_ind] <- bb3
+    bb4 <- which(df$gdd.obs4[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb4[i==df$sp_ind] <- bb4
+    bb5 <- which(df$gdd.obs5[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb5[i==df$sp_ind] <- bb5
+    bb6 <- which(df$gdd.obs6[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb6[i==df$sp_ind] <- bb6
+    bb7 <- which(df$gdd.obs7[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb7[i==df$sp_ind] <- bb7
+    bb8 <- which(df$gdd.obs8[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb8[i==df$sp_ind] <- bb8
+    bb9 <- which(df$gdd.obs9[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb9[i==df$sp_ind] <- bb9
+    bb10 <- which(df$gdd.obs10[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
+    df$bb10[i==df$sp_ind] <- bb10
     
   }
   
   df.bb <- df[(df$bb0==df$day | df$bb1==df$day | df$bb2==df$day | df$bb3==df$day | df$bb4==df$day | df$bb5==df$day |
                  df$bb6==df$day | df$bb7==df$day | df$bb8==df$day | df$bb9==df$day | df$bb10==df$day),]
   
+  df.bb$gdd.obs0 <- ifelse(df.bb$day==df.bb$bb0, df.bb$gdd.obs0, NA)
+  df.bb$gdd.obs1 <- ifelse(df.bb$day==df.bb$bb1, df.bb$gdd.obs1, NA)
+  df.bb$gdd.obs2 <- ifelse(df.bb$day==df.bb$bb2, df.bb$gdd.obs2, NA)
+  df.bb$gdd.obs3 <- ifelse(df.bb$day==df.bb$bb3, df.bb$gdd.obs3, NA)
+  df.bb$gdd.obs4 <- ifelse(df.bb$day==df.bb$bb4, df.bb$gdd.obs4, NA)
+  df.bb$gdd.obs5 <- ifelse(df.bb$day==df.bb$bb5, df.bb$gdd.obs5, NA)
+  df.bb$gdd.obs6 <- ifelse(df.bb$day==df.bb$bb6, df.bb$gdd.obs6, NA)
+  df.bb$gdd.obs7 <- ifelse(df.bb$day==df.bb$bb7, df.bb$gdd.obs7, NA)
+  df.bb$gdd.obs8 <- ifelse(df.bb$day==df.bb$bb8, df.bb$gdd.obs8, NA)
+  df.bb$gdd.obs9 <- ifelse(df.bb$day==df.bb$bb9, df.bb$gdd.obs9, NA)
+  df.bb$gdd.obs10 <- ifelse(df.bb$day==df.bb$bb10, df.bb$gdd.obs10, NA)
+  
+  
   df.bb <- subset(df.bb, select=c("species", "ind", "gdd.obs0",
                                   "gdd.obs1", "gdd.obs2", "gdd.obs3", "gdd.obs4", "gdd.obs5",
                                   "gdd.obs6", "gdd.obs7", "gdd.obs8", "gdd.obs9", "gdd.obs10",
-                                  "fstarspp")) # , "bb1", "bb2", "bb3", "bb4", "bb5", "bb6", "bb7", "bb8", "bb9", "bb10"
+                                  "fstarspp")) 
   bball <- df.bb %>% tidyr::gather(warming, gdd, gdd.obs0:gdd.obs10, -species, -ind, -fstarspp)
   bball$warming <- as.numeric(substr(bball$warming, 8, 9))
   
-  bball <- bball[!duplicated(bball),]
+  bball <- bball[!is.na(bball$gdd),]
   
   
   ##### Now let's do some checks...

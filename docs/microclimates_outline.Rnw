@@ -91,7 +91,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item These trends are crucial to understand in order to predict plant development with warming. 
   \item Tracking heat accumulation is one way to measure and forecast spring leafout, which is often predicted through the growing degree day (GDD) model \citep{Cook2012,Crimmins2020,Phillimore2013,Schwartz2006,Vitasse2011}.
   \item The GDD model simply sums temperatures above a certain threshold---ideally around 0$^{\circ$C as estimates are proven to be more accurate \citep{Man2010}---and different species often require a different number of GDDs to leaf out. 
-  \item GDDs accumulate at a faster rate when mean temperates are higher, thus different sites or different climate measurement methods may record different GDD thresholds for leafout. 
+  \item GDDs accumulate at a faster rate when mean temperatures are higher, thus different sites or different climate measurement methods may record different GDD thresholds for leafout. 
   \item Spring leafout timing can have cascading effects to pollinators \citep{Boggs2012, Pardee2017}, on carbon dynamics \citep{Richardson2013} and albedo \citep{Williamson2016}, thus integrating the growing degree day model successfully is essential for predicting the effects of climate change on temperate systems. 
   \end{enumerate}
 

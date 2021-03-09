@@ -9,29 +9,32 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "hobo"  ## hobo, urban, prov
+  hypoth <- "prov"  ## hobo, urban, prov
   hypoth.para <- "hobo"
-  hypoth.mu <- 0
-  hypoth.sd <- 10  ### This just adds that amount of imprecision to the hypothesis question
+  hypoth.mu <- -20
+  hypoth.sd <- 5   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 50
-  arbclim <- 11   ### tmean arb climate
-  arbclim.sd <- 4
-  arbmicroclim <- 1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
-  arbmicroclim.sd <- 0
-  hfclim <- 9  ## tmean hf climate
-  hfclim.sd <- 2
-  hfmicroclim <- -1  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
-  hfmicroclim.sd <- 0
+  meantemp <- 10
+  meantemp.sd <- 2
+  micro.sd <- 0
+  #arbclim <- 11   ### tmean arb climate
+  #arbclim.sd <- 4
+  #arbmicroclim <- 1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
+  #arbmicroclim.sd <- 0
+  #hfclim <- 9  ## tmean hf climate
+  #hfclim.sd <- 2
+  #hfmicroclim <- -1  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
+  #hfmicroclim.sd <- 0
 }
 
 
-bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd){
+bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, meantemp, meantemp.sd, micro.sd){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 150 #### just to make sure we don't get any NAs
-  nspps <- 12 
-  ninds <- 15 
+  nspps <- 10 
+  ninds <- 30 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
   nmicros <- ninds  ### Number microsites per site so 20 total 
@@ -47,15 +50,15 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)
-  cc.arb <- arbclim
-  sigma.arb <- arbclim.sd
-  microarb.effect <- arbmicroclim
-  microsigmaarb.effect <- arbmicroclim.sd   #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+  cc.arb <- cc.hf <- meantemp
+  sigma.arb <- sigma.hf <- meantemp.sd
+  microarb.effect <- microhf.effect <- 0
+  microsigmaarb.effect <- microsigmahf.effect <- micro.sd  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
   
-  cc.hf <- hfclim
-  sigma.hf <- hfclim.sd
-  microhf.effect <- hfmicroclim
-  microsigmahf.effect <- hfmicroclim.sd  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
+  #cc.hf <- hfclim
+  #sigma.hf <- hfclim.sd
+  #microhf.effect <- hfmicroclim
+  #microsigmahf.effect <- hfmicroclim.sd  #### by keeping the sigmas the same for the microsites (line 94 & 99) we assume that the microclimatic effects are the same across sites
   
   
   #### Next I set up an fstar or a GDD threshold for each individual
@@ -210,7 +213,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     
     df.prov$species <- as.numeric(df.prov$species)
     df.prov$provenance <- as.numeric(df.prov$provenance)
-    df.prov$prov.z <- (df.prov$provenance-mean(df.prov$provenance,na.rm=TRUE))/(2*sd(df.prov$provenance,na.rm=TRUE))
+    df.prov$prov.z <- (df.prov$provenance-mean(df.prov$provenance,na.rm=TRUE))/(sd(df.prov$provenance,na.rm=TRUE))
     
     df.prov$ind <- as.numeric(df.prov$ind)
     df.bb <- full_join(df.bb, df.prov)
@@ -236,6 +239,8 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   bball$type <- ifelse(bball$method=="ws", 1, 0)
   
   bball <- na.omit(bball)
+  
+  #lme4::lmer(gdd ~ provenance + type + (provenance + type | species), data=bball)
   
   mylist <- list(bball, df, hfclim, arbclim)  
   
