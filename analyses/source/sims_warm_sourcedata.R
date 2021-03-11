@@ -42,21 +42,19 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   #### Here, I set up provenance for each individual
   ### # Step 2: find GDDs
   #### Now I set up climate data for the Arboretum, this is the weather station data
-  clim <- data.frame(ind=rep(rep(c(1:ninds), each=daysperyr), nspps),
-                     species = rep(c(1:nspps), each=daysperyr*ninds), 
-                     day=rep(c(1:daysperyr), nspps*ninds))
+  clim <- data.frame(day=rep(c(1:daysperyr)))
   
   clim$tmean0 <- rnorm(clim$day, cc + 0, sigma.cc) 
-  clim$tmean1 <- clim$teman0 + 1 
-  clim$tmean2 <- clim$teman0 + 2
-  clim$tmean3 <- clim$teman0 + 3
-  clim$tmean4 <- clim$teman0 + 4
-  clim$tmean5 <- clim$teman0 + 5
-  clim$tmean6 <- clim$teman0 + 6
-  clim$tmean7 <- clim$teman0 + 7
-  clim$tmean8 <- clim$teman0 + 8
-  clim$tmean9 <- clim$teman0 + 9
-  clim$tmean10 <- clim$teman0 + 10
+  clim$tmean1 <- clim$tmean0 + 1 
+  clim$tmean2 <- clim$tmean0 + 2
+  clim$tmean3 <- clim$tmean0 + 3
+  clim$tmean4 <- clim$tmean0 + 4
+  clim$tmean5 <- clim$tmean0 + 5
+  clim$tmean6 <- clim$tmean0 + 6
+  clim$tmean7 <- clim$tmean0 + 7
+  clim$tmean8 <- clim$tmean0 + 8
+  clim$tmean9 <- clim$tmean0 + 9
+  clim$tmean10 <- clim$tmean0 + 10
   
   ##Step 3: Make a data frame and get the mean temp
   df <- clim
@@ -87,23 +85,29 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   df$sp_ind <- paste(df$species, df$ind, sep="_")
   
   ### Calculate the OBSERVED GDDs!!!
-  df$gdd.obs0 <- ave(df$tmean0, df$sp_ind, FUN=cumsum)
-  df$gdd.obs1 <- ave(df$tmean1, df$sp_ind, FUN=cumsum)
-  df$gdd.obs2 <- ave(df$tmean2, df$sp_ind, FUN=cumsum)
-  df$gdd.obs3 <- ave(df$tmean3, df$sp_ind, FUN=cumsum)
-  df$gdd.obs4 <- ave(df$tmean4, df$sp_ind, FUN=cumsum)
-  df$gdd.obs5 <- ave(df$tmean5, df$sp_ind, FUN=cumsum)
-  df$gdd.obs6 <- ave(df$tmean6, df$sp_ind, FUN=cumsum)
-  df$gdd.obs7 <- ave(df$tmean7, df$sp_ind, FUN=cumsum)
-  df$gdd.obs8 <- ave(df$tmean8, df$sp_ind, FUN=cumsum)
-  df$gdd.obs9 <- ave(df$tmean9, df$sp_ind, FUN=cumsum)
-  df$gdd.obs10 <- ave(df$tmean10, df$sp_ind, FUN=cumsum)
+  df$gdd.obs0 <- ave(df$tmean0, FUN=cumsum)
+  df$gdd.obs1 <- ave(df$tmean1, FUN=cumsum)
+  df$gdd.obs2 <- ave(df$tmean2, FUN=cumsum)
+  df$gdd.obs3 <- ave(df$tmean3, FUN=cumsum)
+  df$gdd.obs4 <- ave(df$tmean4, FUN=cumsum)
+  df$gdd.obs5 <- ave(df$tmean5, FUN=cumsum)
+  df$gdd.obs6 <- ave(df$tmean6, FUN=cumsum)
+  df$gdd.obs7 <- ave(df$tmean7, FUN=cumsum)
+  df$gdd.obs8 <- ave(df$tmean8, FUN=cumsum)
+  df$gdd.obs9 <- ave(df$tmean9, FUN=cumsum)
+  df$gdd.obs10 <- ave(df$tmean10, FUN=cumsum)
+  
+  ### So first I need to duplicate every row by the number of species
+  
   
   ### Let's just tidy everything up
   df$species <- as.numeric(as.factor(df$species))
   df.fstar$species <- as.numeric(as.factor(df.fstar$species))
   df <- full_join(df, df.fstar)
   df <- df[!duplicated(df),]
+  
+  ### Okay this is wrong. I need to have a bb for each fstar for each warming so I need to repeat the climate data for each set of fstars
+  ## then make a new column for fstar and then go from there. 
   
   ## Find the day of budburst to find the actual GDD versus the "observed GDD"
   for(i in c(unique(df$sp_ind))){ # i="1_1" i=1
