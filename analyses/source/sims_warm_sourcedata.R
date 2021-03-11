@@ -47,16 +47,16 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
                      day=rep(c(1:daysperyr), nspps*ninds))
   
   clim$tmean0 <- rnorm(clim$day, cc + 0, sigma.cc) 
-  clim$tmean1 <- rnorm(clim$day, cc + 1, sigma.cc) 
-  clim$tmean2 <- rnorm(clim$day, cc + 2, sigma.cc) 
-  clim$tmean3 <- rnorm(clim$day, cc + 3, sigma.cc) 
-  clim$tmean4 <- rnorm(clim$day, cc + 4, sigma.cc) 
-  clim$tmean5 <- rnorm(clim$day, cc + 5, sigma.cc) 
-  clim$tmean6 <- rnorm(clim$day, cc + 6, sigma.cc) 
-  clim$tmean7 <- rnorm(clim$day, cc + 7, sigma.cc) 
-  clim$tmean8 <- rnorm(clim$day, cc + 8, sigma.cc) 
-  clim$tmean9 <- rnorm(clim$day, cc + 9, sigma.cc) 
-  clim$tmean10 <- rnorm(clim$day, cc + 10, sigma.cc) 
+  clim$tmean1 <- clim$teman0 + 1 
+  clim$tmean2 <- clim$teman0 + 2
+  clim$tmean3 <- clim$teman0 + 3
+  clim$tmean4 <- clim$teman0 + 4
+  clim$tmean5 <- clim$teman0 + 5
+  clim$tmean6 <- clim$teman0 + 6
+  clim$tmean7 <- clim$teman0 + 7
+  clim$tmean8 <- clim$teman0 + 8
+  clim$tmean9 <- clim$teman0 + 9
+  clim$tmean10 <- clim$teman0 + 10
   
   ##Step 3: Make a data frame and get the mean temp
   df <- clim

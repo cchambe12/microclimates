@@ -1,7 +1,7 @@
 ### Started 3 March 2021 by Cat
 ## Source function to figure out most accurate method or site to determine fstar estimate using raw data
 
-fstarrawfunc <- function(df){
+fstarrawfuncreal <- function(df){
   
   arb <- df[(df$site=="arb"),]
   arb$mingdd <- ave(arb$gdd, arb$species, arb$method, FUN=min)
@@ -23,17 +23,17 @@ fstarrawfunc <- function(df){
   min_hobo_hf <- vector()
   for(i in unique(arb$spp)){ #i="Tilia_americana"
     min_ws_arb <- arb$mingdd[arb$method=="ws" & arb$spp==i]
-    arb$mingdd_ws[arb$species==i] <- min_ws_arb
+    arb$mingdd_ws[arb$spp==i ] <- unique(min_ws_arb)
     
     min_hobo_arb <- arb$mingdd[arb$method=="hobo" & arb$spp==i]
-    arb$mingdd_hobo[arb$species==i] <- min_hobo_arb
+    arb$mingdd_hobo[arb$spp==i] <- unique(min_hobo_arb)
   }
   for(i in unique(hf$spp)){   
     min_ws_hf <- hf$mingdd[hf$method=="ws" & hf$spp==i]
-    hf$mingdd_ws[hf$species==i] <- min_ws_hf
+    hf$mingdd_ws[hf$spp==i] <- unique(min_ws_hf)
     
     min_hobo_hf <- hf$mingdd[hf$method=="hobo" & hf$spp==i]
-    hf$mingdd_hobo[hf$species==i] <- min_hobo_hf
+    hf$mingdd_hobo[hf$spp==i] <- unique(min_hobo_hf)
   }
   
   hobo_arb <- max(arb$mingdd_hobo) - min(arb$mingdd_hobo)
@@ -48,38 +48,54 @@ fstarrawfunc <- function(df){
   
   if(best_sitemethod=="hobo_arb"){
     
-    for(i in unique(arb$spp)){ #i=1
-      hf$mingdd_hobo[i==as.numeric(as.factor(hf$species))] <- arb$mingdd_hobo[i==as.numeric(as.factor(arb$species))]
+    for(i in unique(arb$spp)){ #i="Tilia_americana"
+      hf$mingdd_hobo[i==hf$spp] <- unique(arb$mingdd_hobo[i==arb$spp])
     }
       arbhf <- rbind(arb, hf)
-      df$fstarspp_raw <- arbhf$mingdd_hobo
+      arbhf$fstarspp_raw <- arbhf$mingdd_hobo
+      df$fstarspp_raw<-NA
+      for(i in unique(arbhf$spp)){ #i="Quercus_alba"
+        df$fstarspp_raw[i==df$spp] <- unique(arbhf$fstarspp_raw[i==arbhf$spp])
+      }
       df$accuracy_type <- "hobo_arb"
       
   } else if(best_sitemethod=="ws_arb"){
     
     for(i in unique(arb$spp)){
-      hf$mingdd_ws[i==as.numeric(as.factor(hf$species))] <- arb$mingdd_ws[i==as.numeric(as.factor(arb$species))]
+      hf$mingdd_ws[i==hf$spp] <- unique(arb$mingdd_ws[i==arb$spp])
     }
     arbhf <- rbind(arb, hf)
-    df$fstarspp_raw <- arbhf$mingdd_ws
+    arbhf$fstarspp_raw <- arbhf$mingdd_ws
+    df$fstarspp_raw<-NA
+    for(i in unique(arbhf$spp)){ #i="Quercus_alba"
+      df$fstarspp_raw[i==df$spp] <- unique(arbhf$fstarspp_raw[i==arbhf$spp])
+    }
     df$accuracy_type <- "ws_arb"
     
   } else if(best_sitemethod=="hobo_hf"){
     
-    for(i in unique(hf$spp)){
-      arb$mingdd_hobo[i==as.numeric(as.factor(arb$species))] <- hf$mingdd_hobo[i==as.numeric(as.factor(hf$species))]
+    for(i in unique(hf$spp)){ #i="Acer_saccharum"
+      arb$mingdd_hobo[i==arb$spp] <- unique(hf$mingdd_hobo[i==hf$spp])
     }
     arbhf <- rbind(arb, hf)
-    df$fstarspp_raw <- arbhf$mingdd_hobo
+    arbhf$fstarspp_raw <- arbhf$mingdd_hobo
+    df$fstarspp_raw<-NA
+    for(i in unique(arbhf$spp)){ #i="Quercus_alba"
+      df$fstarspp_raw[i==df$spp] <- unique(arbhf$fstarspp_raw[i==arbhf$spp])
+    }
     df$accuracy_type <- "hobo_hf"
     
   } else if(best_sitemethod=="ws_hf"){
     
-    for(i in unique(hf$spp)){
-      arb$mingdd_hobo[i==as.numeric(as.factor(arb$species))] <- hf$mingdd_hobo[i==as.numeric(as.factor(hf$species))]
+    for(i in unique(hf$spp)){ #i="Quercus_alba"
+      arb$mingdd_ws[i==arb$spp] <- unique(hf$mingdd_ws[i==hf$spp])
     }
     arbhf <- rbind(arb, hf)
-    df$fstarspp_raw <- arbhf$mingdd_ws
+    arbhf$fstarspp_raw <- arbhf$mingdd_ws
+    df$fstarspp_raw<-NA
+    for(i in unique(arbhf$spp)){ #i="Acer_pensylvanicum"
+      df$fstarspp_raw[i==df$spp] <- unique(arbhf$fstarspp_raw[i==arbhf$spp])
+    }
     df$accuracy_type <- "ws_hf"
     
   }

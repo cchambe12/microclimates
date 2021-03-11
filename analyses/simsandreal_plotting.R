@@ -899,28 +899,30 @@ quant0 <- quantile(bball$provenance, 0)
 quant25 <- quantile(bball$provenance, 0.25)
 quant75 <- quantile(bball$provenance, 0.75)
 quant100 <- quantile(bball$provenance, 1)
-bball$provgroup <- ifelse(bball$provenance<=quant25, "low", bball$provenance)
-bball$provgroup <- ifelse(bball$provenance<=quant75 & bball$provenance>quant25, "mid", bball$provgroup)
-bball$provgroup <- ifelse(bball$provenance<=quant100 & bball$provenance>quant75, "high", bball$provgroup)
+bball$provgroup <- ifelse(bball$provenance<=quant25, "alow", bball$provenance)
+bball$provgroup <- ifelse(bball$provenance<=quant75 & bball$provenance>quant25, "bmid", bball$provgroup)
+bball$provgroup <- ifelse(bball$provenance<=quant100 & bball$provenance>quant75, "chigh", bball$provgroup)
 
 
 provcols <- viridis_pal(option="viridis")(3)
 provhobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=as.factor(provgroup)), alpha=0.2) + theme_classic() +
-  scale_fill_manual(name="Provenance\nLatitude", values=provcols) + ggtitle("Hobo Logger") +
+  scale_fill_manual(name="Provenance\nLatitude", values=provcols, labels=c("alow"="<42.3", "bmid"="42.3-42.5", "chigh"=">42.5")) + 
+  ggtitle("Hobo Logger") +
   coord_cartesian(xlim=c(100, 700)) + 
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="low")]), col=provcols[[1]], linetype="dashed") +
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="mid")]), col=provcols[[2]], linetype="dashed") +
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="high")]), col=provcols[[3]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="alow")]), col=provcols[[1]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="bmid")]), col=provcols[[2]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup=="chigh")]), col=provcols[[3]], linetype="dashed") +
   #geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$provgroup==55)]), col=provcols[[4]], linetype="dashed") +
   xlab("Mean Temperature (°C)") + ylab("") +
   scale_y_continuous(expand = c(0, 0)) 
 provws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=as.factor(provgroup)), alpha=0.2) + theme_classic() +
-  scale_fill_manual(name="Provenance\nLatitude", values=provcols) + ggtitle("Weather Station") +
+  scale_fill_manual(name="Provenance\nLatitude", values=provcols,labels=c("alow"="<42.3", "bmid"="42.3-42.5", "chigh"=">42.5")) + 
+  ggtitle("Weather Station") +
   coord_cartesian(xlim=c(100, 700)) + 
   xlab("Mean Temperature (°C)") + ylab("") +
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="low")]), col=provcols[[1]], linetype="dashed") +
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="mid")]), col=provcols[[2]], linetype="dashed") +
-  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="high")]), col=provcols[[3]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="alow")]), col=provcols[[1]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="bmid")]), col=provcols[[2]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup=="chigh")]), col=provcols[[3]], linetype="dashed") +
   #geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$provgroup==55)]), col=provcols[[4]], linetype="dashed") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(legend.position = "none")
@@ -968,8 +970,6 @@ dev.off()
 
 
 use.urban <- "prov"
-bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
-  as.numeric(bball$prov)}
 
 datalist.gdd <- with(bball, 
                      list(y = gdd, 
@@ -1001,7 +1001,7 @@ labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nW
 modelhere <- provmethod_fake
 spnum <- length(unique(bball$species))
 
-pdf("figures/muplot_prov.pdf", width=7, height=4)
+pdf("figures/muplot_prov_real.pdf", width=7, height=4)
 par(xpd=FALSE)
 par(mar=c(5,10,3,10))
 plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
@@ -1033,23 +1033,80 @@ par(xpd=TRUE) # so I can plot legend outside
 dev.off()
 
 
-bball <- fstarrawfunc(bball) ### warnings are actually okay, it is because we don't have exactly the same number of species at each site
+use.urban <- "urban"
 
-pdf("figures/gddaccuracy_raw_real.pdf", width=6, height=4)
+datalist.gdd <- with(bball, 
+                     list(y = gdd, 
+                          urban = urban,
+                          method = type,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(bball),
+                          n_sp = length(unique(bball$species))
+                     )
+)
+
+urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                       iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+
+
+my.pal <-rep(viridis_pal(option="viridis")(9),2)
+my.pch <- rep(15:18, each=10)
+alphahere = 0.4
+
+modoutput <- summary(urbmethod_fake)$summary
+noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                 "Sigma Arboretum", "Sigma \nWeather Station", 
+                                 "Sigma Interaction")}else if(use.urban=="prov"){
+                                   c("Provenance", "Weather Station", "Provenance x\nWeather Station",
+                                     "Sigma Provenance", "Sigma \nWeather Station", 
+                                     "Sigma Interaction")}
+
+modelhere <- urbmethod_fake
+spnum <- length(unique(bball$species))
+
+pdf("figures/muplot_urban_real.pdf", width=7, height=4)
+par(xpd=FALSE)
+par(mar=c(5,10,3,10))
+plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
+     xlab="Model estimate change in growing degree days to budburst", ylab="")
+axis(2, at=1:6, labels=rev(labs), las=1)
+abline(v=0, lty=2, col="darkgrey")
+rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                  "sigma_b_method_sp", "sigma_b_um_sp")
+for(i in 1:6){ #i=6
+  pos.y<-(6:1)[i]
+  pos.x<-noncps[rownameshere[i],"mean"]
+  lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+  points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
+  for(spsi in 1:spnum){
+    pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
+    jitt<-(spsi/40) + 0.08
+    pos.y.sps.i<-pos.y-jitt
+    pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+    lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+          col=alpha(my.pal[spsi], alphahere))
+    points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
+    
+  }
+}
+par(xpd=TRUE) # so I can plot legend outside
+#legend(120, 6, sort(unique(gsub("_", " ", bball$species))), pch=my.pch[1:spnum],
+#      col=alpha(my.pal[1:spnum], alphahere),
+#     cex=1, bty="n", text.font=3)
+dev.off()
+
+source("source/fstarraw_accuracy_real.R")
+bball <- fstarrawfuncreal(bball) ### warnings are actually okay, it is because we don't have exactly the same number of species at each site
+
+pdf("figures/gddaccuracy_raw_real_method.pdf", width=6, height=4)
 plot(as.numeric(as.factor(bball$type)), 
      as.numeric(bball$gdd_accuracy_raw), col=cols[as.factor(bball$method)], 
      ylab="Raw GDD accuracy", xaxt="none",xlab="")
 axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
 dev.off()
 
-pdf("figures/gddaccuracy_real.pdf", width=6, height=4)
-plot(as.numeric(as.factor(bball$type)), 
-     as.numeric(bball$gdd_accuracy), col=cols[as.factor(bball$method)], 
-     ylab="GDD accuracy", xaxt="none",xlab="")
-axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
-dev.off()
-
-pdf("figures/gddaccuracy_raw_real.pdf", width=6, height=4)
+pdf("figures/gddaccuracy_raw_real_site.pdf", width=6, height=4)
 plot(as.numeric(as.factor(bball$site)), 
      as.numeric(bball$gdd_accuracy_raw), col=cols[as.factor(bball$site)], 
      ylab="Raw GDD accuracy", xaxt="none",xlab="")
@@ -1057,7 +1114,7 @@ axis(side=1, at=xtext, labels = c("Arboretum", "Harvard Forest"))
 dev.off()
 
 
-spcols <-viridis_pal(option="viridis")(15)
+spcols <-viridis_pal(option="viridis")(18)
 gddbox<- ggplot(bball, aes(x=species, y=gdd, alpha=method)) + geom_boxplot(aes(alpha=as.factor(method), fill=as.factor(species), col=as.factor(species))) +
   scale_fill_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) + 
   scale_color_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) +  
@@ -1066,7 +1123,6 @@ gddbox<- ggplot(bball, aes(x=species, y=gdd, alpha=method)) + geom_boxplot(aes(a
   ylab("Growing Degree Days") +# coord_cartesian(ylim=c(50,165)) + 
   scale_alpha_manual(name="Method", values=c(0.2, 0.7),
                      labels=c("hobo"="Hobo Logger", "ws"="Weather Station")) +
-  geom_point(aes(x=species, y=fstarspp), col="black") +
   geom_point(aes(x=(species+0.1), y=fstarspp_raw), col="red") +
   guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
 pdf("figures/gddmethod_boxplot_real.pdf", width=10, height=6)
@@ -1081,9 +1137,169 @@ gddbox_sites<- ggplot(bball, aes(x=species, y=gdd, alpha=site)) + geom_boxplot(a
   ylab("Growing Degree Days") +# coord_cartesian(ylim=c(50,165)) + 
   scale_alpha_manual(name="Site", values=c(0.2, 0.7),
                      labels=c("arb"="Arnold Arboretum", "hf"="Harvard Forest")) +
+  geom_point(aes(x=(species+0.1), y=fstarspp_raw), col="red") +
+  guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
+pdf("figures/gddsite_boxplot_real.pdf", width=10, height=6)
+gddbox_sites
+dev.off()
+
+###########################################################################################################
+####################################################################################################
+####################################################################################################
+#### Cool, so now we know what the real data looks like, let's try and go back to our simulations
+### I think we will need to have both an urban effect and a method effect for this to work
+source("source/sims_hypoth_interxn_sourcedata.R")
+simsdat <- gddfunc("urban", "ws", -30, 20, 15, 425, 20, 5, 5, 20, 0, 20, 5, -5, 0)
+
+bball <- simsdat[[1]]
+xtext <- seq(1, 2, by=1)
+cols <-viridis_pal(option="viridis")(3)
+
+bball <- fstarrawfunc(bball)
+
+pdf("figures/gddaccuracy_raw_urbws.pdf", width=6, height=4)
+plot(as.numeric(as.factor(bball$type)), 
+     as.numeric(bball$gdd_accuracy_raw), col=cols[as.factor(bball$method)], 
+     ylab="Raw GDD accuracy", xaxt="none",xlab="")
+axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
+dev.off()
+
+pdf("figures/gddaccuracy_urbws.pdf", width=6, height=4)
+plot(as.numeric(as.factor(bball$type)), 
+     as.numeric(bball$gdd_accuracy), col=cols[as.factor(bball$method)], 
+     ylab="GDD accuracy", xaxt="none",xlab="")
+axis(side=1, at=xtext, labels = c("Hobo Logger", "Weather Station"))
+dev.off()
+
+pdf("figures/gddaccuracy_raw_urbws.pdf", width=6, height=4)
+plot(as.numeric(as.factor(bball$site)), 
+     as.numeric(bball$gdd_accuracy_raw), col=cols[as.factor(bball$site)], 
+     ylab="Raw GDD accuracy", xaxt="none",xlab="")
+axis(side=1, at=xtext, labels = c("Arboretum", "Harvard Forest"))
+dev.off()
+
+
+spcols <-viridis_pal(option="viridis")(15)
+gddbox<- ggplot(bball, aes(x=species, y=gdd, alpha=method)) + 
+  geom_boxplot(aes(alpha=as.factor(method), linetype=as.factor(site), fill=as.factor(species), col=as.factor(species))) +
+  scale_fill_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) + 
+  scale_color_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) +  
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_classic() + xlab("") +
+  ylab("Growing Degree Days") +# coord_cartesian(ylim=c(50,165)) + 
+  scale_alpha_manual(name="Method", values=c(0.2, 1),
+                     labels=c("hobo"="Hobo Logger", "ws"="Weather Station")) +
+  scale_linetype_manual(name="Site", values =c("solid", "dotted"), 
+                        labels=c("arb"="Arboretum", "hf"="Harvard Forest")) +
+  geom_point(aes(x=(species+0.1), y=fstarspp_raw), col="red") +
+  guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
+pdf("figures/gddmethodsite_boxplot_urbws.pdf", width=10, height=6)
+gddbox
+dev.off()
+
+gddbox_sites<- ggplot(bball, aes(x=species, y=gdd, alpha=site)) + geom_boxplot(aes(alpha=as.factor(site), fill=as.factor(species), col=as.factor(species))) +
+  scale_fill_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) + 
+  scale_color_manual(name="Species", values=spcols, labels=sort(unique(bball$species))) +  
+  scale_y_continuous(expand = c(0, 0)) +
+  theme_classic() + xlab("") +
+  ylab("Growing Degree Days") +# coord_cartesian(ylim=c(50,165)) + 
+  scale_alpha_manual(name="Site", values=c(0.2, 0.7),
+                     labels=c("arb"="Arnold Arboretum", "hf"="Harvard Forest")) +
   geom_point(aes(x=species, y=fstarspp), col="black") +
   geom_point(aes(x=(species+0.1), y=fstarspp_raw), col="red") +
   guides(alpha=guide_legend(override.aes=list(fill=hcl(c(15,195),100,0,alpha=c(0.2,0.7)))), col=FALSE, fill=FALSE)
-pdf("figures/gddsite_boxplot_prov.pdf", width=10, height=6)
+pdf("figures/gddsite_boxplot_urbws.pdf", width=10, height=6)
 gddbox_sites
 dev.off()
+
+
+xtext <- seq(1, 2, by=1)
+cols <-viridis_pal(option="viridis")(3)
+
+ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
+  theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+  coord_cartesian(xlim=c(100, 700)) + 
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+  xlab("Growing Degree Days (GDD)") + ylab("") +
+  scale_y_continuous(expand = c(0, 0)) +
+  #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+  theme(legend.position="none")
+hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
+  theme_classic() +
+  scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+  geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+  coord_cartesian(xlim=c(100, 700)) + 
+  xlab("Growing Degree Days (GDD)") + ylab("") +
+  scale_y_continuous(expand = c(0, 0)) 
+pdf("figures/gdd_meathods_urbanws.pdf", width=8, height=4, onefile=FALSE)
+egg::ggarrange(ws, hobo, ncol=2)
+dev.off()
+
+use.urban <- "urban"
+bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
+  as.numeric(bball$prov)}
+
+datalist.gdd <- with(bball, 
+                     list(y = gdd, 
+                          urban = treatmenttype,
+                          method = type,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(bball),
+                          n_sp = length(unique(bball$species))
+                     )
+)
+
+urbwsmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                       iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+
+
+my.pal <-rep(viridis_pal(option="viridis")(9),2)
+my.pch <- rep(15:18, each=10)
+alphahere = 0.4
+
+modoutput <- summary(urbwsmethod_fake)$summary
+noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
+                                 "Sigma Arboretum", "Sigma \nWeather Station", 
+                                 "Sigma Interaction")}else if(use.urban=="prov"){
+                                   c("Provenance", "Weather Station", "Provenance x\nWeather Station",
+                                     "Sigma Provenance", "Sigma \nWeather Station", 
+                                     "Sigma Interaction")}
+
+modelhere <- urbwsmethod_fake
+spnum <- length(unique(bball$species))
+
+pdf("figures/muplot_urbws.pdf", width=7, height=4)
+par(xpd=FALSE)
+par(mar=c(5,10,3,10))
+plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
+     xlab="Model estimate change in growing degree days to budburst", ylab="")
+axis(2, at=1:6, labels=rev(labs), las=1)
+abline(v=0, lty=2, col="darkgrey")
+rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                  "sigma_b_method_sp", "sigma_b_um_sp")
+for(i in 1:6){ #i=6
+  pos.y<-(6:1)[i]
+  pos.x<-noncps[rownameshere[i],"mean"]
+  lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+  points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
+  for(spsi in 1:spnum){
+    pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
+    jitt<-(spsi/40) + 0.08
+    pos.y.sps.i<-pos.y-jitt
+    pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+    lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+          col=alpha(my.pal[spsi], alphahere))
+    points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
+    
+  }
+}
+par(xpd=TRUE) # so I can plot legend outside
+#legend(120, 6, sort(unique(gsub("_", " ", bball$species))), pch=my.pch[1:spnum],
+#      col=alpha(my.pal[1:spnum], alphahere),
+#     cex=1, bty="n", text.font=3)
+dev.off()
+

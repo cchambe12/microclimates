@@ -75,7 +75,7 @@ fstarrawfunc <- function(df){
   } else if(best_sitemethod=="ws_hf"){
     
     for(i in 1:length(unique(hf$species))){
-      arb$mingdd_hobo[i==as.numeric(as.factor(arb$species))] <- hf$mingdd_hobo[i==as.numeric(as.factor(hf$species))]
+      arb$mingdd_ws[i==as.numeric(as.factor(arb$species))] <- hf$mingdd_ws[i==as.numeric(as.factor(hf$species))]
     }
     arbhf <- rbind(arb, hf)
     df$fstarspp_raw <- arbhf$mingdd_ws
