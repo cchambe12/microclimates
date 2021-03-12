@@ -1149,7 +1149,7 @@ dev.off()
 #### Cool, so now we know what the real data looks like, let's try and go back to our simulations
 ### I think we will need to have both an urban effect and a method effect for this to work
 source("source/sims_hypoth_interxn_sourcedata.R")
-simsdat <- gddfunc("urban", "ws", -30, 20, 15, 425, 20, 5, 5, 20, 0, 20, 5, -5, 0)
+simsdat <- gddfunc("urban", "ws", -30, 20, 15, 425, 20, 5, 2, 30, 2, 30, 2, -5, 2)
 
 bball <- simsdat[[1]]
 xtext <- seq(1, 2, by=1)
@@ -1275,7 +1275,7 @@ spnum <- length(unique(bball$species))
 pdf("figures/muplot_urbws.pdf", width=7, height=4)
 par(xpd=FALSE)
 par(mar=c(5,10,3,10))
-plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
+plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
      xlab="Model estimate change in growing degree days to budburst", ylab="")
 axis(2, at=1:6, labels=rev(labs), las=1)
 abline(v=0, lty=2, col="darkgrey")

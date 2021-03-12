@@ -7,18 +7,18 @@ library(dplyr)
 library(tidyr)
 
 if(FALSE){
-  fstar.min <- 50  ## GDD threshold
-  fstar.max <- 550
+  fstar.min <- 100  ## GDD threshold
+  fstar.max <- 400
   warmmax <- 10
   meantemp <- 10
-  basetemp <- 5
+  basetemp <- 10
 }
 
 
 warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 150 #### just to make sure we don't get any NAs
+  daysperyr <- 250 #### just to make sure we don't get any NAs
   nspps <- 15 
   ninds <- 10 
   nobs <- nspps*ninds
@@ -31,8 +31,7 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   
   
   #### Next I set up an fstar or a GDD threshold for each individual
-  sp_ind <- paste(rep(1:nspps, each=10), rep(1:ninds, 20), sep="_")
-  
+
   df.fstar <- as.data.frame(cbind(species=1:nspps, 
                                   fstarspp=10*round(seq(fstar.min, fstar.max, 
                                                         by=(fstar.max-fstar.min)/(nspps-1))/10, digits=0)))
@@ -42,9 +41,12 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   #### Here, I set up provenance for each individual
   ### # Step 2: find GDDs
   #### Now I set up climate data for the Arboretum, this is the weather station data
-  clim <- data.frame(day=rep(c(1:daysperyr)))
+  tmeanbase <- rnorm(daysperyr, cc + 0, sigma.cc)
   
-  clim$tmean0 <- rnorm(clim$day, cc + 0, sigma.cc) 
+  clim <- data.frame(day=rep(c(1:daysperyr), times=nspps),
+                     tmean0=rep(tmeanbase, times=nspps),
+                     fstarspp=rep(df.fstar$fstarspp, each=daysperyr))
+  
   clim$tmean1 <- clim$tmean0 + 1 
   clim$tmean2 <- clim$tmean0 + 2
   clim$tmean3 <- clim$tmean0 + 3
@@ -82,58 +84,44 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   df$tmean9 <- ifelse(df$tmean9>=basetemp, df$tmean9, 0)
   df$tmean10 <- ifelse(df$tmean10>=basetemp, df$tmean10, 0)
   
-  df$sp_ind <- paste(df$species, df$ind, sep="_")
-  
   ### Calculate the OBSERVED GDDs!!!
-  df$gdd.obs0 <- ave(df$tmean0, FUN=cumsum)
-  df$gdd.obs1 <- ave(df$tmean1, FUN=cumsum)
-  df$gdd.obs2 <- ave(df$tmean2, FUN=cumsum)
-  df$gdd.obs3 <- ave(df$tmean3, FUN=cumsum)
-  df$gdd.obs4 <- ave(df$tmean4, FUN=cumsum)
-  df$gdd.obs5 <- ave(df$tmean5, FUN=cumsum)
-  df$gdd.obs6 <- ave(df$tmean6, FUN=cumsum)
-  df$gdd.obs7 <- ave(df$tmean7, FUN=cumsum)
-  df$gdd.obs8 <- ave(df$tmean8, FUN=cumsum)
-  df$gdd.obs9 <- ave(df$tmean9, FUN=cumsum)
-  df$gdd.obs10 <- ave(df$tmean10, FUN=cumsum)
-  
-  ### So first I need to duplicate every row by the number of species
-  
-  
-  ### Let's just tidy everything up
-  df$species <- as.numeric(as.factor(df$species))
-  df.fstar$species <- as.numeric(as.factor(df.fstar$species))
-  df <- full_join(df, df.fstar)
-  df <- df[!duplicated(df),]
-  
-  ### Okay this is wrong. I need to have a bb for each fstar for each warming so I need to repeat the climate data for each set of fstars
-  ## then make a new column for fstar and then go from there. 
+  df$gdd.obs0 <- ave(df$tmean0, df$fstarspp, FUN=cumsum)
+  df$gdd.obs1 <- ave(df$tmean1, df$fstarspp, FUN=cumsum)
+  df$gdd.obs2 <- ave(df$tmean2, df$fstarspp, FUN=cumsum)
+  df$gdd.obs3 <- ave(df$tmean3, df$fstarspp, FUN=cumsum)
+  df$gdd.obs4 <- ave(df$tmean4, df$fstarspp, FUN=cumsum)
+  df$gdd.obs5 <- ave(df$tmean5, df$fstarspp, FUN=cumsum)
+  df$gdd.obs6 <- ave(df$tmean6, df$fstarspp, FUN=cumsum)
+  df$gdd.obs7 <- ave(df$tmean7, df$fstarspp, FUN=cumsum)
+  df$gdd.obs8 <- ave(df$tmean8, df$fstarspp, FUN=cumsum)
+  df$gdd.obs9 <- ave(df$tmean9, df$fstarspp, FUN=cumsum)
+  df$gdd.obs10 <- ave(df$tmean10, df$fstarspp, FUN=cumsum)
   
   ## Find the day of budburst to find the actual GDD versus the "observed GDD"
-  for(i in c(unique(df$sp_ind))){ # i="1_1" i=1
+  for(i in c(unique(df$fstarspp))){ # i="1_1" i=1
     
-    bb0 <- which(df$gdd.obs0[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb0[i==df$sp_ind] <- bb0
-    bb1 <- which(df$gdd.obs1[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb1[i==df$sp_ind] <- bb1
-    bb2 <- which(df$gdd.obs2[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb2[i==df$sp_ind] <- bb2
-    bb3 <- which(df$gdd.obs3[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb3[i==df$sp_ind] <- bb3
-    bb4 <- which(df$gdd.obs4[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb4[i==df$sp_ind] <- bb4
-    bb5 <- which(df$gdd.obs5[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb5[i==df$sp_ind] <- bb5
-    bb6 <- which(df$gdd.obs6[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb6[i==df$sp_ind] <- bb6
-    bb7 <- which(df$gdd.obs7[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb7[i==df$sp_ind] <- bb7
-    bb8 <- which(df$gdd.obs8[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb8[i==df$sp_ind] <- bb8
-    bb9 <- which(df$gdd.obs9[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb9[i==df$sp_ind] <- bb9
-    bb10 <- which(df$gdd.obs10[i==df$sp_ind] >= df$fstarspp[i==df$sp_ind])[1]
-    df$bb10[i==df$sp_ind] <- bb10
+    bb0 <- which(df$gdd.obs0[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb0[i==df$fstarspp] <- bb0
+    bb1 <- which(df$gdd.obs1[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb1[i==df$fstarspp] <- bb1
+    bb2 <- which(df$gdd.obs2[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb2[i==df$fstarspp] <- bb2
+    bb3 <- which(df$gdd.obs3[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb3[i==df$fstarspp] <- bb3
+    bb4 <- which(df$gdd.obs4[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb4[i==df$fstarspp] <- bb4
+    bb5 <- which(df$gdd.obs5[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb5[i==df$fstarspp] <- bb5
+    bb6 <- which(df$gdd.obs6[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb6[i==df$fstarspp] <- bb6
+    bb7 <- which(df$gdd.obs7[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb7[i==df$fstarspp] <- bb7
+    bb8 <- which(df$gdd.obs8[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb8[i==df$fstarspp] <- bb8
+    bb9 <- which(df$gdd.obs9[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb9[i==df$fstarspp] <- bb9
+    bb10 <- which(df$gdd.obs10[i==df$fstarspp] >= df$fstarspp[i==df$fstarspp])[1]
+    df$bb10[i==df$fstarspp] <- bb10
     
   }
   
@@ -153,11 +141,10 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   df.bb$gdd.obs10 <- ifelse(df.bb$day==df.bb$bb10, df.bb$gdd.obs10, NA)
   
   
-  df.bb <- subset(df.bb, select=c("species", "ind", "gdd.obs0",
+  df.bb <- subset(df.bb, select=c("fstarspp", "gdd.obs0",
                                   "gdd.obs1", "gdd.obs2", "gdd.obs3", "gdd.obs4", "gdd.obs5",
-                                  "gdd.obs6", "gdd.obs7", "gdd.obs8", "gdd.obs9", "gdd.obs10",
-                                  "fstarspp")) 
-  bball <- df.bb %>% tidyr::gather(warming, gdd, gdd.obs0:gdd.obs10, -species, -ind, -fstarspp)
+                                  "gdd.obs6", "gdd.obs7", "gdd.obs8", "gdd.obs9", "gdd.obs10")) 
+  bball <- df.bb %>% tidyr::gather(warming, gdd, gdd.obs0:gdd.obs10, -fstarspp)
   bball$warming <- as.numeric(substr(bball$warming, 8, 9))
   
   bball <- bball[!is.na(bball$gdd),]
@@ -165,6 +152,7 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   
   ##### Now let's do some checks...
   bball$gdd_accuracy <- bball$gdd - bball$fstarspp
+  bball$gdd_ratio <- bball$gdd/bball$fstarspp
   
   bball <- bball[(bball$warming<=warmmax),]
   
@@ -201,4 +189,5 @@ if(FALSE){ ### This is to make the varying GDD plots... to move elsewhere later.
   
   
 }
+
 
