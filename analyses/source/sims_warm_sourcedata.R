@@ -18,7 +18,7 @@ if(FALSE){
 warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 250 #### just to make sure we don't get any NAs
+  daysperyr <- 150 #### just to make sure we don't get any NAs
   nspps <- 15 
   ninds <- 10 
   nobs <- nspps*ninds

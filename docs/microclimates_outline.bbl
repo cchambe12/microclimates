@@ -1,10 +1,16 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
 Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
   indirect effects on insect population dynamics. \emph{Ecology Letters}
   \textbf{15}, 502--508.
+
+\bibitem[{Chang \emph{et~al.}(2021)Chang, Cheng, Allaire, Sievert, Schloerke,
+  Xie, Allen, McPherson, Dipert \& Borges}]{shiny2021}
+Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y., Allen,
+  J., McPherson, J., Dipert, A. \& Borges, B. (2021) shiny: Web application
+  framework for r. https://CRAN.R-project.org/package=shiny.
 
 \bibitem[{Chuine \emph{et~al.}(2001)Chuine, Aitken \& Ying}]{Chuine2001}
 Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
@@ -24,6 +30,10 @@ Crimmins, M.A. \& Crimmins, T.M. (2019) Does an early spring indicate an early
   summer? relationships between intraseasonal growing degree day thresholds.
   \emph{Journal of Geophysical Research: Biogeosciences} \textbf{124},
   2628--2641.
+
+\bibitem[{Dosmann(2006)}]{Dosmann2006}
+Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
+  \emph{The Botanical Review} \textbf{72}, 207--234.
 
 \bibitem[{Elmendorf \emph{et~al.}(2019)Elmendorf, Crimmins, Gerst \&
   Weltzin}]{Elmendorf2019}
@@ -93,6 +103,10 @@ Pickett, S.T., Cadenasso, M.L., Grove, J.M., Boone, C.G., Groffman, P.M.,
   decade of progress. \emph{Journal of environmental management} \textbf{92},
   331--362.
 
+\bibitem[{Primack \& Miller-Rushing(2009)}]{Primack2009}
+Primack, R.B. \& Miller-Rushing, A.J. (2009) The role of botanical gardens in
+  climate change research. \emph{New Phytologist} \textbf{182}, 303--313.
+
 \bibitem[{{R Development Core Team}(2017)}]{R}
 {R Development Core Team} (2017) R: A language and environment for statistical
   computing. \emph{R Foundation for Statistical Computing, Vienna, Austria} .
@@ -132,10 +146,5 @@ Williamson, S.N., Barrio, I.C., Hik, D.S. \& Gamon, J.A. (2016) Phenology and
   species determine growing-season albedo increase at the altitudinal limit of
   shrub growth in the sub-arctic. \emph{Global Change Biology} \textbf{22},
   3621--3631.
-
-\bibitem[{Winston~Chang, Joe~Cheng \& Borges(2021)}]{shiny2021}
-Winston~Chang, Joe~Cheng, J.A.C.S.B.S.Y.X.J.A.J.M.A.D. \& Borges, B. (2021)
-  shiny: Web application framework for r.
-  https://CRAN.R-project.org/package=shiny.
 
 \end{thebibliography}
