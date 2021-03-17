@@ -109,17 +109,19 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item Most arboreta keep diligent acquisition records, providing visitors and scientists information on seed sources and tree age \citep{Dosmann2006}, whereas in forests, tree cores must be assessed to get as accurate an estimate on tree age and there is no variation in provenance location.
   \end{enumerate}
   
-\item Here I will talk about the differences between using hobo loggers and weather stations
+\item As GDD is a predominant indicator of spring phenology, having accurate and consistent weather data is essential for better estimates of budburst or leafout, especially with warming.
   \begin{enumerate}
-  \item I want to set up the two hypotheses here about temperature accuracy.
+  \item To facilitate scaling and minimize error due to microclimatic effects, researchers often deploy standalone weather loggers---such as HOBO sensors---which may provide higher resolution weather data \citep{Schwartz2013a,Whiteman2000}.
+  \item Though deploying temperature loggers is not always feasible, especially when investigating large spatiotemporal shifts in GDDs. 
   \end{enumerate}
   
-\item Here, we use both simulations, models and real data to test our hypotheses on modeling GDD accuracy in a warming world.
+\item Here, we use both simulations, models and real data to test our hypotheses on modeling GDD accuracy in a warming world and conclude with a series of simulated forecasts to estimate changes in GDD estimates.
   \begin{enumerate}
+  \item Our major hypotheses are as follows...
   \item Weather stations are less accurate measures of the same weather than hobo loggers.
   \item Urban environments require fewer GDDs to leafout than forest habitats.
   \item Individuals with provenance latitudes from more northern locations require fewer GDDs to leafout. 
-  \item Hobo loggers better capture urban or provenance effects. 
+  \item Weather stations will record warmer temperatures at urban sites and cooler temperatures at forest sites compared to hobo loggers. 
   \end{enumerate}
 \end{enumerate}
   
@@ -134,11 +136,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item The forest site is in Petersham, MA at the Harvard Forest (42$^{\circ}$31'53.5' N -72$^{\circ}$11'24.1' W).
   \item The Harvard Forest is 1446 acres and has a range of elevation of 220-410m. 
   \end{enumerate}
+\end{enumerate}
 
-\subsection*{Simulations}
+\subsection*{Simulations} %%% I may have to reorder this a bit to end up following the direction we want to convey. 
+%% The new order may be... 1) weather stations are more noisy, 2) urban environments require fewer GDDs, 3) weather stations will record different weather across different sites, 3) provenance stuffs
+\begin{enumerate}
 \item We simulate test data in order to test our hypotheses and assess the model output results. 
   \begin{enumerate}
-  \item In order to exhaustively examine all hypotheses, we build our simulation data from very simple to more complex questions.
+  \item In order to exhaustively examine all hypotheses, we build our simulation data to address very simple to more complex questions.
   \item We first start by examining what the model output would look like if we just make the weather station data less accurate.
   \item To do this, we create an effect of method on our GDD threshold value and then increase error on the weather station measurements by increasing the sigma value for our random distribution creation (see Supplemental information on Data Simulation). 
   \item Next, we incorporate climate data by again establishing a random distribution around a mean temperature for each site and then add noise to this weather data to create ``microclimatic'' effects. 
@@ -147,30 +152,44 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \item Next, we apply the same ``microclimatic effect'' as above to test microclimatic variation across the two sites. 
   \item We repeat these steps for the provenance latitude hypothesis by having individuals from more northern provenances requiring fewer GDDS and then apply the ``microclimatic effect''.
   \end{enumerate}
+\end{enumerate}
 
 \subsection*{Real Data}
+\begin{enumerate}
 \item Phenology observations across the Arnold Arboretum were collected by trained citizen scientists from the Tree Spotters National Phenology Network program \citep{USA-NPN2016}. 
   \begin{enumerate}
-  \item The Tree Spotter volunteers observed 15 species with varying phenologies and each species had 5 individuals for a total of 75 trees.
+  \item The Tree Spotter volunteers observed 15 tree and shrub species---ranging from early-budbursting to late-budbursting---and each species had 5 individuals for a total of 75 trees.
   \item Species included in the study were \textit{Acer saccharum}, \textit{Acer rubrum}, \textit{Aesculus flava}, \textit{Betula nigra}, \textit{Betula alleghaniensis}, \textit{Carya glabra}, \textit{Carya ovata}, \textit{Fagus grandifolia}, \textit{Hamamelis virginiana}, \textit{Populus deltoides}, \textit{Quercus alba}, \textit{Quercus rubra}, \textit{Tilia amaericana}, \textit{Vaccinium corymbosum}, and \textit{Viburnum nudum} (Figure \ref{fig:phylo}).  
   \item In September 2018, we placed 15 hobo loggers around the Tree Spotter route to compare hobo logger temperatures to the weather station temperatures recorded. 
   \item We then used budburst observations for each individual and calculated GDDs until budburst starting from 15 February using both the hobo logger data and then the weather station data. 
   \end{enumerate}
-  
+
 \item Phenology observations for the Harvard Forest have been collected by Dr John O'Keefe since 1990 \citep{OKeefe2014} along the Prospect Hill Tract. 
   \begin{enumerate}
   \item Species observed by Dr John O'Keefe include \textit{Acer saccharum}, \textit{Acer rubrum}, \textit{Acer pensylvanicum}, \textit{Betula alleghaniensis}, \textit{Fagus grandifolia}, \textit{Fraxinus americana}, \textit{Hamamelis virginiana}, \textit{Quercus alba} and \textit{Quercus rubra} (Figure \ref{fig:phylo}).
   \item The same methods were applied at the Harvard Forest where we placed 15 hobo loggers at regular intervals along the Prospect Hill Tract, calculated GDD estimates from 15 February 2019 until budburst for each individual using hobo logger data and then weather station data. 
   \end{enumerate}
+\end{enumerate}
+  
+\subsection*{Forecasting}
+\begin{enumerate}
+\item Using simulated data, we tested GDD accuracy across various GDD threshold requirements with warming of 1$^{\circ$C to 10$^{\circ$C. 
+  \begin{enumerate}
+  \item We also evaluate accuracy using different base temperatures for calculating GDD (i.e., -5$^{\circ$C, 0$^{\circ$C, 5$^{\circ$C and 10$^{\circ$C).
+  \end{enumerate}
+\end{enumerate}
 
 \subsection*{Shiny App}
+\begin{enumerate}
 \item To show the above simulations, real data and forecasts in one location we use a Shiny Application. 
   \begin{enumerate}
   \item Using the R package `shiny' \citep{shiny2021}, version 1.6.0, we developed a Shiny App that contains five pages: (1) `Home' which has information on the application, (2) `Hypothesis Testing' which runs the simulation data and allows users to manipulate the inputs, (3) `Simulation Data for Model Testing' which runs simulation data to test the model and make sure the model outputs are accurate, (4) `Real Data and Analyze Results' which uses real data and runs analyses to be used to compare to the `Hypothesis Testing' output and (5) `Forecasting GDD with Warming' which forecasts GDD accuracy under warming. 
   \item The Shiny App is meant for users to understand our suggested approach to model testing and interpreting mixed model results. 
   \end{enumerate}
+\end{enumerate}
 
 \subsection*{Data analysis}
+\begin{enumerate}
 \item Using Bayesian hierarchical models with the rstan package \citep{rstan2019}, version 2.19.2,  in R \citep{R}, version 3.3.1, we estimated the effects of urban or provenance effect and method effect and all two-way interactions as predictors on GDDs until leafout. 
   \begin{enumerate} 
   \item Species were modeled hierarchically as grouping factors, which generates an estimate and posterior distribution of the overall response across the 20 species used in our simulations and 18 species used in our real data.
@@ -198,8 +217,9 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \end{enumerate}
 
 \section*{Discussion} 
+\subsection*{The future of GDD models}
 \begin{enumerate}
-\item Add section here that discusses why maybe using GDD models may not be appropriate for the future with warming \citep{Man2010}. 
+\item As we see from our forecasting simulations, regardless of base temperature threshold, GDD models may not be appropriate for the future with warming \citep{Man2010}. 
   \begin{enumerate}
   \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for leafout phenology. 
   \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here. 
@@ -216,14 +236,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
-  -\caption{}\label{fig:phylo}
+  -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
   
 {\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
-  -\caption{}\label{fig:clim}
+  -\caption{Smoothing spline of mean temperature with 90\% credible interval across the two sites.}\label{fig:clim}
   -\end{center}
   -\end{figure}}
   
@@ -331,30 +351,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \caption{ Using real data, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
 \label{fig:real}
 \end{figure}
-  
-  
-{\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//analyses/figures/muplot_urban_real.pdf}
-  -\caption{}\label{fig:realmu}
-  -\end{center}
-  -\end{figure}}
-
-\iffalse
-{\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//analyses/figures/dvr_climate_ts.pdf}
-  -\caption{}\label{fig:arbclim}
-  -\end{center}
-  -\end{figure}}
-
-  {\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//analyses/figures/dvr_climate_hf.pdf}
-  -\caption{}\label{fig:hfclim}
-  -\end{center}
-  -\end{figure}}
-\fi
 
   
   

@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{28}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
@@ -127,6 +127,11 @@ Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
   across the Northern Hemisphere}. \emph{Global Change Biology} \textbf{12},
   343--351.
 
+\bibitem[{Schwartz \emph{et~al.}(2013)Schwartz, Hanes \& Liang}]{Schwartz2013a}
+Schwartz, M.D., Hanes, J.M. \& Liang, L. (2013) Comparing carbon flux and
+  high-resolution spring phenological measurements in a northern mixed forest.
+  \emph{Agricultural and Forest Meteorology} \textbf{169}, 136--147.
+
 \bibitem[{{Stan Development Team}(2019)}]{rstan2019}
 {Stan Development Team} (2019) Stan user's guide, version 2.19.
 
@@ -139,6 +144,12 @@ Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.
   \& Delzon, S. (2011) {Assessing the effects of climate change on the
   phenology of European temperate trees.} \emph{Agricultural and Forest
   Meteorology} \textbf{151}, 969--980.
+
+\bibitem[{Whiteman \emph{et~al.}(01 Jan. 2000)Whiteman, Hubbe \&
+  Shaw}]{Whiteman2000}
+Whiteman, C.D., Hubbe, J.M. \& Shaw, W.J. (01 Jan. 2000) Evaluation of an
+  inexpensive temperature datalogger for meteorological applications.
+  \emph{Journal of Atmospheric and Oceanic Technology} \textbf{17}, 77 -- 81.
 
 \bibitem[{Williamson \emph{et~al.}(2016)Williamson, Barrio, Hik \&
   Gamon}]{Williamson2016}
