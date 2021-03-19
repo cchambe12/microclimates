@@ -19,24 +19,25 @@ source("source/sims_warm_sourcedata.R")
 gdd.warm <- warmfunc(100, 300, 10, 10, 10)
 gdd.warm <- gdd.warm[[1]]
 
-pdf("figures/forecasting_base10.pdf", width=6, height=5)
-ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+#pdf("figures/forecasting_base10.pdf", width=6, height=5)
+ten <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         legend.key = element_rect(colour = "transparent", fill = "white"),
+        legend.position="none",
         plot.margin = margin(0.5, 0.5, 0.5, 1, "cm")) + 
   xlab("Amount of warming (°C)") + ylab("GDD accuracy\n(estimated/observed)") +
   scale_x_continuous(breaks = sort(c(seq(0, 10, by=1)))) +
   scale_color_viridis_c("Species GDD Threshold") +
   coord_cartesian(ylim=c(1, 1.3)) 
-dev.off()
+#dev.off()
 
 gdd.warm <- warmfunc(100, 300, 10, 10, 5)[[1]]
 
-pdf("figures/forecasting_base5.pdf", width=6, height=5)
-ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+#pdf("figures/forecasting_base5.pdf", width=6, height=5)
+five <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -47,13 +48,13 @@ ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarsp
   scale_x_continuous(breaks = sort(c(seq(0, 10, by=1)))) +
   scale_color_viridis_c("Species GDD Threshold") +
   coord_cartesian(ylim=c(1, 1.3)) 
-dev.off()
+#dev.off()
 
 
 gdd.warm <- warmfunc(100, 300, 10, 10, 0)[[1]]
 
-pdf("figures/forecasting_base0.pdf", width=6, height=5)
-ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+#pdf("figures/forecasting_base0.pdf", width=6, height=5)
+zero <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -64,12 +65,12 @@ ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarsp
   scale_x_continuous(breaks = sort(c(seq(0, 10, by=1)))) +
   scale_color_viridis_c("Species GDD Threshold") +
   coord_cartesian(ylim=c(1, 1.3))
-dev.off()
+#dev.off()
 
 gdd.warm <- warmfunc(100, 300, 10, 10, -5)[[1]]
 
-pdf("figures/forecasting_base-5.pdf", width=6, height=5)
-ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+#pdf("figures/forecasting_base-5.pdf", width=6, height=5)
+neg5 <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -80,8 +81,11 @@ ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarsp
   scale_x_continuous(breaks = sort(c(seq(0, 10, by=1)))) +
   scale_color_viridis_c("Species GDD Threshold") +
   coord_cartesian(ylim=c(1, 1.3)) 
-dev.off()
+#dev.off()
 
+pdf("figures/forecasting.pdf", width=6, height=5)
+egg::ggarrange(neg5, zero, five, ten, ncol=4)
+dev.off()
 
 ################################################################################################################
 ################ Now there seems to be an interesting mathematical phenomena occuring ##########################

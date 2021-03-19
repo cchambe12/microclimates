@@ -61,7 +61,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{subcaption}
 \usepackage{natbib}
-\bibliographystyle{/Users/CatherineChamberlain/Documents/git/microclimates/refs/styles/besjournals.bst}
+\bibliographystyle{..//refs/styles/besjournals.bst}
 \usepackage[small]{caption}
 \setlength{\captionmargin}{30pt}
 \setlength{\abovecaptionskip}{0pt}
@@ -112,7 +112,10 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in setwd("{}/Users/CatherineChamberlain/Documents/git/microclimates/analyses/"{}): cannot change working directory}}\end{kframe}
 
 \section*{Introduction}
 \begin{enumerate}
@@ -262,7 +265,6 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \item This is essential to establish an interaction effect. 
   \item When we simulate variation in mean temperature across the two methods across the two sites to establish an interaction we see: sigma values for the method effect are large, though the slope is close to zero; individuals at the Arboretum require fewer GDDs to budburst and there is large sigma; and the weather station at the Arboretum is recording the fewest number of GDDs until budburst.
   \end{enumerate}
-\end{enumerate}
 \end{enumerate}
 
 \subsection*{Real data}
@@ -494,6 +496,25 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \end{subfigure}
 \caption{ Using real data, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
 \label{fig:real}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{\linewidth}
+	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
+    \caption{}
+    \centering
+    \includegraphics[width=16cm]{..//analyses/figures/forecasting.pdf}
+    \label{fig:forecasting}
+    \end{subfigure}
+  \begin{subfigure}{\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+	    \caption{}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/forecasting_slopes.pdf}
+      \label{fig:slopes}
+  \end{subfigure}
+\caption{To discuss more at our next meeting...}
+\label{fig:forecasts}
 \end{figure}
 
   
