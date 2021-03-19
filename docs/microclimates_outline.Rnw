@@ -323,26 +323,26 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   -\end{center}
   -\end{figure}}
   
-\begin{figure}
+\begin{figure}[H]
   \begin{subfigure}{.32\textwidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[width=\linewidth]{..//analyses/figures/muplot_noisyws.pdf}
+    \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_noisyws.pdf}
     \label{fig:muplotnoisyws}
   \end{subfigure}%
     \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[width=\linewidth]{..//analyses/figures/muplot_noisyhobo.pdf}
+      \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_noisyhobo.pdf}
     \label{fig:muplotnoisyhobo}
-  \end{subfigure}\\[1ex]
+  \end{subfigure}
   \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[width=\linewidth]{..//analyses/figures/muplot_micros.pdf}
+      \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_micros.pdf}
       \label{fig:muplotmicros}
   \end{subfigure}
 \caption{ We show effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using simulated data (a) with less accurate weather station data, (b) with less accurate hobo logger data and (c) microclimatic effects at both sites. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Tables XX, XX and XX for full model outputs.}
@@ -350,28 +350,28 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[H]
   \begin{subfigure}{.32\textwidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_noisyws.pdf}
+    \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
     \label{fig:gddnoisyws}
-  \end{subfigure}%
-    \begin{subfigure}{.32\textwidth}
+    \end{subfigure}
+  \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
+      \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
     \label{fig:gddnoisyhobo}
-  \end{subfigure}\\[1ex]
+    \end{subfigure}
   \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_micros.pdf}
+      \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_micros.pdf}
       \label{fig:gddmicros}
-  \end{subfigure}
+      \end{subfigure}
 \caption{ Using simulated data with (a) less accurate weather station data, (b) less accurate hobo logger data and (c) microcliamtic effects across both sites, we show histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data.}
 \label{fig:climhists}
 \end{figure}
@@ -459,14 +459,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[width=16cm]{..//analyses/figures/forecasting.pdf}
+    \includegraphics[height=5cm, width=16cm]{..//analyses/figures/forecasting.pdf}
     \label{fig:forecasting}
     \end{subfigure}
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/forecasting_slopes.pdf}
+      \includegraphics[height=7cm, width=8cm]{..//analyses/figures/forecasting_slopes.pdf}
       \label{fig:slopes}
   \end{subfigure}
 \caption{To discuss more at our next meeting...}
