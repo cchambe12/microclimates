@@ -202,21 +202,98 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \end{enumerate}
 
 \section*{Results}
+\subsection*{Simulations}
 \begin{enumerate}
-\item Urban environments require fewer GDDs to leafout than forest habitats.
- 
-\item Individuals with provenance latitudes from more northern locations require fewer GDDs to leafout. 
+\item When we manipulate the simulations to have noisy weather station data, noise is returned as the sigma for the method parameter. 
+  \begin{enumerate}
+  \item Though, when we manipulate the simulations to have noisy hobo logger data, the output is identical.
+  \item The noise is additionally apparent when visualizing raw data plots, which can detect which method is more noisy.
+  \end{enumerate}
   
-\item Hobo loggers are less accurate measures of the same weather as weather stations.
+\item Simulations that manipulate the data to have both methods equally as accurate but also include microclimates at both sites, we again see that the noise is returned in the sigma for the method parameter. 
+  \begin{enumerate}
+  \item In comparing the raw data variation in GDDs, the noisy hobo logger simulations and the microclimate simulations appear similar. 
+  \end{enumerate}
+  
+\item Lizzie do you think this is the right order to do this in?? Not sure, I could also put this in a section under real data too...
+  \begin{enumerate}
+  \item We next attempted to simulate an interaction where the hobo loggers and weather station recorded temperatures differently across the two sites. %Should I throw this in the methods...?
+  \item This is essential to establish an interaction effect. 
+  \item When we simulate variation in mean temperature across the two methods across the two sites to establish an interaction we see: sigma values for the method effect are large, though the slope is close to zero; individuals at the Arboretum require fewer GDDs to budburst and there is large sigma; and the weather station at the Arboretum is recording the fewest number of GDDs until budburst.
+  \end{enumerate}
+\end{enumerate}
+\end{enumerate}
 
-\item Hobo loggers better capture urban or provenance effects.
-  
-\item Shiny App 
-  
-\item Real data 
+\subsection*{Real data}
+\begin{enumerate}
+\item Individuals at more urban sites require fewer GDDs to leafout.
+  \begin{enumerate}
+  \item There is high variation in GDDs between the two methods.
+  \item There is a large interaction indicating weather station data at the Arboretum records the fewest number of GDDs until leafout. 
+  \item Using raw data, we see there is much higher variation in hobo logger data across the two sites and that the arboretum requires fewer GDDs until leafout than the Harvard Forest.
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{More simulations: provenance latitude model}
+\begin{enumerate}
+\item Next, I will dissect the provenance model... well I think. This can also go in the simulations section either before the interaction simulations or after.
+  \begin{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Forecasting GDDs}
+\begin{enumerate}
+\item The Growing Degree Day model is most accurate for individuals that have high GDD thresholds. 
+  \begin{enumerate}
+  \item Under the no warming simulation, using the 0$^{\circ$C base temperature is most consistent across species. 
+  \item But regardless of base temperature, variability in accuracy across species increases with warming and estimates become more inaccurate.
+  \end{enumerate}
 \end{enumerate}
 
 \section*{Discussion} 
+\subsection*{Importance of plotting raw data and running simulations}
+\begin{enumerate}
+\item Raw data is crucial to plot in order to best interpret model outputs.
+  \begin{enumerate}
+  \item As we see from the less accurate weather station data example versus the less accurate hobo logger data example, the model outputs are the same.
+  \item The best way to disentangle which climate measurement method is less accurate is through the use of raw data plots.
+  \item But, unfortunately, this can only take us so far. 
+  \item As we see from the less accurate hobo logger simulation and the microclimate effects simulation, the model outputs are again the same and the raw data plots are also identical. 
+  \item Using simulations, has helped us see through the common pitfalls as scientists and conclusions we tend to jump to when interpreting our models. 
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{The use of simulations to better interpret real data results}
+\begin{enumerate}
+\item Real data is just hard to interpret as well, especially as models become more complex through interactions, hierarchy or even non-linearities. 
+  \begin{enumerate}
+  \item By using simulations to manipulate interactions, we can learn how to read our data and interpret our results.
+  \item I will want more here but not sure exactly what to say for now...
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Test data is essential when building Bayesian models}
+\begin{enumerate}
+\item Do we want to include this?? Or just throw this in the supp?
+  \begin{enumerate}
+  \item Simulation data can only take us so far in model interpretation. 
+  \item We first need to be certain our models are operating correctly.
+  \item To test our model function, it is essential to first build test data and manipulate the effects of the parameters and sigmas around these parameters to make sure the model is outputing this information accurately.
+  \item Building test data is easy and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Understanding the real data and the conclusions we can draw}
+\begin{enumerate}
+\item Here, I want to reiterate the depth in which we can actually draw conclusions.
+  \begin{enumerate}
+  \item Our data and our models suggest that individuals at the Arboretum require fewer GDDs until budburst than those at the Harvard Forest.
+  \item We also see that the hobo loggers at both sites record greater variation than the weather station data.
+  \item But we do not know if this is because the loggers are less accurate measures of the same weather or if the hobo loggers are detecting microclimatic effects across the two sites. 
+  \item Finally, we can conclude that the weather station at the Arboretum is recording lower temperatures than the hobo loggers, thus data from the weather station at the Arboretum is recording the fewest number of GDDs until budburst. %% I need to make sure about this first but I will put this here for now as a placeholder.
+  \end{enumerate}
+\end{enumerate}
+
 \subsection*{The future of GDD models}
 \begin{enumerate}
 \item As we see from our forecasting simulations, regardless of base temperature threshold, GDD models may not be appropriate for the future with warming \citep{Man2010}. 
@@ -248,31 +325,57 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   -\end{figure}}
   
 \begin{figure}
-  \begin{subfigure}{.5\linewidth}
+  \begin{subfigure}{.32\textwidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_noisyws.pdf}
+    \includegraphics[width=\linewidth]{..//analyses/figures/muplot_noisyws.pdf}
     \label{fig:muplotnoisyws}
   \end{subfigure}%
-    \begin{subfigure}{.5\linewidth}
+    \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
-    \label{fig:climnoisyws}
+      \includegraphics[width=\linewidth]{..//analyses/figures/muplot_noisyhobo.pdf}
+    \label{fig:muplotnoisyhobo}
   \end{subfigure}\\[1ex]
-  \begin{subfigure}{\linewidth}
+  \begin{subfigure}{.32\textwidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_noisyws.pdf}
-      \label{fig:gddnoisyws}
+      \includegraphics[width=\linewidth]{..//analyses/figures/muplot_micros.pdf}
+      \label{fig:muplotmicros}
   \end{subfigure}
-\caption{ Using simulated data with less accurate weather station data, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
-\label{fig:noisyws}
+\caption{ We show effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using simulated data (a) with less accurate weather station data, (b) with less accurate hobo logger data and (c) microclimatic effects at both sites. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Tables XX, XX and XX for full model outputs.}
+\label{fig:simsmus}
 \end{figure}
 
+
+\begin{figure}
+  \begin{subfigure}{.32\textwidth}
+	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
+    \caption{}
+    \centering
+    \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_noisyws.pdf}
+    \label{fig:gddnoisyws}
+  \end{subfigure}%
+    \begin{subfigure}{.32\textwidth}
+	    %\rule{\linewidth}{\linewidth}
+      \caption{}
+      \centering
+      \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
+    \label{fig:gddnoisyhobo}
+  \end{subfigure}\\[1ex]
+  \begin{subfigure}{.32\textwidth}
+	    %\rule{\linewidth}{\linewidth}
+	    \caption{}
+      \centering
+      \includegraphics[width=\linewidth]{..//analyses/figures/gdd_methods_micros.pdf}
+      \label{fig:gddmicros}
+  \end{subfigure}
+\caption{ Using simulated data with (a) less accurate weather station data, (b) less accurate hobo logger data and (c) microcliamtic effects across both sites, we show histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data.}
+\label{fig:climhists}
+\end{figure}
 
 \begin{figure}
   \begin{subfigure}{.5\linewidth}
@@ -280,14 +383,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
     \caption{}
     \centering
     \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_prov.pdf}
-    \label{fig:gddprov}
+    \label{fig:climprov}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:climprov}
+    \label{fig:gddprov}
   \end{subfigure}\\[1ex]
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}

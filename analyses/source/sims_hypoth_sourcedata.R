@@ -9,10 +9,10 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "prov"  ## hobo, urban, prov
-  hypoth.para <- "hobo"
-  hypoth.mu <- -20
-  hypoth.sd <- 5   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth <- "hobo"  ## hobo, urban, prov
+  hypoth.para <- "ws"
+  hypoth.mu <- 0
+  hypoth.sd <- 20   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 50
   meantemp <- 10
@@ -46,7 +46,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
-  sigma_y <- 2
+  sigma_y <- 10
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)

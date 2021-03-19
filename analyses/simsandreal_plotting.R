@@ -36,7 +36,7 @@ realgdd <- read.csv("output/cleanmicro_gdd_2019.csv")
 # 8. Sigma temperature, we keep this consistent across the two sites as well
 # 9. Sigma of microclimatic effect (so what is added to the sigma temperature at the two sites)
 
-simsdat <- bbfunc("hobo", "ws", 0, 10, 300, 50, 10, 3, 0)
+simsdat <- bbfunc("hobo", "ws", 0, 15, 300, 40, 10, 3, 0)
 
 xtext <- seq(1, 2, by=1)
 cols <-viridis_pal(option="viridis")(3)
@@ -102,15 +102,15 @@ dev.off()
                          )
     )
     
-    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+    noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                          iter = 7000, warmup=6500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
     my.pch <- rep(15:18, each=10)
     alphahere = 0.4
     
-    modoutput <- summary(urbmethod_fake)$summary
+    modoutput <- summary(noisyws_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
     labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                      "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -119,7 +119,7 @@ dev.off()
                                          "Sigma Provenance", "Sigma \nWeather Station", 
                                          "Sigma Interaction")}
     
-    modelhere <- urbmethod_fake
+    modelhere <- noisyws_fake
     spnum <- length(unique(bball$species))
 
 pdf("figures/muplot_noisyws.pdf", width=7, height=4)
@@ -137,7 +137,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
       lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(3,2,4)]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
@@ -156,7 +156,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
 ##### Now, let's check out the simulations if we have a noisy hobo logger versus the weather station
 ## I will keep the parameters the exact same..
     
-    simsdat <- bbfunc("hobo", "hobo", 0, 20, 300, 50, 10, 3, 0)
+    simsdat <- bbfunc("hobo", "hobo", 0, 15, 300, 40, 10, 3, 0)
     
     
     xtext <- seq(1, 2, by=1)
@@ -223,15 +223,15 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
                          )
     )
     
-    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+    noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
+                          iter = 5000, warmup=4500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
     my.pch <- rep(15:18, each=10)
     alphahere = 0.4
     
-    modoutput <- summary(urbmethod_fake)$summary
+    modoutput <- summary(noisyhobo_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
     labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                      "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -240,7 +240,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
                                          "Sigma Provenance", "Sigma \nWeather Station", 
                                          "Sigma Interaction")}
     
-    modelhere <- urbmethod_fake
+    modelhere <- noisyhobo_fake
     spnum <- length(unique(bball$species))
 
 pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
@@ -344,7 +344,7 @@ simsdat <- bbfunc("hobo", "ws", 0, 20, 300, 50, 10, 3, 5)
   )
   
   urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                        iter = 4000, warmup=3500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+                        iter = 9000, warmup=8500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
   
   my.pal <-rep(viridis_pal(option="viridis")(9),2)
   my.pch <- rep(15:18, each=10)
@@ -377,7 +377,7 @@ simsdat <- bbfunc("hobo", "ws", 0, 20, 300, 50, 10, 3, 5)
       lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(3,2,4)]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
@@ -461,8 +461,8 @@ simsdat <- bbfunc("hobo", "hobo", 0, 20, 300, 50, 10, 3, 5)
                          )
     )
     
-    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
+                          iter = 2000, warmup=1500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -581,7 +581,7 @@ simsdat <- bbfunc("hobo", "ws", 0, 10, 300, 50, 10, 2, 2)
                          )
     )
     
-    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+    urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
                           iter = 4000, warmup=3500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
@@ -701,7 +701,7 @@ simsdat <- bbfunc("prov", "NA", -10, 2, 300, 50, 10, 2, 0)
       )
       
       provmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                            iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                            iter = 8000, warmup=7500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
