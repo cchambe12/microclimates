@@ -28,8 +28,8 @@ spring <- clim[(clim$doy>=1 & clim$doy<=150),]
 
 climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
   geom_smooth(aes(col=as.factor(climatetype), fill=as.factor(climatetype)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  scale_color_manual(name = "Site", values=cols, labels = c("Arboretum", "Harvard Forest")) +
-  scale_fill_manual(name = "Site", values=cols, labels = c("Arboretum", "Harvard Forest")) +
+  scale_color_manual(name = "Site", values=cols, labels = c("weldhill"="Arboretum","harvardforest"="Harvard Forest")) +
+  scale_fill_manual(name = "Site", values=cols, labels = c("weldhill"="Arboretum", "harvardforest"="Harvard Forest")) +
   theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
   coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
   scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
@@ -37,8 +37,9 @@ climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #ge
                                                                  legend.title = element_text(size=8),
                                                                  legend.key.size = unit(0.8,"line"))
 
-quartz()
-climate
+pdf("figures/climate_hfandts.pdf", width=5, height=4, onefile=FALSE)
+  climate
+dev.off()
 
 
 ######## No longer needed but holding for potential future use...####

@@ -32,9 +32,9 @@ if(FALSE){
 bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, meantemp, meantemp.sd, micro.sd){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 150 #### just to make sure we don't get any NAs
-  nspps <- 10 
-  ninds <- 30 
+  daysperyr <- 80 #### just to make sure we don't get any NAs
+  nspps <- 20 
+  ninds <- 20 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
   nmicros <- ninds  ### Number microsites per site so 20 total 
@@ -46,7 +46,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
-  sigma_y <- 10
+  sigma_y <- 15
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)

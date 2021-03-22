@@ -36,7 +36,7 @@ realgdd <- read.csv("output/cleanmicro_gdd_2019.csv")
 # 8. Sigma temperature, we keep this consistent across the two sites as well
 # 9. Sigma of microclimatic effect (so what is added to the sigma temperature at the two sites)
 
-simsdat <- bbfunc("hobo", "ws", 0, 15, 300, 40, 10, 3, 0)
+simsdat <- bbfunc("hobo", "ws", 0, 15, 300, 20, 10, 3, 0)
 
 xtext <- seq(1, 2, by=1)
 cols <-viridis_pal(option="viridis")(3)
@@ -103,7 +103,7 @@ dev.off()
     )
     
     noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 7000, warmup=6500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                          iter = 8000, warmup=7500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -156,7 +156,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
 ##### Now, let's check out the simulations if we have a noisy hobo logger versus the weather station
 ## I will keep the parameters the exact same..
     
-    simsdat <- bbfunc("hobo", "hobo", 0, 15, 300, 40, 10, 3, 0)
+    simsdat <- bbfunc("hobo", "hobo", 0, 15, 300, 20, 10, 3, 0)
     
     
     xtext <- seq(1, 2, by=1)
@@ -277,7 +277,7 @@ pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
 ##### Now, let's check out the simulations if we have a noisy weather station AND microclimates #####
 ## I will keep the other parameters the exact same..
 
-simsdat <- bbfunc("hobo", "ws", 0, 20, 300, 50, 10, 3, 5)
+simsdat <- bbfunc("hobo", "ws", 0, 15, 300, 20, 10, 2, 3)
 
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
