@@ -34,7 +34,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 80 #### just to make sure we don't get any NAs
   nspps <- 20 
-  ninds <- 20 
+  ninds <- 40 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
   nmicros <- ninds  ### Number microsites per site so 20 total 
