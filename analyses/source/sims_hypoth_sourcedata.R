@@ -12,12 +12,12 @@ if(FALSE){
   hypoth <- "hobo"  ## hobo, urban, prov
   hypoth.para <- "ws"
   hypoth.mu <- 0
-  hypoth.sd <- 20   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth.sd <- 0   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
-  fstar.sd <- 50
+  fstar.sd <- 20
   meantemp <- 10
-  meantemp.sd <- 2
-  micro.sd <- 0
+  meantemp.sd <- 1
+  micro.sd <- 15
   #arbclim <- 11   ### tmean arb climate
   #arbclim.sd <- 4
   #arbmicroclim <- 1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
@@ -34,7 +34,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 80 #### just to make sure we don't get any NAs
   nspps <- 20 
-  ninds <- 40 
+  ninds <- 20 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
   nmicros <- ninds  ### Number microsites per site so 20 total 
@@ -83,7 +83,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
                         site = as.character("arb"))
   
   ### This is how I get weather station data versus hobo logger data
-  arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(as.numeric(arbclim$day), cc.arb + microarb.effect, sigma.arb + microsigmaarb.effect), 
+  arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(as.numeric(arbclim$day), cc.arb, micro.sd), 
                           rnorm(as.numeric(arbclim$day), cc.arb, sigma.arb)) 
   ### and now we draw from mean and sigma for each day to find daily temp for each microsite
   
@@ -96,8 +96,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
                        site = as.character("hf"))
   
   ### Again, where I set up the difference between hobo logger and weather station
-  hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf + as.numeric(microhf.effect), 
-                                                      sigma.hf + microsigmahf.effect), 
+  hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf, micro.sd), 
                          rnorm(hfclim$day, cc.hf, sigma.hf)) 
   ### and now we draw from mean and sigma for each day to find daily temp for each microsite
   
