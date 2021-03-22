@@ -16,11 +16,10 @@ source("source/sims_warm_sourcedata.R")
 
 #### warmfunc(fstar.min, fstar.max, warmmax, meantemp, basetemp)
 
-gdd.warm <- warmfunc(100, 300, 10, 10, 10)
-gdd.warm <- gdd.warm[[1]]
+base10 <- warmfunc(100, 300, 10, 10, 10)[[1]]
 
 #pdf("figures/forecasting_base10.pdf", width=6, height=5)
-ten <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+ten <- ggplot(base10, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -34,10 +33,10 @@ ten <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=
   coord_cartesian(ylim=c(1, 1.15)) 
 #dev.off()
 
-gdd.warm <- warmfunc(100, 300, 10, 10, 5)[[1]]
+base5 <- warmfunc(100, 300, 10, 10, 5)[[1]]
 
 #pdf("figures/forecasting_base5.pdf", width=6, height=5)
-five <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+five <- ggplot(base5, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -52,10 +51,10 @@ five <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group
 #dev.off()
 
 
-gdd.warm <- warmfunc(100, 300, 10, 10, 0)[[1]]
+base0 <- warmfunc(100, 300, 10, 10, 0)[[1]]
 
 #pdf("figures/forecasting_base0.pdf", width=6, height=5)
-zero <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+zero <- ggplot(base0, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -69,10 +68,10 @@ zero <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group
   coord_cartesian(ylim=c(1, 1.15))
 #dev.off()
 
-gdd.warm <- warmfunc(100, 300, 10, 10, -5)[[1]]
+baseneg <- warmfunc(100, 300, 10, 10, -5)[[1]]
 
 #pdf("figures/forecasting_base-5.pdf", width=6, height=5)
-neg5 <- ggplot(gdd.warm, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
+neg5 <- ggplot(baseneg, aes(as.numeric(warming), gdd_ratio, col=fstarspp, group=fstarspp)) +
   geom_line(stat='smooth', method = "lm", alpha=1, aes(col=fstarspp)) +
   #geom_point(aes(as.numeric(warming), gdd_accuracy, col=fstarspp, group=fstarspp)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -104,13 +103,6 @@ dev.off()
 
 # We want to solve for the slope of with warming... okay so is it the (sum of the meantemp + n warming)*x = GDD threshold
 # x = GDD threshold/E(meantemp+n)
-
-
-baseneg <- warmfunc(100, 300, 10, 10, -5)[[1]]
-base0 <- warmfunc(100, 300, 10, 10, 0)[[1]]
-base5 <- warmfunc(100, 300, 10, 10, 5)[[1]]
-base10 <- warmfunc(100, 300, 10, 10, 10)[[1]]
-
 
 meantemp <- 10
 basetempneg <- -5
@@ -169,14 +161,14 @@ slopes$dm10 <- round(((unique(ave(base10$gdd_ratio[base10$warming==10], base10$f
                 (rep(((meantemp+10)-basetemp10), numfstars) - rep(((meantemp+0)-basetemp10),numfstars))) * 1000, digits=3)
 
 slopesbyfstar <- gather(slopes, base, m, -fstarspp)
-lm.neg <- lm(slopesbyfstar$m[slopesbyfstar$base=="amneg"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="amneg"])
-lm.0 <- lm(slopesbyfstar$m[slopesbyfstar$base=="bm0"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="bm0"])
-lm.5 <- lm(slopesbyfstar$m[slopesbyfstar$base=="cm5"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="cm5"])
-lm.10 <- lm(slopesbyfstar$m[slopesbyfstar$base=="dm10"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="dm10"])
+#lm.neg <- lm(slopesbyfstar$m[slopesbyfstar$base=="amneg"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="amneg"])
+#lm.0 <- lm(slopesbyfstar$m[slopesbyfstar$base=="bm0"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="bm0"])
+#lm.5 <- lm(slopesbyfstar$m[slopesbyfstar$base=="cm5"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="cm5"])
+#lm.10 <- lm(slopesbyfstar$m[slopesbyfstar$base=="dm10"]~slopesbyfstar$fstarspp[slopesbyfstar$base=="dm10"])
 
 # Now calculate it!    
-cm1 <- rbind(coef(lm.0),coef(lm.10)) # Coefficient matrix
-inter.010 <- c(-solve(cbind(cm1[,2],-1)) %*% cm1[,1])
+#cm1 <- rbind(coef(lm.0),coef(lm.10)) # Coefficient matrix
+#inter.010 <- c(-solve(cbind(cm1[,2],-1)) %*% cm1[,1])
 #cm2 <- rbind(coef(lm.10),coef(lm.5)) # Coefficient matrix
 #inter.105 <- c(-solve(cbind(cm2[,2],-1)) %*% cm2[,1])
 #a1 <- coef(lm.neg)-coef(lm.0)
@@ -194,9 +186,9 @@ ggplot(slopesbyfstar, aes(x=fstarspp, y=m, col=base)) +
                                            "cm5"="5",
                                            "dm10"="10")) +
   theme_classic() + 
-  geom_vline(xintercept = inter.010[[1]], linetype="dashed") +
+  #geom_vline(xintercept = inter.010[[1]], linetype="dashed") +
   #geom_vline(xintercept = inter.105[[1]], linetype="dashed") +
-  scale_x_continuous(breaks=c(seq(100, 300, by=50), round(inter.010[[1]], digits=0))) +
+  #scale_x_continuous(breaks=c(seq(100, 300, by=50), round(inter.010[[1]], digits=0))) +
   xlab("GDD Threshold") + ylab("Rate of change in GDD accuracy ratio (x1000)")
 dev.off()  
 

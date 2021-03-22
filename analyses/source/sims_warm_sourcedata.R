@@ -6,12 +6,14 @@
 library(dplyr)
 library(tidyr)
 
+set.seed(20210322)
+
 if(FALSE){
   fstar.min <- 100  ## GDD threshold
   fstar.max <- 300
   warmmax <- 10
   meantemp <- 10
-  basetemp <- 10
+  basetemp <- 0
 }
 
 
@@ -26,7 +28,7 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)
   cc <- meantemp
-  sigma.cc <- 2
+  sigma.cc <- 0.1
   warmcc <- warmmax
   
   
@@ -145,37 +147,29 @@ warmfunc <- function(fstar.min, fstar.max, warmmax, meantemp, basetemp){
   df.bb$gdd.obs9 <- ifelse(df.bb$day==df.bb$bb9, df.bb$gdd.obs9, NA)
   df.bb$gdd.obs10 <- ifelse(df.bb$day==df.bb$bb10, df.bb$gdd.obs10, NA)
   
-  df$gdd.obs0 <- round(ave(df$gdd.obs0), digits=0)
-  df$gdd.obs1 <- round(ave(df$gdd.obs1), digits=0)
-  df$gdd.obs2 <- round(ave(df$gdd.obs2), digits=0)
-  df$gdd.obs3 <- round(ave(df$gdd.obs3), digits=0)
-  df$gdd.obs4 <- round(ave(df$gdd.obs4), digits=0)
-  df$gdd.obs5 <- round(ave(df$gdd.obs6), digits=0)
-  df$gdd.obs6 <- round(ave(df$gdd.obs5), digits=0)
-  df$gdd.obs7 <- round(ave(df$gdd.obs7), digits=0)
-  df$gdd.obs8 <- round(ave(df$gdd.obs8), digits=0)
-  df$gdd.obs9 <- round(ave(df$gdd.obs9), digits=0)
-  df$gdd.obs10 <- round(ave(df$gdd.obs10), digits=0)
-  
-  
   df.bb <- subset(df.bb, select=c("fstarspp", "gdd.obs0",
                                   "gdd.obs1", "gdd.obs2", "gdd.obs3", "gdd.obs4", "gdd.obs5",
                                   "gdd.obs6", "gdd.obs7", "gdd.obs8", "gdd.obs9", "gdd.obs10")) 
-  bball <- df.bb %>% tidyr::gather(warming, gdd, gdd.obs0:gdd.obs10, -fstarspp)
-  bball$warming <- as.numeric(substr(bball$warming, 8, 9))
+  gdds <- df.bb %>% tidyr::gather(warming, gdd, gdd.obs0:gdd.obs10, -fstarspp)
+  gdds <- gdds[!is.na(gdds$gdd),]
   
-  bball <- bball[!is.na(bball$gdd),]
+  gdds$warming <- as.numeric(substr(gdds$warming, 8, 9))
+  
+  gdds$gddmean <- round(ave(gdds$gdd, gdds$warming, gdds$fstarspp), digits=0)
+  
+  gdds$gdd_accuracy <- gdds$gdd - gdds$fstarspp
+  gdds$gdd_ratio <- gdds$gdd/gdds$fstarspp
+
+  gdds <- gdds[!is.na(gdds$gdd),]
+  gdds <- gdds[!duplicated(gdds),]
   
   
   ##### Now let's do some checks...
-  bball$gdd_accuracy <- bball$gdd - bball$fstarspp
-  bball$gdd_ratio <- bball$gdd/bball$fstarspp
+  gdds <- gdds[(gdds$warming<=warmmax),]
   
-  bball <- bball[(bball$warming<=warmmax),]
+  gdds <- na.omit(gdds)
   
-  bball <- na.omit(bball)
-  
-  mylist <- list(bball, df)  
+  mylist <- list(gdds, df)  
   
   return(mylist)
   

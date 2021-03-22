@@ -251,9 +251,9 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \item The noise is additionally apparent when visualizing raw data plots, which can detect which method is more noisy.
   \end{enumerate}
   
-\item Simulations that manipulate the data to have both methods equally as accurate but also include microclimates at both sites, we again see that the noise is returned in the sigma for the method parameter. 
+\item Simulations that manipulate the data to have both methods equally as accurate but also include microclimates at both sites, we now see that the weather station is requiring fewer GDDs until leafout. 
   \begin{enumerate}
-  \item In comparing the raw data variation in GDDs, the noisy hobo logger simulations and the microclimate simulations appear similar. 
+  \item When simulating microclimatic effects across the sites, we include greater variation in temperature for the hobo logger data, which is being reflected by the negative slope of the method parameter. 
   \end{enumerate}
   
 \item Lizzie do you think this is the right order to do this in?? Not sure, I could also put this in a section under real data too...
@@ -297,11 +297,16 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \begin{enumerate}
   \item As we see from the less accurate weather station data example versus the less accurate hobo logger data example, the model outputs are the same.
   \item The best way to disentangle which climate measurement method is less accurate is through the use of raw data plots.
-  \item But, unfortunately, this can only take us so far. 
-  \item As we see from the less accurate hobo logger simulation and the microclimate effects simulation, the model outputs are again the same and the raw data plots are also identical. 
   \item Using simulations, has helped us see through the common pitfalls as scientists and conclusions we tend to jump to when interpreting our models. 
   \end{enumerate}
+  
+\item Understanding microclimates versus measurement error is possible, though difficult to detect. 
+  \begin{enumerate}
+  \item By including microclimatic effects at both sites, variation in temperature increases and, thus, the number of days in which the temperature falls below the base GDD threshold is also greater but the days in which temperatures are accumulating, the temperature will likely be greater than what is recorded at the weather station. 
+  \item We would expect that hobo loggers would record higher GDDs at leafout than weather stations under microclimatic conditions.
+  \end{enumerate}
 \end{enumerate}
+
 
 \subsection*{The use of simulations to better interpret real data results}
 \begin{enumerate}
@@ -365,55 +370,41 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   -\end{figure}}
   
 \begin{figure}[H]
-  \begin{subfigure}{.32\textwidth}
+  \begin{subfigure}{.5\textwidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_noisyws.pdf}
+    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_noisyws.pdf}
     \label{fig:muplotnoisyws}
   \end{subfigure}%
-    \begin{subfigure}{.32\textwidth}
+    \begin{subfigure}{.5\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_noisyhobo.pdf}
+      \includegraphics[height=5cm, width=8cm]{..//analyses/figures/muplot_noisyhobo.pdf}
     \label{fig:muplotnoisyhobo}
   \end{subfigure}
-  \begin{subfigure}{.32\textwidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=5cm, width=6cm]{..//analyses/figures/muplot_micros.pdf}
-      \label{fig:muplotmicros}
-  \end{subfigure}
-\caption{ We show effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using simulated data (a) with less accurate weather station data, (b) with less accurate hobo logger data and (c) microclimatic effects at both sites. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Tables XX, XX and XX for full model outputs.}
+\caption{ We show effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using simulated data (a) with less accurate weather station data and (b) with less accurate hobo logger data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Tables XX, XX and XX for full model outputs.}
 \label{fig:simsmus}
 \end{figure}
 
 
 \begin{figure}[H]
-  \begin{subfigure}{.32\textwidth}
+  \begin{subfigure}{.5\textwidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
+    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
     \label{fig:gddnoisyws}
     \end{subfigure}
-  \begin{subfigure}{.32\textwidth}
+  \begin{subfigure}{.5\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
     \label{fig:gddnoisyhobo}
     \end{subfigure}
-  \begin{subfigure}{.32\textwidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=3cm, width=6cm]{..//analyses/figures/gdd_methods_micros.pdf}
-      \label{fig:gddmicros}
-      \end{subfigure}
-\caption{ Using simulated data with (a) less accurate weather station data, (b) less accurate hobo logger data and (c) microcliamtic effects across both sites, we show histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data.}
+\caption{ Using simulated data with (a) less accurate weather station data and (b) less accurate hobo logger data, we show histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data.}
 \label{fig:climhists}
 \end{figure}
 
@@ -422,21 +413,40 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_prov.pdf}
-    \label{fig:climprov}
+    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_micros.pdf}
+    \label{fig:climmicros}
   \end{subfigure}%
+    \begin{subfigure}{.5\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+      \caption{}
+      \centering
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_micros.pdf}
+    \label{fig:gddmicros}
+  \end{subfigure}\\[1ex]
+  \begin{subfigure}{\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+	    \caption{}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_micros.pdf}
+      \label{fig:muplotmicros}
+  \end{subfigure}
+\caption{ Using simulations data with microclimatic effects at both sites, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
+\label{fig:micros}
+\end{figure}
+
+\begin{figure}
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
     \label{fig:gddprov}
-  \end{subfigure}\\[1ex]
-  \begin{subfigure}{\linewidth}
+    \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_prov.pdf}
       \label{fig:muplotprov}
   \end{subfigure}
 \caption{ Using simulated data to test provenance latitude, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
@@ -449,14 +459,14 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
     \caption{}
     \centering
     \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_urbanws.pdf}
-    \label{fig:gddurbanws}
+    \label{fig:climurbanws}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_urbanws.pdf}
-    \label{fig:climurbanws}
+    \label{fig:gddurbanws}
   \end{subfigure}\\[1ex]
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
@@ -475,14 +485,14 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
     \caption{}
     \centering
     \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_real.pdf}
-    \label{fig:gddreal}
+    \label{fig:climreal}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_real.pdf}
-    \label{fig:climreal}
+    \label{fig:gddreal}
   \end{subfigure}\\[1ex]
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
@@ -500,14 +510,14 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=5cm, width=16cm]{..//analyses/figures/forecasting.pdf}
+    \includegraphics[height=4cm, width=16cm]{..//analyses/figures/forecasting.pdf}
     \label{fig:forecasting}
     \end{subfigure}
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=7cm, width=8cm]{..//analyses/figures/forecasting_slopes.pdf}
+      \includegraphics[height=6cm, width=7cm]{..//analyses/figures/forecasting_slopes.pdf}
       \label{fig:slopes}
   \end{subfigure}
 \caption{To discuss more at our next meeting...}
