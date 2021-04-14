@@ -9,9 +9,9 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "hobo"  ## hobo, urban, prov
-  hypoth.para <- "ws"
-  hypoth.mu <- 0
+  hypoth <- "urban"  ## hobo, urban, prov
+  hypoth.para <- "NA"
+  hypoth.mu <- -30
   hypoth.sd <- 15   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 20
@@ -32,7 +32,7 @@ if(FALSE){
 bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.sd, meantemp, meantemp.sd, micro.sd){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 50 #### just to make sure we don't get any NAs
+  daysperyr <- 60 #### just to make sure we don't get any NAs
   nspps <- 20 
   ninds <- 20 
   nobs <- nspps*ninds
@@ -46,7 +46,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
-  sigma_y <- 12
+  sigma_y <- 5
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)
@@ -145,9 +145,34 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     ### I think this should just make the weather station less accurate...??? I hope.
     df.bb$hyp_b <- ifelse(df.bb$method==hypoth.para, 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
     ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-    df.bb$gdd.noise <- df.bb$hyp_b * rnorm(ntot, mean=0, sd=30)
+    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(nspps, mean=hypoth_mu, sd=hypoth_sd), each=ninds*nsites)
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(ntot, mean=0, sd=sigma_y)
+    
+    ##### Now add in provenance so better able to compare to other simulations
+    spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
+    provenance.hf <- 42.5
+    provenance.arb <- round(rnorm(nobs, provenance.hf, 5), digits=2)
+    
+    df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
+                                   site = rep(c("arb", "hf"), each=nobs*nmethods),
+                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, ninds*nspps*nmethods)),
+                                   method = rep(c("ws", "hobo"), nsites*nobs)))
+    df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
+    df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
+    df.prov$sp_ind <- NULL
+    df.bb$species <- as.numeric(df.bb$species)
+    
+    df.prov$ind <- as.integer(df.prov$ind)
+    df.bb <- left_join(df.bb, df.prov)
+    
+  }
+  
+  if(hypoth=="NA"){
+    #### This is where I test our hypothesis. This doesn't come out of the model directly
+    df.bb$gdd.noise <- 0
+    
+    df.bb$gdd <- df.bb$gdd.obs + rnorm(ntot, mean=0, sd=sigma_y)
     
     ##### Now add in provenance so better able to compare to other simulations
     spind <- paste(rep(c(1:nspps), each=ninds), rep(1:ninds, nspps), sep="_")
@@ -186,14 +211,15 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     
     df.prov <- as.data.frame(cbind(sp_ind = rep(rep(spind, nsites),each=nmethods), 
                                    site = rep(c("arb", "hf"), each=nobs*nmethods),
-                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, 400)),
+                                   provenance = c(rep(provenance.arb, each=nmethods), rep(provenance.hf, ninds*nspps*nmethods)),
                                    method = rep(c("ws", "hobo"), nsites*nobs)))
     df.prov$species <- as.numeric(gsub("\\_.*" , "", df.prov$sp_ind))
     df.prov$ind <- gsub(".*_" , "", df.prov$sp_ind)
     df.prov$sp_ind <- NULL
+    df.bb$species <- as.numeric(df.bb$species)
     
     df.prov$ind <- as.integer(df.prov$ind)
-    df.bb <- full_join(df.bb, df.prov)
+    df.bb <- left_join(df.bb, df.prov)
     
   }
   
