@@ -17,7 +17,8 @@ library(rstan)
 
 setwd("~/Documents/git/microclimates/analyses/")
 
-source("source/sims_hypoth_sourcedata.R")
+#source("source/sims_hypoth_sourcedata.R")
+source("source/sims_foo.R")
 source("source/sims_hypoth_interxn_sourcedata.R")
 #source("source/sims_params_sourcedata.R")
 
@@ -36,13 +37,14 @@ realgdd <- read.csv("output/cleanmicro_gdd_2019.csv")
 # 8. Sigma temperature, we keep this consistent across the two sites as well
 # 9. Sigma of microclimatic effect (so what is added to the sigma temperature at the two sites)
 
-simsdat <- bbfunc("hobo", "ws", 0, 15, 300, 20, 10, 3, 0)
+simsdat <- bbfunc("hobo", "ws", 0, 10, 300, 20, 10, 3, 0)
 
 xtext <- seq(1, 2, by=1)
 cols <-viridis_pal(option="viridis")(3)
 
 bball <- simsdat[[1]]
 clim <- simsdat[[2]]
+
 
   ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
@@ -103,7 +105,7 @@ dev.off()
     )
     
     noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                          iter = 8000, warmup=7500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                          iter = 5000, warmup=4500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
