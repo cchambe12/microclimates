@@ -12,21 +12,21 @@ if(FALSE){
   hypoth <- "urban"  ## hobo, urban, prov
   hypoth.para <- "ws" ## ws, hobo, NA
   hypoth.mu <- -30
-  hypoth.sd <- 10   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth.sd <- 5   ### This just adds that amount of imprecision to the hypothesis question
   hypoth.para.sd <- 15
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 20
   #meantemp <- 10
-  #meantemp.sd <- 5
+  #meantemp.sd <- 5   
   #micro.sd <- 0
-  arbclim <- 10   ### tmean arb climate
-  arbclim.sd <- 5
-  arbmicroclim <- -1  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
-  arbmicroclim.sd <- 0
-  hfclim <- 8  ## tmean hf climate
-  hfclim.sd <- 4
-  hfmicroclim <- -3  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
-  hfmicroclim.sd <- 0
+  arbclim <- 5   ### tmean arb climate
+  arbclim.sd <- 2
+  arbmicroclim <- 10  ### tmean added to arb climate base, if positive then hobos are recording warmer temperatures
+  arbmicroclim.sd <- 2
+  hfclim <- 10  ## tmean hf climate
+  hfclim.sd <- 2
+  hfmicroclim <- -5  ### tmean added to hf climate base, if positive then hobos are recording warmer temperatures
+  hfmicroclim.sd <- 2
 }
 
 
@@ -34,7 +34,7 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 60 #### just to make sure we don't get any NAs
-  nspps <- 15 
+  nspps <- 20 
   ninds <- 80 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
@@ -85,8 +85,8 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
                         site = as.character("arb"))
   
   ### This is how I get weather station data versus hobo logger data
-  arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(as.numeric(arbclim$day), cc.arb, meantemp.sd + micro.sd), 
-                          rnorm(as.numeric(arbclim$day), cc.arb, meantemp.sd)) 
+  arbclim$tmean <- ifelse(arbclim$method=="hobo", rnorm(as.numeric(arbclim$day), cc.arb + microarb.effect, sigma.arb + microsigmaarb.effect), 
+                          rnorm(as.numeric(arbclim$day), cc.arb, sigma.arb)) 
   ### and now we draw from mean and sigma for each day to find daily temp for each microsite
   
   #### Harvard Forest climate data, weather station data
@@ -98,8 +98,8 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
                        site = as.character("hf"))
   
   ### Again, where I set up the difference between hobo logger and weather station
-  hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(hfclim$day, cc.hf, meantemp.sd + micro.sd), 
-                         rnorm(hfclim$day, cc.hf, meantemp.sd)) 
+  hfclim$tmean <- ifelse(hfclim$method=="hobo", rnorm(as.numeric(hfclim$day), cc.hf + microhf.effect, sigma.hf + microsigmahf.effect), 
+                          rnorm(as.numeric(hfclim$day), cc.hf, sigma.hf))
   ### and now we draw from mean and sigma for each day to find daily temp for each microsite
   
   
@@ -131,6 +131,7 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
   }
   
   df.bb <- df[(df$bb==df$day),]
+  df.bb <- na.omit(df.bb)
   
   ### Started 25 May 2020 by Cat
   # Updated 2 Feb 2021 by Cat

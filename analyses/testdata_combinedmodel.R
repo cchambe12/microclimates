@@ -33,59 +33,13 @@ set.seed(12221)
 nsp = 20 # number of species
 ntot = 200 # numbers of obs per species. 
 
-sample_a <- list(site.env = rbinom(1000, 1, 0.5),
-                 method.env = rbinom(1000, 1, 0.5))
-
-model.parameters <- list(intercept = 400,
-                         urban.coef = -50,
-                         method.coef = -100)
-
-#  2) Now, we will make varying intercepts
-env.samples <- sapply(sample_a, FUN = function(x){
-  sample(x, size = nsp * ntot, replace = TRUE)})
-mm <- model.matrix(~env.samples)
-#mm <- mm[,-2]
-
-#  4) We need to make a random intercept model for each species
-parameters.temp <- matrix(unlist(model.parameters), ncol = length(model.parameters), nrow = nsp * ntot, byrow = TRUE)
-
-# Which parameters are random?
-random.regex <- grep(pattern = paste(c("intercept", "urban.coef", "method.coef"), collapse = "|"), x = names(model.parameters))
-
-# Generate random parameters (by species)
-parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 50), ntot)})
-parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 10), ntot)})
-parameters.temp[, 3] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 20), ntot)})
-# Calculate response
-response <- sapply(1:nrow(env.samples), FUN = function(x){
-  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 20)})
-
-testdata_urbmethod <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
-                                    gdd = response, urban = env.samples[,1], method = env.samples[,2]))
-
-write.csv(testdata_urbmethod, file="output/testdata_urbmethod.csv", row.names = FALSE)
-
-#  7) Let's do a quick lmer model to test the fake data
-modtest <- lmer(gdd ~ urban + method + (urban + method|species), data=testdata_urbmethod) ## Quick look looks good!
-
-
-
-####################### NOW LET'S ADD AN INTERACTION!! #####################
-### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff
-#  1) Let's make the observations much higher than the actual data to build a good model.
-nsp = 20 # number of species
-ntot = 200 # numbers of obs per species. 
-
 sample_a <- list(urban.env = rbinom(1000, 1, 0.5),
                  method.env = rbinom(1000, 1, 0.5))
 
-model.parameters <- list(intercept = 400,
+model.parameters <- list(intercept = 300,
                          urban.coef = -30,
-                         method.coef = -20,
-                         urbanxmethod = -40)
+                         method.coef = 0,
+                         urbanxmethod = -5)
 
 #  2) Now, we will make varying intercepts
 env.samples <- sapply(sample_a, FUN = function(x){
@@ -117,21 +71,81 @@ parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
 parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
   rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 10), ntot)})
 parameters.temp[, 3] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 20), ntot)})
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 15), ntot)})
 parameters.temp[, 4] <- sapply(1:nsp, FUN = function(x){
-  rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 10), ntot)})
+  rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 2), ntot)})
 # Calculate response
 response <- sapply(1:nrow(env.samples), FUN = function(x){
-  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 20)})
+  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 5)})
 
 testdata_urbmethod_intrxn <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
                                        gdd = response, urban = env.samples[,1], method = env.samples[,2]))
 
 write.csv(testdata_urbmethod_intrxn, file="output/testdata_urbmethod_intrxn.csv", row.names = FALSE)
 
+#### Let's see how it fares with the model!
+datalist.gdd <- with(testdata_urbmethod_intrxn, 
+                     list(y = gdd, 
+                          urban = urban,
+                          method = method,
+                          sp = as.numeric(as.factor(species)),
+                          N = nrow(testdata_urbmethod_intrxn),
+                          n_sp = length(unique(testdata_urbmethod_intrxn$species))
+                     )
+)
+
+noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
+                      iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+
+
 #  7) Let's do a quick lmer model to test the fake data
 modtest <- lmer(gdd ~ urban + method + urban*method + (urban + method + urban*method|species), data=testdata_urbmethod_intrxn) ## Quick look looks good!
 
+if(FALSE){
+  ### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff
+  #  1) Let's make the observations much higher than the actual data to build a good model.
+  nsp = 20 # number of species
+  ntot = 200 # numbers of obs per species. 
+  
+  sample_a <- list(site.env = rbinom(1000, 1, 0.5),
+                   method.env = rbinom(1000, 1, 0.5))
+  
+  model.parameters <- list(intercept = 300,
+                           urban.coef = -30,
+                           method.coef = 0)
+  
+  #  2) Now, we will make varying intercepts
+  env.samples <- sapply(sample_a, FUN = function(x){
+    sample(x, size = nsp * ntot, replace = TRUE)})
+  mm <- model.matrix(~env.samples)
+  #mm <- mm[,-2]
+  
+  #  4) We need to make a random intercept model for each species
+  parameters.temp <- matrix(unlist(model.parameters), ncol = length(model.parameters), nrow = nsp * ntot, byrow = TRUE)
+  
+  # Which parameters are random?
+  random.regex <- grep(pattern = paste(c("intercept", "urban.coef", "method.coef"), collapse = "|"), x = names(model.parameters))
+  
+  # Generate random parameters (by species)
+  parameters.temp[, 1] <- sapply(1:nsp, FUN = function(x){
+    rep(rnorm(n = 1, mean = model.parameters[[random.regex[1]]], sd = 20), ntot)})
+  parameters.temp[, 2] <- sapply(1:nsp, FUN = function(x){
+    rep(rnorm(n = 1, mean = model.parameters[[random.regex[2]]], sd = 5), ntot)})
+  parameters.temp[, 3] <- sapply(1:nsp, FUN = function(x){
+    rep(rnorm(n = 1, mean = model.parameters[[random.regex[3]]], sd = 15), ntot)})
+  # Calculate response
+  response <- sapply(1:nrow(env.samples), FUN = function(x){
+    rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 5)})
+  
+  testdata_urbmethod <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
+                                         gdd = response, urban = env.samples[,1], method = env.samples[,2]))
+  
+  write.csv(testdata_urbmethod, file="output/testdata_urbmethod.csv", row.names = FALSE)
+  
+  #  7) Let's do a quick lmer model to test the fake data
+  modtest <- lmer(gdd ~ urban + method + (urban + method|species), data=testdata_urbmethod) ## Quick look looks good!
+  
+  
 
 ############################################################################
 ####################### CHILL TIME WITH AN INTERACTION!! ###################
@@ -254,3 +268,4 @@ write.csv(testdata_provmethod_intrxn, file="output/testdata_provmethod_intrxn.cs
 #  7) Let's do a quick lmer model to test the fake data
 modtest <- lmer(gdd ~ provenance + method + provenance*method + (provenance + method + provenance*method|species), data=testdata_provmethod_intrxn) ## Quick look looks good!
 
+}

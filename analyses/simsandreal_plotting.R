@@ -17,8 +17,7 @@ library(rstan)
 
 setwd("~/Documents/git/microclimates/analyses/")
 
-#source("source/sims_hypoth_sourcedata.R")
-source("source/sims_foo.R")
+source("source/sims_hypoth_sourcedata.R")
 source("source/sims_hypoth_interxn_sourcedata.R")
 #source("source/sims_params_sourcedata.R")
 
@@ -151,6 +150,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     }
     par(xpd=TRUE) 
     dev.off()
+    save(noisyws_fake, file="~/Documents/git/microclimates/analyses/stan/noisyws_sims.Rdata")
 
 ##########################################################################################################    
 ##########################################################################################################    
@@ -272,6 +272,7 @@ pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
     }
     par(xpd=TRUE) 
     dev.off()
+    save(noisyhobo_fake, file="~/Documents/git/microclimates/analyses/stan/noisyhobo_sims.Rdata")
 
 ####################################################################################################
 ####################################################################################################
@@ -346,7 +347,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
     )
     
     micros_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
-                          iter = 2000, warmup=1500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                          iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -392,6 +393,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
       }
   par(xpd=TRUE)
   dev.off()
+  save(micros_fake, file="~/Documents/git/microclimates/analyses/stan/micros_sims.Rdata")
 
 
 ####################################################################################################
@@ -399,7 +401,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
 ####################################################################################################
 #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
 # higher provenances will require fewer GDDs 
-simsdat <- bbfunc("urban", "NA", -20, 10, 300, 20, 10, 3, 0)
+simsdat <- bbfunc("urban", "NA", -10, 5, 300, 20, 10, 3, 0)
 
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
@@ -464,15 +466,15 @@ simsdat <- bbfunc("urban", "NA", -20, 10, 300, 20, 10, 3, 0)
                            )
       )
       
-      urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                            iter = 6000, warmup=5500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+      urban_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                            iter = 5000, warmup=4500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
       my.pch <- rep(15:18, each=10)
       alphahere = 0.4
       
-      modoutput <- summary(urbmethod_fake)$summary
+      modoutput <- summary(urban_fake)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
       labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                        "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -481,7 +483,7 @@ simsdat <- bbfunc("urban", "NA", -20, 10, 300, 20, 10, 3, 0)
                                            "Sigma Provenance", "Sigma \nWeather Station", 
                                            "Sigma Interaction")}
       
-      modelhere <- urbmethod_fake
+      modelhere <- urban_fake
       spnum <- length(unique(bball$species))
 
   pdf("figures/muplot_urban.pdf", width=7, height=4)
@@ -511,6 +513,7 @@ simsdat <- bbfunc("urban", "NA", -20, 10, 300, 20, 10, 3, 0)
       }
   par(xpd=TRUE)
   dev.off()
+  save(urban_fake, file="~/Documents/git/microclimates/analyses/stan/urban_sims.Rdata")
 
 
 
@@ -642,7 +645,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
                            )
       )
       
-      provmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+      provmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                              iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
@@ -659,7 +662,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
                                            "Sigma Provenance", "Sigma \nWeather Station", 
                                            "Sigma Interaction")}
       
-      modelhere <- provmethod_fake
+      modelhere <- provmethod
       spnum <- length(unique(bball$species))
       
       pdf("figures/muplot_prov_real.pdf", width=7, height=4)
@@ -689,7 +692,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       }
   par(xpd=TRUE) 
   dev.off()
-
+  save(provmethod, file="~/Documents/git/microclimates/analyses/stan/provmethod_real.Rdata")
 
       use.urban <- "urban"
       
@@ -703,7 +706,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
                            )
       )
       
-      urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+      urbmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                              iter = 9000, warmup=8500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
@@ -711,7 +714,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       my.pch <- rep(15:18, each=10)
       alphahere = 0.4
       
-      modoutput <- summary(urbmethod_fake)$summary
+      modoutput <- summary(urbmethod)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
       labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                        "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -720,7 +723,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
                                            "Sigma Provenance", "Sigma \nWeather Station", 
                                            "Sigma Interaction")}
       
-      modelhere <- urbmethod_fake
+      modelhere <- urbmethod
       spnum <- length(unique(bball$species))
 
   pdf("figures/muplot_urban_real.pdf", width=7, height=4)
@@ -750,6 +753,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       }
   par(xpd=TRUE) 
   dev.off()
+  save(urbmethod, file="~/Documents/git/microclimates/analyses/stan/urbmethod_real.Rdata")
 
 
 ###########################################################################################################
@@ -757,7 +761,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
 ####################################################################################################
 #### Cool, so now we know what the real data looks like, let's try and go back to our simulations
 ### I think we will need to have both an urban effect and a method effect for this to work
-simsdat <- gddfunc("urban", "ws", -30, 10, 10, 300, 20, 5, 2, 30, 2, 30, 2, -5, 2)
+simsdat <- gddfunc("urban", "ws", -30, 5, 15, 300, 20, 5, 2, 30, 2, 30, 2, -5, 2)
 
 bball <- simsdat[[1]]
 clim <- simsdat[[2]]
@@ -822,7 +826,7 @@ cols <-viridis_pal(option="viridis")(3)
                            )
       )
       
-      urbwsmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+      urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                              iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
@@ -830,7 +834,7 @@ cols <-viridis_pal(option="viridis")(3)
       my.pch <- rep(15:18, each=10)
       alphahere = 0.4
       
-      modoutput <- summary(urbwsmethod_fake)$summary
+      modoutput <- summary(urbmethod_fake)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
       labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
                                        "Sigma Arboretum", "Sigma \nWeather Station", 
@@ -839,7 +843,7 @@ cols <-viridis_pal(option="viridis")(3)
                                            "Sigma Provenance", "Sigma \nWeather Station", 
                                            "Sigma Interaction")}
       
-      modelhere <- urbwsmethod_fake
+      modelhere <- urbmethod_fake
       spnum <- length(unique(bball$species))
 
   pdf("figures/muplot_urbws.pdf", width=7, height=4)
@@ -869,6 +873,7 @@ cols <-viridis_pal(option="viridis")(3)
       }
   par(xpd=TRUE) 
   dev.off()
+  save(urbmethod_fake, file="~/Documents/git/microclimates/analyses/stan/urbmethod_sims.Rdata")
 
 if(FALSE){
   ##########################################################################################################
