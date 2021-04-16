@@ -99,7 +99,7 @@ noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = 
 
 
 #  7) Let's do a quick lmer model to test the fake data
-modtest <- lmer(gdd ~ urban + method + urban*method + (urban + method + urban*method|species), data=testdata_urbmethod_intrxn) ## Quick look looks good!
+#modtest <- lmer(gdd ~ urban + method + urban*method + (urban + method + urban*method|species), data=testdata_urbmethod_intrxn) ## Quick look looks good!
 
 if(FALSE){
   ### Okay, now let's make some fake data using help Rethinking, Gelman, OSPREE and Geoff

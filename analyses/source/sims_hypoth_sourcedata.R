@@ -34,7 +34,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 60 #### just to make sure we don't get any NAs
   nspps <- 20 
-  ninds <- 20 
+  ninds <- 60 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
   nmicros <- 10  ### Number microsites per site so 20 total 
@@ -46,7 +46,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
-  sigma_y <- 5
+  sigma_y <- 15
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)
@@ -145,22 +145,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     ### I think this should just make the weather station less accurate...??? I hope.
     df.bb$hyp_b <- ifelse(df.bb$method==hypoth.para, 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
     ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(nspps, mean=hypoth_mu, sd=hypoth_sd), each=ninds*nsites*nmethods)
-    
-    #samples <- sapply(list(method.env=rbinom(ntot, 1, 0.5)), FUN = function(x){
-     # sample(x, size = nspps * ntot, replace = TRUE)})
-    #mm <- model.matrix(~samples)
-    
-    #model.parameters <- list(method.coef = hypoth_mu)
-    #params<- matrix(unlist(model.parameters), ncol = length(model.parameters), nrow = nspps * ntot, byrow = TRUE)
-    
-    #params[,1] <- sapply(1:nspps, FUN = function(x){
-     # rep(rnorm(n = 1, mean = hypoth_mu, sd = hypoth_sd), ntot)})
-    
-    #response <- sapply(1:nrow(samples), FUN = function(x){
-      #rnorm(n = 1, mean = mm[x,] %*% params[x, ], sd = sigma_y)})
-    
-    #df.bb$hyp_b * 
+    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(nspps, mean=hypoth_mu, sd=hypoth_sd), each=ninds*nsites)
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(ntot, mean=0, sd=sigma_y)
     

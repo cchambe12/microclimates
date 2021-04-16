@@ -103,8 +103,8 @@ dev.off()
                          )
     )
     
-    noisyws_fake = stan('stan/urbanmethod_normal_inter.stan', data = datalist.gdd,
-                          iter = 2000, warmup=1500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+    noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
+                          iter = 4000, warmup=3500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
