@@ -14,7 +14,7 @@
 \usepackage{longtable}
 \usepackage{blindtext, rotating}
 \usepackage{natbib}
-\bibliographystyle{..//references/styles/gcb.bst}
+\bibliographystyle{..//refs/styles/gcb.bst}
 %\usepackage[hyphens]{url}
 \usepackage{caption}
 \setlength{\captionmargin}{30pt}
@@ -34,8 +34,6 @@
 
 %cross referencing:
 \usepackage{xr}
-%\externaldocument{chillfrz}
-\externaldocument{letters/chillfrz_revletter_p2}
 
 \newmdenv[
   topline=true,
@@ -118,414 +116,168 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   -\end{center}
   -\end{figure}}
 
-\newpage
-<<label=suppmoddvr, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
+<<label=noisyws, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
-modoutput <- read.csv("..//analyses/output/dvr_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
+zmodtable<-read.csv("..//analyses/output/supptables/noisyws_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
 
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from noisy weather station simulations}. Using a model with noisy weather station data simulations and testing the effects of site, method and the interaction between site and method results in a large sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:noisyws",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
 
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
-
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on duration of vegetative risk (days between budburst to leafout).", label="tab:suppmoddvr",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", 
-      floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
-
-@
-
-\newpage
-<<label=suppmodgs, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
-
-modoutput <- read.csv("..//analyses/output/gslength_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
-
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
-
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
-
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on growing season length.", label="tab:suppmodgs",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
-
-@
-
-\newpage
-<<label=suppmodmeri, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
-
-modoutput <- read.csv("..//analyses/output/meri_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
-
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
-
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
-
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on shoot apical meristem damage.", label="tab:suppmodmeri",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
-
-@
-
-\newpage
-<<label=suppmodht, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
-
-modoutput <- read.csv("..//analyses/output/htfinal_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
-
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
-
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
-
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on total season growth in height (cm).", label="tab:suppmodht",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
 
 
-\newpage
-<<label=suppmodtotbio, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
+<<label=noisyhobo, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
-modoutput <- read.csv("..//analyses/output/totbiomass_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
+zmodtable<-read.csv("..//analyses/output/supptables/noisyhobo_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
 
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from noisy hobo logger simulations}. Using a model with noisy hobo logger data simulations and testing the effects of site, method and the interaction between site and method results in a large sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:noisyhobo",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
 
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on total biomass (g).", label="tab:suppmodtotbio",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
+@
 
 
+<<label=micros, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/micros_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from microclimate simulations}. Using a model with microclimate data simulations and testing the effects of site, method and the interaction between site and method results in a small sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:micros",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+
+<<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/urban_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from urban simulations}. Using a model with urban data simulations and testing the effects of site, method and the interaction between site and method results in a negative effect of site. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:urban",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+
+<<label=real, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/urbmethod.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from real data}. Using a model with real data and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:real",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
   
-\newpage
-<<label=suppmodtough, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
 
-modoutput <- read.csv("..//analyses/output/toughness_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
+<<label=urbmethod, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
+zmodtable<-read.csv("..//analyses/output/supptables/urbmethod_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
 
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from an urban effect and noisy weather station simulations}. Using a model with an urban effect and noisy weather station data simulations and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:urbmethod",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
 
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on leaf toughness (N).", label="tab:suppmodtough",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
   
-\newpage
-<<label=suppmodchl, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
+\begin{figure}
+    \begin{subfigure}{.5\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+      \caption{}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
+      \label{fig:muplotprov}
+    \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+	    \caption{}
+      \centering
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
+    \label{fig:gddprov}
+  \end{subfigure}
+\caption{ Using simulated data to test provenance latitude, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
+\label{fig:prov}
+\end{figure}
 
-modoutput <- read.csv("..//analyses/output/chl_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
+<<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
+zmodtable<-read.csv("..//analyses/output/supptables/provmethod_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
 
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. Using a model with provenance latitude simulations and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.", 
+        label="tab:prov",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
 
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on leaf chlorophyll content (mg cm^{-2}).", label="tab:suppmodchl",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
-
-{\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=14cm]{..//analyses/figures/chl50and90_brms.pdf} 
-  \caption{Effects of late spring freeze treatment, six weeks of chilling and eight weeks of chilling on chlorophyll content. Larger, blue dots represent overall estimates across all species, while smaller dots are estimates for each species. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. }\label{fig:muchl}
-  \end{center}
-  \end{figure}}
-
-
-\newpage
-<<label=suppmodthick, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
-
-modoutput <- read.csv("..//analyses/output/thickness_modeloutput.csv", header=TRUE)
-#modoutput <- subset(modoutput, select=c("term", "estimate", "10%", "50%", "90%"))
-# add multicolumn later for BB and LO headers above these column names
-
-modoutput$term <- ifelse(modoutput$term=="(Intercept)", "Intercept", modoutput$term)
-modoutput$term <- gsub("tx", "Tx", modoutput$term)
-modoutput$term <- gsub("chill1", "Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("chill2", "Chill 4 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill1", "Tx x Chill 6 Wks", modoutput$term)
-modoutput$term <- gsub("tx:chill2", "Tx x Chill 4 Wks", modoutput$term)
-
-modoutput$species <- ifelse(is.na(modoutput$species), "Overall Estimate", modoutput$species)
-modoutput$species <- gsub("ACESAC", paste0("\\\\textit{", "Acer saccharinum","}"), modoutput$species)
-modoutput$species <- gsub("ALNRUG", paste0("\\\\textit{","Alnus incana rugosa","}"), modoutput$species)
-modoutput$species <- gsub("BETPAP", paste0("\\\\textit{","Betula papyrifera","}"), modoutput$species)
-modoutput$species <- gsub("BETPOP", paste0("\\\\textit{","Betula populifolia","}"), modoutput$species)
-modoutput$species <- gsub("CORRAC", paste0("\\\\textit{","Cornus racemosa","}"), modoutput$species)
-
-modoutput$species <- gsub("SALPUR", paste0("\\\\textit{","Salix purpurea","}"), modoutput$species)
-modoutput$species <- gsub("SORAME", paste0("\\\\textit{","Sorbus americana","}"), modoutput$species)
-modoutput$species <- gsub("VIBDEN", paste0("\\\\textit{","Viburnum dendatum","}"), modoutput$species)
-
-colnames(modoutput) = c("term", "species",  "mean", "2\\%", "5\\%", "25\\%", "75\\%", "95\\%", "98\\%")
-
-print(xtable(modoutput, 
-             caption = "Summary of model with the effects of late spring freeze treatment (Tx) and chilling duration across species on leaf thickness ($\\mu$m).", label="tab:suppmodthick",
-             align = c("l", "l", "r", "r","r","r", "r","r", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      #sanitize.text.function = function(x) {x}, table.placement="H",
-      tabular.environment = "longtable", floating = FALSE, #align=c(rep('|c', ncol(sp.table)),'p{4in}'), 
-      tabular="\\textwidth",include.colnames = TRUE, add.to.row = list(pos = list(0),command = "\\hline \\endhead "), 
-      sanitize.text.function = identity
-    )
-
-
-
-@
-
-{\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=12cm]{..//analyses/figures/budsetorder_byrank.png} 
-  \caption{Rank order of budset across all species using mean trends. }\label{fig:bsetrank}
-  \end{center}
-  \end{figure}}
-  
-  <<label=simbbmod, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-#setwd("~/Documents/git/chillfreeze/analyses")
-
-bbdat <- read.csv("..//analyses/output/clean_dvr_traits.csv")
-
-bbdat$chillnew <- ifelse(bbdat$chill==1, 3, NA)
-bbdat$chillnew <- ifelse(bbdat$chill==2, 2, bbdat$chillnew)
-bbdat$chillnew <- ifelse(bbdat$chill==3, 1, bbdat$chillnew)
-
-bbdat$chill1 = ifelse(bbdat$chillnew == 2, 1, 0) 
-bbdat$chill2 = ifelse(bbdat$chillnew == 3, 1, 0)
-
-bb.mod <- lm(budburst ~ chill1 + chill2, data=bbdat)
-
-bb <- as.data.frame(tidy(bb.mod, prob=0.90))
-bb$term <- ifelse(bb$term=="(Intercept)", "Intercept", bb$term)
-bb$term <- gsub("chill1", "Chilling 6 Wks", bb$term)
-bb$term <- gsub("chill2", "Chilling 4 Wks", bb$term)
-bb$statistic<- NULL
-bb$p.value<- NULL
-
-colnames(bb) <- c("term", "mean", "std.err")
-print(xtable(bb, caption = "Summary of simple linear regression model of day of budburst across chilling treatments.", label="tab:simpbb",
-             align = c("l", "l", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      sanitize.text.function = function(x) {x}, table.placement="H")
-
-dvr.mod <- lm(dvr ~ chill1 + chill2, data=bbdat)
-
-dvr <- as.data.frame(tidy(dvr.mod, prob=0.90))
-dvr$term <- ifelse(dvr$term=="(Intercept)", "Intercept", dvr$term)
-dvr$term <- gsub("chill1", "Chilling 6 Wks", dvr$term)
-dvr$term <- gsub("chill2", "Chilling 4 Wks", dvr$term)
-dvr$statistic<- NULL
-dvr$p.value<- NULL
-
-colnames(dvr) <- c("term", "mean", "std.err")
-print(xtable(dvr, caption = "Summary of simple linear regression model of duration of vegetative across chilling treatments.", label="tab:simpdvr",
-             align = c("l", "l", "r", "r")), #>{\\textit}l
-      include.rownames=F, 
-      caption.placement = "top", 
-      sanitize.text.function = function(x) {x}, table.placement="H")
-
-@
-
-
-
 
 \end{document}

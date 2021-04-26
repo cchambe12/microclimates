@@ -32,7 +32,7 @@
 %cross referencing:
 \usepackage{xr}
 \usepackage{xr-hyper}
-\externaldocument{/Users/CatherineChamberlain/Documents/git/microclimates/docs/microclimates_supp}
+\externaldocument{/Users/CatherineChamberlain/Documents/git/microclimates/docs/micro_supp}
 
 \newmdenv[
   topline=true,
@@ -326,14 +326,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_noisyws.pdf}
+    \includegraphics[height=6cm, width=10cm]{..//analyses/figures/muplot_noisyws.pdf}
     \label{fig:muplotnoisyws}
   \end{subfigure}%
     \begin{subfigure}{.5\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=5cm, width=8cm]{..//analyses/figures/muplot_noisyhobo.pdf}
+      \includegraphics[height=6cm, width=10cm]{..//analyses/figures/muplot_noisyhobo.pdf}
     \label{fig:muplotnoisyhobo}
   \end{subfigure}
 \caption{ We show effects of site (Arboretum as `1' or Harvard Forest as `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using simulated data (a) with less accurate weather station data and (b) with less accurate hobo logger data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Tables XX, XX and XX for full model outputs.}
@@ -346,14 +346,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
+    \includegraphics[height=6cm, width=10cm]{..//analyses/figures/gdd_methods_noisyws.pdf}
     \label{fig:gddnoisyws}
     \end{subfigure}
   \begin{subfigure}{.5\textwidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
+      \includegraphics[height=6cm, width=10cm]{..//analyses/figures/gdd_methods_noisyhobo.pdf}
     \label{fig:gddnoisyhobo}
     \end{subfigure}
 \caption{ Using simulated data with (a) less accurate weather station data and (b) less accurate hobo logger data, we show histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data.}
@@ -380,25 +380,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \end{figure}
 
 \begin{figure}
-    \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-      \caption{}
-      \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprov}
-    \end{subfigure}
-  \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:gddprov}
-  \end{subfigure}
-\caption{ Using simulated data to test provenance latitude, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
-\label{fig:prov}
-\end{figure}
-
-\begin{figure}
   \begin{subfigure}{.5\linewidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
@@ -422,7 +403,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_urban_real.pdf}
+    \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urban_real.pdf}
     \label{fig:muplotreal}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
@@ -441,14 +422,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=16cm]{..//analyses/figures/gddratio_basetemps.pdf}
+    \includegraphics[height=13cm, width=14cm]{..//analyses/figures/gddratio_basetemp.pdf}
     \label{fig:forecasting}
     \end{subfigure}
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=6cm, width=7cm]{..//analyses/figures/gddaccuracy_basetemps.pdf}
+      \includegraphics[height=13cm, width=14cm]{..//analyses/figures/gddaccuracy_basetemp.pdf}
       \label{fig:slopes}
   \end{subfigure}
 \caption{To discuss more at our next meeting...}

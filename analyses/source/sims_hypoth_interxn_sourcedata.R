@@ -36,10 +36,10 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.mu, h
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 120 #### just to make sure we don't get any NAs
   nspps <- 15 
-  ninds <- 36 
+  ninds <- 50 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
-  nmicros <- 6  ### Number microsites per site so 20 total 
+  nmicros <- 15  ### Number microsites per site so 20 total 
   nmethods <- 2
   ntot <- nobs * nmethods * nsites
   
@@ -48,7 +48,7 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.mu, h
   fstarspeciessd <- fstar.sd ### sigma_a_sp in model output
   
   ## Sigma_y to be added at the end
-  sigma_y <- 5
+  sigma_y <- 20
   
   ### Now the climate data 
   dayz <- rep(1:daysperyr, nobs)

@@ -103,6 +103,7 @@ dev.off()
                          )
     )
     
+    
     noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
                           iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
@@ -113,11 +114,11 @@ dev.off()
     
     modoutput <- summary(noisyws_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-    labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                     "Sigma Arboretum", "Sigma \nWeather Station", 
+    labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                     "Sigma Site", "Sigma Method", 
                                      "Sigma Interaction")}else if(use.urban=="prov"){
-                                       c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                         "Sigma Provenance", "Sigma \nWeather Station", 
+                                       c("Provenance", "Method", "Provenance x\nMethod",
+                                         "Sigma Provenance", "Sigma \nMethod", 
                                          "Sigma Interaction")}
     
     modelhere <- noisyws_fake
@@ -135,13 +136,16 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     for(i in 1:6){
       pos.y<-(6:1)[i]
       pos.x<-noncps[rownameshere[i],"mean"]
+      lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
       lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(3,2,4)]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+        lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+              col=alpha(my.pal[spsi], alphahere-0.2))
         lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
               col=alpha(my.pal[spsi], alphahere))
         points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -235,11 +239,11 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     
     modoutput <- summary(noisyhobo_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-    labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                     "Sigma Arboretum", "Sigma \nWeather Station", 
+    labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                     "Sigma Site", "Sigma Method", 
                                      "Sigma Interaction")}else if(use.urban=="prov"){
-                                       c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                         "Sigma Provenance", "Sigma \nWeather Station", 
+                                       c("Provenance", "Method", "Provenance x\nMethod",
+                                         "Sigma Provenance", "Sigma \nMethod", 
                                          "Sigma Interaction")}
     
     modelhere <- noisyhobo_fake
@@ -257,13 +261,16 @@ pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
     for(i in 1:6){
       pos.y<-(6:1)[i]
       pos.x<-noncps[rownameshere[i],"mean"]
+      lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
       lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
       points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
       for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(3,2,4)]
+        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
         jitt<-(spsi/40) + 0.08
         pos.y.sps.i<-pos.y-jitt
         pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+        lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+              col=alpha(my.pal[spsi], alphahere-0.2))
         lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
               col=alpha(my.pal[spsi], alphahere))
         points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -280,7 +287,7 @@ pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
 #### Alright, so now we want to test if hobo data is a more accurate measure of the same weather - meaning, there might be microclimates!
 ## So I think the way to do this is to make sure that hobos are more accurate than the weather because they are picking up the temperature more precisely
 # and then we need to add more sigma to the hobo loggers to simulate microclimates
-simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 8)
+simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
 
     xtext <- seq(1, 2, by=1)
     cols <-viridis_pal(option="viridis")(3)
@@ -356,11 +363,11 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 8)
     
     modoutput <- summary(micros_fake)$summary
     noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-    labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                     "Sigma Arboretum", "Sigma \nWeather Station", 
+    labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                     "Sigma Site", "Sigma Method", 
                                      "Sigma Interaction")}else if(use.urban=="prov"){
-                                       c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                         "Sigma Provenance", "Sigma \nWeather Station", 
+                                       c("Provenance", "Method", "Provenance x\nMethod",
+                                         "Sigma Provenance", "Sigma \nMethod", 
                                          "Sigma Interaction")}
     
     modelhere <- micros_fake
@@ -378,13 +385,16 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 8)
       for(i in 1:6){
         pos.y<-(6:1)[i]
         pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
         lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
-          pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(3,2,4)]
+          pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere-0.2))
           lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -401,7 +411,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 8)
 ####################################################################################################
 #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
 # higher provenances will require fewer GDDs 
-simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
+simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
 
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
@@ -467,7 +477,7 @@ simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
       )
       
       urban_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                            iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+                            iter = 5000, warmup=4500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -476,11 +486,11 @@ simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
       
       modoutput <- summary(urban_fake)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-      labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                       "Sigma Arboretum", "Sigma \nWeather Station", 
+      labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                       "Sigma Site", "Sigma Method", 
                                        "Sigma Interaction")}else if(use.urban=="prov"){
-                                         c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                           "Sigma Provenance", "Sigma \nWeather Station", 
+                                         c("Provenance", "Method", "Provenance x\nMethod",
+                                           "Sigma Provenance", "Sigma \nMethod", 
                                            "Sigma Interaction")}
       
       modelhere <- urban_fake
@@ -489,7 +499,7 @@ simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
   pdf("figures/muplot_urban.pdf", width=7, height=4)
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
-      plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
+      plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
            xlab="Model estimate change in growing degree days to budburst", ylab="")
       axis(2, at=1:6, labels=rev(labs), las=1)
       abline(v=0, lty=2, col="darkgrey")
@@ -498,6 +508,7 @@ simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
       for(i in 1:6){ #i=6
         pos.y<-(6:1)[i]
         pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
         lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
@@ -505,6 +516,8 @@ simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere-0.2))
           lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -655,11 +668,11 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       
       modoutput <- summary(provmethod_fake)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-      labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                       "Sigma Arboretum", "Sigma \nWeather Station", 
+      labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                       "Sigma Site", "Sigma Method", 
                                        "Sigma Interaction")}else if(use.urban=="prov"){
-                                         c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                           "Sigma Provenance", "Sigma \nWeather Station", 
+                                         c("Provenance", "Method", "Provenance x\nMethod",
+                                           "Sigma Provenance", "Sigma \nMethod", 
                                            "Sigma Interaction")}
       
       modelhere <- provmethod
@@ -677,6 +690,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       for(i in 1:6){ #i=6
         pos.y<-(6:1)[i]
         pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
         lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
@@ -684,6 +698,8 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere-0.2))
           lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -716,11 +732,11 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       
       modoutput <- summary(urbmethod)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-      labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                       "Sigma Arboretum", "Sigma \nWeather Station", 
+      labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                       "Sigma Site", "Sigma Method", 
                                        "Sigma Interaction")}else if(use.urban=="prov"){
-                                         c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                           "Sigma Provenance", "Sigma \nWeather Station", 
+                                         c("Provenance", "Method", "Provenance x\nMethod",
+                                           "Sigma Provenance", "Sigma \nMethod", 
                                            "Sigma Interaction")}
       
       modelhere <- urbmethod
@@ -729,7 +745,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
   pdf("figures/muplot_urban_real.pdf", width=7, height=4)
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
-      plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
+      plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
            xlab="Model estimate change in growing degree days to budburst", ylab="")
       axis(2, at=1:6, labels=rev(labs), las=1)
       abline(v=0, lty=2, col="darkgrey")
@@ -738,6 +754,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       for(i in 1:6){ #i=6
         pos.y<-(6:1)[i]
         pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
         lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
@@ -745,6 +762,8 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere-0.2))
           lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -761,7 +780,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
 ####################################################################################################
 #### Cool, so now we know what the real data looks like, let's try and go back to our simulations
 ### I think we will need to have both an urban effect and a method effect for this to work
-simsdat <- gddfunc("urban", "ws", -30, 10, 0, 10, 300, 20, 5, 0.5, 10, 0.5, 10, 0.5, -5, 0.5)
+simsdat <- gddfunc("urban", "ws", -30, 10, 0, 10, 300, 20, 5, 5, 20, 0.5, 15, 0.5, -10, 5)
 
 bball <- simsdat[[1]]
 clim <- simsdat[[2]]
@@ -836,11 +855,11 @@ cols <-viridis_pal(option="viridis")(3)
       
       modoutput <- summary(urbmethod_fake)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-      labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                       "Sigma Arboretum", "Sigma \nWeather Station", 
+      labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                       "Sigma Site", "Sigma Method", 
                                        "Sigma Interaction")}else if(use.urban=="prov"){
-                                         c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                           "Sigma Provenance", "Sigma \nWeather Station", 
+                                         c("Provenance", "Method", "Provenance x\nMethod",
+                                           "Sigma Provenance", "Sigma \nMethod", 
                                            "Sigma Interaction")}
       
       modelhere <- urbmethod_fake
@@ -849,7 +868,7 @@ cols <-viridis_pal(option="viridis")(3)
   pdf("figures/muplot_urbws.pdf", width=7, height=4)
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
-      plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
+      plot(x=NULL,y=NULL, xlim=c(-100,100), yaxt='n', ylim=c(0,6),
            xlab="Model estimate change in growing degree days to budburst", ylab="")
       axis(2, at=1:6, labels=rev(labs), las=1)
       abline(v=0, lty=2, col="darkgrey")
@@ -858,6 +877,7 @@ cols <-viridis_pal(option="viridis")(3)
       for(i in 1:6){ #i=6
         pos.y<-(6:1)[i]
         pos.x<-noncps[rownameshere[i],"mean"]
+        lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
         lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
         points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
         for(spsi in 1:spnum){
@@ -865,6 +885,8 @@ cols <-viridis_pal(option="viridis")(3)
           jitt<-(spsi/40) + 0.08
           pos.y.sps.i<-pos.y-jitt
           pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+          lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+                col=alpha(my.pal[spsi], alphahere-0.2))
           lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
                 col=alpha(my.pal[spsi], alphahere))
           points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
@@ -874,6 +896,133 @@ cols <-viridis_pal(option="viridis")(3)
   par(xpd=TRUE) 
   dev.off()
   save(urbmethod_fake, file="~/Documents/git/microclimates/analyses/stan/urbmethod_sims.Rdata")
+  
+  
+  
+  ##########################################################################################################
+  ##########################################################################################################
+  ######################################### For the Supp ###################################################
+  ##########################################################################################################
+  ##########################################################################################################
+  #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
+  # higher provenances will require fewer GDDs 
+  
+  simsdat <- bbfunc("prov", "NA", -10, 2, 300, 20, 10, 3, 0)
+  
+  xtext <- seq(1, 2, by=1)
+  cols <-viridis_pal(option="viridis")(3)
+  
+  bball <- simsdat[[1]]
+  clim <- simsdat[[2]]
+  
+  ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    coord_cartesian(xlim=c(-20, 40)) + 
+    geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Mean Temperature (°C)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(-20, 40)) + 
+    xlab("Mean Temperature (°C)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(breaks = seq(-20, 40, by=5))
+  pdf("figures/clim_methods_prov.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) 
+  pdf("figures/gdd_methods_prov.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  use.urban <- "prov"
+  bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
+    as.numeric(bball$prov)}
+  
+  datalist.gdd <- with(bball, 
+                       list(y = gdd, 
+                            urban = provenance,
+                            method = type,
+                            sp = as.numeric(as.factor(species)),
+                            N = nrow(bball),
+                            n_sp = length(unique(bball$species))
+                       )
+  )
+  
+  provmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                         iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+  
+  
+  my.pal <-rep(viridis_pal(option="viridis")(9),2)
+  my.pch <- rep(15:18, each=10)
+  alphahere = 0.4
+  
+  modoutput <- summary(provmethod_fake)$summary
+  noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
+  labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
+                                   "Sigma Site", "Sigma Method", 
+                                   "Sigma Interaction")}else if(use.urban=="prov"){
+                                     c("Provenance", "Method", "Provenance x\nMethod",
+                                       "Sigma Provenance", "Sigma \nMethod", 
+                                       "Sigma Interaction")}
+  
+  modelhere <- provmethod_fake
+  spnum <- length(unique(bball$species))
+  
+  pdf("figures/muplot_prov.pdf", width=7, height=4)
+  par(xpd=FALSE)
+  par(mar=c(5,10,3,10))
+  plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
+       xlab="Model estimate change in growing degree days to budburst", ylab="")
+  axis(2, at=1:6, labels=rev(labs), las=1)
+  abline(v=0, lty=2, col="darkgrey")
+  rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
+                    "sigma_b_method_sp", "sigma_b_um_sp")
+  for(i in 1:6){ #i=6
+    pos.y<-(6:1)[i]
+    pos.x<-noncps[rownameshere[i],"mean"]
+    lines(noncps[rownameshere[i],c("2.5%","97.5%")],rep(pos.y,2),col="lightgrey")
+    lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
+    points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
+    for(spsi in 1:spnum){
+      pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
+      jitt<-(spsi/40) + 0.08
+      pos.y.sps.i<-pos.y-jitt
+      pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
+      lines(noncps[pos.sps.i[i],c("2.5%","97.5%")],rep(pos.y.sps.i,2),
+            col=alpha(my.pal[spsi], alphahere-0.2))
+      lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
+            col=alpha(my.pal[spsi], alphahere))
+      points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
+      
+    }
+  }
+  par(xpd=TRUE)
+  dev.off()
+  save(provmethod_fake, file="~/Documents/git/microclimates/analyses/stan/prov_sims.Rdata")
 
 if(FALSE){
   ##########################################################################################################
@@ -887,123 +1036,6 @@ if(FALSE){
   ####################################################################################################
   ####################################################################################################
   ####################################################################################################
-  #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
-  # higher provenances will require fewer GDDs 
-  if(FALSE){
-    simsdat <- bbfunc("prov", "NA", -10, 2, 300, 50, 10, 2, 0)
-    
-    xtext <- seq(1, 2, by=1)
-    cols <-viridis_pal(option="viridis")(3)
-    
-    bball <- simsdat[[1]]
-    clim <- simsdat[[2]]
-    
-    ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
-      coord_cartesian(xlim=c(-20, 40)) + 
-      geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
-      geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      xlab("Mean Temperature (°C)") + ylab("") +
-      scale_y_continuous(expand = c(0, 0)) +
-      scale_x_continuous(breaks = seq(-20, 40, by=5)) +
-      theme(legend.position="none")
-    hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
-      geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
-      geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      coord_cartesian(xlim=c(-20, 40)) + 
-      xlab("Mean Temperature (°C)") + ylab("") +
-      scale_y_continuous(expand = c(0, 0)) +
-      scale_x_continuous(breaks = seq(-20, 40, by=5))
-    pdf("figures/clim_methods_prov.pdf", width=8, height=4, onefile=FALSE)
-    egg::ggarrange(ws, hobo, ncol=2)
-    dev.off()
-    
-    ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
-      theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
-      coord_cartesian(xlim=c(100, 700)) + 
-      geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
-      geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      xlab("Growing Degree Days (GDD)") + ylab("") +
-      scale_y_continuous(expand = c(0, 0)) +
-      #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
-      theme(legend.position="none")
-    hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
-      theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
-      geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
-      geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      coord_cartesian(xlim=c(100, 700)) + 
-      xlab("Growing Degree Days (GDD)") + ylab("") +
-      scale_y_continuous(expand = c(0, 0)) 
-    pdf("figures/gdd_methods_prov.pdf", width=8, height=4, onefile=FALSE)
-    egg::ggarrange(ws, hobo, ncol=2)
-    dev.off()
-    
-    use.urban <- "prov"
-    bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
-      as.numeric(bball$prov)}
-    
-    datalist.gdd <- with(bball, 
-                         list(y = gdd, 
-                              urban = provenance,
-                              method = type,
-                              sp = as.numeric(as.factor(species)),
-                              N = nrow(bball),
-                              n_sp = length(unique(bball$species))
-                         )
-    )
-    
-    provmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                           iter = 8000, warmup=7500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
-    
-    
-    my.pal <-rep(viridis_pal(option="viridis")(9),2)
-    my.pch <- rep(15:18, each=10)
-    alphahere = 0.4
-    
-    modoutput <- summary(provmethod_fake)$summary
-    noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
-    labs <- if(use.urban=="urban"){c("Arboretum", "Weather Station", "Arboretum x\nWeather Station",
-                                     "Sigma Arboretum", "Sigma \nWeather Station", 
-                                     "Sigma Interaction")}else if(use.urban=="prov"){
-                                       c("Provenance", "Weather Station", "Provenance x\nWeather Station",
-                                         "Sigma Provenance", "Sigma \nWeather Station", 
-                                         "Sigma Interaction")}
-    
-    modelhere <- provmethod_fake
-    spnum <- length(unique(bball$species))
-    
-    pdf("figures/muplot_prov.pdf", width=7, height=4)
-    par(xpd=FALSE)
-    par(mar=c(5,10,3,10))
-    plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
-         xlab="Model estimate change in growing degree days to budburst", ylab="")
-    axis(2, at=1:6, labels=rev(labs), las=1)
-    abline(v=0, lty=2, col="darkgrey")
-    rownameshere <- c("mu_b_urban_sp", "mu_b_method_sp", "mu_b_um_sp", "sigma_b_urban_sp",
-                      "sigma_b_method_sp", "sigma_b_um_sp")
-    for(i in 1:6){ #i=6
-      pos.y<-(6:1)[i]
-      pos.x<-noncps[rownameshere[i],"mean"]
-      lines(noncps[rownameshere[i],c("25%","75%")],rep(pos.y,2),col="darkgrey")
-      points(pos.x,pos.y,cex=1.5,pch=19,col="darkblue")
-      for(spsi in 1:spnum){
-        pos.sps.i<-which(grepl(paste0("[",spsi,"]"),rownames(noncps),fixed=TRUE))[c(2:4)]
-        jitt<-(spsi/40) + 0.08
-        pos.y.sps.i<-pos.y-jitt
-        pos.x.sps.i<-noncps[pos.sps.i[i],"mean"]
-        lines(noncps[pos.sps.i[i],c("25%","75%")],rep(pos.y.sps.i,2),
-              col=alpha(my.pal[spsi], alphahere))
-        points(pos.x.sps.i,pos.y.sps.i,cex=0.8, pch=my.pch[spsi], col=alpha(my.pal[spsi], alphahere))
-        
-      }
-    }
-    par(xpd=TRUE)
-    dev.off()
-  }
-  
   ##### Now, let's check out the simulations if we have a noisy weather station AND microclimates #####
   ## I will keep the other parameters the exact same..
   

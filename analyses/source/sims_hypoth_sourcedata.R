@@ -9,10 +9,10 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "hobo"  ## hobo, urban, prov
-  hypoth.para <- "hobo"
-  hypoth.mu <- 0
-  hypoth.sd <- 15   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth <- "prov"  ## hobo, urban, prov
+  hypoth.para <- "NA"
+  hypoth.mu <- -10
+  hypoth.sd <- 2   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 20
   meantemp <- 10
@@ -33,11 +33,11 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 60 #### just to make sure we don't get any NAs
-  nspps <- 15 
-  ninds <- 36 
+  nspps <- 15
+  ninds <- 50 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
-  nmicros <- 6  ### Number microsites per site so 20 total 
+  nmicros <- 15  ### Number microsites per site
   nmethods <- 2
   ntot <- nobs * nmethods * nsites
   
@@ -240,13 +240,16 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     
     df.prov$species <- as.numeric(df.prov$species)
     df.prov$provenance <- as.numeric(df.prov$provenance)
-    df.prov$prov.z <- (df.prov$provenance-mean(df.prov$provenance,na.rm=TRUE))/(sd(df.prov$provenance,na.rm=TRUE))
+    #df.prov$prov.z <- (df.prov$provenance-mean(df.prov$provenance,na.rm=TRUE))/(sd(df.prov$provenance,na.rm=TRUE))
+    df.prov$provdiff <- df.prov$provenance-mean(df.prov$provenance)
+    
+    df.prov <- df.prov[!duplicated(df.prov),]
     
     df.prov$ind <- as.numeric(df.prov$ind)
     df.bb <- full_join(df.bb, df.prov)
     
     # Generate random parameters (by species)
-    df.bb$gdd.noise <- df.bb$prov.z * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
+    df.bb$gdd.noise <- df.bb$provdiff * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
     df.bb <- df.bb[!duplicated(df.bb),]
