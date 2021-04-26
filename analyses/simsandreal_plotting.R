@@ -103,8 +103,8 @@ dev.off()
                          )
     )
     
-    noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
-                          iter = 4000, warmup=3500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+    noisyws_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                          iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -225,8 +225,8 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
                          )
     )
     
-    noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
-                          iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+    noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                          iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -280,7 +280,7 @@ pdf("figures/muplot_noisyhobo.pdf", width=7, height=4)
 #### Alright, so now we want to test if hobo data is a more accurate measure of the same weather - meaning, there might be microclimates!
 ## So I think the way to do this is to make sure that hobos are more accurate than the weather because they are picking up the temperature more precisely
 # and then we need to add more sigma to the hobo loggers to simulate microclimates
-simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
+simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 8)
 
     xtext <- seq(1, 2, by=1)
     cols <-viridis_pal(option="viridis")(3)
@@ -346,8 +346,8 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
                          )
     )
     
-    micros_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
-                          iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+    micros_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                          iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
     
     
     my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -401,7 +401,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 10, 0, 5)
 ####################################################################################################
 #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
 # higher provenances will require fewer GDDs 
-simsdat <- bbfunc("urban", "NA", -30, 5, 300, 20, 10, 3, 0)
+simsdat <- bbfunc("urban", "NA", -30, 10, 300, 20, 10, 3, 0)
 
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
@@ -467,7 +467,7 @@ simsdat <- bbfunc("urban", "NA", -30, 5, 300, 20, 10, 3, 0)
       )
       
       urban_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                            iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+                            iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -646,7 +646,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       )
       
       provmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                             iter = 4000, warmup=3500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -707,7 +707,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       )
       
       urbmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 9000, warmup=8500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                             iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
@@ -761,7 +761,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
 ####################################################################################################
 #### Cool, so now we know what the real data looks like, let's try and go back to our simulations
 ### I think we will need to have both an urban effect and a method effect for this to work
-simsdat <- gddfunc("urban", "ws", -30, 5, 15, 300, 20, 5, 2, 30, 2, 30, 2, -5, 2)
+simsdat <- gddfunc("urban", "ws", -30, 10, 0, 10, 300, 20, 5, 0.5, 10, 0.5, 10, 0.5, -5, 0.5)
 
 bball <- simsdat[[1]]
 clim <- simsdat[[2]]
@@ -827,7 +827,7 @@ cols <-viridis_pal(option="viridis")(3)
       )
       
       urbmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+                             iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)

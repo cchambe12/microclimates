@@ -71,19 +71,19 @@ model {
 	target+= normal_lpdf(b_method | mu_b_method_sp, sigma_b_method_sp);
 	target+= normal_lpdf(b_um | mu_b_um_sp, sigma_b_um_sp);
 	     
-        target+= normal_lpdf(mu_a_sp | 400,75);
+        target+= normal_lpdf(mu_a_sp | 300,50);
 	      target+= normal_lpdf(sigma_a_sp | 0,30);
         
-        target+= normal_lpdf(mu_b_urban_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_urban_sp | 0,40);
+        target+= normal_lpdf(mu_b_urban_sp | 0,50);
+	      target+= normal_lpdf(sigma_b_urban_sp | 0,20);
         
-        target+= normal_lpdf(mu_b_method_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_method_sp | 0,40);
+        target+= normal_lpdf(mu_b_method_sp | 0,50);
+	      target+= normal_lpdf(sigma_b_method_sp | 0,20);
 	      
-	      target+= normal_lpdf(mu_b_um_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_um_sp | 0,40);
+	      target+= normal_lpdf(mu_b_um_sp | 0,50);
+	      target+= normal_lpdf(sigma_b_um_sp | 0,20);
         
-        target+= normal_lpdf(sigma_y | 0,100);
+        target+= normal_lpdf(sigma_y | 0,50);
   
 
 	   target += normal_lpdf(y | yhat, sigma_y);   

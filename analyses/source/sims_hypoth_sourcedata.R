@@ -10,7 +10,7 @@ set.seed(12321)
 
 if(FALSE){
   hypoth <- "hobo"  ## hobo, urban, prov
-  hypoth.para <- "ws"
+  hypoth.para <- "hobo"
   hypoth.mu <- 0
   hypoth.sd <- 15   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
@@ -33,11 +33,11 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
   daysperyr <- 60 #### just to make sure we don't get any NAs
-  nspps <- 20 
-  ninds <- 60 
+  nspps <- 15 
+  ninds <- 36 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
-  nmicros <- 10  ### Number microsites per site so 20 total 
+  nmicros <- 6  ### Number microsites per site so 20 total 
   nmethods <- 2
   ntot <- nobs * nmethods * nsites
   
@@ -199,7 +199,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     
     ##### We should get these back in parameter estimates
     df.bb$urbtx <- ifelse(df.bb$site=="arb", 1, 0)
-    df.bb$gdd.noise  <- df.bb$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)  
+    df.bb$gdd.noise  <- df.bb$urbtx * rep(rnorm(n=nspps, mean=urbeffect, sd=urbsd), each=ninds*nmethods)
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
     

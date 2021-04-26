@@ -43,7 +43,7 @@
 
 \begin{document}
 
-\noindent\textbf{\Large{Understanding growing degree days to predict spring phenology in a warming world}}
+\noindent\textbf{\Large{Understanding growing degree days to predict spring phenology under climate change}}
 
 \noindent Authors:\\
 C. J. Chamberlain $^{1,2}$ \& E. M. Wolkovich $^{1,2,3}$
@@ -313,13 +313,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 \bibliography{..//refs/micro}
 
 \section*{Tables and Figures}
-
-{\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
-  -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
-  -\end{center}
-  -\end{figure}}
   
 {\begin{figure} [H]
   -\begin{center}
@@ -371,9 +364,9 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \begin{subfigure}{.5\linewidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
-    \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_micros.pdf}
-    \label{fig:climmicros}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_micros.pdf}
+      \label{fig:muplotmicros}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
@@ -382,13 +375,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_micros.pdf}
     \label{fig:gddmicros}
   \end{subfigure}\\[1ex]
-  \begin{subfigure}{\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_micros.pdf}
-      \label{fig:muplotmicros}
-  \end{subfigure}
 \caption{ Using simulations data with microclimatic effects at both sites, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
 \label{fig:micros}
 \end{figure}
@@ -398,15 +384,15 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
       \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:gddprov}
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_prov.pdf}
+      \label{fig:muplotprov}
     \end{subfigure}
   \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprov}
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
+    \label{fig:gddprov}
   \end{subfigure}
 \caption{ Using simulated data to test provenance latitude, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
 \label{fig:prov}
@@ -416,9 +402,9 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   \begin{subfigure}{.5\linewidth}
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
-    \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_urbanws.pdf}
-    \label{fig:climurbanws}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urbws.pdf}
+      \label{fig:muploturbanws}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
@@ -426,13 +412,6 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_urbanws.pdf}
     \label{fig:gddurbanws}
-  \end{subfigure}\\[1ex]
-  \begin{subfigure}{\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urbws.pdf}
-      \label{fig:muploturbanws}
   \end{subfigure}
 \caption{ Using simulated data with the Arboretum hobo loggers recording warmer tempertures and the Harvard Forest weather station recording warmer temperatures, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
 \label{fig:urbanws}
@@ -443,8 +422,8 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/clim_methods_real.pdf}
-    \label{fig:climreal}
+    \includegraphics[height=4cm, width=8cm]{..//analyses/figures/muplot_urban_real.pdf}
+    \label{fig:muplotreal}
   \end{subfigure}%
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
@@ -453,14 +432,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_real.pdf}
     \label{fig:gddreal}
   \end{subfigure}\\[1ex]
-  \begin{subfigure}{\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urban_real.pdf}
-      \label{fig:muplotreal}
-  \end{subfigure}
-\caption{ Using real data, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
+\caption{ Using real data, we show (a) Effects of site (Arboretum is `1' and Harvard Forest is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) }
 \label{fig:real}
 \end{figure}
 
@@ -469,14 +441,14 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
 	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
     \caption{}
     \centering
-    \includegraphics[height=4cm, width=16cm]{..//analyses/figures/forecasting.pdf}
+    \includegraphics[height=4cm, width=16cm]{..//analyses/figures/gddratio_basetemps.pdf}
     \label{fig:forecasting}
     \end{subfigure}
   \begin{subfigure}{\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
-      \includegraphics[height=6cm, width=7cm]{..//analyses/figures/forecasting_slopes.pdf}
+      \includegraphics[height=6cm, width=7cm]{..//analyses/figures/gddaccuracy_basetemps.pdf}
       \label{fig:slopes}
   \end{subfigure}
 \caption{To discuss more at our next meeting...}

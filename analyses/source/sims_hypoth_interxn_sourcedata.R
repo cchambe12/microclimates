@@ -13,6 +13,7 @@ if(FALSE){
   hypoth.para <- "ws" ## ws, hobo, NA
   hypoth.mu <- -30
   hypoth.sd <- 5   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth.para.mu <- -5
   hypoth.para.sd <- 15
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 20
@@ -30,15 +31,15 @@ if(FALSE){
 }
 
 
-gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd){
+gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.mu, hypoth.para.sd, fstar.num, fstar.sd, arbclim, arbclim.sd, arbmicroclim, arbmicroclim.sd, hfclim, hfclim.sd, hfmicroclim, hfmicroclim.sd){
   
   # Step 1: Set up years, days per year, temperatures, sampling frequency, required GDD (fstar)
-  daysperyr <- 60 #### just to make sure we don't get any NAs
-  nspps <- 20 
-  ninds <- 80 
+  daysperyr <- 120 #### just to make sure we don't get any NAs
+  nspps <- 15 
+  ninds <- 36 
   nobs <- nspps*ninds
   nsites <- 2  ### Arboretum versus the Forest
-  nmicros <- 10  ### Number microsites per site so 20 total 
+  nmicros <- 6  ### Number microsites per site so 20 total 
   nmethods <- 2
   ntot <- nobs * nmethods * nsites
   
@@ -235,7 +236,7 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
   if(hypoth=="urban" & hypoth.para%in%c("ws", "hobo")){
     urbeffect = hypoth.mu
     urbsd = hypoth.sd
-    hypoth_para = hypoth.para
+    hypoth_para = hypoth.para.mu
     hypoth_parasd = hypoth.para.sd
     
     hypoth_para <- hypoth.para
@@ -243,7 +244,7 @@ gddfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, hypoth.para.sd, f
     ### I think this should just make the weather station less accurate...??? I hope.
     df.bb$hyp_b <- ifelse(df.bb$method==hypoth_para, 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
     ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(n=nspps, mean=0, sd=hypoth_parasd), each=ninds*nsites) 
+    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(n=nspps, mean=hypoth.para.mu, sd=hypoth_parasd), each=ninds*nsites) 
 
     ##### Now we add in the urban effect
     df.bb$urbtx <- ifelse(df.bb$site=="arb", 1, 0)

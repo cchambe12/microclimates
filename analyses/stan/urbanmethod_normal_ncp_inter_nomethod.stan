@@ -34,20 +34,20 @@ parameters {
   
   real a_sp[n_sp]; // intercept for species
   
-  vector[n_sp] b_urban_ncp; // slope of urban effect 
+  //vector[n_sp] b_urban_ncp; // slope of urban effect 
   //vector[n_sp] b_method_ncp; // slope of method effect 
   vector[n_sp] b_um_ncp;
   
-  //vector[n_sp] b_urban;
+  vector[n_sp] b_urban;
   vector[n_sp] b_method;
   //vector[n_sp] b_um;
   
 	}
 	
 transformed parameters{
-  vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp*b_urban_ncp; 
+  //vector[n_sp] b_urban = mu_b_urban_sp + sigma_b_urban_sp * b_urban_ncp; 
   //vector[n_sp] b_method = mu_b_method_sp + sigma_b_method_sp*b_method_ncp; 
-  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp*b_um_ncp;
+  vector[n_sp] b_um = mu_b_um_sp + sigma_b_um_sp * b_um_ncp;
   
   vector[N] yhat;
   
@@ -62,30 +62,30 @@ transformed parameters{
 
 model {
   
-	target+= normal_lpdf(b_urban_ncp | 0,1);
+	//target+= normal_lpdf(b_urban_ncp | 0,1);
 	//target+= normal_lpdf(b_method_ncp | 0,1);
 	target+= normal_lpdf(b_um_ncp | 0,1);
 	
 	target+= normal_lpdf(a_sp | mu_a_sp,sigma_a_sp);
 	target+= normal_lpdf(b_method | mu_b_method_sp, sigma_b_method_sp);
-	//target += normal_lpdf(to_vector(b_urban) | mu_b_urban_sp, sigma_b_urban_sp);
-	//target+= normal_lpdf(b_um | 0, 75);
+	target += normal_lpdf(b_urban | mu_b_urban_sp, sigma_b_urban_sp);
+	//target+= normal_lpdf(b_urban | 0, 50);
 	//target += normal_lpdf(to_vector(b_method) | 0, 50);
-	//target += normal_lpdf(to_vector(b_um) | 0, 75);
+	target += normal_lpdf(to_vector(b_um) | 0, 50);
 	     
-        target+= normal_lpdf(mu_a_sp | 400,75);
+        target+= normal_lpdf(mu_a_sp | 300,50);
 	      target+= normal_lpdf(sigma_a_sp | 0,30);
         
-        target+= normal_lpdf(mu_b_urban_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_urban_sp | 0,40);
+        target+= normal_lpdf(mu_b_urban_sp | 0,50);
+	      target+= normal_lpdf(sigma_b_urban_sp | 0,30);
         
-        target+= normal_lpdf(mu_b_method_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_method_sp | 0,40);
+        target+= normal_lpdf(mu_b_method_sp | 0,50);
+	      target+= normal_lpdf(sigma_b_method_sp | 0,30);
 	      
-	      target+= normal_lpdf(mu_b_um_sp | 0,75);
-	      target+= normal_lpdf(sigma_b_um_sp | 0,40);
+	      //target+= normal_lpdf(mu_b_um_sp | 0,50);
+	      //target+= normal_lpdf(sigma_b_um_sp | 0,30);
         
-        target+= normal_lpdf(sigma_y | 0,100);
+        target+= normal_lpdf(sigma_y | 0,50);
   
 
 	   target += normal_lpdf(y | yhat, sigma_y);   

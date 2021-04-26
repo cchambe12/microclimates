@@ -6,9 +6,11 @@
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
+options(mc.cores = parallel::detectCores())
 
 
 library(lme4)
+library(rstan)
 
 ## Let's load some real data to check out.
 setwd("~/Documents/git/microclimates/analyses/")
@@ -37,9 +39,9 @@ sample_a <- list(urban.env = rbinom(1000, 1, 0.5),
                  method.env = rbinom(1000, 1, 0.5))
 
 model.parameters <- list(intercept = 300,
-                         urban.coef = -30,
+                         urban.coef = -20,
                          method.coef = 0,
-                         urbanxmethod = -5)
+                         urbanxmethod = 5)
 
 #  2) Now, we will make varying intercepts
 env.samples <- sapply(sample_a, FUN = function(x){
@@ -76,7 +78,7 @@ parameters.temp[, 4] <- sapply(1:nsp, FUN = function(x){
   rep(rnorm(n = 1, mean = model.parameters[[random.regex[4]]], sd = 2), ntot)})
 # Calculate response
 response <- sapply(1:nrow(env.samples), FUN = function(x){
-  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 5)})
+  rnorm(n = 1, mean = mm[x, ] %*% parameters.temp[x, ], sd = 15)})
 
 testdata_urbmethod_intrxn <- cbind(data.frame(species = as.vector(sapply(1:nsp, FUN = function(x) rep(x, ntot))),
                                        gdd = response, urban = env.samples[,1], method = env.samples[,2]))
@@ -94,8 +96,8 @@ datalist.gdd <- with(testdata_urbmethod_intrxn,
                      )
 )
 
-noisyhobo_fake = stan('stan/urbanmethod_normal_ncp_inter_nomethod.stan', data = datalist.gdd,
-                      iter = 2000, warmup=1500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+testdata_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                      iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
 
 
 #  7) Let's do a quick lmer model to test the fake data
