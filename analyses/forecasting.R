@@ -64,12 +64,12 @@ basetemp <- 0
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc0s <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + xlab("GDD ratio \n(observed/expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("a)")
 
 plotratio0s <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
-    geom_point(aes(color=doy)) + xlab("GDD accuracy \n(observed-expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("a)")
 
@@ -79,12 +79,12 @@ basetemp <- 0
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc0.5 <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + xlab("GDD ratio \n(observed/expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("b)")
 
 plotratio0.5 <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
-    geom_point(aes(color=doy)) + xlab("GDD accuracy \n(observed-expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("b)")
 
@@ -94,12 +94,12 @@ basetemp <- 10
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc10 <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + xlab("GDD ratio \n(observed/expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("c)")
 
 plotratio10 <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
-    geom_point(aes(color=doy)) + xlab("GDD accuracy \n(observed-expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("c)")
 
@@ -109,12 +109,12 @@ basetemp <- 10
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc10.5 <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + xlab("GDD ratio \n(observed/expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("d)")
 
 plotratio10.5 <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
-    geom_point(aes(color=doy)) + xlab("GDD accuracy \n(observed-expected)") + ylab("GDD Threshold") +
+    geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
     theme_minimal() + ggtitle("d)")
 

@@ -241,7 +241,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     df.prov$species <- as.numeric(df.prov$species)
     df.prov$provenance <- as.numeric(df.prov$provenance)
     #df.prov$prov.z <- (df.prov$provenance-mean(df.prov$provenance,na.rm=TRUE))/(sd(df.prov$provenance,na.rm=TRUE))
-    df.prov$provdiff <- df.prov$provenance-mean(df.prov$provenance)
+    df.prov$provdiff <- df.prov$provenance-42.5
     
     df.prov <- df.prov[!duplicated(df.prov),]
     
@@ -249,7 +249,8 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     df.bb <- full_join(df.bb, df.prov)
     
     # Generate random parameters (by species)
-    df.bb$gdd.noise <- df.bb$provdiff * rep(rnorm(n=nspps, mean=prov_effect, sd=prov_sd), each=ninds*nsites)
+    df.bb$gdd.noise <- df.bb$provdiff * rep(rnorm(n=ninds, mean=prov_effect, sd=prov_sd), each=nspps*nmethods)
+    #df.bb$gdd.noise <- df.bb$provdiff * rnorm(n=ntot, mean=prov_effect, sd=prov_sd)
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(n=ntot, mean=0, sd=sigma_y)
     df.bb <- df.bb[!duplicated(df.bb),]

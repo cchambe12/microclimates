@@ -241,7 +241,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
   
-\begin{figure}
+\begin{figure}[H]
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
