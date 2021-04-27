@@ -907,13 +907,17 @@ cols <-viridis_pal(option="viridis")(3)
   #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
   # higher provenances will require fewer GDDs 
   
-  simsdat <- bbfunc("prov", "NA", -10, 2, 300, 20, 10, 3, 0)
+  simsdat <- bbfunc("prov", "NA", -5, 0.5, 300, 20, 10, 3, 0)
   
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
   
   bball <- simsdat[[1]]
   clim <- simsdat[[2]]
+  
+  #library(brms)
+  #bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(2*sd(df.prov$provenance,na.rm=TRUE))
+  #testmod <- brm(gdd ~ prov.z + type + (prov.z + type | species), data=bball)
   
   ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
@@ -959,12 +963,11 @@ cols <-viridis_pal(option="viridis")(3)
   dev.off()
   
   use.urban <- "prov"
-  bball$treatmenttype <- if(use.urban=="urban"){ifelse(bball$site=="arb", 1, 0)}else if(use.urban=="prov"){
-    as.numeric(bball$prov)}
+  bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(2*sd(df.prov$provenance,na.rm=TRUE))
   
   datalist.gdd <- with(bball, 
                        list(y = gdd, 
-                            urban = provenance,
+                            urban = prov.z,
                             method = type,
                             sp = as.numeric(as.factor(species)),
                             N = nrow(bball),
@@ -973,7 +976,7 @@ cols <-viridis_pal(option="viridis")(3)
   )
   
   provmethod_fake = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                         iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+                         iter = 3000, warmup=2500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
   
   
   my.pal <-rep(viridis_pal(option="viridis")(9),2)

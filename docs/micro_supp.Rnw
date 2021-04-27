@@ -80,7 +80,7 @@ library(broom)
 
 @
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first need to be certain our models are operating correctly. To test our model function, it is essential to first build test data and manipulate the effects of the parameters and sigmas around these parameters to make sure the model is reporting this information accurately. Building test data is easy and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
 
 \section*{Methods S2: Data analysis and model equations}
 Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest` sites modeled as `0` versus `urban` sites modeled as a `1`), method (i.e., hobo logger climate data modeled as `0` and weather station climate data modeled as `1`) and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
