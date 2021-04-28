@@ -9,10 +9,10 @@ library(tidyr)
 set.seed(12321)
 
 if(FALSE){
-  hypoth <- "prov"  ## hobo, urban, prov
-  hypoth.para <- "NA"
-  hypoth.mu <- -10
-  hypoth.sd <- 2   ### This just adds that amount of imprecision to the hypothesis question
+  hypoth <- "hobo"  ## hobo, urban, prov
+  hypoth.para <- "ws"
+  hypoth.mu <- 0
+  hypoth.sd <- 30   ### This just adds that amount of imprecision to the hypothesis question
   fstar.num <- 300  ## GDD threshold
   fstar.sd <- 20
   meantemp <- 10
@@ -145,7 +145,7 @@ bbfunc <- function(hypoth, hypoth.para, hypoth.mu, hypoth.sd, fstar.num, fstar.s
     ### I think this should just make the weather station less accurate...??? I hope.
     df.bb$hyp_b <- ifelse(df.bb$method==hypoth.para, 1, 0)  ## This won't be spit out of the model. If it's the weather station, make it a 1 if it's the hobo logger make it a 0
     ### Now, I am just adding more sigma to the weather station fstar values, seen by sd=ws_sd (which was 20) # emw -- deleted starter of df.fstar$gdd.noise + from above
-    df.bb$gdd.noise <- df.bb$hyp_b * rep(rnorm(nspps, mean=hypoth_mu, sd=hypoth_sd), each=ninds*nsites)
+    df.bb$gdd.noise <- df.bb$hyp_b * unlist(lapply(1:nspps, FUN = function(x){rep(rnorm(n = 1, mean = hypoth_mu, sd = 20), ninds*nsites)}))
     
     df.bb$gdd <- df.bb$gdd.obs + df.bb$gdd.noise + rnorm(ntot, mean=0, sd=sigma_y)
     

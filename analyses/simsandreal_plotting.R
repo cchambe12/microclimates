@@ -69,7 +69,7 @@ dev.off()
   ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
     xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -81,13 +81,35 @@ dev.off()
     scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     xlab("Growing Degree Days (GDD)") + ylab("") +
     scale_y_continuous(expand = c(0, 0)) +
     theme(legend.position="none")
 pdf("figures/gdd_methods_noisyws.pdf", width=8, height=4, onefile=FALSE)
   egg::ggarrange(ws, hobo, ncol=2)
 dev.off()
+
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Urban Site") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Rural Site") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) 
+  pdf("figures/gdd_sites_noisyws.pdf", width=8, height=4, onefile=FALSE)
+    egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
 
 
     use.urban <- "urban"
@@ -196,7 +218,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -208,11 +230,33 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       xlab("Growing Degree Days (GDD)") + ylab("") +
       scale_y_continuous(expand = c(0, 0)) 
     pdf("figures/gdd_methods_noisyhobo.pdf", width=8, height=4, onefile=FALSE)
       egg::ggarrange(ws, hobo, ncol=2)
+    dev.off()
+    
+    ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+      theme_classic() +
+      scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Urban Site") +
+      coord_cartesian(xlim=c(150, 450)) + 
+      geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+      geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+      xlab("Growing Degree Days (GDD)") + ylab("") +
+      scale_y_continuous(expand = c(0, 0)) +
+      #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+      theme(legend.position="none")
+    hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+      theme_classic() +
+      scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Rural Site") +
+      geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+      geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+      coord_cartesian(xlim=c(150, 450)) + 
+      xlab("Growing Degree Days (GDD)") + ylab("") +
+      scale_y_continuous(expand = c(0, 0)) 
+    pdf("figures/gdd_sites_noisyhobo.pdf", width=8, height=4, onefile=FALSE)
+    egg::ggarrange(ws, hobo, ncol=2)
     dev.off()
     
     
@@ -320,7 +364,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -332,11 +376,33 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       xlab("Growing Degree Days (GDD)") + ylab("") +
       scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_methods_micros.pdf", width=8, height=4, onefile=FALSE)
     egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Urban Site") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Rural Site") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) 
+  pdf("figures/gdd_sites_micros.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
 
 
@@ -444,7 +510,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -456,11 +522,33 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
       scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-      coord_cartesian(xlim=c(100, 700)) + 
+      coord_cartesian(xlim=c(150, 450)) + 
       xlab("Growing Degree Days (GDD)") + ylab("") +
       scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_methods_urban.pdf", width=8, height=4, onefile=FALSE)
     egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Urban Site") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Rural Site") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0))
+  pdf("figures/gdd_sites_urban.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
 
       use.urban <- "urban"
@@ -567,6 +655,29 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
         scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_methods_real.pdf", width=8, height=4, onefile=FALSE)
     egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="dodge") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Arboretum") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="dodge") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Harvard Forest") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) 
+  pdf("figures/gdd_sites_real.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
 
 #bball$provgroup <- 5*round(bball$provenance/5, digits=0)
@@ -813,7 +924,7 @@ cols <-viridis_pal(option="viridis")(3)
       ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
         theme_classic() +
         scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-        coord_cartesian(xlim=c(100, 700)) + 
+        coord_cartesian(xlim=c(150, 450)) + 
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
         xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -825,11 +936,34 @@ cols <-viridis_pal(option="viridis")(3)
         scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-        coord_cartesian(xlim=c(100, 700)) + 
+        coord_cartesian(xlim=c(150, 450)) + 
         xlab("Growing Degree Days (GDD)") + ylab("") +
         scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_methods_urbanws.pdf", width=8, height=4, onefile=FALSE)
     egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Urban Site") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Hobo Logger", "Weather Station")) + ggtitle("Rural Site") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(150, 450)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    theme(legend.position="none")
+  pdf("figures/gdd_sites_urbanws.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
 
       use.urban <- "urban"
@@ -944,7 +1078,7 @@ cols <-viridis_pal(option="viridis")(3)
   ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
     theme_classic() +
     scale_fill_manual(name="Method", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Urban Site") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
     xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -956,7 +1090,7 @@ cols <-viridis_pal(option="viridis")(3)
     scale_fill_manual(name="Method", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Rural Site") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     xlab("Growing Degree Days (GDD)") + ylab("") +
     scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_sites_prov.pdf", width=8, height=4, onefile=FALSE)
@@ -966,7 +1100,7 @@ cols <-viridis_pal(option="viridis")(3)
   ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
     scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
     xlab("Growing Degree Days (GDD)") + ylab("") +
@@ -978,7 +1112,7 @@ cols <-viridis_pal(option="viridis")(3)
     scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
-    coord_cartesian(xlim=c(100, 700)) + 
+    coord_cartesian(xlim=c(150, 450)) + 
     xlab("Growing Degree Days (GDD)") + ylab("") +
     scale_y_continuous(expand = c(0, 0)) 
   pdf("figures/gdd_methods_prov.pdf", width=8, height=4, onefile=FALSE)

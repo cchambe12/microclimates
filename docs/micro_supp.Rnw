@@ -109,6 +109,13 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \section*{Supplemental tables and figures}
 
 {\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
+  \caption{Smoothing spline of mean temperature with 90\% credible interval across the two sites.}\label{fig:clim}
+  \end{center}
+  \end{figure}}
+
+{\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
