@@ -46,7 +46,7 @@ clim <- simsdat[[2]]
 
 
   ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
     coord_cartesian(xlim=c(-20, 40)) + 
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -55,7 +55,7 @@ clim <- simsdat[[2]]
     scale_x_continuous(breaks = seq(-20, 40, by=5)) +
     theme(legend.position="none")
   hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
     coord_cartesian(xlim=c(-20, 40)) + 
@@ -68,7 +68,7 @@ dev.off()
 
   ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
     coord_cartesian(xlim=c(100, 700)) + 
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -78,12 +78,13 @@ dev.off()
     theme(legend.position="none")
   hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
     coord_cartesian(xlim=c(100, 700)) + 
     xlab("Growing Degree Days (GDD)") + ylab("") +
-    scale_y_continuous(expand = c(0, 0)) 
+    scale_y_continuous(expand = c(0, 0)) +
+    theme(legend.position="none")
 pdf("figures/gdd_methods_noisyws.pdf", width=8, height=4, onefile=FALSE)
   egg::ggarrange(ws, hobo, ncol=2)
 dev.off()
@@ -172,7 +173,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     clim <- simsdat[[2]]
     
     ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(-20, 40)) + 
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -181,7 +182,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
       scale_x_continuous(breaks = seq(-20, 40, by=5)) +
       theme(legend.position="none")
     hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(-20, 40)) + 
@@ -194,7 +195,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
     
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(100, 700)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -204,7 +205,7 @@ pdf("figures/muplot_noisyws.pdf", width=7, height=4)
       theme(legend.position="none")
     hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(100, 700)) + 
@@ -296,7 +297,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
     clim <- simsdat[[2]]
     
     ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(-20, 40)) + 
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -305,7 +306,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
       scale_x_continuous(breaks = seq(-20, 40, by=5)) +
       theme(legend.position="none")
     hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(-20, 40)) + 
@@ -318,7 +319,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
 
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(100, 700)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -328,7 +329,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
       theme(legend.position="none")
     hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(100, 700)) + 
@@ -420,7 +421,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
   clim <- simsdat[[2]]
   
     ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(-20, 40)) + 
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -429,7 +430,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
       scale_x_continuous(breaks = seq(-20, 40, by=5)) +
       theme(legend.position="none")
     hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(-20, 40)) + 
@@ -442,7 +443,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
   
     ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
       coord_cartesian(xlim=c(100, 700)) + 
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -452,7 +453,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
       theme(legend.position="none")
     hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
       theme_classic() +
-      scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+      scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
       geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
       coord_cartesian(xlim=c(100, 700)) + 
@@ -789,7 +790,7 @@ xtext <- seq(1, 2, by=1)
 cols <-viridis_pal(option="viridis")(3)
 
       ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-        scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+        scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
         coord_cartesian(xlim=c(-20, 40)) + 
         geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -798,7 +799,7 @@ cols <-viridis_pal(option="viridis")(3)
         scale_x_continuous(breaks = seq(-20, 40, by=5)) +
         theme(legend.position="none")
       hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-        scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+        scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
         geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
         coord_cartesian(xlim=c(-20, 40)) + 
@@ -811,7 +812,7 @@ cols <-viridis_pal(option="viridis")(3)
 
       ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
         theme_classic() +
-        scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+        scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
         coord_cartesian(xlim=c(100, 700)) + 
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -821,7 +822,7 @@ cols <-viridis_pal(option="viridis")(3)
         theme(legend.position="none")
       hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
         theme_classic() +
-        scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+        scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
         geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
         coord_cartesian(xlim=c(100, 700)) + 
@@ -920,7 +921,7 @@ cols <-viridis_pal(option="viridis")(3)
   #testmod <- brm(gdd ~ prov.z + type + (prov.z + type | species), data=bball)
   
   ws <- ggplot(clim[(clim$method=="ws"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
     coord_cartesian(xlim=c(-20, 40)) + 
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="ws" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -929,7 +930,7 @@ cols <-viridis_pal(option="viridis")(3)
     scale_x_continuous(breaks = seq(-20, 40, by=5)) +
     theme(legend.position="none")
   hobo <- ggplot(clim[(clim$method=="hobo"),], aes(x=tmean)) + geom_histogram(aes(fill=site), alpha=0.3) + theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(clim$tmean[(clim$method=="hobo" & clim$site=="hf")]), col=cols[[2]], linetype="dashed") +
     coord_cartesian(xlim=c(-20, 40)) + 
@@ -940,9 +941,31 @@ cols <-viridis_pal(option="viridis")(3)
   egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
   
+  ws <- ggplot(bball[(bball$site=="arb"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Urban Site") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) +
+    #scale_x_continuous(breaks = seq(-20, 40, by=5)) +
+    theme(legend.position="none")
+  hobo <- ggplot(bball[(bball$site=="hf"),], aes(x=gdd)) + geom_histogram(aes(fill=method), alpha=0.3, position="stack") + 
+    theme_classic() +
+    scale_fill_manual(name="Method", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Rural Site") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
+    geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
+    coord_cartesian(xlim=c(100, 700)) + 
+    xlab("Growing Degree Days (GDD)") + ylab("") +
+    scale_y_continuous(expand = c(0, 0)) 
+  pdf("figures/gdd_sites_prov.pdf", width=8, height=4, onefile=FALSE)
+  egg::ggarrange(ws, hobo, ncol=2)
+  dev.off()
+  
   ws <- ggplot(bball[(bball$method=="ws"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Weather Station") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Weather Station") +
     coord_cartesian(xlim=c(100, 700)) + 
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="ws" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
@@ -952,7 +975,7 @@ cols <-viridis_pal(option="viridis")(3)
     theme(legend.position="none")
   hobo <- ggplot(bball[(bball$method=="hobo"),], aes(x=gdd)) + geom_histogram(aes(fill=site), alpha=0.3, position="stack") + 
     theme_classic() +
-    scale_fill_manual(name="Site", values=cols, labels=c("Arboretum", "Harvard Forest")) + ggtitle("Hobo Logger") +
+    scale_fill_manual(name="Site", values=cols, labels=c("Urban Site", "Rural Site")) + ggtitle("Hobo Logger") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="arb")]), col=cols[[1]], linetype="dashed") +
     geom_vline(xintercept=mean(bball$gdd[(bball$method=="hobo" & bball$site=="hf")]), col=cols[[2]], linetype="dashed") +
     coord_cartesian(xlim=c(100, 700)) + 

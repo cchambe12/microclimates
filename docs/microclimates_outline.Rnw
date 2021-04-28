@@ -119,7 +119,7 @@ setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
   
 \item Here, we use both simulations and real data to test our hypotheses on modeling GDD accuracy in a warming world and conclude with a series of simulated forecasts to estimate changes in GDD estimates.
   \begin{enumerate}
-  \item Our major hypotheses are as follows...
+  \item Our major hypotheses are as follows:
   \item Weather stations are less accurate measures of the same weather than hobo loggers.
   \item Urban environments require fewer GDDs to leafout than forest habitats.
   \item Individuals with provenance latitudes from more northern locations require fewer GDDs to leafout. 

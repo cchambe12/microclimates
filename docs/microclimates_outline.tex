@@ -112,15 +112,19 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in setwd("{}/Users/CatherineChamberlain/Documents/git/microclimates/analyses/"{}): cannot change working directory}}\end{kframe}
 
 \section*{Introduction}
 \begin{enumerate}
 \item In ecology, we have the fundamental issue of understanding and applying methods to accurately predict shifts in climate and the broader impacts of these shifts.
   \begin{enumerate}
-  \item Often we use mixed models to answer ecological questions, though we do not always understand the intricacies of the model output, nor do we investigate what is missing from the model output.
-  \item Here, we work to understand mixed models using simulation data and test myriad hypotheses through these simulations. 
-  \item These methods can be applied to many ecological questions investigating climate data across global habitats but here we will investigate the effects of climate measurements and site on spring plant phenology. 
+  \item Often we use different accumulated degree day models to answer ecological questions, though we do not always understand the intricacies of the model, nor do we investigate what is missing from the model output or even input (i.e., weather data methods).
+  %\item Often we use mixed models to answer ecological questions, though we do not always understand the intricacies of the model output, nor do we investigate what is missing from the model output.
+  %\item Here, we work to understand mixed models using simulation data and test myriad hypotheses through these simulations. 
+  \item These methods can be applied to many ecological questions investigating climate data across global habitats but here we will investigate the effects of climate measurements and site on predicting spring plant phenology. 
   \end{enumerate}
   
 \item Understanding and predicting plant phenology in temperate deciduous forests is critical as it both shapes community structure and also influences major ecosystem services such as resource and forest management. 
@@ -154,9 +158,10 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \begin{enumerate}
   \item To facilitate scaling and minimize error due to microclimatic effects, researchers often deploy standalone weather loggers---such as HOBO sensors---which may provide higher resolution weather data \citep{Schwartz2013a,Whiteman2000}.
   \item Though deploying temperature loggers is not always feasible, especially when investigating large spatiotemporal shifts in GDDs. 
+  \item As climate is one of the strongest environmental factors contributing to ecosystem change, it is essential to measure weather data as accurately and efficiently as possible, using methods that are accessible to myriad researchers.
   \end{enumerate}
   
-\item Here, we use both simulations, models and real data to test our hypotheses on modeling GDD accuracy in a warming world and conclude with a series of simulated forecasts to estimate changes in GDD estimates.
+\item Here, we use both simulations and real data to test our hypotheses on modeling GDD accuracy in a warming world and conclude with a series of simulated forecasts to estimate changes in GDD estimates.
   \begin{enumerate}
   \item Our major hypotheses are as follows...
   \item Weather stations are less accurate measures of the same weather than hobo loggers.
@@ -187,9 +192,10 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
   \item In order to exhaustively examine all hypotheses, we build our simulation data to address very simple to more complex questions.
   \item We first start by examining what the model output would look like if we just make the weather station data less accurate.
   \item To do this, we create an effect of method on our GDD threshold value and then increase error on the weather station measurements by increasing the sigma value for our random distribution creation (see Supplemental information on Data Simulation). 
-  \item Next, we incorporate climate data by again establishing a random distribution around a mean temperature for each site and then add noise to this weather data to create ``microclimatic'' effects. 
+  \item We then compare model results by running a simulation with increased error on the hobo logger measurements by, again, increasing the sigma value for our random distribution creation on hobo logger observations.
+  \item Next, we incorporate climate data by again establishing a random distribution around a mean temperature for each site and then add variation to this weather data to create ``microclimatic'' effects. 
   \item Using this climate data, we then find the day of budburst when the unique GDD threshold is reached for each individual. 
-  \item For the following hypothesis testing urban effect, we create simulation data that manipulates the GDD threshold for the urban versus forest sites by lowering the GDD threshold for individuals at the arboretum. 
+  \item For the following hypothesis testing urban effect, we create simulation data that manipulates the GDD threshold for the urban versus rural sites by lowering the GDD threshold for individuals at the more urban locations (e.g., local arboreta). 
   \item Next, we apply the same ``microclimatic effect'' as above to test microclimatic variation across the two sites. 
   \item We repeat these steps for the provenance latitude hypothesis by having individuals from more northern provenances requiring fewer GDDS and then apply the ``microclimatic effect''.
   \end{enumerate}
@@ -216,7 +222,8 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \begin{enumerate}
 \item Using simulated data, we tested GDD accuracy across various GDD threshold requirements with warming of 1$^{\circ$C to 10$^{\circ$C. 
   \begin{enumerate}
-  \item We also evaluate accuracy using different base temperatures for calculating GDD (i.e., -5$^{\circ$C, 0$^{\circ$C, 5$^{\circ$C and 10$^{\circ$C).
+  \item We also evaluate accuracy using different base temperatures for calculating GDD (i.e., 0$^{\circ$C versus 10$^{\circ$C) with variation in sigma around base temperatures (i.e., 0$^{\circ$C and 0.5$^{\circ$C).
+  \item Accuracy was evaluated as a ratio of observed GDD divided by the expected GDD.
   \end{enumerate}
 \end{enumerate}
 
@@ -225,7 +232,6 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \item To show the above simulations, real data and forecasts in one location we use a Shiny Application. 
   \begin{enumerate}
   \item Using the R package `shiny' \citep{shiny2021}, version 1.6.0, we developed a Shiny App that contains five pages: (1) `Home' which has information on the application, (2) `Hypothesis Testing' which runs the simulation data and allows users to manipulate the inputs, (3) `Simulation Data for Model Testing' which runs simulation data to test the model and make sure the model outputs are accurate, (4) `Real Data and Analyze Results' which uses real data and runs analyses to be used to compare to the `Hypothesis Testing' output and (5) `Forecasting GDD with Warming' which forecasts GDD accuracy under warming. 
-  \item The Shiny App is meant for users to understand our suggested approach to model testing and interpreting mixed model results. 
   \end{enumerate}
 \end{enumerate}
 
@@ -234,10 +240,10 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \item Using Bayesian hierarchical models with the rstan package \citep{rstan2019}, version 2.19.2,  in R \citep{R}, version 3.3.1, we estimated the effects of urban or provenance effect and method effect and all two-way interactions as predictors on GDDs until leafout. 
   \begin{enumerate} 
   \item Species were modeled hierarchically as grouping factors, which generates an estimate and posterior distribution of the overall response across the 20 species used in our simulations and 18 species used in our real data.
-  \item We ran four chains, each with 2 500 warm-up iterations and 4 000 sampling iterations for a total of 6 000 posterior samples for each predictor for each model using weakly informative priors.
+  \item We ran four chains, each with 2 500 warm-up iterations and 3 000 iterations for a total of 2 000 posterior samples for each predictor for each model using weakly informative priors.
   \item Increasing priors three-fold did not impact our results.
   \item We evaluated our model performance based on $\hat{R}$ values that were close to one and did not include models with divergent transitions in our results. 
-  \item We also evaluated high $n_{eff}$ (4000 for most parameters, but as low as 1400 for a couple of parameters in the shoot apical meristem model). 
+  \item We also evaluated high $n_{eff}$ (3000 for most parameters, but as low as 708 for a couple of parameters in the simulated provenance latitude model). 
   \item We additionally assessed chain convergence and posterior predictive checks visually \citep{BDA}.
   \end{enumerate}
 \end{enumerate}
@@ -293,7 +299,7 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \section*{Discussion} 
 \subsection*{Importance of plotting raw data and running simulations}
 \begin{enumerate}
-\item Raw data is crucial to plot in order to best interpret model outputs.
+\item Raw data is crucial to plot in order to better interpret model outputs.
   \begin{enumerate}
   \item As we see from the less accurate weather station data example versus the less accurate hobo logger data example, the model outputs are the same.
   \item The best way to disentangle which climate measurement method is less accurate is through the use of raw data plots.
@@ -313,18 +319,8 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \item Real data is just hard to interpret as well, especially as models become more complex through interactions, hierarchy or even non-linearities. 
   \begin{enumerate}
   \item By using simulations to manipulate interactions, we can learn how to read our data and interpret our results.
-  \item I will want more here but not sure exactly what to say for now...
-  \end{enumerate}
-\end{enumerate}
-
-\subsection*{Test data is essential when building Bayesian models}
-\begin{enumerate}
-\item Do we want to include this?? Or just throw this in the supp?
-  \begin{enumerate}
-  \item Simulation data can only take us so far in model interpretation. 
-  \item We first need to be certain our models are operating correctly.
-  \item To test our model function, it is essential to first build test data and manipulate the effects of the parameters and sigmas around these parameters to make sure the model is outputing this information accurately.
-  \item Building test data is easy and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
+  \item I agree! I wonder if a biologically focused paper would be easier to write with a subsection on this (where we might mention the shiny app? I wonder if that would use up less of the methods then?).
+  \item The Shiny App is meant for users to understand our suggested approach to model testing and interpreting mixed model results. 
   \end{enumerate}
 \end{enumerate}
 
@@ -344,6 +340,7 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \item As we see from our forecasting simulations, regardless of base temperature threshold, GDD models may not be appropriate for the future with warming \citep{Man2010}. 
   \begin{enumerate}
   \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for leafout phenology. 
+  \item Generally higher fstar means lower gddratio; this is because being off by a day is a small effect for higher fstar (and hence greater days) than for lower fstar, but it really depends on climate variability because high variability means some days you can get accumulate GDDs quickly and that can override the fstar trends. In reality temperature variance likely changes over the spring (or could?) so this is pretty tricky! 
   \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here. 
   \end{enumerate}
 \end{enumerate}

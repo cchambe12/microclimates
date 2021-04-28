@@ -120,7 +120,7 @@ Article acceptance date: 13 April 2021
 
 
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters and sigmas around these parameters to make sure the models were reporting this information accurately. Building test data is easy and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
 
 \section*{Methods S2: Data analysis and model equations}
 Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest` sites modeled as `0` versus `urban` sites modeled as a `1`), method (i.e., hobo logger climate data modeled as `0` and weather station climate data modeled as `1`) and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
@@ -156,11 +156,11 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   -\end{center}
   -\end{figure}}
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from noisy weather station simulations}. Using a model with noisy weather station data simulations and testing the effects of site, method and the interaction between site and method results in a large sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:noisyws}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -185,11 +185,11 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from noisy hobo logger simulations}. Using a model with noisy hobo logger data simulations and testing the effects of site, method and the interaction between site and method results in a large sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:noisyhobo}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -214,11 +214,11 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from microclimate simulations}. Using a model with microclimate data simulations and testing the effects of site, method and the interaction between site and method results in a small sigma for method. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:micros}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -243,11 +243,11 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from urban simulations}. Using a model with urban data simulations and testing the effects of site, method and the interaction between site and method results in a negative effect of site. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:urban}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -272,11 +272,11 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from real data}. Using a model with real data and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from real data}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:real}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -301,11 +301,11 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 
   
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from an urban effect and noisy weather station simulations}. Using a model with an urban effect and noisy weather station data simulations and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from an urban effect and noisy weather station simulations}.We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:urbmethod}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -329,7 +329,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 \end{table}
 
   
-\begin{figure}
+\begin{figure}[H]
     \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
       \caption{}
@@ -344,30 +344,30 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
     \label{fig:gddprov}
   \end{subfigure}
-\caption{ Using simulated data to test provenance latitude, we show (a) histograms of climate data at the Arboretum and Harvard Forest using weather station data and hobo logger data. (b) Histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. (c) Effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst using noisy weather station data. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and lines show means and 50\% uncertainty intervals. See Table XX for full model output.}
+\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:prov} for full model output. We also show (b) histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. }
 \label{fig:prov}
 \end{figure}
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon Apr 26 16:32:17 2021
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Apr 28 07:54:15 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from provenance latitude simulations}. Using a model with provenance latitude simulations and testing the effects of site, method and the interaction between site and method results in XXX. We present posterior means, as well as 50 percent and 95 percent uncertainty intervals from models in which the predictors have been standardized so that they are directly comparable.} 
+\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
 \label{tab:prov}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
   \hline
  & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
   \hline
-$\mu_{\alpha}$ & 625.44 & 601.53 & 654.55 & 542.03 & 686.12 \\ 
-  $\mu_{site}$ & -9.14 & -9.47 & -8.81 & -10.14 & -8.12 \\ 
-  $\mu_{method}$ & 10.90 & 2.61 & 18.91 & -11.39 & 35.01 \\ 
-  $\mu_{sitexmethod}$ & -0.26 & -0.45 & -0.06 & -0.82 & 0.26 \\ 
-  $\sigma_{site}$ & 1.65 & 1.32 & 1.89 & 0.97 & 2.76 \\ 
-  $\sigma_{method}$ & 0.80 & 0.31 & 1.13 & 0.03 & 2.39 \\ 
-  $\sigma_{sitexmethod}$ & 0.02 & 0.01 & 0.03 & 0.00 & 0.05 \\ 
-  $\sigma_{\alpha}$ & 96.80 & 77.58 & 113.07 & 53.04 & 159.98 \\ 
-  $\sigma_{y}$ & 15.60 & 15.45 & 15.74 & 15.18 & 16.01 \\ 
+$\mu_{\alpha}$ & 307.61 & 304.40 & 310.79 & 296.64 & 318.14 \\ 
+  $\mu_{site}$ & -4.80 & -5.38 & -4.22 & -6.47 & -3.05 \\ 
+  $\mu_{method}$ & -0.29 & -0.69 & 0.11 & -1.50 & 0.90 \\ 
+  $\mu_{sitexmethod}$ & -0.54 & -1.41 & 0.32 & -3.03 & 1.96 \\ 
+  $\sigma_{site}$ & 0.94 & 0.39 & 1.35 & 0.04 & 2.61 \\ 
+  $\sigma_{method}$ & 0.77 & 0.33 & 1.09 & 0.03 & 2.13 \\ 
+  $\sigma_{sitexmethod}$ & 1.58 & 0.72 & 2.23 & 0.08 & 4.08 \\ 
+  $\sigma_{\alpha}$ & 20.54 & 17.57 & 22.71 & 14.07 & 30.22 \\ 
+  $\sigma_{y}$ & 15.57 & 15.43 & 15.71 & 15.19 & 15.96 \\ 
    \hline
 $N_{sp}$ & 15.00 &  &  &  &  \\ 
    \hline
