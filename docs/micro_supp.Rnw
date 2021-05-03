@@ -121,6 +121,25 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
+  
+\begin{figure}[H]
+  \begin{subfigure}{.5\linewidth}
+	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
+    \caption{}
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urban.pdf}
+      \label{fig:muploturban}
+  \end{subfigure}%
+    \begin{subfigure}{.5\linewidth}
+	    %\rule{\linewidth}{\linewidth}
+      \caption{}
+      \centering
+      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_urban.pdf}
+    \label{fig:gddurban}
+  \end{subfigure}
+\caption{ Using simulated data with the urban site requiring more GDDs until budburst, we show (a) the effects of site (urban site is `1' and rural site is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thick lines show 50\% uncertainty intervals. See Table \ref{tab:urban} for full model output. We also show (b) histograms of GDDs at the urban site and rural site using weather station data and hobo logger data. }
+\label{fig:urban}
+\end{figure}
 
 <<label=noisyws, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 

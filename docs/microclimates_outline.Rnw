@@ -390,98 +390,96 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
 \section*{Results}
 \subsection*{Simulations -- part 1}
 \begin{enumerate}
-\item We find we can accurately recover a simple effect of urban sites requiring more GDD (SUPP figure).
+\item We find we can accurately recover a simple effect of urban sites requiring more GDD (Figure \ref{fig:urban} and Table \ref{tab:urban}).
 \item Simulations that include microclimates at both sites show that the hobo loggers require more GDDs until budburst. 
-  \item When simulating microclimatic effects across the sites, we include greater variation in temperature for the hobo logger data, which is being reflected by the negative slope of the method parameter (XX $\pm$ XX). 
-  \item Something about provenance
-  \item Now noise (it should go LAST) .... 
-  \item When we manipulate the simulations to have noisy weather station data, noise is returned as the sigma for the method parameter (Figure \ref{fig:simsmus} a)) and the method parameter is slightly positive (XX $\pm$ XX), indicating weather stations require more GDDs until budburst. 
-  \item Though, when we manipulate the simulations to have noisy hobo logger data, the output is nearly identical (Figure \ref{fig:simsmus} b)) but the method parameter is slightly negative (XX $\pm$ XX), now indicating hobo loggers require more GDDs until budburst.
+  \item When simulating microclimatic effects across the sites, we include greater variation in temperature for the hobo logger data, which is being reflected by the negative slope of the method parameter (\Sexpr{method.micros} $\pm$ \Sexpr{method.micros.sd}). 
+  \item Provenance effect simulations indicate more northern provenance locations require fewer GDDs until budburst which is being recovered in the provenance parameter (\Sexpr{site.prov} $\pm$ \Sexpr{site.prov.sd}; Figure \ref{fig:prov} and Table \ref{tab:prov}).
+  \item When we manipulate the simulations to have noisy weather station data, noise is returned as the sigma for the method parameter (Figure \ref{fig:simsmus} \textbf{a)}) and the method parameter is slightly positive (\Sexpr{method.noisyws} $\pm$ \Sexpr{method.noisyws.sd}), indicating weather stations require more GDDs until budburst. 
+  \item Though, when we manipulate the simulations to have noisy hobo logger data, the output is nearly identical (Figure \ref{fig:simsmus} \textbf{b)}) but the method parameter is slightly negative (\Sexpr{method.noisyhobo} $\pm$ \Sexpr{method.noisyhobo.sd}), now indicating hobo loggers require more GDDs until budburst.
   \end{enumerate}
   
   \subsection*{Simulations -- part 1 --  GDD accuracy}
 \begin{enumerate}
-\item The GDD model is most accurate for individuals that have high GDD thresholds and when base temperatures are higher (i.e., 10$^{\circ}$C; Figure \ref{fig:forecasts} a)). 
+\item The GDD model is most accurate for individuals that have high GDD thresholds and when base temperatures are higher (i.e., 10$^{\circ}$C; Figure \ref{fig:forecasts} \textbf{a)}). 
   \begin{enumerate}
-  \item However, the GDD model becomes less accurate with warming, and accuracy decreases at a faster rate with the higher base temperature (i.e., 10$^{\circ}$C) than with the lower base temperature (i.e., 0$^{\circ}$C; Figure \ref{fig:forecasts} b)).
+  \item However, the GDD model becomes less accurate with warming, and accuracy decreases at a faster rate with the higher base temperature (i.e., 10$^{\circ}$C) than with the lower base temperature (i.e., 0$^{\circ}$C; Figure \ref{fig:forecasts} \textbf{b)}).
   \item Under the no warming simulation, using the 10$^{\circ}$C base temperature is most consistent across species but with any amount of warming, the 0$^{\circ}$C base temperature is more accurate. 
   \item Additionally, variability in accuracy across GDD thresholds and with warming increases with higher sigmas (Figure \ref{fig:forecasts}).
   \end{enumerate}
 \end{enumerate}
 \end{enumerate}
 
-  
-  % EMW -- do we need the below?
-%  \item We next, using simulations that establish an interaction where the hobo loggers and weather station recorded temperatures differently across the two sites and manipulate the urban parameter, we see that urban sites require fewere GDDs until budburst (XX $\pm$ XX).
-%  \begin{enumerate}
-%  \item When we simulate variation in mean temperature across the two methods across the two sites to establish an interaction we see: sigma values for the method effect are large (XX), though the slope is close to zero (XX $\pm$ XX); individuals at the urban site require fewer GDDs to budburst (XX $\pm$ XX) and there is large sigma (XX); and the weather station at the urban site is recording the fewest number of GDDs until budburst (XX $\pm$ XX) though the interaction sigma is close to zero (XX; Figure \ref{fig:urbanws} a)).
-%  \end{enumerate}
-% \end{enumerate}
-
 \subsection*{Real data}
 \begin{enumerate}
-\item Individuals at the arboretum (i.e., more urban sites) require fewer GDDs to budburst (XX $\pm$ XX).
+\item Individuals at the arboretum (i.e., more urban sites) require more GDDs to budburst (\Sexpr{site.real} $\pm$ \Sexpr{site.real.sd}).
   \begin{enumerate}
-  \item There is high variation in GDDs between the two methods (XX) though the slope is close to zero (XX $\pm$ XX).
-  \item There is a large interaction indicating weather station data at the arboretum records the fewest number of GDDs until budburst (XX $\pm$ XX). 
-  \item Using raw data, we see there is higher variation at the arboretum across the two methods and that the arboretum requires fewer GDDs until budburst than the Harvard Forest.
+  \item There is high variation in GDDs between the two methods (\Sexpr{method.sigma.real}) though the slope is close to zero (method.real $\pm$ method.real.sd).
+  \item There is a large interaction indicating weather station data at the arboretum records the fewest number of GDDs until budburst (\Sexpr{um.real} $\pm$ \Sexpr{um.real.sd}). 
+  \item Using raw data, we see there is higher variation at the arboretum across the two methods and that the arboretum requires fewer GDDs until budburst than the Harvard Forest (i.e., more rural forest sites).
   \end{enumerate}
 \end{enumerate}
-
 
 \section*{Discussion} 
-\subsection*{Importance of plotting raw data and running simulations}
-\begin{enumerate}
-\item Raw data is crucial to plot in order to better interpret model outputs.
-  \begin{enumerate}
-  \item As we see from the less accurate weather station data example versus the less accurate hobo logger data example, the model outputs are very similar and are even comparable to the microclimate simulation.
-  \item One way to disentangle which climate measurement method is less accurate is through the use of raw data plots in combination with the model output figures.
-  \item As is evident from the model outputs, the method which is less accurate requires more GDDs until budburst since GDDs are accumulating at a faster rate with higher temperature variability---and higher temperature days.
-  \item Using simulations and raw data plots has helped us see through the common pitfalls we make as scientists and conclusions we tend to jump to when interpreting our models. 
+% Below are a few bits from intro that may or may not fit in your discussion
+%     \item As climate is one of the strongest environmental factors contributing to ecosystem change, it is essential to measure weather data as accurately and efficiently as possible, using methods that are accessible to myriad researchers.
+% \item As GDD is a predominant indicator of spring phenology, having accurate and consistent weather data is essential for better estimates of budburst or leafout, especially with warming.
+% \item Phenology is often measured through satellite, remote sensing or PhenoCam images to detect spring `green-up' \citep{Meng2020, Liu2018, Richardson2015} but these methods fail to detect the species---or even site-level---nuances in budburst timing \citep{Elmendorf2019}.
+  \begin{enumerate} 
+  
+\item Here's what we found overview paragraph ... 
+  \begin{enumerate} 
+  \item Ding, ding! Our urban site was warmer, but  ...
+  \item Trees in the urban site required FEWER, not more GDDs.
+  \item It looks like there was a strong microclimate effect and it varied by site
+  \item Provenance did not make a ton of sense ... we suggest teasing out provenance effects, given that they may be so small in spring phenology (CITES), is difficult with this sort of haphazard arboretum data, at least in our study. % EMW -- now, we can try to skip discussing provenance further I think
+  \end{enumerate}
+  \end{enumerate}
+
+\subsection*{Variation across and within sites suggests important variation for forecasting} 
+
+  \begin{enumerate} 
+\item Our finding that urban trees require fewer GDDs contributes to increasing evidence that trees in urban sites may respond differently than those in forested rural areas
+  \begin{enumerate} 
+  \item This means that long-term records and experiments conducted in arboreta in urban areas may not be transferrable to larger scale studies and models that incorporate forested rural areas. We should perhaps be more cautious in these extrapolations. 
+  \item Can we compare this with any other studies? A lower GDD means a lower days/C ... so does that match Meng?
+  \item We think maybe the lower GDD is because the arboretum may get MORE chilling (right?). 
+  \item What do you think these results mean for  using urban sites as natural experiments?
   \end{enumerate}
   
-\item Understanding microclimates versus measurement error is possible, though difficult to detect. 
-  \begin{enumerate}
-  \item By including microclimatic effects at both sites, variation in temperature increases and, thus, the number of days in which the temperature falls below the base GDD threshold is also greater but the days in which temperatures are accumulating, the temperature will likely be greater than what is recorded at the weather station.
-  \item Ultimately, we see that the number of days in which the temperatures falls below the base GDD threshold must be less than the number of days in which temperatures are accumulating at a faster rate than at the weather station since hobo loggers in this simulation require more GDDs until budburst.
-  \item When we compare the microclimate simulation to the inaccurate hobo logger simulation, we see that under the inaccurate hobo logger simulation, hobo loggers may require slightly fewer GDDs until budburst but the effect of method is stronger under the microclimate simulation.
-  \item This is messy but main points: 1) high temperature variability, whether it is due to inaccurate recordings or due to microclimates, results in more days at higher temperatures so the day of budburst records higher GDDs for the method with greater temperature variability. That said, we are seeing inaccurate methods overlap with zero for the method parameter whereas microclimate simulations do not.
+  \item No consistent differences between GDD estimated at WS versus hobo logger, but there was a large interaction and this could suggest large microclimatic differences 
+  \begin{enumerate} 
+  \item This effect was even bigger than the urban effect (yes?) so it seems important
+  \item But complicated  ... we need to understand it better and explain it as best we can to the reader here. 
+  \item If we assume that WS and HOBOs are accurate -- what does this model mean for forecasting?
   \end{enumerate}
-\end{enumerate}
+      \end{enumerate}
 
-
-\subsection*{The use of simulations to better interpret real data results}
-\begin{enumerate}
-\item Real data is hard to interpret, especially as models become more complex through interactions, hierarchy or even non-linearities. 
-  \begin{enumerate}
-  \item By using simulations to manipulate interactions, we can learn how to read our data and interpret our results.
-  \item The Shiny App is meant for users to understand our suggested approach to model testing and interpreting mixed model results as well investigate various, new simulations of interest. 
+\subsection*{Accurately attributing observed variation requires more research on climate methods and phenology} 
+  \begin{enumerate} 
+% EMW -- I think we need to give just a few simple messages here!
+\item Our simulations suggest teasing out noise versus (microclimates? Yes?) could be tricky ... 
+  \begin{enumerate} 
+  \item As is evident from the model outputs, the method which is less accurate requires more GDDs until budburst since GDDs are accumulating at a faster rate with higher temperature variability---and higher temperature days.
+    \item By including microclimatic effects at both sites, variation in temperature increases and, thus, the number of days in which the temperature falls below the base GDD threshold is also greater but the days in which temperatures are accumulating, the temperature will likely be greater than what is recorded at the weather station.
+      \item This is messy but main points: 1) high temperature variability, whether it is due to inaccurate recordings or due to microclimates, results in more days at higher temperatures so the day of budburst records higher GDDs for the method with greater temperature variability. That said, we are seeing inaccurate methods overlap with zero for the method parameter whereas microclimate simulations do not.
   \end{enumerate}
-\end{enumerate}
-
-\subsection*{Understanding the real data and the conclusions we can draw}
-\begin{enumerate}
-\item Here, I want to reiterate the depth in which we can actually draw conclusions.
-  \begin{enumerate}
-  \item Our data and our models suggest that individuals at the arboretum require fewer GDDs until budburst than those at the Harvard Forest.
-  \item We also see that the hobo loggers at both sites record greater variation than the weather station data.
-  \item But we do not know if this is because the loggers are less accurate measures of the same weather or if the hobo loggers are detecting microclimatic effects across the two sites. 
-  \item Based on our simulations, since the method parameter is close to zero, would we presume it is due to less accurate measurements from one of the methods? Probably not because the variation between the methods is comparable across sites. Maybe instead this implies microclimate effects that are in opposite directions between the two sites?
-  \item Finally, we can conclude that the weather station at the arboretum is recording lower temperatures than the hobo loggers, thus data from the weather station at the arboretum is recording the fewest number of GDDs until budburst. %% I need to make sure about this first but I will put this here for now as a placeholder.
+  
+  % how much does local climate matter for phenology? Come back to buds etc.
+  \item How to move forward? Several pathways to accurately figure out how to model this ... 
+    \begin{enumerate} 
+    \item In the field -- climate methods: More studies of hobo loggers -- effects of radiation shields, location, etc. Both next to weather stations and next to trees. 
+    \item In the field -- phenology: Increasing studies of how bud temperature matters to leafout will help, especially teasing out radiative heating effects
+    \item Better models -- just using GDD as we did may not be as good as models that incorporate the GDD model itself -- building from climate data to a thermal threshold within the model.
   \end{enumerate}
-\end{enumerate}
-
-\subsection*{The future of GDD models}
-\begin{enumerate}
-\item As we see from our forecasting simulations, regardless of base temperature threshold, GDD models may not be appropriate for the future with warming \citep{Man2010}. 
-  \begin{enumerate}
-  \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for budburst phenology. 
+  
+  \item What our results mean for forecasting today ... As we see from our forecasting simulations, regardless of base temperature threshold, GDD models may not be appropriate for the future with warming \citep{Man2010}. 
+  \begin{enumerate} 
+    \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for budburst phenology. 
   \item Generally higher GDD thresholds means lower a lower GDD observed to GDD expected ratio; this is because being off by a day is a small effect for higher GDD threshold species (and hence greater days) than for lower GDD threshold species, but it really depends on climate variability because high variability means some days you can get accumulate GDDs quickly and that can override the GDD threshold trends. 
   \item In reality temperature variance likely changes over the spring so this is pretty tricky! 
   \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here. 
   \end{enumerate}
-\end{enumerate}
-
+    \end{enumerate}
 
 
 
