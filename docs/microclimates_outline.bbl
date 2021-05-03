@@ -1,5 +1,20 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{45}
 \providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
+Aitken, S.N. \& Bemmels, J.B. (2015) Time to get moving: assisted gene flow of
+  forest trees. \emph{Evolutionary Applications} \textbf{9}, 271--290.
+
+\bibitem[{Basler \& K{\"{o}}rner(2012)}]{Basler2012}
+Basler, D. \& K{\"{o}}rner, C. (2012) {Photoperiod sensitivity of bud burst in
+  14 temperate forest tree species}. \emph{Agricultural and Forest Meteorology}
+  \textbf{165}, 73--81.
+
+\bibitem[{Baumgarten \emph{et~al.}(2021)Baumgarten, Zohner, Gessler \&
+  Vitasse}]{Baumgarten2021}
+Baumgarten, F., Zohner, C.M., Gessler, A. \& Vitasse, Y. (2021) Chilled to be
+  forced: the best dose to wake up buds from winter dormancy. \emph{New
+  Phytologist} \textbf{230}, 1366--1377.
 
 \bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
 Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
@@ -11,6 +26,11 @@ Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
 Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y., Allen,
   J., McPherson, J., Dipert, A. \& Borges, B. (2021) shiny: Web application
   framework for r. https://CRAN.R-project.org/package=shiny.
+
+\bibitem[{Chuine(2010)}]{Chuine2010}
+Chuine, I. (2010) Why does phenology drive species distribution?
+  \emph{Philosophical Transactions of the Royal Society B: Biological Sciences}
+  \textbf{365}, 3149--3160.
 
 \bibitem[{Chuine \emph{et~al.}(2001)Chuine, Aitken \& Ying}]{Chuine2001}
 Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
@@ -31,15 +51,38 @@ Crimmins, M.A. \& Crimmins, T.M. (2019) Does an early spring indicate an early
   \emph{Journal of Geophysical Research: Biogeosciences} \textbf{124},
   2628--2641.
 
+\bibitem[{Cuervo-Alarcon \emph{et~al.}(2018)Cuervo-Alarcon, Arend, M{\"u}ller,
+  Sperisen, Finkeldey \& Krutovsky}]{Cuervo-Alarcon2018}
+Cuervo-Alarcon, L., Arend, M., M{\"u}ller, M., Sperisen, C., Finkeldey, R. \&
+  Krutovsky, K.V. (2018) Genetic variation and signatures of natural selection
+  in populations of european beech (fagus sylvatica l.) along precipitation
+  gradients. \emph{Tree Genetics \& Genomes} \textbf{14}, 84.
+
+\bibitem[{de~Ress{\'e}guier \emph{et~al.}(2020)de~Ress{\'e}guier, Mary,
+  Le~Roux, Petitjean, Qu{\'e}nol \& van Leeuwen}]{deResseguier2020}
+de~Ress{\'e}guier, L., Mary, S., Le~Roux, R., Petitjean, T., Qu{\'e}nol, H. \&
+  van Leeuwen, C. (2020) Temperature variability at local scale in the bordeaux
+  area. relations with environmental factors and impact on vine phenology.
+  \emph{Frontiers in Plant Science} \textbf{11}, 515.
+
 \bibitem[{Dosmann(2006)}]{Dosmann2006}
 Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
   \emph{The Botanical Review} \textbf{72}, 207--234.
 
-\bibitem[{Elmendorf \emph{et~al.}(2019)Elmendorf, Crimmins, Gerst \&
-  Weltzin}]{Elmendorf2019}
-Elmendorf, S.C., Crimmins, T.M., Gerst, K.L. \& Weltzin, J.F. (2019) Time to
-  branch out? application of hierarchical survival models in plant phenology.
-  \emph{Agricultural and Forest Meteorology} \textbf{279}, 107694.
+\bibitem[{Ettinger \emph{et~al.}(2018)Ettinger, Gee \&
+  Wolkovich}]{Ettinger2018}
+Ettinger, A.K., Gee, S. \& Wolkovich, E.M. (2018) Phenological sequences: how
+  early-season events define those that follow. \emph{Am J Bot} \textbf{105},
+  1771--1780.
+
+\bibitem[{Gauzere \emph{et~al.}(2017)Gauzere, Delzon, Davi, Bonhomme, Garcia~de
+  Cortazar-Atauri \& Chuine}]{Gauzere2017}
+Gauzere, J., Delzon, S., Davi, H., Bonhomme, M., Garcia~de Cortazar-Atauri, I.
+  \& Chuine, I. (2017) {Integrating interactive effects of chilling and
+  photoperiod in phenological process-based models. A case study with two
+  European tree species: \textit{Fagus sylvatica} and \textit{Quercus
+  petraea}}. \emph{Agricultural and Forest Meteorology} \textbf{244-255},
+  9--20.
 
 \bibitem[{Gelman \emph{et~al.}(2014)Gelman, Carlin, Stern, Dunson, Vehtari \&
   Rubin}]{BDA}
@@ -59,17 +102,40 @@ Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
   carbon uptake has increased through warming-induced changes in temperate
   forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
 
-\bibitem[{Liu \emph{et~al.}(2018)Liu, Piao, Janssens, Fu, Peng, Lian, Ciais,
-  Myneni, Pe{\~n}uelas \& Wang}]{Liu2018}
-Liu, Q., Piao, S., Janssens, I.A., Fu, Y., Peng, S., Lian, X., Ciais, P.,
-  Myneni, R.B., Pe{\~n}uelas, J. \& Wang, T. (2018) Extension of the growing
-  season increases vegetation exposure to frost. \emph{Nature Communications}
-  \textbf{9}.
+\bibitem[{Lembrechts \emph{et~al.}(2019)Lembrechts, Nijs \&
+  Lenoir}]{Lembrechts2019}
+Lembrechts, J.J., Nijs, I. \& Lenoir, J. (2019) Incorporating microclimate into
+  species distribution models. \emph{Ecography} \textbf{42}, 1267--1279.
+
+\bibitem[{Lenoir \emph{et~al.}(2013)Lenoir, Graae, Aarrestad, Alsos,
+  Armbruster, Austrheim, Bergendorff, Birks, Br{\aa}then, Brunet, Bruun,
+  Dahlberg, Decocq, Diekmann, Dynesius, Ejrn{\ae}s, Grytnes, Hylander,
+  Klanderud, Luoto, Milbau, Moora, Nygaard, Odland, Ravolainen, Reinhardt,
+  Sandvik, Schei, Speed, Tveraabak, Vandvik, Velle, Virtanen, Zobel \&
+  Svenning}]{Lenoir2013}
+Lenoir, J., Graae, B.J., Aarrestad, P.A., Alsos, I.G., Armbruster, W.S.,
+  Austrheim, G., Bergendorff, C., Birks, H.J.B., Br{\aa}then, K.A., Brunet, J.,
+  Bruun, H.H., Dahlberg, C.J., Decocq, G., Diekmann, M., Dynesius, M.,
+  Ejrn{\ae}s, R., Grytnes, J.A., Hylander, K., Klanderud, K., Luoto, M.,
+  Milbau, A., Moora, M., Nygaard, B., Odland, A., Ravolainen, V.T., Reinhardt,
+  S., Sandvik, S.M., Schei, F.H., Speed, J.D.M., Tveraabak, L.U., Vandvik, V.,
+  Velle, L.G., Virtanen, R., Zobel, M. \& Svenning, J.C. (2013) Local
+  temperatures inferred from plant communities suggest strong spatial buffering
+  of climate warming across northern europe. \emph{Global Change Biology}
+  \textbf{19}, 1470--1481.
 
 \bibitem[{Man \& Lu(2010)}]{Man2010}
 Man, R. \& Lu, P. (2010) Effects of thermal model and base temperature on
   estimates of thermal time to bud break in white spruce seedlings.
   \emph{Canadian Journal of Forest Research} \textbf{40}, 1815--1820.
+
+\bibitem[{McKown \emph{et~al.}(2013)McKown, Guy, Kl{\'a}p{\v s}t{\v e},
+  Geraldes, Friedmann, Cronk, El-Kassaby, Mansfield \& Douglas}]{McKown2013}
+McKown, A.D., Guy, R.D., Kl{\'a}p{\v s}t{\v e}, J., Geraldes, A., Friedmann,
+  M., Cronk, Q.C.B., El-Kassaby, Y.A., Mansfield, S.D. \& Douglas, C.J. (2013)
+  Geographical and environmental gradients shape phenotypic trait variation and
+  genetic structure inpopulus trichocarpa. \emph{New Phytologist} \textbf{201},
+  1263--1276.
 
 \bibitem[{Meng \emph{et~al.}(2020)Meng, Mao, Zhou, Richardson, Lee, Thornton,
   Ricciuto, Li, Dai, Shi \& et~al.}]{Meng2020}
@@ -79,8 +145,11 @@ Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
   temperature in the conterminous united states. \emph{Proceedings of the
   National Academy of Sciences} \textbf{117}, 4228--4233.
 
-\bibitem[{O'Keefe(2014)}]{OKeefe2014}
-O'Keefe, J. (2014) {Phenology of woody species at Harvard Forest since 1990}.
+\bibitem[{Moorcroft \emph{et~al.}(2001)Moorcroft, Hurtt \&
+  Pacala}]{Moorcroft2001}
+Moorcroft, P.R., Hurtt, G.C. \& Pacala, S.W. (2001) {A method for scaling
+  vegetation dynamics: The Ecosystem Demography Model (ED)}. \emph{Ecological
+  Monographs} \textbf{71}, 557--585.
 
 \bibitem[{Pardee \emph{et~al.}(2017)Pardee, Inouye \& Irwin}]{Pardee2017}
 Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of
@@ -111,16 +180,19 @@ Primack, R.B. \& Miller-Rushing, A.J. (2009) The role of botanical gardens in
 {R Development Core Team} (2017) R: A language and environment for statistical
   computing. \emph{R Foundation for Statistical Computing, Vienna, Austria} .
 
-\bibitem[{Richardson(2015)}]{Richardson2015}
-Richardson, A.D. (2015) {PhenoCam images and canopy phenology at Harvard Forest
-  since 2008}.
-
 \bibitem[{Richardson \emph{et~al.}(2013)Richardson, Keenan, Migliavacca, Ryu,
   Sonnentag \& Toomey}]{Richardson2013}
 Richardson, A.D., Keenan, T.F., Migliavacca, M., Ryu, Y., Sonnentag, O. \&
   Toomey, M. (2013) {Climate change, phenology, and phenological control of
   vegetation feedbacks to the climate system}. \emph{Agricultural and Forest
   Meteorology} \textbf{169}, 156 -- 173.
+
+\bibitem[{Satake \emph{et~al.}(2013)Satake, Kawagoe, Saburi, Chiba, Sakurai \&
+  Kudoh}]{Satake2013}
+Satake, A., Kawagoe, T., Saburi, Y., Chiba, Y., Sakurai, G. \& Kudoh, H. (2013)
+  Forecasting flowering phenology under climate warming by modelling the
+  regulatory dynamics of flowering-time genes. \emph{Nature Communications}
+  \textbf{4}, 2303.
 
 \bibitem[{Schwartz \emph{et~al.}(2006)Schwartz, Ahas \& Aasa}]{Schwartz2006}
 Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
@@ -132,11 +204,20 @@ Schwartz, M.D., Hanes, J.M. \& Liang, L. (2013) Comparing carbon flux and
   high-resolution spring phenological measurements in a northern mixed forest.
   \emph{Agricultural and Forest Meteorology} \textbf{169}, 136--147.
 
+\bibitem[{Scotti-Saintagne \emph{et~al.}(2004)Scotti-Saintagne,
+  Bod{\'e}n{\`e}s, Barreneche, Bertocchi, Plomion \& Kremer}]{Scotti2004}
+Scotti-Saintagne, C., Bod{\'e}n{\`e}s, C., Barreneche, T., Bertocchi, E.,
+  Plomion, C. \& Kremer, A. (2004) Detection of quantitative trait loci
+  controlling bud burst and height growth in quercus robur l. \emph{Theoretical
+  and Applied Genetics} \textbf{109}, 1648--1659.
+
 \bibitem[{{Stan Development Team}(2019)}]{rstan2019}
 {Stan Development Team} (2019) Stan user's guide, version 2.19.
 
-\bibitem[{USA-NPN(2016)}]{USA-NPN2016}
-USA-NPN (2016) {USA National Phenology Network Extended Spring Indices}.
+\bibitem[{Taylor \& White(2020)}]{Taylor2020}
+Taylor, S.D. \& White, E.P. (2020) Automated data-intensive forecasting of
+  plant phenology throughout the united states. \emph{Ecological Applications}
+  \textbf{30}, e02025.
 
 \bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
   Kremer, Chuine \& Delzon}]{Vitasse2011}
@@ -144,6 +225,11 @@ Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.
   \& Delzon, S. (2011) {Assessing the effects of climate change on the
   phenology of European temperate trees.} \emph{Agricultural and Forest
   Meteorology} \textbf{151}, 969--980.
+
+\bibitem[{Way \& Montgomery(2015)}]{Way2015}
+Way, D.A. \& Montgomery, R.A. (2015) Photoperiod constraints on tree phenology,
+  performance and migration in a warming world. \emph{Plant, Cell \&
+  Environment} \textbf{38}, 1725--1736.
 
 \bibitem[{Whiteman \emph{et~al.}(01 Jan. 2000)Whiteman, Hubbe \&
   Shaw}]{Whiteman2000}
@@ -157,5 +243,43 @@ Williamson, S.N., Barrio, I.C., Hik, D.S. \& Gamon, J.A. (2016) Phenology and
   species determine growing-season albedo increase at the altitudinal limit of
   shrub growth in the sub-arctic. \emph{Global Change Biology} \textbf{22},
   3621--3631.
+
+\bibitem[{Yu \emph{et~al.}(2016)Yu, Wang \& Chen}]{Yu2016}
+Yu, M., Wang, G. \& Chen, H. (2016) Quantifying the impacts of land surface
+  schemes and dynamic vegetation on the model dependency of projected changes
+  in surface energy and water budgets. \emph{Journal of Advances in Modeling
+  Earth Systems} \textbf{8}, 370--386.
+
+\bibitem[{Zhang \emph{et~al.}(2021)Zhang, Lin, Wang, Shen, Wang, Rao, Wu \&
+  H{\"a}nninen}]{Zhang2021}
+Zhang, R., Lin, J., Wang, F., Shen, S., Wang, X., Rao, Y., Wu, J. \&
+  H{\"a}nninen, H. (2021) The chilling requirement of subtropical trees is
+  fulfilled by high temperatures: A generalized hypothesis for tree
+  endodormancy release and a method for testing it. \emph{Agricultural and
+  Forest Meteorology} \textbf{298-299}, 108296.
+
+\bibitem[{Zhao \emph{et~al.}(2013)Zhao, Peng, Xiang, Deng, Tian, Zhou, Yu, He
+  \& Zhao}]{Zhao2012}
+Zhao, M., Peng, C., Xiang, W., Deng, X., Tian, D., Zhou, X., Yu, G., He, H. \&
+  Zhao, Z. (2013) Plant phenological modeling and its application in global
+  climate change research: overview and future challenges. \emph{Environmental
+  Reviews} \textbf{21}, 1--14.
+
+\bibitem[{Ziter \& Turner(2018)}]{Ziter2018}
+Ziter, C. \& Turner, M.G. (2018) Current and historical land use influence
+  soil-based ecosystem services in an urban landscape. \emph{Ecological
+  Applications} \textbf{28}, 643--654.
+
+\bibitem[{Zohner \emph{et~al.}(2016)Zohner, Benito, Svenning \&
+  Renner}]{Zohner2016}
+Zohner, C.M., Benito, B.M., Svenning, J.C. \& Renner, S.S. (2016) Day length
+  unlikely to constrain climate-driven shifts in leaf-out times of northern
+  woody plants. \emph{Nature Climate Change} \textbf{6}, 1120--1123.
+
+\bibitem[{Zohner \& Renner(2014)}]{Zohner2014}
+Zohner, C.M. \& Renner, S.S. (2014) Common garden comparison of the leaf-out
+  phenology of woody species from different native climates, combined with
+  herbarium records, forecasts long-term change. \emph{Ecology Letters}
+  \textbf{17}, 1016--1025.
 
 \end{thebibliography}

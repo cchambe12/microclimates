@@ -478,7 +478,7 @@ simsdat <- bbfunc("NA", "NA", 0, 0, 300, 20, 20, 0, 15)
 ####################################################################################################
 #### Next, we are interested in testing the effect of provenance. Our hypothesis is that individuals from 
 # higher provenances will require fewer GDDs 
-simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
+simsdat <- bbfunc("urban", "NA", 20, 2, 300, 20, 10, 3, 0)
 
   xtext <- seq(1, 2, by=1)
   cols <-viridis_pal(option="viridis")(3)
@@ -588,7 +588,7 @@ simsdat <- bbfunc("urban", "NA", -20, 2, 300, 20, 10, 3, 0)
   pdf("figures/muplot_urban.pdf", width=7, height=4)
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
-      plot(x=NULL,y=NULL, xlim=c(-70,30), yaxt='n', ylim=c(0,6),
+      plot(x=NULL,y=NULL, xlim=c(-30,50), yaxt='n', ylim=c(0,6),
            xlab="Model estimate change in growing degree days to budburst", ylab="")
       axis(2, at=1:6, labels=rev(labs), las=1)
       abline(v=0, lty=2, col="darkgrey")
@@ -840,7 +840,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       )
       
       urbmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 3000, warmup=2500, chains=4)#, control=list(adapt_delta=0.99, max_treedepth=15))
+                             iter = 2000, warmup=1500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)

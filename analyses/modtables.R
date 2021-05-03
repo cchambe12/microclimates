@@ -23,11 +23,11 @@ setwd("~/Documents/git/microclimates/analyses")
 #load("stan/urbmethod_real.Rdata")
 #load("stan/urbmethod_sims.Rdata")
 #load("stan/prov_sims.Rdata")
-load("stan/provmethod_real.Rdata")
+#load("stan/provmethod_real.Rdata")
 
-modname <- "provmethod"
+modname <- "urban_fake"
 
-modoutput <- provmethod
+modoutput <- urban_fake
 
 fit <- summary(modoutput)$summary
 #summary(fit.z)# min n_ef: 1198 

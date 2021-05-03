@@ -109,37 +109,83 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \section*{Supplemental tables and figures}
 
 {\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
-  \caption{Smoothing spline of mean temperature with 90\% credible interval across the two sites.}\label{fig:clim}
-  \end{center}
-  \end{figure}}
-
-{\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
-  
+
+
+<<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/urban_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+        label="tab:urban",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+
+<<label=micros, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/micros_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+        label="tab:micros",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+
 \begin{figure}[H]
-  \begin{subfigure}{.5\linewidth}
-	  %\rule{\linewidth}{\dimexpr 2\linewidth+2\baselineskip+6pt}
-    \caption{}
       \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_urban.pdf}
-      \label{fig:muploturban}
-  \end{subfigure}%
-    \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-      \caption{}
-      \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_urban.pdf}
-    \label{fig:gddurban}
-  \end{subfigure}
-\caption{ Using simulated data with the urban site requiring more GDDs until budburst, we show (a) the effects of site (urban site is `1' and rural site is `0') and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thick lines show 50\% uncertainty intervals. See Table \ref{tab:urban} for full model output. We also show (b) histograms of GDDs at the urban site and rural site using weather station data and hobo logger data. }
-\label{fig:urban}
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
+      \label{fig:muplotprovsims}
+\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:prov} for full model output. }
+\label{fig:provsims}
 \end{figure}
+
+<<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/provmethod_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+        label="tab:prov",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
 
 <<label=noisyws, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
@@ -183,46 +229,6 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-<<label=micros, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-
-zmodtable<-read.csv("..//analyses/output/supptables/micros_fake.csv", header=TRUE)
-rownames(zmodtable)<-zmodtable$X
-  zmodtable<-zmodtable[,-1]      
-colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
-
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
-        label="tab:micros",align=c(
-               "|p{0.11\\textwidth}|",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}|"))
-
-print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
-
-@
-
-
-<<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-
-zmodtable<-read.csv("..//analyses/output/supptables/urban_fake.csv", header=TRUE)
-rownames(zmodtable)<-zmodtable$X
-  zmodtable<-zmodtable[,-1]      
-colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
-
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
-        label="tab:urban",align=c(
-               "|p{0.11\\textwidth}|",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}|"))
-
-print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
-
-@
 
 
 <<label=real, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
@@ -244,73 +250,13 @@ mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from real data}. We p
 print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
-  
-
-<<label=urbmethod, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-
-zmodtable<-read.csv("..//analyses/output/supptables/urbmethod_fake.csv", header=TRUE)
-rownames(zmodtable)<-zmodtable$X
-  zmodtable<-zmodtable[,-1]      
-colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
-
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from an urban effect and noisy weather station simulations}.We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
-        label="tab:urbmethod",align=c(
-               "|p{0.11\\textwidth}|",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}|"))
-
-print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
-
-@
-  
-\begin{figure}[H]
-    \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-      \caption{}
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprovsims}
-    \end{subfigure}
-  \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:gddprovsims}
-  \end{subfigure}
-\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:prov} for full model output. We also show (b) histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. }
-\label{fig:provsims}
-\end{figure}
-
-<<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-
-zmodtable<-read.csv("..//analyses/output/supptables/provmethod_fake.csv", header=TRUE)
-rownames(zmodtable)<-zmodtable$X
-  zmodtable<-zmodtable[,-1]      
-colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
-
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
-        label="tab:prov",align=c(
-               "|p{0.11\\textwidth}|",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}|"))
-
-print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
-
-@
 
 
 \begin{figure}[H]
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
-      \label{fig:muplotprovsims}
-\caption{ Using simulated data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+      \label{fig:muplotprov}
+\caption{ Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
@@ -321,7 +267,7 @@ rownames(zmodtable)<-zmodtable$X
   zmodtable<-zmodtable[,-1]      
 colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
 
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
         label="tab:provreal",align=c(
                "|p{0.11\\textwidth}|",
                "p{0.06\\textwidth}",
@@ -334,6 +280,13 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
 
+  
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_warming.pdf}
+\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
+\label{fig:warming}
+\end{figure}
 
 
 

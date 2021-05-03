@@ -10,13 +10,14 @@ graphics.off()
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-library(RColorBrewer)
+library(viridis)
 library(egg)
 
 setwd("~/Documents/git/microclimates/analyses/")
 
-cols <- colorRampPalette(brewer.pal(5, "Dark2"))(5)
-colz <- c("salmon3", "royalblue3")
+cols <- cols <- viridis_pal(option="plasma")(3)
+#colz <- c("salmon3", "royalblue3")
+lines <- rep(c(0:6), times=5)
 
 ### Let's add in Climate data now
 #clim <- read.csv("output/clean_addinclimate.csv", header=TRUE)
@@ -31,7 +32,7 @@ climhobo <- climhobo[!duplicated(climhobo),]
 
 climhobo <- climhobo[!(climhobo$climatetype%in%c("weldhill", "harvardforest")) ,]
 climhobo$site <- substr(climhobo$climatetype, 0, 2)
-climhobo$site <- ifelse(climhobo$site=="ar", "zar", climhobo$site)
+#climhobo$site <- ifelse(climhobo$site=="ar", "zar", climhobo$site)
 
 climws <- climws[(climws$year==2019),]
 climws <- climws[!duplicated(climws),]
@@ -39,11 +40,16 @@ climws <- climws[!duplicated(climws),]
 springhobo <- climhobo[(climhobo$doy>=1 & climhobo$doy<=150),]
 springws <- climws[(climws$doy>=1 & climws$doy<=150),]
 
+springws$climatetype <- ifelse(springws$climatetype=="weldhill", "arb", springws$climatetype)
+
 climatehobo <- ggplot(springhobo, aes(x=doy, y=tmean, col=as.factor(site))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(aes(col=as.factor(site), fill=as.factor(site)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  scale_color_manual(name = "Site", values=cols, labels = c("zar"="Arboretum","hf"="Harvard Forest")) +
-  scale_fill_manual(name = "Site", values=cols, labels = c("zar"="Arboretum", "hf"="Harvard Forest")) +
+  geom_smooth(aes(col=as.factor(site), fill=as.factor(site), linetype=climatetype), alpha=0.3, stat="smooth", method="loess", se=FALSE, span=0.9) + 
+  scale_color_manual(name = "Site", values=cols, labels = c("ar"="Arboretum","hf"="Harvard Forest")) +
+  scale_fill_manual(name = "Site", values=cols, labels = c("ar"="Arboretum", "hf"="Harvard Forest")) +
+  scale_linetype_manual(name = "Hobo Logger", values=lines) +
+  guides(linetype=FALSE) +
   theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  ggtitle("b) Hobo Logger") +
   coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
   scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
                                                                  legend.text = element_text(size=7),
@@ -52,9 +58,10 @@ climatehobo <- ggplot(springhobo, aes(x=doy, y=tmean, col=as.factor(site))) + #g
 
 climatews <- ggplot(springws, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
   geom_smooth(aes(col=as.factor(climatetype), fill=as.factor(climatetype)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  scale_color_manual(name = "Site", values=cols, labels = c("weldhill"="Arboretum","harvardforest"="Harvard Forest")) +
-  scale_fill_manual(name = "Site", values=cols, labels = c("weldhill"="Arboretum", "harvardforest"="Harvard Forest")) +
+  scale_color_manual(name = "Site", values=cols, labels = c("arb"="Arboretum","harvardforest"="Harvard Forest")) +
+  scale_fill_manual(name = "Site", values=cols, labels = c("arb"="Arboretum", "harvardforest"="Harvard Forest")) +
   theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+  ggtitle("a) Weather Station") +
   coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
   scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
                                                                  legend.text = element_text(size=7),

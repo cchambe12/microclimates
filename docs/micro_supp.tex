@@ -150,21 +150,110 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \section*{Supplemental tables and figures}
 
 {\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=12cm]{..//analyses/figures/climate_hfandts.pdf}
-  \caption{Smoothing spline of mean temperature with 90\% credible interval across the two sites.}\label{fig:clim}
-  \end{center}
-  \end{figure}}
-
-{\begin{figure} [H]
   -\begin{center}
   -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
 
+
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
+% Mon May  3 18:20:31 2021
+\begin{table}[ht]
+\centering
+\caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\label{tab:urban}
+\begingroup\footnotesize
+\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
+  \hline
+ & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
+  \hline
+$\mu_{\alpha}$ & 307.40 & 303.75 & 310.96 & 296.83 & 318.49 \\ 
+  $\mu_{site}$ & 20.67 & 20.08 & 21.25 & 19.01 & 22.30 \\ 
+  $\mu_{method}$ & 0.23 & -0.35 & 0.80 & -1.49 & 1.97 \\ 
+  $\mu_{sitexmethod}$ & -0.36 & -1.19 & 0.38 & -2.57 & 2.01 \\ 
+  $\sigma_{site}$ & 1.18 & 0.56 & 1.65 & 0.06 & 2.93 \\ 
+  $\sigma_{method}$ & 1.09 & 0.46 & 1.57 & 0.05 & 2.84 \\ 
+  $\sigma_{sitexmethod}$ & 0.75 & 0.28 & 1.06 & 0.02 & 2.28 \\ 
+  $\sigma_{\alpha}$ & 21.49 & 18.37 & 23.99 & 14.82 & 31.44 \\ 
+  $\sigma_{y}$ & 15.57 & 15.44 & 15.69 & 15.18 & 15.97 \\ 
+   \hline
+$N_{sp}$ & 15.00 &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
+
+
+
+% latex table generated in R 4.0.3 by xtable 1.8-4 package
+% Mon May  3 18:20:31 2021
+\begin{table}[ht]
+\centering
+\caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\label{tab:micros}
+\begingroup\footnotesize
+\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
+  \hline
+ & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
+  \hline
+$\mu_{\alpha}$ & 322.94 & 318.50 & 327.45 & 310.33 & 335.58 \\ 
+  $\mu_{site}$ & -0.32 & -0.91 & 0.30 & -2.11 & 1.42 \\ 
+  $\mu_{method}$ & -6.78 & -8.07 & -5.50 & -10.55 & -3.07 \\ 
+  $\mu_{sitexmethod}$ & 1.05 & 0.26 & 1.85 & -1.33 & 3.38 \\ 
+  $\sigma_{site}$ & 1.14 & 0.47 & 1.65 & 0.06 & 3.12 \\ 
+  $\sigma_{method}$ & 6.82 & 5.63 & 7.72 & 4.26 & 10.92 \\ 
+  $\sigma_{sitexmethod}$ & 1.23 & 0.46 & 1.77 & 0.04 & 3.60 \\ 
+  $\sigma_{\alpha}$ & 24.85 & 21.32 & 27.48 & 17.17 & 36.72 \\ 
+  $\sigma_{y}$ & 16.73 & 16.59 & 16.87 & 16.32 & 17.14 \\ 
+   \hline
+$N_{sp}$ & 15.00 &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
+
+
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
+      \label{fig:muplotprovsims}
+\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:prov} for full model output. }
+\label{fig:provsims}
+\end{figure}
+
+% latex table generated in R 4.0.3 by xtable 1.8-4 package
+% Mon May  3 18:20:31 2021
+\begin{table}[ht]
+\centering
+\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\label{tab:prov}
+\begingroup\footnotesize
+\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
+  \hline
+ & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
+  \hline
+$\mu_{\alpha}$ & 307.61 & 304.40 & 310.79 & 296.64 & 318.14 \\ 
+  $\mu_{site}$ & -4.80 & -5.38 & -4.22 & -6.47 & -3.05 \\ 
+  $\mu_{method}$ & -0.29 & -0.69 & 0.11 & -1.50 & 0.90 \\ 
+  $\mu_{sitexmethod}$ & -0.54 & -1.41 & 0.32 & -3.03 & 1.96 \\ 
+  $\sigma_{site}$ & 0.94 & 0.39 & 1.35 & 0.04 & 2.61 \\ 
+  $\sigma_{method}$ & 0.77 & 0.33 & 1.09 & 0.03 & 2.13 \\ 
+  $\sigma_{sitexmethod}$ & 1.58 & 0.72 & 2.23 & 0.08 & 4.08 \\ 
+  $\sigma_{\alpha}$ & 20.54 & 17.57 & 22.71 & 14.07 & 30.22 \\ 
+  $\sigma_{y}$ & 15.57 & 15.43 & 15.71 & 15.19 & 15.96 \\ 
+   \hline
+$N_{sp}$ & 15.00 &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
+
+
+
+% latex table generated in R 4.0.3 by xtable 1.8-4 package
+% Mon May  3 18:20:31 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -193,7 +282,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
+% Mon May  3 18:20:31 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -221,66 +310,10 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
-\begin{table}[ht]
-\centering
-\caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
-\label{tab:micros}
-\begingroup\footnotesize
-\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
-  \hline
- & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
-  \hline
-$\mu_{\alpha}$ & 322.94 & 318.50 & 327.45 & 310.33 & 335.58 \\ 
-  $\mu_{site}$ & -0.32 & -0.91 & 0.30 & -2.11 & 1.42 \\ 
-  $\mu_{method}$ & -6.78 & -8.07 & -5.50 & -10.55 & -3.07 \\ 
-  $\mu_{sitexmethod}$ & 1.05 & 0.26 & 1.85 & -1.33 & 3.38 \\ 
-  $\sigma_{site}$ & 1.14 & 0.47 & 1.65 & 0.06 & 3.12 \\ 
-  $\sigma_{method}$ & 6.82 & 5.63 & 7.72 & 4.26 & 10.92 \\ 
-  $\sigma_{sitexmethod}$ & 1.23 & 0.46 & 1.77 & 0.04 & 3.60 \\ 
-  $\sigma_{\alpha}$ & 24.85 & 21.32 & 27.48 & 17.17 & 36.72 \\ 
-  $\sigma_{y}$ & 16.73 & 16.59 & 16.87 & 16.32 & 17.14 \\ 
-   \hline
-$N_{sp}$ & 15.00 &  &  &  &  \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}
-
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
-\begin{table}[ht]
-\centering
-\caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
-\label{tab:urban}
-\begingroup\footnotesize
-\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
-  \hline
- & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
-  \hline
-$\mu_{\alpha}$ & 307.37 & 303.97 & 310.87 & 296.13 & 317.88 \\ 
-  $\mu_{site}$ & -19.23 & -19.81 & -18.64 & -20.98 & -17.50 \\ 
-  $\mu_{method}$ & 0.27 & -0.31 & 0.90 & -1.47 & 1.92 \\ 
-  $\mu_{sitexmethod}$ & -0.41 & -1.21 & 0.36 & -2.59 & 1.87 \\ 
-  $\sigma_{site}$ & 1.15 & 0.47 & 1.64 & 0.05 & 3.16 \\ 
-  $\sigma_{method}$ & 1.03 & 0.46 & 1.47 & 0.05 & 2.65 \\ 
-  $\sigma_{sitexmethod}$ & 0.77 & 0.30 & 1.10 & 0.02 & 2.33 \\ 
-  $\sigma_{\alpha}$ & 21.55 & 18.47 & 23.96 & 14.96 & 31.33 \\ 
-  $\sigma_{y}$ & 15.56 & 15.42 & 15.70 & 15.17 & 15.97 \\ 
-   \hline
-$N_{sp}$ & 15.00 &  &  &  &  \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}
-
-
-
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
+% Mon May  3 18:20:31 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from real data}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -306,81 +339,52 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 \endgroup
 \end{table}
 
-  
 
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
-\begin{table}[ht]
-\centering
-\caption{\textbf{Estimates from an urban effect and noisy weather station simulations}.We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
-\label{tab:urbmethod}
-\begingroup\footnotesize
-\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
-  \hline
- & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
-  \hline
-$\mu_{\alpha}$ & 306.04 & 302.37 & 309.82 & 294.54 & 316.85 \\ 
-  $\mu_{site}$ & -17.13 & -20.24 & -14.11 & -26.63 & -7.89 \\ 
-  $\mu_{method}$ & 5.65 & 3.45 & 7.87 & -1.17 & 12.40 \\ 
-  $\mu_{sitexmethod}$ & -13.47 & -14.65 & -12.27 & -16.97 & -10.01 \\ 
-  $\sigma_{site}$ & 18.38 & 15.64 & 20.55 & 12.45 & 27.44 \\ 
-  $\sigma_{method}$ & 12.16 & 10.23 & 13.76 & 7.95 & 18.51 \\ 
-  $\sigma_{sitexmethod}$ & 3.69 & 2.06 & 5.07 & 0.31 & 8.34 \\ 
-  $\sigma_{\alpha}$ & 21.03 & 17.96 & 23.41 & 14.71 & 31.42 \\ 
-  $\sigma_{y}$ & 20.36 & 20.18 & 20.54 & 19.86 & 20.85 \\ 
-   \hline
-$N_{sp}$ & 15.00 &  &  &  &  \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}
 
-  
 \begin{figure}[H]
-    \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-      \caption{}
       \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-    \end{subfigure}
-  \begin{subfigure}{.5\linewidth}
-	    %\rule{\linewidth}{\linewidth}
-	    \caption{}
-      \centering
-      \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:gddprov}
-  \end{subfigure}
-\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:prov} for full model output. We also show (b) histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. }
+\caption{ Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed Apr 28 16:06:57 2021
+% Mon May  3 18:20:31 2021
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
-\label{tab:prov}
+\caption{\textbf{Estimates from provenance latitude}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\label{tab:provreal}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
   \hline
  & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
   \hline
-$\mu_{\alpha}$ & 307.61 & 304.40 & 310.79 & 296.64 & 318.14 \\ 
-  $\mu_{site}$ & -4.80 & -5.38 & -4.22 & -6.47 & -3.05 \\ 
-  $\mu_{method}$ & -0.29 & -0.69 & 0.11 & -1.50 & 0.90 \\ 
-  $\mu_{sitexmethod}$ & -0.54 & -1.41 & 0.32 & -3.03 & 1.96 \\ 
-  $\sigma_{site}$ & 0.94 & 0.39 & 1.35 & 0.04 & 2.61 \\ 
-  $\sigma_{method}$ & 0.77 & 0.33 & 1.09 & 0.03 & 2.13 \\ 
-  $\sigma_{sitexmethod}$ & 1.58 & 0.72 & 2.23 & 0.08 & 4.08 \\ 
-  $\sigma_{\alpha}$ & 20.54 & 17.57 & 22.71 & 14.07 & 30.22 \\ 
-  $\sigma_{y}$ & 15.57 & 15.43 & 15.71 & 15.19 & 15.96 \\ 
+$\mu_{\alpha}$ & 394.32 & 382.18 & 406.76 & 356.00 & 430.30 \\ 
+  $\mu_{site}$ & 18.15 & 11.68 & 24.64 & -0.64 & 38.01 \\ 
+  $\mu_{method}$ & -8.46 & -12.51 & -4.27 & -20.81 & 3.92 \\ 
+  $\mu_{sitexmethod}$ & -3.53 & -9.65 & 2.73 & -22.29 & 16.00 \\ 
+  $\sigma_{site}$ & 15.43 & 7.31 & 21.21 & 0.73 & 40.78 \\ 
+  $\sigma_{method}$ & 8.45 & 3.47 & 12.23 & 0.36 & 23.60 \\ 
+  $\sigma_{sitexmethod}$ & 13.69 & 6.11 & 19.41 & 0.49 & 37.55 \\ 
+  $\sigma_{\alpha}$ & 71.80 & 62.26 & 79.36 & 50.01 & 102.94 \\ 
+  $\sigma_{y}$ & 78.76 & 76.81 & 80.70 & 73.40 & 84.53 \\ 
    \hline
-$N_{sp}$ & 15.00 &  &  &  &  \\ 
+$N_{sp}$ & 18.00 &  &  &  &  \\ 
    \hline
 \end{tabular}
 \endgroup
 \end{table}
+
+
+  
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_warming.pdf}
+\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
+\label{fig:warming}
+\end{figure}
+
 
 
 \end{document}
