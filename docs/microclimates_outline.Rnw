@@ -238,6 +238,31 @@ sp.sigma.real <- round(fit.real[grep("sigma_a_sp", rownames(fit.real)),1], digit
 y.sigma.real <- round(fit.real[grep("sigma_y", rownames(fit.real)),1], digits=2)
 
 
+###### Real Provenance Data Output
+fit.provreal <- summary(urbmethod)$summary
+
+site.provreal <- round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),1], digits=2)
+site.provreal.lci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),4], digits=2)
+site.provreal.uci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),8], digits=2)
+site.provreal.sd <- (site.provreal.lci + site.provreal.lci)/2
+
+method.provreal <- round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),1], digits=2)
+method.provreal.lci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),4], digits=2)
+method.provreal.uci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),8], digits=2)
+method.provreal.sd <- (method.provreal.lci + method.provreal.lci)/2
+
+um.provreal <- round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),1], digits=2)
+um.provreal.lci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),4], digits=2)
+um.provreal.uci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),8], digits=2)
+um.provreal.sd <- (um.provreal.lci + um.provreal.lci)/2
+
+site.sigma.provreal <- round(fit.provreal[grep("sigma_b_urban_sp", rownames(fit.provreal)),1], digits=2)
+method.sigma.provreal <- round(fit.provreal[grep("sigma_b_method_sp", rownames(fit.provreal)),1], digits=2)
+um.sigma.provreal <- round(fit.provreal[grep("sigma_b_up_sp", rownames(fit.provreal)),1], digits=2)
+sp.sigma.provreal <- round(fit.provreal[grep("sigma_a_sp", rownames(fit.provreal)),1], digits=2)
+y.sigma.provreal <- round(fit.provreal[grep("sigma_y", rownames(fit.provreal)),1], digits=2)
+
+
 
 ###### Provenance Latitude Output
 fit.prov <- summary(provmethod_fake)$summary
@@ -417,6 +442,11 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
   \item There is a large interaction indicating weather station data at the arboretum records the fewest number of GDDs until budburst (\Sexpr{um.real} $\pm$ \Sexpr{um.real.sd}). 
   \item Using raw data, we see there is higher variation at the arboretum across the two methods and that the arboretum requires fewer GDDs until budburst than the Harvard Forest (i.e., more rural forest sites).
   \end{enumerate}
+
+\item When testing for provenance effects, there was no overall effect of provenance latitude on GDDs until budburst and there was high variation (\Sexpr{site.provreal} $\pm$ (\Sexpr{site.provreal.sd})).
+  \begin{enumerate}
+  \item There was still little effect of method on GDDs until budburst and large variation (\Sexpr{method.provreal} $\pm$ \Sexpr{method.provreal.sd}).
+  \item The interaction of provenance by method was close to zero (\Sexpr{um.provreal} $\pm$ \Sexpr{um.provreal.sd}) but the sigma was large (\Sexpr{um.sigma.provreal}).
 \end{enumerate}
 
 \section*{Discussion} 
@@ -426,46 +456,49 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
 % \item Phenology is often measured through satellite, remote sensing or PhenoCam images to detect spring `green-up' \citep{Meng2020, Liu2018, Richardson2015} but these methods fail to detect the species---or even site-level---nuances in budburst timing \citep{Elmendorf2019}.
   \begin{enumerate} 
   
-\item Here's what we found overview paragraph ... 
+\item Our study assessed the effects of an urban arboretum versus a more rural forested site coupled with the effect of using weather station versus hobo logger temperature data on GDD until budburst.
   \begin{enumerate} 
-  \item Ding, ding! Our urban site was warmer, but  ...
-  \item Trees in the urban site required FEWER, not more GDDs.
-  \item It looks like there was a strong microclimate effect and it varied by site
-  \item Provenance did not make a ton of sense ... we suggest teasing out provenance effects, given that they may be so small in spring phenology (CITES), is difficult with this sort of haphazard arboretum data, at least in our study. % EMW -- now, we can try to skip discussing provenance further I think
+  \item We found the urban site was in fact warmer, but this did not translate to individuals requiring more GDDs but rather fewer GDDs until budburst.
+  %\item This implies individuals may be receiving more over-winter chilling at the warmer site because optimum chilling accumulation temperatures generally occur above -2$^{\circ}$C and can accumulate at as high of temperatures as 10$^{\circ}C \citep{Baumgarten2021}.
+  \item Our results additionally suggest there was a strong microclimate effect and it varied by site, with XX (but I think we can say here that both the Harvard Forest and Arboretum hobo loggers recorded lower temperatures overall than the weather stations but the Harvard Forest loggers recorded consistently lower temperatures)
+  \item Provenance did not elucidate clear results so we suggest teasing out provenance effects, given that they may be so small in spring phenology \citep{Gauzere2017} and it is difficult with our paucity of latitudinal variation and sparce sample size for various provenances. 
   \end{enumerate}
   \end{enumerate}
 
 \subsection*{Variation across and within sites suggests important variation for forecasting} 
-
   \begin{enumerate} 
-\item Our finding that urban trees require fewer GDDs contributes to increasing evidence that trees in urban sites may respond differently than those in forested rural areas
+\item Our finding that urban trees require fewer GDDs contributes to increasing evidence that trees in urban sites may respond differently than those in forested rural areas.
   \begin{enumerate} 
   \item This means that long-term records and experiments conducted in arboreta in urban areas may not be transferrable to larger scale studies and models that incorporate forested rural areas. We should perhaps be more cautious in these extrapolations. 
-  \item Can we compare this with any other studies? A lower GDD means a lower days/C ... so does that match Meng?
-  \item We think maybe the lower GDD is because the arboretum may get MORE chilling (right?). 
-  \item What do you think these results mean for  using urban sites as natural experiments?
+  \item Our results are in line with other recent studies investigating rural versus urban sites with a lower GDD requirement at urban sites and thus a lower temperature sensitivity \citep{Meng2020} at these sites, with colder rural sites requiring even more GDDs until budburst than their associated urban site.
+  \item The lower GDD requirement until budburst is likely due to the arboretum accumulating more over-winter chilling. 
+  \item Recent research suggests individuals can accumulate chilling at temperatures as high as 10$^{\circ}$C \citep{Baumgarten2021}---or even up to 15$^{\circ}$C in subtropical trees \citep{Zhang2021}---but the duration of winter is more important than the temperature. 
+  \item If average temperatures are below the chilling accumulation threshold, which may occur at cooler sites, then we can expect less over-winter chilling accumulation at colder sites.
+  \item These results suggests we use caution when using urban sites as natural experiments as these sites may not mirror forest habitats, especially when sites are from colder (i.e., more northern) regions.
   \end{enumerate}
   
-  \item No consistent differences between GDD estimated at WS versus hobo logger, but there was a large interaction and this could suggest large microclimatic differences 
+\item No consistent differences between GDD estimated at WS versus hobo logger, but there was a large interaction and this could suggest large microclimatic differences 
   \begin{enumerate} 
   \item This effect was even bigger than the urban effect (yes?) so it seems important
   \item But complicated  ... we need to understand it better and explain it as best we can to the reader here. 
   \item If we assume that WS and HOBOs are accurate -- what does this model mean for forecasting?
   \end{enumerate}
-      \end{enumerate}
+\end{enumerate}
 
 \subsection*{Accurately attributing observed variation requires more research on climate methods and phenology} 
   \begin{enumerate} 
 % EMW -- I think we need to give just a few simple messages here!
-\item Our simulations suggest teasing out noise versus (microclimates? Yes?) could be tricky ... 
+\item Our simulations suggest teasing out noise versus microclimate effects could be difficult.
   \begin{enumerate} 
   \item As is evident from the model outputs, the method which is less accurate requires more GDDs until budburst since GDDs are accumulating at a faster rate with higher temperature variability---and higher temperature days.
-    \item By including microclimatic effects at both sites, variation in temperature increases and, thus, the number of days in which the temperature falls below the base GDD threshold is also greater but the days in which temperatures are accumulating, the temperature will likely be greater than what is recorded at the weather station.
-      \item This is messy but main points: 1) high temperature variability, whether it is due to inaccurate recordings or due to microclimates, results in more days at higher temperatures so the day of budburst records higher GDDs for the method with greater temperature variability. That said, we are seeing inaccurate methods overlap with zero for the method parameter whereas microclimate simulations do not.
+  \item By including microclimatic effects at both sites, variation in temperature increases and, thus, the number of days in which the temperature falls below the base GDD threshold is also greater but the days in which temperatures are accumulating, the temperature will likely be greater than what is recorded at the weather station.
+  \item High temperature variability, whether it is due to inaccurate recordings or due to microclimates, results in more days at higher temperatures so the day of budburst records higher GDDs for the method with greater temperature variability. 
+  \item As climate is one of the strongest environmental factors contributing to ecosystem change, it is essential to measure weather data as accurately and efficiently as possible, while using methods that are accessible to myriad researchers.
+  \item Determining which methods are most accurate is the first step to determining fine-scale climatic variation and, ultimately, better forecast phenology under climate change. 
   \end{enumerate}
   
   % how much does local climate matter for phenology? Come back to buds etc.
-  \item How to move forward? Several pathways to accurately figure out how to model this ... 
+\item How to move forward? Several pathways to accurately figure out how to model this ... 
     \begin{enumerate} 
     \item In the field -- climate methods: More studies of hobo loggers -- effects of radiation shields, location, etc. Both next to weather stations and next to trees. 
     \item In the field -- phenology: Increasing studies of how bud temperature matters to leafout will help, especially teasing out radiative heating effects
@@ -477,9 +510,9 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
     \item This is because with warming, GDDs will accumulate at a faster rate, which will reduce accuracy of determining that actual threshold for budburst phenology. 
   \item Generally higher GDD thresholds means lower a lower GDD observed to GDD expected ratio; this is because being off by a day is a small effect for higher GDD threshold species (and hence greater days) than for lower GDD threshold species, but it really depends on climate variability because high variability means some days you can get accumulate GDDs quickly and that can override the GDD threshold trends. 
   \item In reality temperature variance likely changes over the spring so this is pretty tricky! 
-  \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here. 
+  \item In the future, we need to either use a method that is less reliant on accumulated sums---especially if it is a climatilogical sum---or we must scrutinize results through the use of mixed models and simulated data as we demonstrate here.
   \end{enumerate}
-    \end{enumerate}
+\end{enumerate}
 
 
 

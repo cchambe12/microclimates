@@ -272,17 +272,17 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
       \caption{}
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprov}
+      \label{fig:muplotprovsims}
     \end{subfigure}
   \begin{subfigure}{.5\linewidth}
 	    %\rule{\linewidth}{\linewidth}
 	    \caption{}
       \centering
       \includegraphics[height=4cm, width=8cm]{..//analyses/figures/gdd_methods_prov.pdf}
-    \label{fig:gddprov}
+    \label{fig:gddprovsims}
   \end{subfigure}
 \caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:prov} for full model output. We also show (b) histograms of GDDs at the Arboretum and Harvard Forest using weather station data and hobo logger data. }
-\label{fig:prov}
+\label{fig:provsims}
 \end{figure}
 
 <<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
@@ -304,5 +304,37 @@ mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latit
 print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
 
 @
+
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
+      \label{fig:muplotprovsims}
+\caption{ Using simulated data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\label{fig:prov}
+\end{figure}
+
+<<label=provreal, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+
+zmodtable<-read.csv("..//analyses/output/supptables/provmethod.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+        label="tab:provreal",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+
+
 
 \end{document}

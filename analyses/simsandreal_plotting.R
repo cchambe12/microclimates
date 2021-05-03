@@ -758,11 +758,16 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
   dev.off()
 
 
+    #library(brms)
+    #testmod <- brm(gdd ~ prov.z + type + prov.z:type, data=bball,
+     #              iter = 3000, warmup=2500)#, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+  
       use.urban <- "prov"
+      bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(sd(bball$provenance,na.rm=TRUE))
       
       datalist.gdd <- with(bball, 
                            list(y = gdd, 
-                                urban = provenance,
+                                urban = prov.z,
                                 method = type,
                                 sp = as.numeric(as.factor(species)),
                                 N = nrow(bball),
@@ -770,15 +775,15 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
                            )
       )
       
-      provmethod = stan('stan/urbanmethod_normal_ncp_inter.stan', data = datalist.gdd,
-                             iter = 4000, warmup=3500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
+      provmethod = stan('stan/provmethod_normal_ncp_inter.stan', data = datalist.gdd,
+                             iter = 12000, warmup=11500, chains=4, control=list(adapt_delta=0.99, max_treedepth=15))
       
       
       my.pal <-rep(viridis_pal(option="viridis")(9),2)
       my.pch <- rep(15:18, each=10)
       alphahere = 0.4
       
-      modoutput <- summary(provmethod_fake)$summary
+      modoutput <- summary(provmethod)$summary
       noncps <- modoutput[!grepl("_ncp", rownames(modoutput)),]
       labs <- if(use.urban=="urban"){c("Site", "Method", "Site x Method",
                                        "Sigma Site", "Sigma Method", 
@@ -793,7 +798,7 @@ clim <- clim[(clim$doy<=180 & clim$doy>=44),]
       pdf("figures/muplot_prov_real.pdf", width=7, height=4)
       par(xpd=FALSE)
       par(mar=c(5,10,3,10))
-      plot(x=NULL,y=NULL, xlim=c(-30,30), yaxt='n', ylim=c(0,6),
+      plot(x=NULL,y=NULL, xlim=c(-50,100), yaxt='n', ylim=c(0,6),
            xlab="Model estimate change in growing degree days to budburst", ylab="")
       axis(2, at=1:6, labels=rev(labs), las=1)
       abline(v=0, lty=2, col="darkgrey")
@@ -1120,7 +1125,7 @@ cols <-viridis_pal(option="viridis")(3)
   dev.off()
   
   use.urban <- "prov"
-  bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(2*sd(df.prov$provenance,na.rm=TRUE))
+  bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(2*sd(bball$provenance,na.rm=TRUE))
   
   datalist.gdd <- with(bball, 
                        list(y = gdd, 
