@@ -1,4 +1,4 @@
-\begin{thebibliography}{45}
+\begin{thebibliography}{47}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
@@ -20,6 +20,13 @@ Baumgarten, F., Zohner, C.M., Gessler, A. \& Vitasse, Y. (2021) Chilled to be
 Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
   indirect effects on insect population dynamics. \emph{Ecology Letters}
   \textbf{15}, 502--508.
+
+\bibitem[{Carpenter \emph{et~al.}(2017)Carpenter, Gelman, Hoffman, Lee,
+  Goodrich, Betancourt, Brubaker, Guo, Li \& Allen}]{Carpenter2017}
+Carpenter, B., Gelman, A., Hoffman, M., Lee, D., Goodrich, B., Betancourt, M.,
+  Brubaker, M.A., Guo, J., Li, P. \& Allen, R. (2017) Stan: A probabilistic
+  programming language. \emph{Journal of Statistical Software} \textbf{76},
+  10.18637/jss.v076.i01.
 
 \bibitem[{Chang \emph{et~al.}(2021)Chang, Cheng, Allaire, Sievert, Schloerke,
   Xie, Allen, McPherson, Dipert \& Borges}]{shiny2021}
@@ -186,6 +193,13 @@ Richardson, A.D., Keenan, T.F., Migliavacca, M., Ryu, Y., Sonnentag, O. \&
   Toomey, M. (2013) {Climate change, phenology, and phenological control of
   vegetation feedbacks to the climate system}. \emph{Agricultural and Forest
   Meteorology} \textbf{169}, 156 -- 173.
+
+\bibitem[{Saikkonen \emph{et~al.}(2012)Saikkonen, Taulavuori, Hyv{\"o}nen,
+  Gundel, Hamilton, V{\"a}nninen, Nissinen \& Helander}]{Saikkonen2012}
+Saikkonen, K., Taulavuori, K., Hyv{\"o}nen, T., Gundel, P.E., Hamilton, C.E.,
+  V{\"a}nninen, I., Nissinen, A. \& Helander, M. (2012) Climate change-driven
+  species' range shifts filtered by photoperiodism. \emph{Nature Climate
+  Change} \textbf{2}, 239.
 
 \bibitem[{Satake \emph{et~al.}(2013)Satake, Kawagoe, Saburi, Chiba, Sakurai \&
   Kudoh}]{Satake2013}
