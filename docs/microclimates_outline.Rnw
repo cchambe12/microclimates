@@ -68,7 +68,7 @@ options(stringsAsFactors = FALSE)
 library(rstan)
 
 ## Set Working Directory
-setwd("/Users/CatherineChamberlain/Documents/git/microclimates/analyses/")
+setwd("~/Documents/git/microclimates/analyses/")
 
 load("stan/noisyws_sims.Rdata")
 load("stan/noisyhobo_sims.Rdata")
@@ -86,18 +86,18 @@ load("stan/provmethod_real.Rdata")
 fit.noisyws <- summary(noisyws_fake)$summary
 
 site.ws <- round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),1], digits=2)
-site.ws.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),4], digits=2)
-site.ws.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),8], digits=2)
+site.ws.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),5], digits=2)
+site.ws.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),7], digits=2)
 site.ws.sd <- (site.ws.lci + site.ws.lci)/2
 
 method.ws <- round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),1], digits=2)
-method.ws.lci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),4], digits=2)
-method.ws.uci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),8], digits=2)
+method.ws.lci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),5], digits=2)
+method.ws.uci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),7], digits=2)
 method.ws.sd <- (method.ws.lci + method.ws.lci)/2
 
 um.ws <- round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),1], digits=2)
-um.ws.lci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),4], digits=2)
-um.ws.uci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),8], digits=2)
+um.ws.lci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),5], digits=2)
+um.ws.uci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),7], digits=2)
 um.ws.sd <- (um.ws.lci + um.ws.lci)/2
 
 site.sigma.ws <- round(fit.noisyws[grep("sigma_b_urban_sp", rownames(fit.noisyws)),1], digits=2)
@@ -112,18 +112,18 @@ y.sigma.ws <- round(fit.noisyws[grep("sigma_y", rownames(fit.noisyws)),1], digit
 fit.noisyhobo <- summary(noisyhobo_fake)$summary
 
 site.hobo <- round(fit.noisyhobo[grep("mu_b_urban_sp", rownames(fit.noisyhobo)),1], digits=2)
-site.hobo.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),4], digits=2)
-site.hobo.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),8], digits=2)
+site.hobo.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),5], digits=2)
+site.hobo.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),7], digits=2)
 site.hobo.sd <- (site.hobo.lci + site.hobo.lci)/2
 
 method.hobo <- round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),1], digits=2)
-method.hobo.lci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),4], digits=2)
-method.hobo.uci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),8], digits=2)
+method.hobo.lci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),5], digits=2)
+method.hobo.uci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),7], digits=2)
 method.hobo.sd <- (method.hobo.lci + method.hobo.lci)/2
 
 um.hobo <- round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),1], digits=2)
-um.hobo.lci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),4], digits=2)
-um.hobo.uci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),8], digits=2)
+um.hobo.lci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),5], digits=2)
+um.hobo.uci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),7], digits=2)
 um.hobo.sd <- (um.hobo.lci + um.hobo.lci)/2
 
 site.sigma.hobo <- round(fit.noisyhobo[grep("sigma_b_urban_sp", rownames(fit.noisyhobo)),1], digits=2)
@@ -138,18 +138,18 @@ y.sigma.hobo <- round(fit.noisyhobo[grep("sigma_y", rownames(fit.noisyhobo)),1],
 fit.micros <- summary(micros_fake)$summary
 
 site.micros <- round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),1], digits=2)
-site.micros.lci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),4], digits=2)
-site.micros.uci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),8], digits=2)
+site.micros.lci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),5], digits=2)
+site.micros.uci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),7], digits=2)
 site.micros.sd <- (site.micros.lci + site.micros.lci)/2
 
 method.micros <- round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),1], digits=2)
-method.micros.lci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),4], digits=2)
-method.micros.uci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),8], digits=2)
+method.micros.lci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),5], digits=2)
+method.micros.uci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),7], digits=2)
 method.micros.sd <- (method.micros.lci + method.micros.lci)/2
 
 um.micros <- round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),1], digits=2)
-um.micros.lci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),4], digits=2)
-um.micros.uci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),8], digits=2)
+um.micros.lci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),5], digits=2)
+um.micros.uci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),7], digits=2)
 um.micros.sd <- (um.micros.lci + um.micros.lci)/2
 
 site.sigma.micros <- round(fit.micros[grep("sigma_b_urban_sp", rownames(fit.micros)),1], digits=2)
@@ -164,18 +164,18 @@ y.sigma.micros <- round(fit.micros[grep("sigma_y", rownames(fit.micros)),1], dig
 fit.urban <- summary(urban_fake)$summary
 
 site.urban <- round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),1], digits=2)
-site.urban.lci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),4], digits=2)
-site.urban.uci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),8], digits=2)
+site.urban.lci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),5], digits=2)
+site.urban.uci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),7], digits=2)
 site.urban.sd <- (site.urban.lci + site.urban.lci)/2
 
 method.urban <- round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),1], digits=2)
-method.urban.lci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),4], digits=2)
-method.urban.uci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),8], digits=2)
+method.urban.lci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),5], digits=2)
+method.urban.uci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),7], digits=2)
 method.urban.sd <- (method.urban.lci + method.urban.lci)/2
 
 um.urban <- round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),1], digits=2)
-um.urban.lci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),4], digits=2)
-um.urban.uci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),8], digits=2)
+um.urban.lci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),5], digits=2)
+um.urban.uci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),7], digits=2)
 um.urban.sd <- (um.urban.lci + um.urban.lci)/2
 
 site.sigma.urban <- round(fit.urban[grep("sigma_b_urban_sp", rownames(fit.urban)),1], digits=2)
@@ -190,18 +190,18 @@ y.sigma.urban <- round(fit.urban[grep("sigma_y", rownames(fit.urban)),1], digits
 fit.urbmethod <- summary(urbmethod_fake)$summary
 
 site.urbmethod <- round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),1], digits=2)
-site.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),4], digits=2)
-site.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),8], digits=2)
+site.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),5], digits=2)
+site.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),7], digits=2)
 site.urbmethod.sd <- (site.urbmethod.lci + site.urbmethod.lci)/2
 
 method.urbmethod <- round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),1], digits=2)
-method.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),4], digits=2)
-method.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),8], digits=2)
+method.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),5], digits=2)
+method.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),7], digits=2)
 method.urbmethod.sd <- (method.urbmethod.lci + method.urbmethod.lci)/2
 
 um.urbmethod <- round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),1], digits=2)
-um.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),4], digits=2)
-um.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),8], digits=2)
+um.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),5], digits=2)
+um.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),7], digits=2)
 um.urbmethod.sd <- (um.urbmethod.lci + um.urbmethod.lci)/2
 
 um.urbmethod.eff <- site.urbmethod + method.urbmethod + um.urbmethod
@@ -218,18 +218,18 @@ y.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_y", rownames(fit.urbmethod)
 fit.real <- summary(urbmethod)$summary
 
 site.real <- round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),1], digits=2)
-site.real.lci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),4], digits=2)
-site.real.uci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),8], digits=2)
+site.real.lci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),5], digits=2)
+site.real.uci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),7], digits=2)
 site.real.sd <- (site.real.lci + site.real.lci)/2
 
 method.real <- round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),1], digits=2)
-method.real.lci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),4], digits=2)
-method.real.uci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),8], digits=2)
+method.real.lci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),5], digits=2)
+method.real.uci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),7], digits=2)
 method.real.sd <- (method.real.lci + method.real.lci)/2
 
 um.real <- round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),1], digits=2)
-um.real.lci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),4], digits=2)
-um.real.uci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),8], digits=2)
+um.real.lci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),5], digits=2)
+um.real.uci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),7], digits=2)
 um.real.sd <- (um.real.lci + um.real.lci)/2
 
 site.sigma.real <- round(fit.real[grep("sigma_b_urban_sp", rownames(fit.real)),1], digits=2)
@@ -240,21 +240,21 @@ y.sigma.real <- round(fit.real[grep("sigma_y", rownames(fit.real)),1], digits=2)
 
 
 ###### Real Provenance Data Output
-fit.provreal <- summary(urbmethod)$summary
+fit.provreal <- summary(provmethod)$summary
 
 site.provreal <- round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),1], digits=2)
-site.provreal.lci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),4], digits=2)
-site.provreal.uci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),8], digits=2)
+site.provreal.lci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),5], digits=2)
+site.provreal.uci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),7], digits=2)
 site.provreal.sd <- (site.provreal.lci + site.provreal.lci)/2
 
 method.provreal <- round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),1], digits=2)
-method.provreal.lci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),4], digits=2)
-method.provreal.uci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),8], digits=2)
+method.provreal.lci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),5], digits=2)
+method.provreal.uci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),7], digits=2)
 method.provreal.sd <- (method.provreal.lci + method.provreal.lci)/2
 
 um.provreal <- round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),1], digits=2)
-um.provreal.lci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),4], digits=2)
-um.provreal.uci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),8], digits=2)
+um.provreal.lci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),5], digits=2)
+um.provreal.uci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),7], digits=2)
 um.provreal.sd <- (um.provreal.lci + um.provreal.lci)/2
 
 site.sigma.provreal <- round(fit.provreal[grep("sigma_b_urban_sp", rownames(fit.provreal)),1], digits=2)
@@ -269,18 +269,18 @@ y.sigma.provreal <- round(fit.provreal[grep("sigma_y", rownames(fit.provreal)),1
 fit.prov <- summary(provmethod_fake)$summary
 
 site.prov <- round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),1], digits=2)
-site.prov.lci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),4], digits=2)
-site.prov.uci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),8], digits=2)
+site.prov.lci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),5], digits=2)
+site.prov.uci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),7], digits=2)
 site.prov.sd <- (site.prov.lci + site.prov.lci)/2
 
 method.prov <- round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),1], digits=2)
-method.prov.lci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),4], digits=2)
-method.prov.uci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),8], digits=2)
+method.prov.lci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),5], digits=2)
+method.prov.uci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),7], digits=2)
 method.prov.sd <- (method.prov.lci + method.prov.lci)/2
 
 um.prov <- round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),1], digits=2)
-um.prov.lci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),4], digits=2)
-um.prov.uci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),8], digits=2)
+um.prov.lci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),5], digits=2)
+um.prov.uci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),7], digits=2)
 um.prov.sd <- (um.prov.lci + um.prov.lci)/2
 
 site.sigma.prov <- round(fit.prov[grep("sigma_b_urban_sp", rownames(fit.prov)),1], digits=2)
@@ -288,6 +288,18 @@ method.sigma.prov <- round(fit.prov[grep("sigma_b_method_sp", rownames(fit.prov)
 um.sigma.prov <- round(fit.prov[grep("sigma_b_up_sp", rownames(fit.prov)),1], digits=2)
 sp.sigma.prov <- round(fit.prov[grep("sigma_a_sp", rownames(fit.prov)),1], digits=2)
 y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
+
+#### Climate details breakdown
+clim <- read.csv("output/clim_arbhf_hobows.csv")
+
+methoddiff_range <- range(clim$methoddiff, na.rm = TRUE)
+methoddiff_min <- min(clim$methoddiff, na.rm = TRUE)
+methoddiff_max <- max(clim$methoddiff, na.rm = TRUE)
+methoddiff_arb <- mean(clim$methoddiff[clim$site=="arb"], na.rm=TRUE)
+methoddiff_hf <- mean(clim$methoddiff[clim$site=="hf"], na.rm=TRUE)
+
+methoddiff_arbrange <- range(clim$methoddiff[clim$site=="arb"], na.rm=TRUE)
+methoddiff_hfrange <- range(clim$methoddiff[clim$site=="hf"], na.rm=TRUE)
 
 
 @
@@ -357,7 +369,7 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
 \item We chose two sites---one urban arboretum and one forest---with overlapping species and climates to compare the number of growing degree days to budburst across species. 
   \begin{enumerate}
   \item The urban site is in Boston, MA at the Arnold Arboretum of Harvard University (42$^{\circ}$17' N -71$^{\circ}$8' W).
-  \item The Arnold Arboretum is 281 acres and contains 3825 woody plant taxa from North America, Europe and Asia.
+  \item The Arnold Arboretum is 281 acres, contains 3825 woody plant taxa from North America, Europe and Asia and has an elevation gain of approximately 96m.
   \item The forest site is in Petersham, MA at the Harvard Forest (42$^{\circ}$31'53.5' N -72$^{\circ}$11'24.1' W).
   \item The Harvard Forest is 1446 acres and has a range of elevation of 220-410m. 
   \end{enumerate}
@@ -391,6 +403,7 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
   \item We also tested GDD accuracy across various GDD threshold requirements with warming of 1$^{\circ}$C to 10$^{\circ}$C. 
   \item Accuracy was evaluated as a ratio of observed GDD divided by the expected GDD.
 \end{enumerate}
+\end{enumerate}
 
 \subsection*{Data analysis}
 \begin{enumerate}
@@ -402,6 +415,7 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
   \item We evaluated our model performance based on $\hat{R}$ values that were close to one and did not include models with divergent transitions in our results. 
   \item We also evaluated high $n_{eff}$ (3000 for most parameters, but as low as 708 for a couple of parameters in the simulated provenance latitude model). 
   \item We additionally assessed chain convergence and posterior predictive checks visually \citep{BDA}.
+  \item We report means $\pm$ 50\% uncertainty intervals from our models in the main text because these intervals are more computationally stable \citep{Carpenter2017,BDA}. See Tables \ref{tab:urban}- \ref{tab:provreal} for 95\% uncertainty intervals. 
   \end{enumerate}
 \end{enumerate}
 
@@ -469,10 +483,10 @@ y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
   \begin{enumerate} 
   \item This means that long-term records and experiments conducted in arboreta in urban areas may not be transferrable to larger scale studies and models that incorporate forested rural areas. We should perhaps be more cautious in these extrapolations. 
   \item Our results are in line with other recent studies investigating rural versus urban sites with a lower GDD requirement at urban sites and thus a lower temperature sensitivity \citep{Meng2020} at these sites, with colder rural sites requiring even more GDDs until budburst than their associated urban site.
-  \item The lower GDD requirement until budburst is likely due to the arboretum accumulating more over-winter chilling. 
+  \item The lower GDD requirement until budburst is likely due to the arboretum accumulating more over-winter chilling, however, our results become more similar when we use the hobo loggers to measure GDD. 
   \item Recent research suggests individuals can accumulate chilling at temperatures as high as 10$^{\circ}$C \citep{Baumgarten2021}---or even up to 15$^{\circ}$C in subtropical trees \citep{Zhang2021}---but the duration of winter is more important than the temperature. 
   \item If average temperatures are below the chilling accumulation threshold, which may occur at cooler sites, then we can expect less over-winter chilling accumulation at colder sites.
-  \item These results suggests we use caution when using urban sites as natural experiments as these sites may not mirror forest habitats, especially when sites are from colder (i.e., more northern) regions.
+  \item These results suggests we use caution when using urban sites as natural experiments as these sites may not mirror forest habitats, especially when sites are from colder (e.g., more northern) regions.
   \end{enumerate}
   
 \item There were no consistent differences in GDDs estimated between the weather stations versus the hobo loggers, but there was a large interaction, which could suggest large, opposing microclimatic differences across the two sites.
