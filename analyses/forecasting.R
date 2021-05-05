@@ -60,19 +60,19 @@ fstarfunc <- function(sigma, basetemp){
 }
 
 
-sigma <- 0
+sigma <- 0.1
 basetemp <- 0
 gddstuff <- fstarfunc(sigma,basetemp)[[2]]
 fstars <- fstarfunc(sigma,basetemp)[[1]]
 plotacc0s <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
     geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
-    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0") + coord_cartesian(ylim=c(0, 12))
+    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") + coord_cartesian(ylim=c(0, 12))
 
 plotratio0s <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
     geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
-    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0") + coord_cartesian(ylim=c(1, 1.1))
+    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") + coord_cartesian(ylim=c(1, 1.1))
 
 
 sigma <- 0.5
@@ -90,19 +90,19 @@ plotratio0.5 <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
     theme_minimal() + ggtitle("b) Base temperature of 0ºC, sigma 0.5") + coord_cartesian(ylim=c(1, 1.1))
 
 
-sigma <- 0
+sigma <- 0.1
 basetemp <- 10
 gddstuff <- fstarfunc(sigma,basetemp)[[2]]
 fstars <- fstarfunc(sigma,basetemp)[[1]]
 plotacc10 <- ggplot(gddstuff, aes(x=fstars, y=gddaccuracy)) +
     geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
-    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0") + coord_cartesian(ylim=c(0, 12))
+    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1") + coord_cartesian(ylim=c(0, 12))
 
 plotratio10 <- ggplot(gddstuff, aes(x=fstars, y=gddratio)) +
     geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("GDD Threshold") +
     labs(col="Day of year") +
-    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0") + coord_cartesian(ylim=c(1, 1.1))
+    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1") + coord_cartesian(ylim=c(1, 1.1))
 
 
 sigma <- 0.5
@@ -180,19 +180,19 @@ warmfunc <- function(sigma, basetemp){
 }
 
 
-sigma <- 0
+sigma <- 0.1
 basetemp <- 0
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc0s <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
     geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
     labs(col="Day of year") + coord_cartesian(ylim=c(-100, 100)) +
-    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0") 
+    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 plotratio0s <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
     geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
     labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
-    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0") 
+    theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 
 sigma <- 0.5
@@ -210,19 +210,19 @@ plotratio0.5 <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
     theme_minimal() + ggtitle("b) Base temperature of 0ºC, sigma 0.5")
 
 
-sigma <- 0
+sigma <- 0.1
 basetemp <- 10
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc10 <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
     geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
     labs(col="Day of year") + coord_cartesian(ylim=c(-100, 100)) +
-    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0")
+    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1")
 
 plotratio10 <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
     geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
     labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
-    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0")
+    theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1")
 
 
 sigma <- 0.5

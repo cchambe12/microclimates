@@ -51,42 +51,6 @@ springhobo <- subset(springhobo, select=colstokeep)
 springws <- subset(springws, select=colstokeep)
 
 
-climatehobo <- ggplot(springhobo, aes(x=doy, y=tmean, col=as.factor(site))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(aes(col=as.factor(site), fill=as.factor(site), linetype=climatetype), alpha=0.3, stat="smooth", method="loess", se=FALSE, span=0.9) + 
-  scale_color_manual(name = "Site", values=cols, labels = c("ar"="Arboretum","hf"="Harvard Forest")) +
-  scale_fill_manual(name = "Site", values=cols, labels = c("ar"="Arboretum", "hf"="Harvard Forest")) +
-  scale_linetype_manual(name = "Hobo Logger", values=lines) +
-  guides(linetype=FALSE) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  ggtitle("b) Hobo Logger") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"))
-
-climatews <- ggplot(springws, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
-  geom_smooth(aes(col=as.factor(climatetype), fill=as.factor(climatetype)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
-  scale_color_manual(name = "Site", values=cols, labels = c("arb"="Arboretum","harvardforest"="Harvard Forest")) +
-  scale_fill_manual(name = "Site", values=cols, labels = c("arb"="Arboretum", "harvardforest"="Harvard Forest")) +
-  theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
-  ggtitle("a) Weather Station") +
-  coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
-  scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
-                                                                 legend.text = element_text(size=7),
-                                                                 legend.title = element_text(size=8),
-                                                                 legend.key.size = unit(0.8,"line"), 
-                                                                 legend.position="none")
-
-climate <- ggarrange(climatews, climatehobo, ncol=2)
-if(FALSE){
-pdf("figures/climate_hfandts.pdf", width=8, height=4, onefile=FALSE)
-climate
-dev.off()
-}
-
-
-
 
 ######## Now for some plots comparing the two methods across the two sites
 
@@ -118,7 +82,7 @@ methoddiff <- ggplot(spring, aes(x=doy, y=methoddiff, col=as.factor(site))) + #g
   scale_fill_manual(name = "Site", values=cols, labels = c("arb"="Arboretum", "hf"="Harvard Forest")) +
   scale_linetype_manual(name = "Hobo Logger", values=lines) +
   guides(linetype=FALSE) +
-  ggtitle("c)") +
+  ggtitle("a)") +
   theme_classic() + xlab("Day of Year") + ylab("Hobo Logger - Weather Station \nTemperature (°C)") +
   coord_cartesian(ylim=c(-1, 4), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
   scale_y_continuous(breaks=seq(min(-1), max(4), by=1)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
@@ -134,7 +98,7 @@ methoddiff_line <- ggplot(spring, aes(x=doy, y=methoddiff, col=as.factor(site)))
   scale_linetype_manual(name = "Hobo Logger", values=lines) +
   guides(linetype=FALSE) +
   scale_alpha(guide = 'none') +
-  ggtitle("d)") +
+  ggtitle("b)") +
   theme_classic() + xlab("Day of Year") + ylab("Hobo Logger - Weather Station \nTemperature (°C)") +
   coord_cartesian(ylim=c(-4, 7), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
   scale_y_continuous(breaks=seq(min(-4), max(7), by=1)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
@@ -142,6 +106,11 @@ methoddiff_line <- ggplot(spring, aes(x=doy, y=methoddiff, col=as.factor(site)))
                                                                 legend.title = element_text(size=8),
                                                                 legend.key.size = unit(0.8,"line"))
 
+pdf("figures/climate_methodiff.pdf", width=8, height=4, onefile=FALSE)
+ggarrange(methoddiff, methoddiff_line, ncol=2)
+dev.off()
+
+if(FALSE){
 pdf("figures/clim_methoddiff.pdf", width=8, height=4, onefile=FALSE)
 methoddiff
 dev.off()
@@ -151,7 +120,7 @@ methoddiff_line
 dev.off()
 
 write.csv(spring, file="output/clim_arbhf_hobows.csv", row.names=FALSE)
-
+}
 
 alltemps <- ggplot(spring, aes(x=doy)) + 
   geom_line(aes(col=as.factor(site), linetype=climatetype, y=tmeanhobo), alpha=0.2, stat="smooth", method="loess", se=FALSE, span=0.9) + 
@@ -182,6 +151,12 @@ alltemps_line <- ggplot(spring, aes(x=doy)) +
                                                                  legend.title = element_text(size=8),
                                                                  legend.key.size = unit(0.8,"line"))
 
+
+pdf("figures/climate_smooth&daily.pdf", width=8, height=4, onefile=FALSE)
+ggarrange(alltemps, alltemps_line, ncol=2)
+dev.off()
+
+if(FALSE){
 pdf("figures/clim_alltemps.pdf", width=8, height=4, onefile=FALSE)
 alltemps
 dev.off()
@@ -193,10 +168,48 @@ dev.off()
 pdf("figures/clim_4panel.pdf", width=8, height=7, onefile=FALSE)
 ggarrange(alltemps, alltemps_line, methoddiff, methoddiff_line, nrow=2, ncol=2)
 dev.off()
-
+}
 
 
 ######## No longer needed but holding for potential future use...####
+if(FALSE){
+  climatehobo <- ggplot(springhobo, aes(x=doy, y=tmean, col=as.factor(site))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+    geom_smooth(aes(col=as.factor(site), fill=as.factor(site), linetype=climatetype), alpha=0.3, stat="smooth", method="loess", se=FALSE, span=0.9) + 
+    scale_color_manual(name = "Site", values=cols, labels = c("ar"="Arboretum","hf"="Harvard Forest")) +
+    scale_fill_manual(name = "Site", values=cols, labels = c("ar"="Arboretum", "hf"="Harvard Forest")) +
+    scale_linetype_manual(name = "Hobo Logger", values=lines) +
+    guides(linetype=FALSE) +
+    theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+    ggtitle("b) Hobo Logger") +
+    coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+    scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                   legend.text = element_text(size=7),
+                                                                   legend.title = element_text(size=8),
+                                                                   legend.key.size = unit(0.8,"line"))
+  
+  climatews <- ggplot(springws, aes(x=doy, y=tmean, col=as.factor(climatetype))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +
+    geom_smooth(aes(col=as.factor(climatetype), fill=as.factor(climatetype)), stat="smooth", method="loess", se=TRUE, span=0.9) + 
+    scale_color_manual(name = "Site", values=cols, labels = c("arb"="Arboretum","harvardforest"="Harvard Forest")) +
+    scale_fill_manual(name = "Site", values=cols, labels = c("arb"="Arboretum", "harvardforest"="Harvard Forest")) +
+    theme_classic() + xlab("Day of Year") + ylab("Mean \n Temperature (°C)") +
+    ggtitle("a) Weather Station") +
+    coord_cartesian(ylim=c(-8, 18), expand=0) + scale_x_continuous(breaks = seq(min(0), max(140), by=30)) +
+    scale_y_continuous(breaks=seq(min(-8), max(18), by=4)) + theme(panel.spacing = unit(c(0,0,5,5),"cm"),
+                                                                   legend.text = element_text(size=7),
+                                                                   legend.title = element_text(size=8),
+                                                                   legend.key.size = unit(0.8,"line"), 
+                                                                   legend.position="none")
+  
+  pdf("figures/climate_smooth&daily.pdf", width=8, height=4, onefile=FALSE)
+  ggarrange(climatesmooth, climatedaily, ncol=2)
+  dev.off()
+  
+  climate <- ggarrange(climatews, climatehobo, ncol=2)
+  pdf("figures/climate_hfandts.pdf", width=8, height=4, onefile=FALSE)
+  climate
+  dev.off()
+}
+s
 if(FALSE){
 
 climate <- ggplot(spring, aes(x=doy, y=tmean, col=as.factor(year))) + #geom_point(aes(col=as.factor(year)), alpha=0.1) +

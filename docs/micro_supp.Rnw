@@ -114,6 +114,13 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
+  
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=16cm]{..//analyses/figures/climate_methoddiffs.pdf}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and d) actual mean temperature differences measured as hobo logger minus weather station.}\label{fig:climdiffs}
+  \end{center}
+  \end{figure}}
 
 
 <<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
@@ -283,9 +290,9 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
   
 \begin{figure}[H]
     \centering
-    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_warming.pdf}
-\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
-\label{fig:warming}
+    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_fstars.pdf}
+\caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
+\label{fig:forecasts}
 \end{figure}
 
 
