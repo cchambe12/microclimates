@@ -27,15 +27,15 @@ cols <- viridis_pal(option="viridis")(4)
 
 realbox <- ggplot(bball, aes(x=sitemethod, y=gdd_bb)) + geom_boxplot(aes(col=sitemethod, fill=sitemethod)) +
   scale_color_manual(name="Site and Method", values = cols, 
-                     labels=c("arb0"="Arboretum - Hobo Logger",
-                              "arb1"="Arboretum - Weather Station",
-                              "hf0"="Harvard Forest - Hobo Logger",
-                              "hf1"="Harvard Forest - Weather Station")) +
+                     labels=c("arb0"="Urban site: hobo logger",
+                              "arb1"="Urban site: weather station",
+                              "hf0"="Forest site: hobo logger",
+                              "hf1"="Forest site: weather station")) +
   scale_fill_manual(name="Site and Method", values = cols, 
-                     labels=c("arb0"="Arboretum - Hobo Logger",
-                              "arb1"="Arboretum - Weather Station",
-                              "hf0"="Harvard Forest - Hobo Logger",
-                              "hf1"="Harvard Forest - Weather Station")) +
+                     labels=c("arb0"="Urban site: hobo logger",
+                              "arb1"="Urban site: weather station",
+                              "hf0"="Forest site: hobo logger",
+                              "hf1"="Forest site: weather station")) +
   ylab("Growing Degree Days") + xlab("") +
   theme_classic() +
   ggtitle("a)") +
@@ -74,7 +74,7 @@ modinter_plot <- ggplot(mod_inter) + geom_point(aes(x=method, y=mean, col=as.fac
   ggtitle("b)") +
   ylab("Model estimate of GDD to budburst") + 
   scale_color_manual(name="Site", values=cols,
-                    labels=c("arb"="Arnold Arboretum", "hf"="Harvard Forest")) +
+                    labels=c("arb"="Urban site", "hf"="Forest site")) +
   scale_x_discrete(labels=c("hobo" ="Hobo Logger","ws"= "Weather Station")) +
   scale_y_continuous(breaks=seq(min(300), max(450), by=20)) +
   coord_cartesian(xlim=c(0.9, 2.1), expand=FALSE, ylim=c(300, 450))
@@ -106,7 +106,7 @@ gddcomparebb <- ggplot(bball, aes(x=methodtype, y=gdd_bb, group=site, fill=site)
   xlab("") + 
   ylab("Growing degree days to budburst") + 
   scale_fill_manual(name="Site", values=cols,
-                    labels=c("arb"="Arnold Arboretum", "hf"="Harvard Forest")) + 
+                    labels=c("arb"="Urban site", "hf"="Forest site")) + 
   coord_cartesian(expand=0, ylim=c(0,700))
 
 pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "gdd_comparemethodsandsites.pdf"),

@@ -32,97 +32,8 @@ shrubs <- c("Acer_pensylvanicum", "Hamamelis_virginiana", "Vaccinium_corymbosum"
 bball$functype <- ifelse(bball$spp%in%shrubs, "shrub", "tree")
 
 bball$site <- ifelse(bball$urban==1, "arb", "hf")
-
-bbarb <- bball[(bball$site=="arb"),]
-bbhf <- bball[(bball$site=="hf"),]
-
-bbarb$meanarb <- ave(bbarb$gdd, bbarb$functype, FUN=function(x) mean(x, na.rm=TRUE))
-bbarb$sdarb <- ave(bbarb$gdd, bbarb$functype, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbarb$meanarb)))
-bbhf$meanhf <- ave(bbhf$gdd, bbhf$functype, FUN=function(x) mean(x, na.rm=TRUE))
-bbhf$sdhf <- ave(bbhf$gdd, bbhf$functype, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbhf$meanhf)))
-
-bbarb <- subset(bbarb , select=c("functype", "meanarb", "sdarb"))
-bbarb <- bbarb[!duplicated(bbarb),]
-bbhf <- subset(bbhf , select=c("functype", "meanhf", "sdhf"))
-bbhf <- bbhf[!duplicated(bbhf),]
-
-bbdiff <- full_join(bbarb, bbhf)
-
-bbdiff$diff <- bbdiff$meanarb - bbdiff$meanhf
-bbdiff$diff.sd <- bbdiff$sdarb - bbdiff$sdhf
-
-
-bbdiff$ymin <- bbdiff$meanhf - bbdiff$sdhf
-bbdiff$ymax <- bbdiff$meanhf + bbdiff$sdhf
-bbdiff$xmin <- bbdiff$meanarb - bbdiff$sdarb
-bbdiff$xmax <- bbdiff$meanarb + bbdiff$sdarb
-
-bbdiff$diff.labels <- as.numeric(as.factor(bbdiff$diff))
-
-cols <- viridis_pal(option="viridis")(4)
-diff <- ggplot(bbdiff, aes(x=meanarb, y=meanhf, col=as.factor(diff.labels)), alpha=2) + 
-  geom_point(aes(x=meanarb, y=meanhf, size=as.factor(diff.labels)), shape=21) + 
-  geom_linerange(aes(ymin=ymin, ymax=ymax), alpha=0.3) +
-  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0), alpha=0.3) +
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        legend.text.align = 0,
-        legend.key = element_rect(colour = "transparent", fill = "white")) +
-  #geom_text(aes(label=species), vjust=2) + 
-  xlab("GDDs until budburst \n(urban arboretum)") + 
-  ylab("GDDs until budburst \n(rural forest)") + 
-  scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("2"="-99.49 (shrub)", "1"="-110.4 (tree)")) +
-  scale_size_manual(name=expression(Delta*" in GDDs"), values=c(5,3),
-                     labels=c("2"="-99.49 (shrub)", "1"="-110.4 (tree)"), guide="legend") +
-  #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
-  coord_cartesian(xlim=c(250, 550), ylim=c(250, 550))
-
-##### Now for method comparisons using real data...
 bball$tx <- ifelse(bball$method==1, "ws", "hobo")
 
-bbws <- bball[(bball$tx=="ws"),]
-bbhobo <- bball[(bball$tx=="hobo"),]
-
-bbws$meanws <- ave(bbws$gdd, bbws$functype, FUN=function(x) mean(x, na.rm=TRUE))
-bbws$sdws <- ave(bbws$gdd, bbws$functype, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbws$meanws)))
-bbhobo$meanhobo <- ave(bbhobo$gdd, bbhobo$functype, FUN=function(x) mean(x, na.rm=TRUE))
-bbhobo$sdhobo <- ave(bbhobo$gdd, bbhobo$functype, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbhobo$meanhobo)))
-
-bbws <- subset(bbws , select=c("functype", "meanws", "sdws"))
-bbws <- bbws[!duplicated(bbws),]
-bbhobo <- subset(bbhobo , select=c("functype", "meanhobo", "sdhobo"))
-bbhobo <- bbhobo[!duplicated(bbhobo),]
-
-bbdiff <- full_join(bbws, bbhobo)
-
-bbdiff$diff <- bbdiff$meanws - bbdiff$meanhobo
-bbdiff$diff.sd <- bbdiff$sdws - bbdiff$sdhobo
-
-
-bbdiff$ymin <- bbdiff$meanhobo - bbdiff$sdhobo
-bbdiff$ymax <- bbdiff$meanhobo + bbdiff$sdhobo
-bbdiff$xmin <- bbdiff$meanws - bbdiff$sdws
-bbdiff$xmax <- bbdiff$meanws + bbdiff$sdws
-
-bbdiff$diff.labels <- as.numeric(as.factor(bbdiff$diff))
-
-cols <- viridis_pal(option="viridis")(4)
-diffmethod <- ggplot(bbdiff, aes(x=meanws, y=meanhobo, col=as.factor(diff.labels)), alpha=2) + 
-  geom_point(aes(x=meanws, y=meanhobo, size=as.factor(diff.labels)), shape=21) + 
-  geom_linerange(aes(ymin=ymin, ymax=ymax), alpha=0.3) +
-  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0), alpha=0.3) +
-  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        legend.text.align = 0,
-        legend.key = element_rect(colour = "transparent", fill = "white")) +
-  #geom_text(aes(label=species), vjust=2) + 
-  xlab("GDDs until budburst \n(weather station)") + 
-  ylab("GDDs until budburst \n(hobo logger)") + 
-  scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("2"="15.53 (shrub)", "1"="-20.11 (tree)")) +
-  scale_size_manual(name=expression(Delta*" in GDDs"), values=c(2,1),
-                    labels=c("2"="15.53 (shrub)", "1"="-20.11 (tree)"), guide="legend") +
-  #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
-  coord_cartesian(xlim=c(300, 500), ylim=c(300, 500))
 
 ##### Now for site x method comparisons using real data...
 bball$sitemethod <- paste0(bball$site, bball$tx)
@@ -154,25 +65,26 @@ bbdiff$xmax <- bbdiff$meanshrub + bbdiff$sdshrub
 bbdiff$diff.labels <- as.numeric(as.factor(bbdiff$diff))
 
 cols <- viridis_pal(option="viridis")(4)
-diffinter_real <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=as.factor(diff.labels)), alpha=2) + 
-  geom_point(aes(x=meanshrub, y=meantree, size=as.factor(diff.labels)), shape=21) + 
-  geom_linerange(aes(ymin=ymin, ymax=ymax), alpha=0.3) +
-  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0), alpha=0.3) +
+diffinter_real <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=as.factor(sitemethod))) + 
+  geom_point(aes(x=meanshrub, y=meantree, size=as.factor(sitemethod)), shape=21) + 
+  geom_linerange(aes(ymin=ymin, ymax=ymax)) +
+  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
+  ggtitle("a)") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("2"="-57.98937 (forest weather station)", "1"="-95.44600 (urban weather station)",
-                              "3"="-32.60329 (urban hobo logger)", "4"="-85.09718 (forest hobo logger)")) +
-  scale_size_manual(name=expression(Delta*" in GDDs"), values=c("2"=2,
-                                                                "1"=4,
-                                                                "3"=1,
-                                                                "4"=3),
-                    labels=c("2"="-57.98937 (forest weather station)", "1"="-95.44600 (urban weather station)",
-                             "3"="-32.60329 (urban hobo logger)", "4"="-85.09718 (forest hobo logger)")) +
+                     labels=c("hfws"="Forest site: weather station \n(57.99)", "arbws"="Urban site: weather station \n(-95.45)",
+                              "arbhobo"="Urban site: hobo logger \n(-32.6)", "hfhobo"="Forest site: hobo logger \n(-85.1)")) +
+  scale_size_manual(name=expression(Delta*" in GDDs"), values=c("hfws"=2,
+                                                                "arbws"=4,
+                                                                "arbhobo"=1,
+                                                                "hfhobo"=3),
+                    labels=c("hfws"="Forest site: weather station \n(57.99)", "arbws"="Urban site: weather station \n(-95.45)",
+                             "arbhobo"="Urban site: hobo logger \n(-32.6)", "hfhobo"="Forest site: hobo logger \n(-85.1)")) +
   #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
   coord_cartesian(xlim=c(250, 525), ylim=c(250, 525))
 
@@ -189,7 +101,6 @@ urbmethod.sum <- summary(urbmethod)$summary
 bball$sp.num <- as.numeric(as.factor(bball$spp))
 bbshrubs <- bball[(bball$functype=="shrub"),]
 unique(bbshrubs$sp.num)
-
 
 shrubs <- rbind(urbmethod.sum["a_sp[11]", ], urbmethod.sum["a_sp[16]", ],  
   urbmethod.sum["a_sp[17]", ], urbmethod.sum["a_sp[1]", ])
@@ -325,24 +236,30 @@ bbdiff$xmax <- bbdiff$meanshrub + bbdiff$sdshrub
 #bbdiff$diff.labels <- 1:4
 
 cols <- viridis_pal(option="viridis")(4)
-diffinter <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=sitemethod), alpha=2) + 
+diffinter <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=sitemethod)) + 
   geom_jitter(aes(x=meanshrub, y=meantree), width=0.4) + 
-  geom_linerange(aes(ymin=ymin, ymax=ymax), alpha=0.3) +
-  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0), alpha=0.3) +
+  geom_linerange(aes(ymin=ymin, ymax=ymax)) +
+  geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
+  ggtitle("b)") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("hfws"="Rural forest: \nweather station", "arbws"="Urban arboretum: \nweather station",
-                              "arbhobo"="Urban arboretum: \nhobo logger", "hfhobo"="Rural forest: \nhobo logger")) +
+                     labels=c("hfws"="Forest site: \nweather station", "arbws"="Urban site: \nweather station",
+                              "arbhobo"="Urban site: \nhobo logger", "hfhobo"="Forest site: \nhobo logger")) +
   #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
   coord_cartesian(xlim=c(325, 475), ylim=c(325, 475))
 
 pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "functype_modoutput.pdf"),
     width = 8, height = 6)
 diffinter
+dev.off()
+
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "functype.pdf"),
+    width = 12, height = 6, onefile=FALSE)
+ggarrange(diffinter_real, diffinter, ncol=2)
 dev.off()
 

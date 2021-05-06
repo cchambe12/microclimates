@@ -155,10 +155,17 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
   -\end{center}
   -\end{figure}}
+  
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
+  \end{center}
+  \end{figure}}
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -187,7 +194,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -215,16 +222,8 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-\begin{figure}[H]
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprovsims}
-\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:prov} for full model output. }
-\label{fig:provsims}
-\end{figure}
-
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -253,7 +252,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -282,7 +281,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -310,10 +309,8 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 
-
-
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from real data}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -323,15 +320,15 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
   \hline
  & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
   \hline
-$\mu_{\alpha}$ & 424.96 & 413.29 & 437.11 & 387.75 & 458.74 \\ 
-  $\mu_{site}$ & -31.66 & -39.63 & -23.74 & -54.08 & -9.28 \\ 
-  $\mu_{method}$ & -0.50 & -7.29 & 6.22 & -19.96 & 20.45 \\ 
-  $\mu_{sitexmethod}$ & -40.35 & -48.17 & -32.56 & -63.08 & -17.80 \\ 
-  $\sigma_{site}$ & 21.46 & 11.46 & 29.44 & 1.25 & 49.34 \\ 
-  $\sigma_{method}$ & 17.09 & 7.80 & 24.21 & 0.88 & 43.70 \\ 
-  $\sigma_{sitexmethod}$ & 25.62 & 16.26 & 33.80 & 2.66 & 52.91 \\ 
-  $\sigma_{\alpha}$ & 62.95 & 53.51 & 71.16 & 40.91 & 93.12 \\ 
-  $\sigma_{y}$ & 71.54 & 69.73 & 73.28 & 66.63 & 76.75 \\ 
+$\mu_{\alpha}$ & 424.61 & 412.34 & 436.90 & 388.48 & 456.44 \\ 
+  $\mu_{site}$ & -31.74 & -39.71 & -24.08 & -54.99 & -7.37 \\ 
+  $\mu_{method}$ & 0.21 & -6.18 & 6.55 & -19.05 & 19.43 \\ 
+  $\mu_{sitexmethod}$ & -40.05 & -47.90 & -32.21 & -65.05 & -16.22 \\ 
+  $\sigma_{site}$ & 22.06 & 12.78 & 29.66 & 1.46 & 48.71 \\ 
+  $\sigma_{method}$ & 16.18 & 7.64 & 23.41 & 0.62 & 40.29 \\ 
+  $\sigma_{sitexmethod}$ & 25.16 & 16.26 & 33.41 & 2.44 & 51.25 \\ 
+  $\sigma_{\alpha}$ & 62.97 & 53.59 & 71.29 & 40.08 & 90.52 \\ 
+  $\sigma_{y}$ & 71.58 & 69.60 & 73.27 & 66.34 & 77.41 \\ 
    \hline
 $N_{sp}$ & 18.00 &  &  &  &  \\ 
    \hline
@@ -345,12 +342,12 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-\caption{ Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (using a binary parameter with weather station data as `1' and hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Mon May  3 18:20:31 2021
+% Thu May  6 15:35:49 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from provenance latitude}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -377,12 +374,19 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 \end{table}
 
 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site and climate data method on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but the reverse is true for the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
+\label{fig:funcs}
+\end{figure}
   
 \begin{figure}[H]
     \centering
-    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_warming.pdf}
-\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
-\label{fig:warming}
+    \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_fstars.pdf}
+\caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
+\label{fig:forecasts}
 \end{figure}
 
 

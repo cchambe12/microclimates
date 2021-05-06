@@ -77,7 +77,7 @@ model {
 	target += normal_lpdf(to_vector(b_method) | 0, 60);
 	target += normal_lpdf(to_vector(b_um) | 0, 60);
 	     
-        target+= normal_lpdf(mu_a_sp | 350,50);
+        target+= normal_lpdf(mu_a_sp | 350,75);
 	      target+= normal_lpdf(sigma_a_sp | 0,50);
         
         /*target+= normal_lpdf(mu_b_urban_sp | 0,50);

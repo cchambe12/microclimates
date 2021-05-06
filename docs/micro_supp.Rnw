@@ -117,8 +117,8 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
   
 {\begin{figure} [H]
   \begin{center}
-  \includegraphics[width=16cm]{..//analyses/figures/climate_methoddiffs.pdf}
-  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and d) actual mean temperature differences measured as hobo logger minus weather station.}\label{fig:climdiffs}
+  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
   \end{center}
   \end{figure}}
 
@@ -164,14 +164,6 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
 
-
-\begin{figure}[H]
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov.pdf}
-      \label{fig:muplotprovsims}
-\caption{ Using simulated data to test provenance latitude, we show (a) the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:prov} for full model output. }
-\label{fig:provsims}
-\end{figure}
 
 <<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
@@ -236,8 +228,6 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-
-
 <<label=real, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/urbmethod.csv", header=TRUE)
@@ -263,7 +253,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-\caption{ Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station data as `1' or hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (using a binary parameter with weather station data as `1' and hobo logger data as `0') on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
@@ -287,11 +277,18 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site and climate data method on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but the reverse is true for the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
+\label{fig:funcs}
+\end{figure}
   
 \begin{figure}[H]
     \centering
     \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_fstars.pdf}
-\caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
+\caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
 \label{fig:forecasts}
 \end{figure}
 
