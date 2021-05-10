@@ -140,6 +140,7 @@ dev.off()
 
 # Recommend run the below trying the full suite of 
 # trying sigma.cc at 0.5, 1, 5 x basetemp at 0, 5, 10
+daysperyr <- 200
 warmfunc <- function(sigma, basetemp){
     cc <- 12
     sigma.cc <- sigma
@@ -148,7 +149,7 @@ warmfunc <- function(sigma, basetemp){
     warm.min <- 0
     warm.max <- 9
     
-    fstars <- 100
+    fstars <- c(100, 200, 300, 400, 500)
     
     # fstars
     warms <- seq(from=warm.min, to=warm.max, by=1)
@@ -156,22 +157,26 @@ warmfunc <- function(sigma, basetemp){
     # observed climate
     tmeanbase <- rnorm(daysperyr, cc + rep(warms, each=(daysperyr/((warm.max-warm.min)+1))), sigma.cc)
     tmeanbase0 <- ifelse(tmeanbase>=basetemp, tmeanbase-basetemp, 0)
-    warming <- rep(warms, each=(daysperyr/((warm.max-warm.min)+1)))
+    warming <- rep(warms, each=(daysperyr/((warm.max-warm.min)+1)), times=length(fstars))
     tmeanwarm <- data.frame(cbind(tmeanbase0, warming))
     tmeanwarm$gdd <- ave(tmeanwarm$tmeanbase0, tmeanwarm$warming, FUN=cumsum)
+    tmeanwarm <- tmeanwarm[rep(seq_len(nrow(tmeanwarm)), each = length(fstars)), ]
+    tmeanwarm$fstars <- rep(fstars)
     
     # get GDD for each budburst DOY for each fstar
-    observedgdd <- c()
-    doy <- c()
-    for(i in c(unique(tmeanwarm$warming))){ #i=0
-        doy[tmeanwarm$warming==i] <- min(which(tmeanwarm$gdd[tmeanwarm$warming==i] >= fstars))
-        observedgdd[tmeanwarm$warming==i] <- tmeanwarm$gdd[(min(which(tmeanwarm$gdd[tmeanwarm$warming==i] >= fstars)))]
-    }
+    tmeanwarm$observedgdd <- NA
+    tmeanwarm$doy <- NA
+    tmeanwarm$spwarm <- paste0(tmeanwarm$warming, tmeanwarm$fstars)
+    for(i in c(unique(tmeanwarm$spwarm))){ #i=0
+        tmeanwarm$doy[tmeanwarm$spwarm==i] <- min(which(tmeanwarm$gdd[tmeanwarm$spwarm==i] >= tmeanwarm$fstars[tmeanwarm$spwarm==i]))
+        tmeanwarm$observedgdd[tmeanwarm$spwarm==i] <- tmeanwarm$gdd[(min(which(tmeanwarm$gdd[tmeanwarm$spwarm==i] >= tmeanwarm$fstars[tmeanwarm$spwarm==i])))]
+      }
     
-    gddaccuracy <- observedgdd-fstars
-    gddratio <- observedgdd/fstars
+    tmeanwarm$gddaccuracy <- tmeanwarm$observedgdd - tmeanwarm$fstars
+    tmeanwarm$gddratio <- tmeanwarm$observedgdd/tmeanwarm$fstars
     
-    gddstuff <- as.data.frame(cbind(doy, gddaccuracy, gddratio, warming))
+    gddstuff <- subset(tmeanwarm, select=c("doy", "gddaccuracy", "gddratio", "warming", "fstars"))
+    gddstuff <- gddstuff[!duplicated(gddstuff),]
     
     mylist <- list(fstars, gddstuff)
     
@@ -190,8 +195,8 @@ plotacc0s <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
     theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 plotratio0s <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
-    geom_point(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
-    labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
+    geom_point(aes(color=fstars)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
+    labs(col="GDD threshold") + #coord_cartesian(ylim=c(0, 1.2)) +
     theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 

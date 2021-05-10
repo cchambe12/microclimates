@@ -451,7 +451,7 @@ simsdat <- bbfunc("urban", "NA", 20, 2, 300, 20, 10, 3, 0)
   par(xpd=TRUE) 
   legend(120, 6, sort(unique(gsub("_", " ", bball$spp))), pch=my.pch[1:spnum],
          col=alpha(my.pal[1:spnum], alphahere),
-         cex=0.5, bty="n", text.font=3)
+         cex=0.7, bty="n", text.font=3)
   dev.off()
   save(provmethod, file="~/Documents/git/microclimates/analyses/stan/provmethod_real.Rdata")
 
@@ -517,7 +517,7 @@ simsdat <- bbfunc("urban", "NA", 20, 2, 300, 20, 10, 3, 0)
   par(xpd=TRUE) 
   legend(120, 6, sort(unique(gsub("_", " ", bball$spp))), pch=my.pch[1:spnum],
          col=alpha(my.pal[1:spnum], alphahere),
-         cex=0.5, bty="n", text.font=3)
+         cex=0.7, bty="n", text.font=3)
   dev.off()
   save(urbmethod, file="~/Documents/git/microclimates/analyses/stan/urbmethod_real.Rdata")
 
