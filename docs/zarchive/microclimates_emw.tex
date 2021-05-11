@@ -1,4 +1,54 @@
-\documentclass{article}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage{Sweave}
 \usepackage{float}
 \usepackage{graphicx}
@@ -40,7 +90,7 @@
   skipabove=\topsep,
   skipbelow=\topsep
 ]{siderules}
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \noindent\textbf{\Large{Comparing spring phenology in an urban arboretum versus rural forested site and implications for forecasting}}
@@ -64,258 +114,236 @@ $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<<label=numbers, echo=FALSE, results="asis", warning=FALSE, message=FALSE,>>=
-#load models and data to report numbers of things
-options(stringsAsFactors = FALSE)
-library(rstan)
+\begin{kframe}
 
-## Set Working Directory
-setwd("~/Documents/git/microclimates/analyses/")
 
-load("stan/noisyws_sims.Rdata")
-load("stan/noisyhobo_sims.Rdata")
-load("stan/micros_sims.Rdata")
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
-load("stan/urban_sims.Rdata")
-load("stan/urbmethod_sims.Rdata")
-load("stan/urbmethod_real.Rdata")
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
-load("stan/prov_sims.Rdata")
-load("stan/provmethod_real.Rdata")
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
-###### Noisy Weather Station Output
-fit.noisyws <- summary(noisyws_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
-site.ws <- round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),1], digits=2)
-site.ws.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),5], digits=2)
-site.ws.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),7], digits=2)
-site.ws.sd <- abs(site.ws.uci - site.ws.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection}}
 
-method.ws <- round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),1], digits=2)
-method.ws.lci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),5], digits=2)
-method.ws.uci<-round(fit.noisyws[grep("mu_b_method_sp", rownames(fit.noisyws)),7], digits=2)
-method.ws.sd <- abs(method.ws.uci - method.ws.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(noisyws\_fake): object 'noisyws\_fake' not found}}
 
-um.ws <- round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),1], digits=2)
-um.ws.lci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),5], digits=2)
-um.ws.uci<-round(fit.noisyws[grep("mu_b_um_sp", rownames(fit.noisyws)),7], digits=2)
-um.ws.sd <- abs(um.ws.uci - um.ws.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-site.sigma.ws <- round(fit.noisyws[grep("sigma_b_urban_sp", rownames(fit.noisyws)),1], digits=2)
-method.sigma.ws <- round(fit.noisyws[grep("sigma_b_method_sp", rownames(fit.noisyws)),1], digits=2)
-um.sigma.ws <- round(fit.noisyws[grep("sigma_b_um_sp", rownames(fit.noisyws)),1], digits=2)
-sp.sigma.ws <- round(fit.noisyws[grep("sigma_a_sp", rownames(fit.noisyws)),1], digits=2)
-y.sigma.ws <- round(fit.noisyws[grep("sigma_y", rownames(fit.noisyws)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.ws.uci' not found}}
 
-###### Noisy Hobo Logger Output
-fit.noisyhobo <- summary(noisyhobo_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-site.hobo <- round(fit.noisyhobo[grep("mu_b_urban_sp", rownames(fit.noisyhobo)),1], digits=2)
-site.hobo.lci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),5], digits=2)
-site.hobo.uci<-round(fit.noisyws[grep("mu_b_urban_sp", rownames(fit.noisyws)),7], digits=2)
-site.hobo.sd <- abs(site.hobo.uci - site.hobo.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-method.hobo <- round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),1], digits=2)
-method.hobo.lci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),5], digits=2)
-method.hobo.uci<-round(fit.noisyhobo[grep("mu_b_method_sp", rownames(fit.noisyhobo)),7], digits=2)
-method.hobo.sd <- abs(method.hobo.uci - method.hobo.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-um.hobo <- round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),1], digits=2)
-um.hobo.lci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),5], digits=2)
-um.hobo.uci<-round(fit.noisyhobo[grep("mu_b_um_sp", rownames(fit.noisyhobo)),7], digits=2)
-um.hobo.sd <- abs(um.hobo.uci - um.hobo.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.ws.uci' not found}}
 
-site.sigma.hobo <- round(fit.noisyhobo[grep("sigma_b_urban_sp", rownames(fit.noisyhobo)),1], digits=2)
-method.sigma.hobo <- round(fit.noisyhobo[grep("sigma_b_method_sp", rownames(fit.noisyhobo)),1], digits=2)
-um.sigma.hobo <- round(fit.noisyhobo[grep("sigma_b_um_sp", rownames(fit.noisyhobo)),1], digits=2)
-sp.sigma.hobo <- round(fit.noisyhobo[grep("sigma_a_sp", rownames(fit.noisyhobo)),1], digits=2)
-y.sigma.hobo <- round(fit.noisyhobo[grep("sigma_y", rownames(fit.noisyhobo)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-###### Microclimates Output
-fit.micros <- summary(micros_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'um.ws.uci' not found}}
 
-site.micros <- round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),1], digits=2)
-site.micros.lci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),5], digits=2)
-site.micros.uci<-round(fit.micros[grep("mu_b_urban_sp", rownames(fit.micros)),7], digits=2)
-site.micros.sd <- abs(site.micros.uci - site.micros.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-method.micros <- round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),1], digits=2)
-method.micros.lci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),5], digits=2)
-method.micros.uci<-round(fit.micros[grep("mu_b_method_sp", rownames(fit.micros)),7], digits=2)
-method.micros.sd <- abs(method.micros.uci - method.micros.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-um.micros <- round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),1], digits=2)
-um.micros.lci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),5], digits=2)
-um.micros.uci<-round(fit.micros[grep("mu_b_um_sp", rownames(fit.micros)),7], digits=2)
-um.micros.sd <- abs(um.micros.uci - um.micros.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-site.sigma.micros <- round(fit.micros[grep("sigma_b_urban_sp", rownames(fit.micros)),1], digits=2)
-method.sigma.micros <- round(fit.micros[grep("sigma_b_method_sp", rownames(fit.micros)),1], digits=2)
-um.sigma.micros <- round(fit.micros[grep("sigma_b_um_sp", rownames(fit.micros)),1], digits=2)
-sp.sigma.micros <- round(fit.micros[grep("sigma_a_sp", rownames(fit.micros)),1], digits=2)
-y.sigma.micros <- round(fit.micros[grep("sigma_y", rownames(fit.micros)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(noisyhobo\_fake): object 'noisyhobo\_fake' not found}}
 
-###### Urban Output
-fit.urban <- summary(urban_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-site.urban <- round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),1], digits=2)
-site.urban.lci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),5], digits=2)
-site.urban.uci<-round(fit.urban[grep("mu_b_urban_sp", rownames(fit.urban)),7], digits=2)
-site.urban.sd <- abs(site.urban.uci - site.urban.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-method.urban <- round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),1], digits=2)
-method.urban.lci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),5], digits=2)
-method.urban.uci<-round(fit.urban[grep("mu_b_method_sp", rownames(fit.urban)),7], digits=2)
-method.urban.sd <- abs(method.urban.uci - method.urban.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyws' not found}}
 
-um.urban <- round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),1], digits=2)
-um.urban.lci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),5], digits=2)
-um.urban.uci<-round(fit.urban[grep("mu_b_um_sp", rownames(fit.urban)),7], digits=2)
-um.urban.sd <- abs(um.urban.uci - um.urban.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.hobo.uci' not found}}
 
-site.sigma.urban <- round(fit.urban[grep("sigma_b_urban_sp", rownames(fit.urban)),1], digits=2)
-method.sigma.urban <- round(fit.urban[grep("sigma_b_method_sp", rownames(fit.urban)),1], digits=2)
-um.sigma.urban <- round(fit.urban[grep("sigma_b_um_sp", rownames(fit.urban)),1], digits=2)
-sp.sigma.urban <- round(fit.urban[grep("sigma_a_sp", rownames(fit.urban)),1], digits=2)
-y.sigma.urban <- round(fit.urban[grep("sigma_y", rownames(fit.urban)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-###### Urban Method Simulations Output
-fit.urbmethod <- summary(urbmethod_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.hobo.uci' not found}}
 
-site.urbmethod <- round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),1], digits=2)
-site.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),5], digits=2)
-site.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_urban_sp", rownames(fit.urbmethod)),7], digits=2)
-site.urbmethod.sd <- abs(site.urbmethod.uci - site.urbmethod.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-method.urbmethod <- round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),1], digits=2)
-method.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),5], digits=2)
-method.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_method_sp", rownames(fit.urbmethod)),7], digits=2)
-method.urbmethod.sd <- abs(method.urbmethod.uci - method.urbmethod.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-um.urbmethod <- round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),1], digits=2)
-um.urbmethod.lci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),5], digits=2)
-um.urbmethod.uci<-round(fit.urbmethod[grep("mu_b_um_sp", rownames(fit.urbmethod)),7], digits=2)
-um.urbmethod.sd <- abs(um.urbmethod.uci - um.urbmethod.lci)
-
-um.urbmethod.eff <- site.urbmethod + method.urbmethod + um.urbmethod
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-site.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_b_urban_sp", rownames(fit.urbmethod)),1], digits=2)
-method.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_b_method_sp", rownames(fit.urbmethod)),1], digits=2)
-um.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_b_um_sp", rownames(fit.urbmethod)),1], digits=2)
-sp.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_a_sp", rownames(fit.urbmethod)),1], digits=2)
-y.sigma.urbmethod <- round(fit.urbmethod[grep("sigma_y", rownames(fit.urbmethod)),1], digits=2)
-
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'um.hobo.uci' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-###### Real Data Output
-fit.real <- summary(urbmethod)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-site.real <- round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),1], digits=2)
-site.real.lci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),5], digits=2)
-site.real.uci<-round(fit.real[grep("mu_b_urban_sp", rownames(fit.real)),7], digits=2)
-site.real.sd <- abs(site.real.uci - site.real.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-method.real <- round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),1], digits=2)
-method.real.lci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),5], digits=2)
-method.real.uci<-round(fit.real[grep("mu_b_method_sp", rownames(fit.real)),7], digits=2)
-method.real.sd <- abs(method.real.uci - method.real.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-um.real <- round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),1], digits=2)
-um.real.lci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),5], digits=2)
-um.real.uci<-round(fit.real[grep("mu_b_um_sp", rownames(fit.real)),7], digits=2)
-um.real.sd <- abs(um.real.uci - um.real.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.noisyhobo' not found}}
 
-site.sigma.real <- round(fit.real[grep("sigma_b_urban_sp", rownames(fit.real)),1], digits=2)
-method.sigma.real <- round(fit.real[grep("sigma_b_method_sp", rownames(fit.real)),1], digits=2)
-um.sigma.real <- round(fit.real[grep("sigma_b_um_sp", rownames(fit.real)),1], digits=2)
-sp.sigma.real <- round(fit.real[grep("sigma_a_sp", rownames(fit.real)),1], digits=2)
-y.sigma.real <- round(fit.real[grep("sigma_y", rownames(fit.real)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(micros\_fake): object 'micros\_fake' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-###### Real Provenance Data Output
-fit.provreal <- summary(provmethod)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-site.provreal <- round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),1], digits=2)
-site.provreal.lci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),5], digits=2)
-site.provreal.uci<-round(fit.provreal[grep("mu_b_urban_sp", rownames(fit.provreal)),7], digits=2)
-site.provreal.sd <- abs(site.provreal.uci - site.provreal.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-method.provreal <- round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),1], digits=2)
-method.provreal.lci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),5], digits=2)
-method.provreal.uci<-round(fit.provreal[grep("mu_b_method_sp", rownames(fit.provreal)),7], digits=2)
-method.provreal.sd <- abs(method.provreal.uci - method.provreal.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.micros.uci' not found}}
 
-um.provreal <- round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),1], digits=2)
-um.provreal.lci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),5], digits=2)
-um.provreal.uci<-round(fit.provreal[grep("mu_b_um_sp", rownames(fit.provreal)),7], digits=2)
-um.provreal.sd <- abs(um.provreal.uci - um.provreal.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-site.sigma.provreal <- round(fit.provreal[grep("sigma_b_urban_sp", rownames(fit.provreal)),1], digits=2)
-method.sigma.provreal <- round(fit.provreal[grep("sigma_b_method_sp", rownames(fit.provreal)),1], digits=2)
-um.sigma.provreal <- round(fit.provreal[grep("sigma_b_um_sp", rownames(fit.provreal)),1], digits=2)
-sp.sigma.provreal <- round(fit.provreal[grep("sigma_a_sp", rownames(fit.provreal)),1], digits=2)
-y.sigma.provreal <- round(fit.provreal[grep("sigma_y", rownames(fit.provreal)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.micros.uci' not found}}
 
-###### Provenance Latitude Output
-fit.prov <- summary(provmethod_fake)$summary
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-site.prov <- round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),1], digits=2)
-site.prov.lci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),5], digits=2)
-site.prov.uci<-round(fit.prov[grep("mu_b_urban_sp", rownames(fit.prov)),7], digits=2)
-site.prov.sd <- abs(site.prov.uci - site.prov.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-method.prov <- round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),1], digits=2)
-method.prov.lci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),5], digits=2)
-method.prov.uci<-round(fit.prov[grep("mu_b_method_sp", rownames(fit.prov)),7], digits=2)
-method.prov.sd <- abs(method.prov.uci - method.prov.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-um.prov <- round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),1], digits=2)
-um.prov.lci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),5], digits=2)
-um.prov.uci<-round(fit.prov[grep("mu_b_um_sp", rownames(fit.prov)),7], digits=2)
-um.prov.sd <- abs(um.provreal.uci - um.provreal.lci)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'um.micros.uci' not found}}
 
-site.sigma.prov <- round(fit.prov[grep("sigma_b_urban_sp", rownames(fit.prov)),1], digits=2)
-method.sigma.prov <- round(fit.prov[grep("sigma_b_method_sp", rownames(fit.prov)),1], digits=2)
-um.sigma.prov <- round(fit.prov[grep("sigma_b_um_sp", rownames(fit.prov)),1], digits=2)
-sp.sigma.prov <- round(fit.prov[grep("sigma_a_sp", rownames(fit.prov)),1], digits=2)
-y.sigma.prov <- round(fit.prov[grep("sigma_y", rownames(fit.prov)),1], digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-#### Climate details breakdown
-clim <- read.csv("output/clim_arbhf_hobows.csv")
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-meantemp_arbws <- round(mean(clim$tmeanws[clim$site=="arb"], na.rm=TRUE), digits=2)
-meantemp_arbhobo <- round(mean(clim$tmeanhob[clim$site=="arb"], na.rm=TRUE), digits=2)
-meantemp_hfws <- round(mean(clim$tmeanws[clim$site=="hf"], na.rm=TRUE), digits=2)
-meantemp_hfhobo <- round(mean(clim$tmeanhob[clim$site=="hf"], na.rm=TRUE), digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-#methoddiff_range <- round(range(clim$methoddiff, na.rm = TRUE), digits=2)
-methoddiff_min <- round(min(clim$methoddiff, na.rm = TRUE), digits=2)
-methoddiff_max <- round(max(clim$methoddiff, na.rm = TRUE), digits=2)
-methoddiff_arb <- round(mean(clim$methoddiff[clim$site=="arb"], na.rm=TRUE), digits=2)
-methoddiff_arbsd <- round(sd(clim$methoddiff[clim$site=="arb"], na.rm=TRUE), digits=2)
-methoddiff_hf <- round(mean(clim$methoddiff[clim$site=="hf"], na.rm=TRUE), digits=2)
-methoddiff_hfsd <- round(sd(clim$methoddiff[clim$site=="hf"], na.rm=TRUE), digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-clim$methoddiff_logger <- ave(clim$methoddiff, clim$climatetype, FUN=function(x) mean(x, na.rm=TRUE))
-arbdiff_max <- round(max(clim$methoddiff_logger, na.rm = TRUE), digits=2)
-hfdiff_min <- round(max(clim$methoddiff_logger, na.rm = TRUE), digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.micros' not found}}
 
-#methoddiff_arbrange <- round(range(clim$methoddiff[clim$site=="arb"], na.rm=TRUE), digits=2)
-#methoddiff_hfrange <- round(range(clim$methoddiff[clim$site=="hf"], na.rm=TRUE), digits=2)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(urban\_fake): object 'urban\_fake' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
 
-@
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.urban.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.urban.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'um.urban.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urban' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(urbmethod\_fake): object 'urbmethod\_fake' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.urbmethod.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.urbmethod.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'um.urbmethod.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.urbmethod' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(provmethod\_fake): object 'provmethod\_fake' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'site.prov.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'method.prov.uci' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'fit.prov' not found}}\end{kframe}
 
 \newpage
 \section*{Abstract} % (274/300)
@@ -368,11 +396,11 @@ Simulations that include microclimates at both sites show that the hobo loggers 
 The GDD model becomes less accurate with warming, and accuracy decreases at a faster rate with the higher base temperature (i.e., 10$^{\circ}$C) than with the lower base temperature (i.e., 0$^{\circ}$C; Figure \ref{fig:warming}). Under the no warming simulation, using the 10$^{\circ}$C base temperature is most consistent across species but with any amount of warming, the 0$^{\circ}$C base temperature is more accurate across all GDD thresholds. Without warming, the GDD model is more accurate for individuals that have high GDD thresholds and when base temperatures are higher (i.e., 10$^{\circ}$C; Figure \ref{fig:forecasts}). Additionally, variability in accuracy increases with higher sigmas under warming conditions and across GDD thresholds  (Figure \ref{fig:forecasts} and Figure \ref{fig:warming}).
 
 \subsection*{Empirical data} 
-Mean temperature from January 1 until May 31 at the urban arboretum site was \Sexpr{meantemp_arbws}$^{\circ}$C and was \Sexpr{meantemp_hfws}$^{\circ}$C at the rural forested site using weather station climate data (Figure \ref{fig:clim}). Using climate data from hobo loggers, mean spring temperature at the urban arboretum was \Sexpr{meantemp_arbhobo}$^{\circ}$C and was \Sexpr{meantemp_hfhobo}$^{\circ}$C at the rural forested site (Figure \ref{fig:clim}). Overall, the hobo loggers generally recorded higher temperatures than the weather station at the urban arboretum site (with a mean of \Sexpr{methoddiff_arb}$^{\circ}$C and a standard deviation of \Sexpr{methoddiff_arbsd}$^{\circ}$C; Figure \ref{fig:climdiffs}). The rural forested sight generally had more variation around the weather station, though it did not typically record higher or lower temperatures than the weather station: the mean difference was \Sexpr{methoddiff_hf}$^{\circ}$C with a standard deviation of \Sexpr{methoddiff_hfsd}$^{\circ}$C (Figure \ref{fig:climdiffs}).
+Mean temperature from January 1 until May 31 at the urban arboretum site was 4.39$^{\circ}$C and was 1.42$^{\circ}$C at the rural forested site using weather station climate data (Figure \ref{fig:clim}). Using climate data from hobo loggers, mean spring temperature at the urban arboretum was 6.13$^{\circ}$C and was 1.78$^{\circ}$C at the rural forested site (Figure \ref{fig:clim}). Overall, the hobo loggers generally recorded higher temperatures than the weather station at the urban arboretum site (with a mean of 1.75$^{\circ}$C and a standard deviation of 1.03$^{\circ}$C; Figure \ref{fig:climdiffs}). The rural forested sight generally had more variation around the weather station, though it did not typically record higher or lower temperatures than the weather station: the mean difference was 0.55$^{\circ}$C with a standard deviation of 1.04$^{\circ}$C (Figure \ref{fig:climdiffs}).
 
-Individuals at the urban arboretum site required fewer GDDs to budburst than the individuals at the rural forested site (as mentioned above, all values are given as mean $\pm$ 50\% uncertainty intervals, relative to the rural, forested site using hobo logger temperature data; Sexpr{site.real} $\pm$ \Sexpr{site.real.sd} GDDs until budburst). We also found high variation in GDDs between the two methods (sigma of \Sexpr{method.sigma.real} GDDs until budburst) though the mean effect is close to zero (\Sexpr{method.real} $\pm$ \Sexpr{method.real.sd} GDDs until budburst). Weather station data at the arboretum required the fewest number of GDDs until budburst (method x site interaction: \Sexpr{um.real} $\pm$ \Sexpr{um.real.sd} GDDs until budburst). This interactive effect of method x site was the strongest predictor of GDDs, even stronger than the effect of site. This is likely due to both higher temperatures and greater variation in temperatures recorded by hobo loggers at the urban arboretum (Figure \ref{fig:clim} and Figure \ref{fig:climdiffs}). Hobo loggers across the two sites reported similar estimates of GDDs until budburst, whereas the weather station at the arboretum reported much lower GDDs until budburst than the rural forest weather station (Figure \ref{fig:interaction}).
+Individuals at the urban arboretum site required fewer GDDs to budburst than the individuals at the rural forested site (as mentioned above, all values are given as mean $\pm$ 50\% uncertainty intervals, relative to the rural, forested site using hobo logger temperature data; Sexpr{site.real} $\pm$ 15.94 GDDs until budburst). We also found high variation in GDDs between the two methods (sigma of 16.72 GDDs until budburst) though the mean effect is close to zero (-0.73 $\pm$ 13.25 GDDs until budburst). Weather station data at the arboretum required the fewest number of GDDs until budburst (method x site interaction: -40.29 $\pm$ 16.18 GDDs until budburst). This interactive effect of method x site was the strongest predictor of GDDs, even stronger than the effect of site. This is likely due to both higher temperatures and greater variation in temperatures recorded by hobo loggers at the urban arboretum (Figure \ref{fig:clim} and Figure \ref{fig:climdiffs}). Hobo loggers across the two sites reported similar estimates of GDDs until budburst, whereas the weather station at the arboretum reported much lower GDDs until budburst than the rural forest weather station (Figure \ref{fig:interaction}).
 
-We found no major effect of provenance latitude on GDDs until budburst though there was a slightly positive trend with higher provenance latitudes requiring more GDDs until budburst (\Sexpr{site.provreal} $\pm$ \Sexpr{site.provreal.sd} GDDs until budburst), but the variance around species was large (sigma of \Sexpr{site.sigma.provreal} GDDs until budburst). The effect of method on GDDs until budburst was close to zero (\Sexpr{method.provreal} $\pm$ \Sexpr{method.provreal.sd} GDDs until budburst). The interaction of provenance by method was also close to zero (\Sexpr{um.provreal} $\pm$ \Sexpr{um.provreal.sd} GDDs until budburst), but the variance across species was large (sigma of \Sexpr{um.sigma.provreal} GDDs until budburst).
+We found no major effect of provenance latitude on GDDs until budburst though there was a slightly positive trend with higher provenance latitudes requiring more GDDs until budburst (18.15 $\pm$ 12.96 GDDs until budburst), but the variance around species was large (sigma of 15.43 GDDs until budburst). The effect of method on GDDs until budburst was close to zero (-8.46 $\pm$ 8.24 GDDs until budburst). The interaction of provenance by method was also close to zero (-3.53 $\pm$ 12.38 GDDs until budburst), but the variance across species was large (sigma of 13.69 GDDs until budburst).
 
 \section*{Discussion} 
 
