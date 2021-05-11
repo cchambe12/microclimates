@@ -32,7 +32,7 @@
 %cross referencing:
 \usepackage{xr}
 \usepackage{xr-hyper}
-\externaldocument{/Users/CatherineChamberlain/Documents/git/microclimates/docs/micro_supp}
+\externaldocument{micro_supp}
 
 \newmdenv[
   topline=true,
@@ -442,7 +442,7 @@ Data and code from the analyses will be available via the Harvard Forest Data Ar
 \begin{figure}[H]
     \centering
     \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_warming.pdf}
-\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. Values closest to 1 are most accurate, with values deviating from 1 representing a percent change in inaccuracy (e.g., 1.1 is 10\% inaccurate). }
+\caption{Using simulated data, we show how GDD measurement accuracy changes with warming (i.e., from 0$^{\circ}$C to 10$^{\circ}$C) using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 1$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 1$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. Values closest to 1 are most accurate, with values deviating from 1 representing a percent change in inaccuracy (e.g., 1.1 is 10\% inaccurate). }
 \label{fig:warming}
 \end{figure}
   
