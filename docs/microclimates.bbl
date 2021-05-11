@@ -1,4 +1,4 @@
-\begin{thebibliography}{55}
+\begin{thebibliography}{56}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
@@ -284,6 +284,13 @@ Stabler, L.B., Martin, C.A. \& Brazel, A.J. (2005) Microclimates in a desert
 Taylor, S.D. \& White, E.P. (2020) Automated data-intensive forecasting of
   plant phenology throughout the united states. \emph{Ecological Applications}
   \textbf{30}, e02025.
+
+\bibitem[{Vico \emph{et~al.}(2021)Vico, Karacic, Adler, Richards \&
+  Weih}]{Vico2021}
+Vico, G., Karacic, A., Adler, A., Richards, T. \& Weih, M. (2021) Consistent
+  poplar clone ranking based on leaf phenology and temperature along a
+  latitudinal and climatic gradient in northern europe. \emph{BioEnergy
+  Research} \textbf{14}, 445--459.
 
 \bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
   Kremer, Chuine \& Delzon}]{Vitasse2011}
