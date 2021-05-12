@@ -1,9 +1,16 @@
-\begin{thebibliography}{48}
+\begin{thebibliography}{56}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
 Aitken, S.N. \& Bemmels, J.B. (2015) Time to get moving: assisted gene flow of
   forest trees. \emph{Evolutionary Applications} \textbf{9}, 271--290.
+
+\bibitem[{Asse \emph{et~al.}(2018)Asse, Chuine, Vitasse, Yoccoz, Delpierre,
+  Badeau, Delestrade \& Randin}]{Asse2018}
+Asse, D., Chuine, I., Vitasse, Y., Yoccoz, N.G., Delpierre, N., Badeau, V.,
+  Delestrade, A. \& Randin, C.F. (2018) Warmer winters reduce the advance of
+  tree spring phenology induced by warmer springs in the alps.
+  \emph{Agricultural and Forest Meteorology} \textbf{252}, 220--230.
 
 \bibitem[{Basler \& K{\"{o}}rner(2012)}]{Basler2012}
 Basler, D. \& K{\"{o}}rner, C. (2012) {Photoperiod sensitivity of bud burst in
@@ -20,6 +27,11 @@ Baumgarten, F., Zohner, C.M., Gessler, A. \& Vitasse, Y. (2021) Chilled to be
 Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
   indirect effects on insect population dynamics. \emph{Ecology Letters}
   \textbf{15}, 502--508.
+
+\bibitem[{Bolton \& Friedl(2013)}]{Bolton2013}
+Bolton, D.K. \& Friedl, M.A. (2013) Forecasting crop yield using remotely
+  sensed vegetation indices and crop phenology metrics. \emph{Agricultural and
+  Forest Meteorology} \textbf{173}, 74--84.
 
 \bibitem[{Carpenter \emph{et~al.}(2017)Carpenter, Gelman, Hoffman, Lee,
   Goodrich, Betancourt, Brubaker, Guo, Li \& Allen}]{Carpenter2017}
@@ -65,6 +77,12 @@ Cuervo-Alarcon, L., Arend, M., M{\"u}ller, M., Sperisen, C., Finkeldey, R. \&
   in populations of european beech (fagus sylvatica l.) along precipitation
   gradients. \emph{Tree Genetics \& Genomes} \textbf{14}, 84.
 
+\bibitem[{da~Cunha(2015)}]{daCunha2015}
+da~Cunha, A.R. (2015) Evaluation of measurement errors of temperature and
+  relative humidity from hobo data logger under different conditions of
+  exposure to solar radiation. \emph{Environmental Monitoring and Assessment}
+  \textbf{187}, 236.
+
 \bibitem[{de~Ress{\'e}guier \emph{et~al.}(2020)de~Ress{\'e}guier, Mary,
   Le~Roux, Petitjean, Qu{\'e}nol \& van Leeuwen}]{deResseguier2020}
 de~Ress{\'e}guier, L., Mary, S., Le~Roux, R., Petitjean, T., Qu{\'e}nol, H. \&
@@ -72,15 +90,33 @@ de~Ress{\'e}guier, L., Mary, S., Le~Roux, R., Petitjean, T., Qu{\'e}nol, H. \&
   area. relations with environmental factors and impact on vine phenology.
   \emph{Frontiers in Plant Science} \textbf{11}, 515.
 
+\bibitem[{Dimoudi \emph{et~al.}(2013)Dimoudi, Kantzioura, Zoras, Pallas \&
+  Kosmopoulos}]{Dimoudi2013}
+Dimoudi, A., Kantzioura, A., Zoras, S., Pallas, C. \& Kosmopoulos, P. (2013)
+  Investigation of urban microclimate parameters in an urban center.
+  \emph{Energy and Buildings} \textbf{64}, 1--9.
+
 \bibitem[{Dosmann(2006)}]{Dosmann2006}
 Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
   \emph{The Botanical Review} \textbf{72}, 207--234.
+
+\bibitem[{Erell \emph{et~al.}(2012)Erell, Pearlmutter \&
+  Williamson}]{Erell2012}
+Erell, E., Pearlmutter, D. \& Williamson, T. (2012) \emph{Urban microclimate:
+  designing the spaces between buildings}. Routledge.
 
 \bibitem[{Ettinger \emph{et~al.}(2018)Ettinger, Gee \&
   Wolkovich}]{Ettinger2018}
 Ettinger, A.K., Gee, S. \& Wolkovich, E.M. (2018) Phenological sequences: how
   early-season events define those that follow. \emph{Am J Bot} \textbf{105},
   1771--1780.
+
+\bibitem[{Fu \emph{et~al.}(2015)Fu, Zhao, Piao, Peaucelle, Peng, Zhou, Ciais,
+  Huang, Menzel, Pe{\~n}uelas \& et~al.}]{Fu2015}
+Fu, Y.H., Zhao, H., Piao, S., Peaucelle, M., Peng, S., Zhou, G., Ciais, P.,
+  Huang, M., Menzel, A., Pe{\~n}uelas, J. \& et~al. (2015) Declining global
+  warming effects on the phenology of spring leaf unfolding. \emph{Nature}
+  \textbf{526}, 104--107.
 
 \bibitem[{Gauzere \emph{et~al.}(2017)Gauzere, Delzon, Davi, Bonhomme, Garcia~de
   Cortazar-Atauri \& Chuine}]{Gauzere2017}
@@ -135,6 +171,12 @@ Lenoir, J., Graae, B.J., Aarrestad, P.A., Alsos, I.G., Armbruster, W.S.,
   temperatures inferred from plant communities suggest strong spatial buffering
   of climate warming across northern europe. \emph{Global Change Biology}
   \textbf{19}, 1470--1481.
+
+\bibitem[{Luedeling \emph{et~al.}(2011)Luedeling, Girvetz, Semenov \&
+  Brown}]{Luedeling2011}
+Luedeling, E., Girvetz, E.H., Semenov, M.A. \& Brown, P.H. (2011) Climate
+  change affects winter chill for temperate fruit and nut trees. \emph{PLOS
+  ONE} \textbf{6}, 1--13.
 
 \bibitem[{Man \& Lu(2010)}]{Man2010}
 Man, R. \& Lu, P. (2010) Effects of thermal model and base temperature on
@@ -230,6 +272,11 @@ Scotti-Saintagne, C., Bod{\'e}n{\`e}s, C., Barreneche, T., Bertocchi, E.,
   controlling bud burst and height growth in quercus robur l. \emph{Theoretical
   and Applied Genetics} \textbf{109}, 1648--1659.
 
+\bibitem[{Stabler \emph{et~al.}(2005)Stabler, Martin \& Brazel}]{Stabler2005}
+Stabler, L.B., Martin, C.A. \& Brazel, A.J. (2005) Microclimates in a desert
+  city were related to land use and vegetation index. \emph{Urban Forestry &
+  Urban Greening} \textbf{3}, 137--147.
+
 \bibitem[{{Stan Development Team}(2019)}]{rstan2019}
 {Stan Development Team} (2019) Stan user's guide, version 2.19.
 
@@ -237,6 +284,13 @@ Scotti-Saintagne, C., Bod{\'e}n{\`e}s, C., Barreneche, T., Bertocchi, E.,
 Taylor, S.D. \& White, E.P. (2020) Automated data-intensive forecasting of
   plant phenology throughout the united states. \emph{Ecological Applications}
   \textbf{30}, e02025.
+
+\bibitem[{Vico \emph{et~al.}(2021)Vico, Karacic, Adler, Richards \&
+  Weih}]{Vico2021}
+Vico, G., Karacic, A., Adler, A., Richards, T. \& Weih, M. (2021) Consistent
+  poplar clone ranking based on leaf phenology and temperature along a
+  latitudinal and climatic gradient in northern europe. \emph{BioEnergy
+  Research} \textbf{14}, 445--459.
 
 \bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
   Kremer, Chuine \& Delzon}]{Vitasse2011}
@@ -276,13 +330,6 @@ Zhang, R., Lin, J., Wang, F., Shen, S., Wang, X., Rao, Y., Wu, J. \&
   fulfilled by high temperatures: A generalized hypothesis for tree
   endodormancy release and a method for testing it. \emph{Agricultural and
   Forest Meteorology} \textbf{298-299}, 108296.
-
-\bibitem[{Zhao \emph{et~al.}(2013)Zhao, Peng, Xiang, Deng, Tian, Zhou, Yu, He
-  \& Zhao}]{Zhao2012}
-Zhao, M., Peng, C., Xiang, W., Deng, X., Tian, D., Zhou, X., Yu, G., He, H. \&
-  Zhao, Z. (2013) Plant phenological modeling and its application in global
-  climate change research: overview and future challenges. \emph{Environmental
-  Reviews} \textbf{21}, 1--14.
 
 \bibitem[{Ziter \& Turner(2018)}]{Ziter2018}
 Ziter, C. \& Turner, M.G. (2018) Current and historical land use influence

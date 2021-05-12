@@ -9,8 +9,10 @@ graphics.off()
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(egg)
 library(viridis)
 library(rstan)
+
 
 # Set Working Directory
 setwd("~/Documents/git/microclimates/analyses")
@@ -75,7 +77,7 @@ diffinter_real <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=as.factor(site
   #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
-  geom_line(x=1, y=1, slope=1, linetype="dashed", color="black") +
+  geom_abline(slope=1, intercept=0, linetype="dashed", color="black") +
   ggtitle("a)") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
                      labels=c("hfws"="Forest site: weather station \n(57.99)", "arbws"="Urban site: weather station \n(-95.45)",

@@ -257,6 +257,13 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 \label{fig:prov}
 \end{figure}
 
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
+\caption{ Histogram of provenance latitude data at the urban arboretum site.}
+\label{fig:provhist}
+\end{figure}
+
 <<label=provreal, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/provmethod.csv", header=TRUE)

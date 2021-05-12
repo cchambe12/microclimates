@@ -387,6 +387,17 @@ simsdat <- bbfunc("urban", "NA", 20, 2, 300, 20, 10, 3, 0)
     egg::ggarrange(ws, hobo, ncol=2)
   dev.off()
   
+  ### Quick Histogram of provenance data
+  provs <- read.csv("output/provenanceinfo.csv")
+  
+  provhist <- ggplot(provs, aes(x=provenance.lat)) + geom_histogram() + theme_minimal() +
+    xlab("Provenance latitude") + ylab("Count")
+  
+  pdf("figures/prov_hist.pdf", width=8, height=4, onefile=FALSE)
+  provhist
+  dev.off()
+  
+  
 
       use.urban <- "prov"
       bball$prov.z <- (bball$provenance-mean(bball$provenance, na.rm=TRUE))/(sd(bball$provenance,na.rm=TRUE))
