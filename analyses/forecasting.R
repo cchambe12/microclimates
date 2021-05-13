@@ -140,6 +140,7 @@ dev.off()
 
 # Recommend run the below trying the full suite of 
 # trying sigma.cc at 0.5, 1, 5 x basetemp at 0, 5, 10
+#daysperyr <- 500
 warmfunc <- function(sigma, basetemp){
     cc <- 12
     sigma.cc <- sigma
@@ -148,7 +149,11 @@ warmfunc <- function(sigma, basetemp){
     warm.min <- 0
     warm.max <- 9
     
-    fstars <- c(50, 250, 500, 750, 1000)
+    fstar.min <- 100
+    fstar.max <- 1000
+    
+    # fstars
+    fstars <- seq(from=fstar.min, to=fstar.max, length.out=nspps)
     
     # fstars
     warms <- seq(from=warm.min, to=warm.max, by=1)
@@ -166,14 +171,15 @@ warmfunc <- function(sigma, basetemp){
     tmeanwarm$gdd <- ave(tmeanwarm$tmeangdd, tmeanwarm$warming, FUN=cumsum)
     tmeanwarm <- tmeanwarm[rep(seq_len(nrow(tmeanwarm)), times = length(fstars)), ]
     tmeanwarm$fstars <- rep(fstars, each = daysperyr * length(warms))
+    tmeanwarm$doy <- rep(1:daysperyr, times=length(warms))
     
     # get GDD for each budburst DOY for each fstar
     tmeanwarm$observedgdd <- NA
-    tmeanwarm$doy <- NA
+    tmeanwarm$bdoy <- NA
     tmeanwarm$spwarm <- paste0(tmeanwarm$warming, tmeanwarm$fstars)
-    for(i in c(unique(tmeanwarm$spwarm))){ #i=0
-        tmeanwarm$doy[tmeanwarm$spwarm==i] <- min(which(tmeanwarm$gdd[tmeanwarm$spwarm==i] >= tmeanwarm$fstars[tmeanwarm$spwarm==i]))
-        tmeanwarm$observedgdd[tmeanwarm$spwarm==i] <- tmeanwarm$gdd[(min(which(tmeanwarm$gdd[tmeanwarm$spwarm==i] >= tmeanwarm$fstars[tmeanwarm$spwarm==i])))]
+    for(i in c(unique(tmeanwarm$spwarm))){ #i=850
+        tmeanwarm$bdoy[tmeanwarm$spwarm==i] <- min(which(tmeanwarm$gdd[tmeanwarm$spwarm==i] >= tmeanwarm$fstars[tmeanwarm$spwarm==i]))
+        tmeanwarm$observedgdd[tmeanwarm$spwarm==i] <- tmeanwarm$gdd[tmeanwarm$spwarm==i][(min(which(tmeanwarm$bdoy[tmeanwarm$spwarm==i] == tmeanwarm$doy[tmeanwarm$spwarm==i])))]
       }
     
     tmeanwarm$gddaccuracy <- tmeanwarm$observedgdd - tmeanwarm$fstars
@@ -194,15 +200,17 @@ basetemp <- 0
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc0s <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
-    geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(-750, 0)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(0, 50)) +
     theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 plotratio0s <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
-    geom_jitter(aes(color=fstars)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
-    geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="GDD threshold") + coord_cartesian(ylim=c(0, 1.2)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(1, 1.5)) +
     theme_minimal() + ggtitle("a) Base temperature of 0ºC, sigma 0.1") 
 
 
@@ -211,15 +219,17 @@ basetemp <- 0
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc0.5 <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(-750, 0)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(0, 50)) +
     theme_minimal() + ggtitle("b) Base temperature of 0ºC, sigma 1") 
 
 plotratio0.5 <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
-    geom_jitter(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(1, 1.5)) +
     theme_minimal() + ggtitle("b) Base temperature of 0ºC, sigma 1")
 
 
@@ -228,15 +238,17 @@ basetemp <- 10
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc10 <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(-750, 0)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(0, 50)) +
     theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1")
 
 plotratio10 <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
-    geom_jitter(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(1, 1.5)) +
     theme_minimal() + ggtitle("c) Base temperature of 10ºC, sigma 0.1")
 
 
@@ -245,15 +257,17 @@ basetemp <- 10
 gddstuff <- warmfunc(sigma,basetemp)[[2]]
 #fstars <- warmfunc(sigma,basetemp)[[1]]
 plotacc10.5 <- ggplot(gddstuff, aes(x=warming, y=gddaccuracy)) +
-    geom_point(aes(color=doy)) + ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(-750, 0)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD ratio \n(observed-expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(0, 50)) +
     theme_minimal() + ggtitle("d) Base temperature of 10ºC, sigma 1") 
 
 plotratio10.5 <- ggplot(gddstuff, aes(x=warming, y=gddratio)) +
-    geom_jitter(aes(color=doy)) + ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
-  geom_line(aes(color=fstars, group=fstars)) +
-    labs(col="Day of year") + coord_cartesian(ylim=c(0, 1.2)) +
+    geom_point(aes(color=fstars)) + 
+    ylab("GDD accuracy \n(observed/expected)") + xlab("Warming") +
+    #geom_line(aes(color=fstars, group=fstars)) +
+    labs(col="GDD threshold") + coord_cartesian(ylim=c(1, 1.5)) +
     theme_minimal() + ggtitle("d) Base temperature of 10ºC, sigma 1") 
 
 library(egg)
