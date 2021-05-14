@@ -148,24 +148,10 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \bibliography{..//refs/micro}
 
 \section*{Supplemental tables and figures}
-
-{\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
-  -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
-  -\end{center}
-  -\end{figure}}
-  
-{\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
-  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
-  \end{center}
-  \end{figure}}
-
+\subsection*{Tables}
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -192,9 +178,36 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 \end{table}
 
 
+% latex table generated in R 4.0.3 by xtable 1.8-4 package
+% Fri May 14 14:18:58 2021
+\begin{table}[ht]
+\centering
+\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\label{tab:prov}
+\begingroup\footnotesize
+\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
+  \hline
+ & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
+  \hline
+$\mu_{\alpha}$ & 307.61 & 304.40 & 310.79 & 296.64 & 318.14 \\ 
+  $\mu_{site}$ & -4.80 & -5.38 & -4.22 & -6.47 & -3.05 \\ 
+  $\mu_{method}$ & -0.29 & -0.69 & 0.11 & -1.50 & 0.90 \\ 
+  $\mu_{sitexmethod}$ & -0.54 & -1.41 & 0.32 & -3.03 & 1.96 \\ 
+  $\sigma_{site}$ & 0.94 & 0.39 & 1.35 & 0.04 & 2.61 \\ 
+  $\sigma_{method}$ & 0.77 & 0.33 & 1.09 & 0.03 & 2.13 \\ 
+  $\sigma_{sitexmethod}$ & 1.58 & 0.72 & 2.23 & 0.08 & 4.08 \\ 
+  $\sigma_{\alpha}$ & 20.54 & 17.57 & 22.71 & 14.07 & 30.22 \\ 
+  $\sigma_{y}$ & 15.57 & 15.43 & 15.71 & 15.19 & 15.96 \\ 
+   \hline
+$N_{sp}$ & 15.00 &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
+
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -223,36 +236,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
-\begin{table}[ht]
-\centering
-\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
-\label{tab:prov}
-\begingroup\footnotesize
-\begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
-  \hline
- & mean & 25\% & 75\% & 2.5\% & 97.5\% \\ 
-  \hline
-$\mu_{\alpha}$ & 307.61 & 304.40 & 310.79 & 296.64 & 318.14 \\ 
-  $\mu_{site}$ & -4.80 & -5.38 & -4.22 & -6.47 & -3.05 \\ 
-  $\mu_{method}$ & -0.29 & -0.69 & 0.11 & -1.50 & 0.90 \\ 
-  $\mu_{sitexmethod}$ & -0.54 & -1.41 & 0.32 & -3.03 & 1.96 \\ 
-  $\sigma_{site}$ & 0.94 & 0.39 & 1.35 & 0.04 & 2.61 \\ 
-  $\sigma_{method}$ & 0.77 & 0.33 & 1.09 & 0.03 & 2.13 \\ 
-  $\sigma_{sitexmethod}$ & 1.58 & 0.72 & 2.23 & 0.08 & 4.08 \\ 
-  $\sigma_{\alpha}$ & 20.54 & 17.57 & 22.71 & 14.07 & 30.22 \\ 
-  $\sigma_{y}$ & 15.57 & 15.43 & 15.71 & 15.19 & 15.96 \\ 
-   \hline
-$N_{sp}$ & 15.00 &  &  &  &  \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}
-
-
-
-% latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -281,7 +265,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -310,7 +294,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical urban versus rural model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -338,23 +322,8 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 
 
 
-\begin{figure}[H]
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
-      \label{fig:muplotprov}
-\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
-\label{fig:prov}
-\end{figure}
-
-\begin{figure}[H]
-      \centering
-      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
-\caption{ Histogram of provenance latitude data at the urban arboretum site.}
-\label{fig:provhist}
-\end{figure}
-
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Wed May 12 12:09:36 2021
+% Fri May 14 14:18:58 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical provenance latitude model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -381,13 +350,16 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 \end{table}
 
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but the reverse is true for the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
-\label{fig:funcs}
-\end{figure}
+\clearpage
+\subsection*{Figures}
+\iffalse
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
+  \caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
+  \end{center}
+  \end{figure}}
+\fi
   
 \begin{figure}[H]
     \centering
@@ -395,6 +367,40 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 \caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
 \label{fig:forecasts}
 \end{figure}
+  
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
+  \end{center}
+  \end{figure}}
+  
+  
+\begin{figure}[H]
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
+      \label{fig:muplotprov}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\label{fig:prov}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but trees and shrubs are very similar in the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
+\label{fig:funcs}
+\end{figure}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
+\caption{ Histogram of provenance latitude data at the urban arboretum site.}
+\label{fig:provhist}
+\end{figure}
+
+
+  
+
 
 
 

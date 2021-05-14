@@ -107,23 +107,9 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \bibliography{..//refs/micro}
 
 \section*{Supplemental tables and figures}
+\subsection*{Tables}
 
-{\begin{figure} [H]
-  -\begin{center}
-  -\includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
-  -\caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
-  -\end{center}
-  -\end{figure}}
-  
-{\begin{figure} [H]
-  \begin{center}
-  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
-  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
-  \end{center}
-  \end{figure}}
-
-
-<<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+<<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/urban_fake.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -143,8 +129,27 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
 
+<<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
-<<label=micros, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+zmodtable<-read.csv("..//analyses/output/supptables/provmethod_fake.csv", header=TRUE)
+rownames(zmodtable)<-zmodtable$X
+  zmodtable<-zmodtable[,-1]      
+colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
+
+mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
+        label="tab:prov",align=c(
+               "|p{0.11\\textwidth}|",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}",
+               "p{0.06\\textwidth}|"))
+
+print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
+
+@
+
+<<label=micros, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/micros_fake.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -165,28 +170,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-<<label=prov, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
-
-zmodtable<-read.csv("..//analyses/output/supptables/provmethod_fake.csv", header=TRUE)
-rownames(zmodtable)<-zmodtable$X
-  zmodtable<-zmodtable[,-1]      
-colnames(zmodtable) <- c('mean','25%', '75%', '2.5%', '97.5%' )
-
-mod.table <- xtable(zmodtable, caption="\\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\\% and 95\\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.", 
-        label="tab:prov",align=c(
-               "|p{0.11\\textwidth}|",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}",
-               "p{0.06\\textwidth}|"))
-
-print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.placement="top",size="\\footnotesize",sanitize.rownames.function=identity)
-
-@
-
-
-<<label=noisyws, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+<<label=noisyws, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/noisyws_fake.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -207,7 +191,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-<<label=noisyhobo, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+<<label=noisyhobo, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/noisyhobo_fake.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -228,7 +212,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-<<label=real, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+<<label=real, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/urbmethod.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -249,22 +233,7 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 @
 
 
-\begin{figure}[H]
-      \centering
-      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
-      \label{fig:muplotprov}
-\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
-\label{fig:prov}
-\end{figure}
-
-\begin{figure}[H]
-      \centering
-      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
-\caption{ Histogram of provenance latitude data at the urban arboretum site.}
-\label{fig:provhist}
-\end{figure}
-
-<<label=provreal, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.width=7, fig.height=4, fig.align='center'>>=
+<<label=provreal, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/provmethod.csv", header=TRUE)
 rownames(zmodtable)<-zmodtable$X
@@ -284,13 +253,16 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 
 @
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but the reverse is true for the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
-\label{fig:funcs}
-\end{figure}
+\clearpage
+\subsection*{Figures}
+\iffalse
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=12cm]{..//phylodata/microtree_hfandts.pdf}
+  \caption{Phylogeny indicating species across the two sites}\label{fig:phylo}
+  \end{center}
+  \end{figure}}
+\fi
   
 \begin{figure}[H]
     \centering
@@ -298,6 +270,40 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 \caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
 \label{fig:forecasts}
 \end{figure}
+  
+{\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
+  \end{center}
+  \end{figure}}
+  
+  
+\begin{figure}[H]
+      \centering
+      \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
+      \label{fig:muplotprov}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\label{fig:prov}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but trees and shrubs are very similar in the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
+\label{fig:funcs}
+\end{figure}
+
+\begin{figure}[H]
+      \centering
+      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
+\caption{ Histogram of provenance latitude data at the urban arboretum site.}
+\label{fig:provhist}
+\end{figure}
+
+
+  
+
 
 
 
