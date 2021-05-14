@@ -39,7 +39,7 @@ sample_a <- list(urban.env = rbinom(1000, 1, 0.5),
                  method.env = rbinom(1000, 1, 0.5))
 
 model.parameters <- list(intercept = 300,
-                         urban.coef = -20,
+                         urban.coef = 20,
                          method.coef = 0,
                          urbanxmethod = 5)
 
