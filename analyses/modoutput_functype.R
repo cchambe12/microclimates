@@ -118,25 +118,25 @@ hfhobospp$site <- c(rep("hf", each=18))
 hfhobospp$method <- c(rep("hobo", each=18))
 hfhobospp$functype <- c(rep("shrub", each=4), rep("tree", each=14))
 
-shrubshfws <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-                    (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ]),  
-                (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-                (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_method_sp", ]))
+shrubshfws <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[11]", ]),
+                    (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[16]", ]),
+                (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[17]", ]),
+                (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[1]", ]))
 
-treeshfws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-                   (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_method_sp", ]),  
-               (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ]), 
-               (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ]))
+treeshfws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[2]", ]),
+                   (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[3]", ]),
+               (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[4]", ]),
+               (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[5]", ]),
+               (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[6]", ]),
+               (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[7]", ]),
+               (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[8]", ]),
+               (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[9]", ]),
+               (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[10]", ]),
+               (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[12]", ]),
+               (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[13]", ]),
+               (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[14]", ]),
+               (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ]),
+               (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[18]", ]))
 
 sitemethod <- rep("hfws", each=18)
 site <- rep("hf", each=18)
@@ -147,25 +147,61 @@ hfwsspp <- rbind(shrubshfws, treeshfws)
 hfwsspp <- data.frame(cbind(hfwsspp, sitemethod, site, method, functype))
 
 
-shrubsarbws <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                    (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]),  
-                    (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                    (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]))
+shrubsarbws <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ]  + urbmethod.sum["b_method[11]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ]  + urbmethod.sum["b_urban[11]", ] + 
+                        urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[11]", ]),
+                    (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[16]", ] +
+                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[16]", ] + 
+                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[16]", ]),  
+                    (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[17]", ] +
+                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[17]", ] +
+                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[17]", ]), 
+                    (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[1]", ] +
+                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[1]", ] +
+                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[1]", ]))
 
-treesarbws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]),  
-                   (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]), 
-                   (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["mu_b_um_sp", ]))
+treesarbws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[2]", ] +
+                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[2]", ] +
+                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[2]", ]), 
+                   (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[3]", ] +
+                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[3]", ] +
+                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[3]", ]),  
+                   (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[4]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[4]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[4]", ]), 
+                   (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[5]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[5]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[5]", ]), 
+                   (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[6]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[6]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[6]", ]), 
+                   (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[7]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[7]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[7]", ]), 
+                   (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[8]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[8]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[8]", ]), 
+                   (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[9]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[9]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[9]", ]), 
+                   (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[10]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[10]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[10]", ]), 
+                   (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[12]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[12]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[12]", ]), 
+                   (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[13]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[13]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[13]", ]), 
+                   (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[14]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[14]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[14]", ]), 
+                   (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[15]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[15]", ]), 
+                   (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[18]", ] +
+                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[18]", ] +
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[18]", ]))
 
 sitemethod <- rep("arbws", each=18)
 site <- rep("arb", each=18)
@@ -176,25 +212,25 @@ arbwsspp <- rbind(shrubsarbws, treesarbws)
 arbwsspp <- data.frame(cbind(arbwsspp, sitemethod, site, method, functype))
 
 
-shrubsarbhobo <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                       (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_urban_sp", ]),  
-                       (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                       (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_urban_sp", ]))
+shrubsarbhobo <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[11]", ]), 
+                       (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[16]", ]),  
+                       (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[17]", ]), 
+                       (urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[1]", ]))
 
-treesarbhobo <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_urban_sp", ]),  
-                      (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_urban_sp", ]), 
-                      (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_urban_sp", ]))
+treesarbhobo <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[2]", ]), 
+                      (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[3]", ]),  
+                      (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[4]", ]), 
+                      (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[5]", ]), 
+                      (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[6]", ]), 
+                      (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[7]", ]), 
+                      (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[8]", ]), 
+                      (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[9]", ]), 
+                      (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[10]", ]), 
+                      (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[12]", ]), 
+                      (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[13]", ]), 
+                      (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[14]", ]), 
+                      (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[15]", ]), 
+                      (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[18]", ]))
 
 sitemethod <- rep("arbhobo", each=18)
 site <- rep("arb", each=18)
@@ -206,8 +242,8 @@ arbhobospp <- data.frame(cbind(arbhobospp, sitemethod, site, method, functype))
 
 
 bball <- data.frame(rbind(hfhobospp, hfwsspp, arbhobospp, arbwsspp))
-bball <- subset(bball, select=c("mean", "sitemethod", "functype"))
-colnames(bball) <- c("gdd", "sitemethod", "functype")
+bball <- subset(bball, select=c("mean", "sd", "sitemethod", "functype"))
+colnames(bball) <- c("gdd", "sd", "sitemethod", "functype")
 rownames(bball) <- 1:nrow(bball)
 
 bball$gdd <- as.numeric(bball$gdd)
@@ -215,10 +251,10 @@ bball$gdd <- as.numeric(bball$gdd)
 bbshrub <- bball[(bball$functype=="shrub"),]
 bbtree <- bball[(bball$functype=="tree"),]
 
-bbshrub$meanshrub <- ave(bbshrub$gdd, bbshrub$sitemethod, FUN=function(x) mean(x, na.rm=TRUE))
-bbshrub$sdshrub <- ave(bbshrub$gdd, bbshrub$sitemethod, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbshrub$meanshrub)))
-bbtree$meantree <- ave(bbtree$gdd, bbtree$sitemethod, FUN=function(x) mean(x, na.rm=TRUE))
-bbtree$sdtree <- ave(bbtree$gdd, bbtree$sitemethod, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbtree$meantree)))
+bbshrub$meanshrub <- bbshrub$gdd
+bbshrub$sdshrub <- bbshrub$sd
+bbtree$meantree <- bbtree$gdd
+bbtree$sdtree <- bbtree$sd
 
 bbshrub <- subset(bbshrub , select=c("sitemethod", "meanshrub", "sdshrub"))
 bbshrub <- bbshrub[!duplicated(bbshrub),]
@@ -240,7 +276,7 @@ bbdiff$xmax <- bbdiff$meanshrub + bbdiff$sdshrub
 
 cols <- viridis_pal(option="viridis")(4)
 diffinter <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=sitemethod)) + 
-  geom_jitter(aes(x=meanshrub, y=meantree), width=0.4) + 
+  geom_jitter(aes(x=meanshrub, y=meantree, size=sitemethod), width=0.4, shape=21) + 
   geom_linerange(aes(ymin=ymin, ymax=ymax)) +
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -250,11 +286,17 @@ diffinter <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=sitemethod)) +
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
   ggtitle("b)") +
+  geom_abline(intercept=0, slope=1, linetype="dashed") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("hfws"="Forest site: \nweather station", "arbws"="Urban site: \nweather station",
-                              "arbhobo"="Urban site: \nhobo logger", "hfhobo"="Forest site: \nhobo logger")) +
-  #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
-  coord_cartesian(xlim=c(325, 475), ylim=c(325, 475))
+                     labels=c("hfws"="Forest site: weather station \n(15.81)", "arbws"="Urban site: weather station \n(19.13)",
+                              "arbhobo"="Urban site: hobo logger \n(19.53)", "hfhobo"="Forest site: hobo logger \n(16.31)")) + 
+  scale_size_manual(name=expression(Delta*" in GDDs"), values=c("hfws"=1,
+                                                                             "arbws"=3,
+                                                                             "arbhobo"=4,
+                                                                             "hfhobo"=2),
+                      labels=c("hfws"="Forest site: weather station \n(15.81)", "arbws"="Urban site: weather station \n(19.13)",
+                               "arbhobo"="Urban site: hobo logger \n(19.53)", "hfhobo"="Forest site: hobo logger \n(16.31)")) + 
+  coord_cartesian(xlim=c(250, 475), ylim=c(250, 475))
 
 pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "functype_modoutput.pdf"),
     width = 8, height = 6)

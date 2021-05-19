@@ -120,10 +120,10 @@ Article acceptance date: 13 April 2021
 
 
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters and sigmas around these parameters to make sure the models were reporting this information accurately. Building test data is easy and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. Building test data can be critical and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
 
 \section*{Methods S2: Data analysis and model equations}
-Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest` sites modeled as `0` versus `urban` sites modeled as a `1`), method (i.e., hobo logger climate data modeled as `0` and weather station climate data modeled as `1`) and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
+Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest' sites modeled as `0' versus `urban` sites modeled as a `1'), method (i.e., hobo logger climate data modeled as `0' and weather station climate data modeled as `1') and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
 
 \begin{align*}
 y_i &= \alpha_{species[i]} + \beta_{site_{species[i]}}X_{site} + \beta_{method_{species[i]}}X_{method} + \beta_{sitexmethod_{species[i]}}X_{sitexmethod}\\
@@ -151,7 +151,7 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \subsection*{Tables}
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -179,7 +179,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -207,7 +207,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -236,7 +236,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -265,7 +265,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -294,7 +294,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical urban versus rural model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -323,7 +323,7 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.0.3 by xtable 1.8-4 package
-% Fri May 14 14:18:58 2021
+% Wed May 19 08:25:01 2021
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical provenance latitude model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -380,7 +380,7 @@ $N_{sp}$ & 18.00 &  &  &  &  \\
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \\ref{tab:provreal} for full model output.}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
