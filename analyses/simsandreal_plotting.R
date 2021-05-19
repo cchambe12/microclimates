@@ -362,6 +362,7 @@ simsdat <- bbfunc("urban", "NA", 20, 2, 300, 20, 10, 3, 0)
   bball$site <- ifelse(bball$urban==1, "arb", "hf")
   bball$type <- bball$method
   bball$method <- ifelse(bball$type==1, "ws", "hobo")
+  bball$spp <- ifelse(bball$spp=="Acer_rubra", "Acer_rubrum", bball$spp)
   bball$genus <- bball$species <- NULL
   bball$species <- as.numeric(as.factor(bball$spp))
   
