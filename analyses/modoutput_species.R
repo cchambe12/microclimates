@@ -65,12 +65,13 @@ methods_real <- ggplot(bbdiff, aes(x=meanhobo, y=meanws, col=as.factor(species_n
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
+        legend.position = "none",
         legend.text = element_text(face="italic"),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   xlab("GDDs until budburst \n(hobo logger)") + 
   ylab("GDDs until budburst \n(weather station)") + 
   geom_abline(slope=1, intercept=0, linetype="dashed", color="black") +
-  ggtitle("a)") +
+  ggtitle("c)") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
                    labels=c(sort(unique(bbdiff$species_name)))) +
   coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
@@ -113,6 +114,7 @@ sites_real <- ggplot(bbdiff, aes(x=meanurb, y=meanhf, col=as.factor(species_name
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
+        legend.position = "none",
         legend.text = element_text(face ="italic"),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   xlab("GDDs until budburst \n(urban arboretum)") + 
@@ -124,7 +126,7 @@ sites_real <- ggplot(bbdiff, aes(x=meanurb, y=meanhf, col=as.factor(species_name
   coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
 
 
-pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "speciesdiffs_real.pdf"),
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "zarchive/speciesdiffs_real.pdf"),
     width = 12, height = 6, onefile=FALSE)
 ggarrange(sites_real, methods_real, ncol=2)
 dev.off()
@@ -218,7 +220,7 @@ bbdiff$xmax <- bbdiff$meanurb + bbdiff$sdurb
 
 cols <- viridis_pal(option="viridis")(7)
 sites_mod <- ggplot(bbdiff, aes(x=meanurb, y=meanhf, col=species)) + 
-  geom_jitter(aes(x=meanurb, y=meanhf), width=0.4) + 
+  geom_point(aes(x=meanurb, y=meanhf)) + 
   geom_linerange(aes(ymin=ymin, ymax=ymax)) +
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -226,15 +228,15 @@ sites_mod <- ggplot(bbdiff, aes(x=meanurb, y=meanhf, col=species)) +
         legend.text = element_text(face = "italic"),
         legend.key = element_rect(colour = "transparent", fill = "white")) +
   #geom_text(aes(label=species), vjust=2) + 
-  xlab("GDDs until budburst \n(rural forest)") + 
-  ylab("GDDs until budburst \n(urban arboretum)") + 
+  xlab("GDDs until budburst \n(urban arboretum)") + 
+  ylab("GDDs until budburst \n(rural forest)") + 
   ggtitle("b)") +
   geom_abline(intercept=0, slope=1, linetype="dashed") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
                      labels=c(sort(unique(bbdiff$species)))) +
   coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
 
-pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "speciesdiffs_site.pdf"),
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "zarchive/speciesdiffs_site.pdf"),
     width = 12, height = 6, onefile=FALSE)
 ggarrange(sites_real, sites_mod, ncol=2)
 dev.off()
@@ -277,23 +279,23 @@ hobospp$spp <- sort(unique(bball$species_name))
 bbws <- bball[(bball$tx=="ws"),]
 unique(bbws$sp.num)
 
-ws <- rbind((urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[1]", ]), 
-              (urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[2]", ]),  
-              (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[3]", ]), 
-              (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[4]", ]), 
-              (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[5]", ]),
-              (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[6]", ]), 
-              (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[7]", ]), 
-              (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[8]", ]), 
-              (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[9]", ]), 
-              (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[10]", ]), 
-              (urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[11]", ]), 
-              (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[12]", ]),
-              (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[13]", ]),
-              (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[14]", ]),
-              (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[15]", ]),
-              (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[16]", ]),
-              (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_method[17]", ]))
+ws <- rbind((urbmethod.sum["a_sp[1]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[1]", ]), 
+              (urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[2]", ]),  
+              (urbmethod.sum["a_sp[3]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[3]", ]), 
+              (urbmethod.sum["a_sp[4]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[4]", ]), 
+              (urbmethod.sum["a_sp[5]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[5]", ]),
+              (urbmethod.sum["a_sp[6]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[6]", ]), 
+              (urbmethod.sum["a_sp[7]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[7]", ]), 
+              (urbmethod.sum["a_sp[8]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[8]", ]), 
+              (urbmethod.sum["a_sp[9]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[9]", ]), 
+              (urbmethod.sum["a_sp[10]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[10]", ]), 
+              (urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[11]", ]), 
+              (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[12]", ]),
+              (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[13]", ]),
+              (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[14]", ]),
+              (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ]),
+              (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[16]", ]),
+              (urbmethod.sum["a_sp[17]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[17]", ]))
 
 wsspp <- data.frame(ws)
 wsspp$site <- "ws"
@@ -338,7 +340,7 @@ bbdiff$xmax <- bbdiff$meanws + bbdiff$sdws
 
 cols <- viridis_pal(option="viridis")(17)
 method_mod <- ggplot(bbdiff, aes(x=meanws, y=meanhobo, col=species)) + 
-  geom_jitter(aes(x=meanws, y=meanhobo), width=0.4) + 
+  geom_point(aes(x=meanws, y=meanhobo)) + 
   geom_linerange(aes(ymin=ymin, ymax=ymax)) +
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -348,15 +350,21 @@ method_mod <- ggplot(bbdiff, aes(x=meanws, y=meanhobo, col=species)) +
   #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(hobo logger)") + 
   ylab("GDDs until budburst \n(weather station)") + 
-  ggtitle("b)") +
+  ggtitle("d)") +
   geom_abline(intercept=0, slope=1, linetype="dashed") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
                      labels=c(sort(unique(bbdiff$species)))) +
   coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
 
-pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "speciesdiffs_method.pdf"),
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "zarchive/speciesdiffs_method.pdf"),
     width = 12, height = 6, onefile=FALSE)
 ggarrange(methods_real, method_mod, ncol=2)
 dev.off()
 
 
+
+#### One big file:
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "speciesdiffs.pdf"),
+    width = 12, height = 12, onefile=FALSE)
+ggarrange(sites_real, sites_mod, methods_real, method_mod, ncol=2)
+dev.off()

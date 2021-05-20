@@ -68,30 +68,23 @@ bbdiff$diff.labels <- as.numeric(as.factor(bbdiff$diff))
 
 cols <- viridis_pal(option="viridis")(4)
 diffinter_real <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=as.factor(sitemethod))) + 
-  geom_point(aes(x=meanshrub, y=meantree, size=as.factor(sitemethod)), shape=21) + 
+  geom_point(aes(x=meanshrub, y=meantree)) + 
   geom_linerange(aes(ymin=ymin, ymax=ymax)) +
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
+        legend.position = "none",
         legend.key = element_rect(colour = "transparent", fill = "white")) +
-  #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
   geom_abline(slope=1, intercept=0, linetype="dashed", color="black") +
   ggtitle("a)") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("hfws"="Forest site: weather station \n(57.99)", "arbws"="Urban site: weather station \n(-95.45)",
-                              "arbhobo"="Urban site: hobo logger \n(-32.6)", "hfhobo"="Forest site: hobo logger \n(-85.1)")) +
-  scale_size_manual(name=expression(Delta*" in GDDs"), values=c("hfws"=2,
-                                                                "arbws"=4,
-                                                                "arbhobo"=1,
-                                                                "hfhobo"=3),
-                    labels=c("hfws"="Forest site: weather station \n(57.99)", "arbws"="Urban site: weather station \n(-95.45)",
-                             "arbhobo"="Urban site: hobo logger \n(-32.6)", "hfhobo"="Forest site: hobo logger \n(-85.1)")) +
-  #scale_size_continuous(name=expression(Delta*" in false spring risk")) + 
-  coord_cartesian(xlim=c(250, 525), ylim=c(250, 525))
+                     labels=c("hfws"="Forest site: weather station", "arbws"="Urban site: weather station",
+                              "arbhobo"="Urban site: hobo logger", "hfhobo"="Forest site: hobo logger")) +
+  coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
 
-pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "functype_real.pdf"),
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "zarchive/functype_real.pdf"),
     width = 8, height = 6)
 diffinter_real
 dev.off()
@@ -103,20 +96,22 @@ urbmethod.sum <- summary(urbmethod)$summary
 
 bball$sp.num <- as.numeric(as.factor(bball$spp))
 bbshrubs <- bball[(bball$functype=="shrub"),]
+bbtrees <- bball[(bball$functype!="shrub"),]
 unique(bbshrubs$sp.num)
+unique(bbtrees$sp.num)
 
 shrubs <- rbind(urbmethod.sum["a_sp[11]", ], urbmethod.sum["a_sp[16]", ],  
   urbmethod.sum["a_sp[17]", ], urbmethod.sum["a_sp[1]", ])
 trees <- rbind(urbmethod.sum["a_sp[2]", ], urbmethod.sum["a_sp[3]", ],  
   urbmethod.sum["a_sp[4]", ], urbmethod.sum["a_sp[5]", ], urbmethod.sum["a_sp[6]", ], urbmethod.sum["a_sp[7]", ], 
   urbmethod.sum["a_sp[8]", ], urbmethod.sum["a_sp[9]", ], urbmethod.sum["a_sp[10]", ], urbmethod.sum["a_sp[12]", ], 
-  urbmethod.sum["a_sp[13]", ], urbmethod.sum["a_sp[14]", ], urbmethod.sum["a_sp[15]", ], urbmethod.sum["a_sp[18]", ])
+  urbmethod.sum["a_sp[13]", ], urbmethod.sum["a_sp[14]", ], urbmethod.sum["a_sp[15]", ])
 
 hfhobospp <- data.frame(rbind(shrubs, trees))
-hfhobospp$sitemethod <- c(rep("hfhobo", each=18))
-hfhobospp$site <- c(rep("hf", each=18))
-hfhobospp$method <- c(rep("hobo", each=18))
-hfhobospp$functype <- c(rep("shrub", each=4), rep("tree", each=14))
+hfhobospp$sitemethod <- c(rep("hfhobo", each=17))
+hfhobospp$site <- c(rep("hf", each=17))
+hfhobospp$method <- c(rep("hobo", each=17))
+hfhobospp$functype <- c(rep("shrub", each=4), rep("tree", each=13))
 
 shrubshfws <- rbind((urbmethod.sum["a_sp[11]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[11]", ]),
                     (urbmethod.sum["a_sp[16]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[16]", ]),
@@ -135,13 +130,12 @@ treeshfws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp",
                (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[12]", ]),
                (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[13]", ]),
                (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[14]", ]),
-               (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ]),
-               (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[18]", ]))
+               (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ]))
 
-sitemethod <- rep("hfws", each=18)
-site <- rep("hf", each=18)
-method <- rep("ws", each=18)
-functype <- c(rep("shrub", each=4), rep("tree", each=14))
+sitemethod <- rep("hfws", each=17)
+site <- rep("hf", each=17)
+method <- rep("ws", each=17)
+functype <- c(rep("shrub", each=4), rep("tree", each=13))
 
 hfwsspp <- rbind(shrubshfws, treeshfws)
 hfwsspp <- data.frame(cbind(hfwsspp, sitemethod, site, method, functype))
@@ -198,15 +192,12 @@ treesarbws <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_method_sp"
                       urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[14]", ]), 
                    (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[15]", ] +
                       urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[15]", ] +
-                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[15]", ]), 
-                   (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_method_sp", ] + urbmethod.sum["b_method[18]", ] +
-                      urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[18]", ] +
-                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[18]", ]))
+                      urbmethod.sum["mu_b_um_sp", ] + urbmethod.sum["b_um[15]", ]))
 
-sitemethod <- rep("arbws", each=18)
-site <- rep("arb", each=18)
-method <- rep("ws", each=18)
-functype <- c(rep("shrub", each=4), rep("tree", each=14))
+sitemethod <- rep("arbws", each=17)
+site <- rep("arb", each=17)
+method <- rep("ws", each=17)
+functype <- c(rep("shrub", each=4), rep("tree", each=13))
 
 arbwsspp <- rbind(shrubsarbws, treesarbws)
 arbwsspp <- data.frame(cbind(arbwsspp, sitemethod, site, method, functype))
@@ -229,13 +220,12 @@ treesarbhobo <- rbind((urbmethod.sum["a_sp[2]", ] + urbmethod.sum["mu_b_urban_sp
                       (urbmethod.sum["a_sp[12]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[12]", ]), 
                       (urbmethod.sum["a_sp[13]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[13]", ]), 
                       (urbmethod.sum["a_sp[14]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[14]", ]), 
-                      (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[15]", ]), 
-                      (urbmethod.sum["a_sp[18]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[18]", ]))
+                      (urbmethod.sum["a_sp[15]", ] + urbmethod.sum["mu_b_urban_sp", ] + urbmethod.sum["b_urban[15]", ]))
 
-sitemethod <- rep("arbhobo", each=18)
-site <- rep("arb", each=18)
-method <- rep("hobo", each=18)
-functype <- c(rep("shrub", each=4), rep("tree", each=14))
+sitemethod <- rep("arbhobo", each=17)
+site <- rep("arb", each=17)
+method <- rep("hobo", each=17)
+functype <- c(rep("shrub", each=4), rep("tree", each=13))
 
 arbhobospp <- rbind(shrubsarbhobo, treesarbhobo)
 arbhobospp <- data.frame(cbind(arbhobospp, sitemethod, site, method, functype))
@@ -247,21 +237,23 @@ colnames(bball) <- c("gdd", "sd", "sitemethod", "functype")
 rownames(bball) <- 1:nrow(bball)
 
 bball$gdd <- as.numeric(bball$gdd)
+bball$sd <- as.numeric(bball$sd)
 
 bbshrub <- bball[(bball$functype=="shrub"),]
 bbtree <- bball[(bball$functype=="tree"),]
 
-bbshrub$meanshrub <- bbshrub$gdd
-bbshrub$sdshrub <- bbshrub$sd
-bbtree$meantree <- bbtree$gdd
-bbtree$sdtree <- bbtree$sd
+bbshrub$meanshrub <- ave(bbshrub$gdd, bbshrub$sitemethod, FUN=function(x) mean(x, na.rm=TRUE))
+bbshrub$sdshrub <- ave(bbshrub$gdd, bbshrub$sitemethod, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbshrub$meanshrub)))
+bbtree$meantree <- ave(bbtree$gdd, bbtree$sitemethod, FUN=function(x) mean(x, na.rm=TRUE))
+bbtree$sdtree <- ave(bbtree$gdd, bbtree$sitemethod, FUN=function(x) sd(x, na.rm=TRUE))/sqrt(length(unique(bbtree$meantree)))
 
 bbshrub <- subset(bbshrub , select=c("sitemethod", "meanshrub", "sdshrub"))
 bbshrub <- bbshrub[!duplicated(bbshrub),]
 bbtree <- subset(bbtree , select=c("sitemethod", "meantree", "sdtree"))
 bbtree <- bbtree[!duplicated(bbtree),]
 
-bbdiff <- full_join(bbshrub, bbtree)
+bbdiff <- right_join(bbtree, bbshrub)
+bbdiff <- bbdiff[!duplicated(bbdiff),]
 
 bbdiff$diff <- bbdiff$meanshrub - bbdiff$meantree
 bbdiff$diff.sd <- bbdiff$sdshrub - bbdiff$sdtree
@@ -276,29 +268,22 @@ bbdiff$xmax <- bbdiff$meanshrub + bbdiff$sdshrub
 
 cols <- viridis_pal(option="viridis")(4)
 diffinter <- ggplot(bbdiff, aes(x=meanshrub, y=meantree, col=sitemethod)) + 
-  geom_jitter(aes(x=meanshrub, y=meantree, size=sitemethod), width=0.4, shape=21) + 
+  geom_point(aes(x=meanshrub, y=meantree)) + 
   geom_linerange(aes(ymin=ymin, ymax=ymax)) +
   geom_errorbarh(aes(xmin = xmin, xmax = xmax, height = 0)) +
   theme(panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.text.align = 0,
         legend.key = element_rect(colour = "transparent", fill = "white")) +
-  #geom_text(aes(label=species), vjust=2) + 
   xlab("GDDs until budburst \n(shrubs)") + 
   ylab("GDDs until budburst \n(trees)") + 
   ggtitle("b)") +
   geom_abline(intercept=0, slope=1, linetype="dashed") +
   scale_color_manual(name=expression(Delta*" in GDDs"), values=cols,
-                     labels=c("hfws"="Forest site: weather station \n(15.81)", "arbws"="Urban site: weather station \n(19.13)",
-                              "arbhobo"="Urban site: hobo logger \n(19.53)", "hfhobo"="Forest site: hobo logger \n(16.31)")) + 
-  scale_size_manual(name=expression(Delta*" in GDDs"), values=c("hfws"=1,
-                                                                             "arbws"=3,
-                                                                             "arbhobo"=4,
-                                                                             "hfhobo"=2),
-                      labels=c("hfws"="Forest site: weather station \n(15.81)", "arbws"="Urban site: weather station \n(19.13)",
-                               "arbhobo"="Urban site: hobo logger \n(19.53)", "hfhobo"="Forest site: hobo logger \n(16.31)")) + 
-  coord_cartesian(xlim=c(250, 475), ylim=c(250, 475))
+                     labels=c("hfws"="Forest site: weather station", "arbws"="Urban site: weather station",
+                              "arbhobo"="Urban site: hobo logger", "hfhobo"="Forest site: hobo logger")) + 
+  coord_cartesian(xlim=c(200, 600), ylim=c(200, 600))
 
-pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "functype_modoutput.pdf"),
+pdf(file.path("~/Documents/git/microclimates/analyses/figures/", "zarchive/functype_modoutput.pdf"),
     width = 8, height = 6)
 diffinter
 dev.off()

@@ -1,4 +1,4 @@
-\begin{thebibliography}{56}
+\begin{thebibliography}{59}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
@@ -56,6 +56,13 @@ Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
   elongation in provenances of \textit{Pinus contorta}}. \emph{Canadian Journal
   of Forest Research} \textbf{31}, 1444--1455.
 
+\bibitem[{Chuine \emph{et~al.}(2016)Chuine, Bonhomme, Legave, Garc{\'\i}a~de
+  Cort{\'a}zar-Atauri, Charrier, Lacointe \& Am{\'e}glio}]{Chuine2016}
+Chuine, I., Bonhomme, M., Legave, J.M., Garc{\'\i}a~de Cort{\'a}zar-Atauri, I.,
+  Charrier, G., Lacointe, A. \& Am{\'e}glio, T. (2016) Can phenological models
+  predict tree phenology accurately in the future? the unrevealed hurdle of
+  endodormancy break. \emph{Global Change Biology} \textbf{22}, 3444--3460.
+
 \bibitem[{Cook \emph{et~al.}(2012)Cook, Wolkovich, Davies, Ault, Betancourt,
   Allen, Bolmgren, Cleland, Crimmins, Kraft \& et~al.}]{Cook2012}
 Cook, B.I., Wolkovich, E.M., Davies, T.J., Ault, T.R., Betancourt, J.L., Allen,
@@ -99,6 +106,12 @@ Dimoudi, A., Kantzioura, A., Zoras, S., Pallas, C. \& Kosmopoulos, P. (2013)
 \bibitem[{Dosmann(2006)}]{Dosmann2006}
 Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
   \emph{The Botanical Review} \textbf{72}, 207--234.
+
+\bibitem[{Duputi{\'e} \emph{et~al.}(2015)Duputi{\'e}, Rutschmann, Ronce \&
+  Chuine}]{Duputie2015}
+Duputi{\'e}, A., Rutschmann, A., Ronce, O. \& Chuine, I. (2015) Phenological
+  plasticity will not help all species adapt to climate change. \emph{Global
+  Change Biology} \textbf{21}, 3062--3073.
 
 \bibitem[{Erell \emph{et~al.}(2012)Erell, Pearlmutter \&
   Williamson}]{Erell2012}
@@ -229,6 +242,11 @@ Pickett, S.T., Cadenasso, M.L., Grove, J.M., Boone, C.G., Groffman, P.M.,
 \bibitem[{Primack \& Miller-Rushing(2009)}]{Primack2009}
 Primack, R.B. \& Miller-Rushing, A.J. (2009) The role of botanical gardens in
   climate change research. \emph{New Phytologist} \textbf{182}, 303--313.
+
+\bibitem[{Qu \emph{et~al.}(2014)Qu, Wan \& Hao}]{Qu2014}
+Qu, M., Wan, J. \& Hao, X. (2014) Analysis of diurnal air temperature range
+  change in the continental united states. \emph{Weather and Climate Extremes}
+  \textbf{4}, 86--95.
 
 \bibitem[{{R Development Core Team}(2017)}]{R}
 {R Development Core Team} (2017) R: A language and environment for statistical

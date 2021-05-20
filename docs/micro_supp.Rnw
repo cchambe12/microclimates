@@ -283,20 +283,27 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated growing degree days (GDDs) until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:provreal} for full model output.}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated GDDs until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=16cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on growing degree days (GDDs) until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). Using empirical data, we see that shrubs generally require fewer GDDs until budburst than trees but trees and shrubs are very similar in the model output. This is likely due to partial pooling within the model since there are fewer observations for shrubs.}
+    \includegraphics[width=12cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). We see that shrubs generally require fewer GDDs until budburst than trees. }
 \label{fig:funcs}
 \end{figure}
 
 \begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{..//analyses/figures/speciesdiffs.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) on GDDs until budburst across all species used in the study. We also show model output for the same relationship in (b). In panel (c), we show the effects of climate data method (weather station versus hobo logger) on GDDs until budburst across all species and see the model output for the same relationship in (d). Using empirical data, we see that individuals at the rural site generally require more GDDs until budburst than trees and there is large variation in GDD requirement between the two climate data methods.}
+\label{fig:sppsdiffs}
+\end{figure}
+
+\begin{figure}[H]
       \centering
-      \includegraphics[width=10cm]{..//analyses/figures/prov_hist.pdf}
+      \includegraphics[width=8cm]{..//analyses/figures/prov_hist.pdf}
 \caption{ Histogram of provenance latitude data at the urban arboretum site.}
 \label{fig:provhist}
 \end{figure}
