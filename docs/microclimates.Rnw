@@ -43,7 +43,6 @@
 ]{siderules}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 \noindent\textbf{\Large{Comparing spring phenology in an urban arboretum versus rural forested site and implications for forecasting}}
 
