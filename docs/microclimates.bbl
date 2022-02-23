@@ -1,4 +1,4 @@
-\begin{thebibliography}{59}
+\begin{thebibliography}{60}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
@@ -217,6 +217,9 @@ Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
 Moorcroft, P.R., Hurtt, G.C. \& Pacala, S.W. (2001) {A method for scaling
   vegetation dynamics: The Ecosystem Demography Model (ED)}. \emph{Ecological
   Monographs} \textbf{71}, 557--585.
+
+\bibitem[{O'Keefe(2014)}]{OKeefe2014}
+O'Keefe, J. (2014) {Phenology of woody species at Harvard Forest since 1990}.
 
 \bibitem[{Pardee \emph{et~al.}(2017)Pardee, Inouye \& Irwin}]{Pardee2017}
 Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of

@@ -431,11 +431,10 @@ Data and code from the analyses will be available via the Harvard Forest Data Ar
 
 \section*{Tables and Figures}
 
-% EMWDec31: Caption here could be one place to highlight what looks similar in our simulations?
 \begin{figure}[H]
       \centering
       \includegraphics[width=16cm]{..//analyses/figures/muplot_sims.pdf}
-\caption{ Simulations: we show (a) urban sites requiring more GDDs, (b) microclimate effects, (c) more northern provenance latitudes requiring fewer GDDs, (d) less accurate weather station data and (e) less accurate hobo logger data. We show the effects of site (urban versus rural) and method (weather station versus hobo loggers) in (a), (b), (d) and (e). The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs required for budburst whereas more negative values suggest fewer GDDs required. Dots and thin lines show means and 90\% uncertainty intervals and thick lines show 50\% uncertainty intervals. See Tables \ref{tab:urban}, \ref{tab:micros}, \ref{tab:prov}, \ref{tab:noisyws} and \ref{tab:noisyhobo} for full model output. } 
+\caption{ Simulations: we show (a) urban sites requiring more GDDs, (b) more northern provenance latitudes requiring fewer GDDs, (c) microclimate effects, (d) less accurate weather station data and (e) less accurate hobo logger data, which looks similar to (c). We show the effects of site (urban versus rural) and method (weather station versus hobo loggers) in (a), (b), (d) and (e). The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs required for budburst whereas more negative values suggest fewer GDDs required. Dots and thin lines show means and 90\% uncertainty intervals and thick lines show 50\% uncertainty intervals. See Tables \ref{tab:urban}, \ref{tab:micros}, \ref{tab:prov}, \ref{tab:noisyws} and \ref{tab:noisyhobo} for full model output. } 
 \label{fig:musims}
 \end{figure}
 
@@ -456,7 +455,6 @@ Data and code from the analyses will be available via the Harvard Forest Data Ar
   \end{figure}}
   
 
-% EMWDec31: check my caption edits, tried to explain sigma a litt;e
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm, trim=0cm 5cm 0cm 0cm,]{..//analyses/figures/muandgdd.pdf}
@@ -466,7 +464,7 @@ Data and code from the analyses will be available via the Harvard Forest Data Ar
 
 \begin{figure}[H]
       \centering
-      \includegraphics[width=16cm]{..//analyses/figures/gdd_interaction.pdf} % EMWDec31: check my caption edits
+      \includegraphics[width=16cm]{..//analyses/figures/gdd_interaction.pdf} 
 \caption{ We show estimated effects, from a Bayesian hierarchical model, of site (urban arboretum site versus forested rural site) by climate data method (weather station data versus hobo logger data) on GDDs until budburst (a) as a boxplot across each method and site combination using raw data and (b) using model output to show the mean estimates for each site and method with 50\% uncertainty intervals shown as error bars.}
 \label{fig:interaction}
 \end{figure}

@@ -1,14 +1,65 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
 \usepackage{graphicx}
 \usepackage[numbers]{natbib}
 \bibliographystyle{..//bib/styles/nature.bst}
 
 \usepackage[export]{adjustbox}
-
-\usepackage{Sweave}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-\input{microletter_agformet-concordance}
+
+\noindent 2011 Crystal Dr \#600\\
+\noindent Arlington, VA, 22202\\
 
 \vspace{1.5ex}
 
@@ -18,11 +69,11 @@
 \vspace{3ex}\\
 \noindent Please consider our manuscript entitled `Variation across space, species and methods in models of spring phenology' as a Research Paper for \textit{Agricultural and Forest Meteorology}. \\
 
-As climate change and urbanization shift increase, predicting spring plant phenology in temperate forests is critical for forecasting important processes such as carbon storage. The growing degree day (GDD) model is a major forecasting method but required GDD is predicted to shift with changes in climate, especially warmer winters. In this study, we combine simulations, observations from one urban arboretum and one rural forested site, and Bayesian hierarchical models to assess how consistent GDD models of budburst are across species and landscapes. We also compare two methods to measure climate data (i.e., weather station data and hobo logger data). In addition to disentangling myriad information from observations, simulations and Bayesian models, we also develop an interactive Shiny application that aims to enhance understanding and implementation of results into future studies. \\
+\noindent As climate change and urbanization shift increase, predicting spring plant phenology in temperate forests is critical for forecasting important processes such as carbon storage. The growing degree day (GDD) model is a major forecasting method but required GDD is predicted to shift with changes in climate, especially warmer winters. In this study, we combine simulations, observations from one urban arboretum and one rural forested site, and Bayesian hierarchical models to assess how consistent GDD models of budburst are across species and landscapes. We also compare two methods to measure climate data (i.e., weather station data and hobo logger data). In addition to disentangling myriad information from observations, simulations and Bayesian models, we also develop an interactive Shiny application that aims to enhance understanding and implementation of results into future studies. \\
 
-We find that estimated GDD thresholds can vary up to 20\% across sites and methods. Our results suggest that forecasts based on GDD models for spring phenology have inherent accuracy issues, and vary strongly across space, species and warming. Our research improves our improved understanding of GDD models, and alongside efforts to build more mechanistic models, we can refine our understanding of spring phenology and, in turn, improve forecasts for temperate forests. \\
+\noindent We find that estimated GDD thresholds can vary up to 20\% across sites and methods. Our results suggest that forecasts based on GDD models for spring phenology have inherent accuracy issues, and vary strongly across space, species and warming. Our research improves our improved understanding of GDD models, and alongside efforts to build more mechanistic models, we can refine our understanding of spring phenology and, in turn, improve forecasts for temperate forests. \\
 
-All authors substantially contributed to this work and approved of this version for submission. The manuscript is 4680 words, with a 278 word summary and five figures. We hope that you will find it suitable for publication in \textit{Agricultural and Forest Meteorology}. Thank you for your consideration. \\
+\noindent All authors substantially contributed to this work and approved of this version for submission. The manuscript is 4680 words, with a 278 word summary and five figures. We hope that you will find it suitable for publication in \textit{Agricultural and Forest Meteorology}. Thank you for your consideration. \\
 
 \vspace{1.5ex}
 \noindent Sincerely, \\
