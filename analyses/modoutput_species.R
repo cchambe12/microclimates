@@ -25,6 +25,16 @@ bball$species <- ifelse(bball$species=="rubra", "rubrum", bball$species)
 bball$species_name <- paste(bball$genus, bball$species, sep=" ")
 
 
+### Determine raw means for shrubs vs tree GDDs
+shrubs <- c("Acer pensylvanicum", "Hamamelis virginiana", "Vaccinium corymbosum",
+            "Viburnum nudum")
+
+bball$tree <- ifelse(bball$species_name %in% shrubs, 0, 1)
+
+mean(bball$gdd_bb[bball$tree==0]) # 386
+sd(bball$gdd_bb[bball$tree==0]) # 73.7
+mean(bball$gdd_bb[bball$tree==1]) # 407
+sd(bball$gdd_bb[bball$tree==1]) # 101
 
 bball$site <- ifelse(bball$urban==1, "arb", "hf")
 bball$tx <- ifelse(bball$method==1, "ws", "hobo")

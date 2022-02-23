@@ -52,15 +52,16 @@ library(ggplot2)
 
 \begin{document}
 
-\noindent \textbf{\Large{Supplemental materials: Understanding growing degree days to predict spring phenology under climate change}}
+\noindent \textbf{\Large{Supplemental materials: Variation across space, species and methods in models of spring phenology}}
 
 \noindent Authors:\\
-Catherine J. Chamberlain, ORCID: 0000-0001-5495-3219 $^{1,2}$ \& E. M. Wolkovich $^{1,2,3}$
+Catherine J. Chamberlain, ORCID: 0000-0001-5495-3219 $^{1,2,3}$ \& E. M. Wolkovich $^{1,2,4}$
 \vspace{2ex}\\
 \emph{Author affiliations:}\\
 $^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA 02131; \\
 $^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA 02138; \\
-$^{3}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4\\
+$^{3}$Conservation International, Arlington, VA, USA;\\
+$^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
 $^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \vspace{2ex}
