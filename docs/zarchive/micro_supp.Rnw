@@ -63,9 +63,9 @@ $^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, 
 $^{3}$Conservation International, Arlington, VA, USA;\\
 $^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
-$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org\\
+$^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
 \vspace{2ex}
-%Article acceptance date: 13 April 2021
+Article acceptance date: 13 April 2021
 
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
@@ -80,7 +80,7 @@ library(xtable)
 
 @
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. As building such data can be critical to testing models and better understanding them we provide a Shiny App and GitHub repository for this purpose for the models presented here. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. Building test data can be critical and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
 
 \section*{Methods S2: Data analysis and model equations}
 Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest' sites modeled as `0' versus `urban` sites modeled as a `1'), method (i.e., hobo logger climate data modeled as `0' and weather station climate data modeled as `1') and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
@@ -110,7 +110,6 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \section*{Supplemental tables and figures}
 \subsection*{Tables}
 
-% %EMWFeb2022  -- Consider adding 'See main text methods and Fig. \ref{{fig:musims}} for more details.' to S1-S5 tables. 
 <<label=urban, results="asis", echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'>>=
 
 zmodtable<-read.csv("..//analyses/output/supptables/urban_fake.csv", header=TRUE)
@@ -292,14 +291,14 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). The 1:1 (dashed) line helps visualize that shrubs generally require fewer GDDs until budburst than trees. }
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). We see that shrubs generally require fewer GDDs until budburst than trees. }
 \label{fig:funcs}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{..//analyses/figures/speciesdiffs.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) on GDDs until budburst across all species used in the study. We also show model output for the same relationship in (b). In panel (c), we show the effects of climate data method (weather station versus hobo logger) on GDDs until budburst across all species and see the model output for the same relationship in (d). Using empirical data, we see that individuals at the rural site generally require more GDDs until budburst than trees and there is large variation in GDD requirement between the two climate data methods (see 1:1 dashed line).}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) on GDDs until budburst across all species used in the study. We also show model output for the same relationship in (b). In panel (c), we show the effects of climate data method (weather station versus hobo logger) on GDDs until budburst across all species and see the model output for the same relationship in (d). Using empirical data, we see that individuals at the rural site generally require more GDDs until budburst than trees and there is large variation in GDD requirement between the two climate data methods.}
 \label{fig:sppsdiffs}
 \end{figure}
 
