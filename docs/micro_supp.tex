@@ -84,6 +84,8 @@
 
 %cross referencing:
 \usepackage{xr}
+\usepackage{xr-hyper}
+\externaldocument{microclimates}
 
 \newmdenv[
   topline=true,
@@ -109,9 +111,9 @@ $^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, 
 $^{3}$Conservation International, Arlington, VA, USA;\\
 $^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
-$^*$Corresponding author: 248.953.0189; cchamberlain@g.harvard.edu\\
+$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org\\
 \vspace{2ex}
-Article acceptance date: 13 April 2021
+%Article acceptance date: 13 April 2021
 
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
@@ -121,10 +123,10 @@ Article acceptance date: 13 April 2021
 
 
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. Building test data can be critical and we encourage readers to use the Shiny App and GitHub repository to use as a building block. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. As building such data can be critical to testing models and better understanding them we provide a Shiny App and GitHub repository for this purpose for the models presented here. 
 
 \section*{Methods S2: Data analysis and model equations}
-Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest' sites modeled as `0' versus `urban` sites modeled as a `1'), method (i.e., hobo logger climate data modeled as `0' and weather station climate data modeled as `1') and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
+Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest' sites modeled as `0' versus `urban` sites modeled as a `1'), method (i.e., HOBO logger climate data modeled as `0' and weather station climate data modeled as `1') and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
 
 \begin{align*}
 y_i &= \alpha_{species[i]} + \beta_{site_{species[i]}}X_{site} + \beta_{method_{species[i]}}X_{method} + \beta_{sitexmethod_{species[i]}}X_{sitexmethod}\\
@@ -151,11 +153,12 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 \section*{Supplemental tables and figures}
 \subsection*{Tables}
 
+% %EMWFeb2022  -- Consider adding 'See main text methods and Fig. \ref{{fig:musims}} for more details.' to S1-S5 tables. 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
 \label{tab:urban}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -180,10 +183,10 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
 \label{tab:prov}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -208,10 +211,10 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
 \label{tab:micros}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -237,10 +240,10 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
 \label{tab:noisyws}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -266,10 +269,10 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
-\caption{\textbf{Estimates from noisy hobo logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
+\caption{\textbf{Estimates from noisy HOBO logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
 \label{tab:noisyhobo}
 \begingroup\footnotesize
 \begin{tabular}{|p{0.11\textwidth}|p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}p{0.06\textwidth}|}
@@ -295,7 +298,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical urban versus rural model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -324,7 +327,7 @@ $N_{sp}$ & 17.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Wed Feb 23 18:03:29 2022
+% Tue Mar  8 13:14:25 2022
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical provenance latitude model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -372,7 +375,7 @@ $N_{sp}$ & 17.00 &  &  &  &  \\
 {\begin{figure} [H]
   \begin{center}
   \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
-  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the hobo loggers: a) a series of smoothing splines of mean temperature differences measured as hobo logger minus weather station and b) actual mean temperature differences measured as hobo logger minus weather station. }\label{fig:climdiffs}
+  \caption{Here we show a breakdown of the mean temperature differences in data across the two sites between the two methods with darker lines representing weather station data and the lighter, more transparent lines of varying line types representing the HOBO loggers: a) a series of smoothing splines of mean temperature differences measured as HOBO logger minus weather station and b) actual mean temperature differences measured as HOBO logger minus weather station. }\label{fig:climdiffs}
   \end{center}
   \end{figure}}
   
@@ -381,21 +384,21 @@ $N_{sp}$ & 17.00 &  &  &  &  \\
       \centering
       \includegraphics[height=7cm, width=11cm]{..//analyses/figures/muplot_prov_real.pdf}
       \label{fig:muplotprov}
-\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus hobo logger) on simulated GDDs until budburst. The intercept represents the hobo logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:provreal} for full model output.}
+\caption{ Empirical Data: Using real data to test provenance latitude, we show the effects of provenance latitude and climate data method (weather station versus HOBO logger) on GDDs until budburst. The intercept represents the HOBO logger data for the rural forested site. More positive values indicate more GDDs are required for budburst whereas more negative values suggest fewer GDDs are required. Dots and thin lines show means and 90\% uncertainty intervals and thicker lines show 50\% uncertainty intervals. See Table \ref{tab:provreal} for full model output.}
 \label{fig:prov}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus hobo logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). We see that shrubs generally require fewer GDDs until budburst than trees. }
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus HOBO logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). The 1:1 (dashed) line helps visualize that shrubs generally require fewer GDDs until budburst than trees. }
 \label{fig:funcs}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=12cm]{..//analyses/figures/speciesdiffs.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) on GDDs until budburst across all species used in the study. We also show model output for the same relationship in (b). In panel (c), we show the effects of climate data method (weather station versus hobo logger) on GDDs until budburst across all species and see the model output for the same relationship in (d). Using empirical data, we see that individuals at the rural site generally require more GDDs until budburst than trees and there is large variation in GDD requirement between the two climate data methods.}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) on GDDs until budburst across all species used in the study. We also show model output for the same relationship in (b). In panel (c), we show the effects of climate data method (weather station versus HOBO logger) on GDDs until budburst across all species and see the model output for the same relationship in (d). Using empirical data, we see that individuals at the rural site generally require more GDDs until budburst than trees and there is large variation in GDD requirement between the two climate data methods (see 1:1 dashed line).}
 \label{fig:sppsdiffs}
 \end{figure}
 

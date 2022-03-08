@@ -19,13 +19,11 @@
 \vspace{3ex}\\
 \noindent Please consider our manuscript entitled `Variation across space, species and methods in models of spring phenology' as a Research Paper for \textit{Agricultural and Forest Meteorology}. \\
 
-% Remember -- the editor will read the abstract so don't repeat it too much. 
-% Check -- 14 species?
-\noindent As climate change and urbanization increase, predicting spring plant phenology in temperate forests is critical for forecasting important processes such as carbon storage. The growing degree day (GDD) model is a major forecasting method, but required GDD is predicted to shift with changes in climate, especially warmer winters. Here we combine simulations and new observations with Bayesian hierarchical models to assess how consistent GDD models of budburst are across species and landscapes. We assessed the effects of an urban arboretum versus a more rural forested site coupled with the effect of climate data type (i.e., weather station versus hobo logger temperature data) across 14 species. We also present an interactive Shiny application that aims to enhance understanding of our results and aid future studies. \\
+\noindent As climate change and urbanization increase, predicting spring plant phenology in temperate forests is critical for forecasting important processes such as carbon storage. The growing degree day (GDD) model is a major forecasting method, but required GDD is predicted to shift with changes in climate, especially warmer winters. Here we combine simulations and new observations with Bayesian hierarchical models to assess how consistent GDD models of budburst are across species and landscapes. We assessed the effects of an urban arboretum versus a more rural forested site coupled with the effect of climate data type (i.e., weather station versus HOBO logger temperature data) across 17 species. We also present an interactive Shiny application that aims to enhance understanding of our results and aid future studies. \\
 
 \noindent We found that estimated GDD thresholds can vary over 200\% across species and up to 20\% across sites and methods. Our results showed the urban site was warmer (by almost 3 $\degree$C in the spring), but this did not translate to individuals requiring more GDDs as we hypothesized, but rather fewer GDDs until budburst. Further, we found a strong microclimate effect apparent by the large variation in GDD with method. Our results suggest that forecasts based on GDD models for spring phenology have inherent accuracy issues, and estimates vary strongly across space, species and warming. Our research improves our understanding of GDD models and suggests ways to refine models of spring phenology and, in turn, improve forecasts for temperate forests. \\
 
-\noindent All authors substantially contributed to this work and approved of this version for submission. The manuscript is 4680 words, with a 278 word summary and five figures. We hope that you will find it suitable for publication in \textit{Agricultural and Forest Meteorology}. Thank you for your consideration. \\
+\noindent Both authors substantially contributed to this work and approved of this version for submission. The manuscript is 4680 words, with a 278 word summary and five figures. We hope that you will find it suitable for publication in \textit{Agricultural and Forest Meteorology}. Thank you for your consideration. \\
 
 \vspace{1.5ex}
 \noindent Sincerely, \\
@@ -41,7 +39,6 @@ $^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, 
 $^{3}$Conservation International, Arlington, VA, USA;\\
 $^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
-$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org\\
-
+$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org
 
 \end{document}

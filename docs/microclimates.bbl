@@ -33,6 +33,10 @@ Bolton, D.K. \& Friedl, M.A. (2013) Forecasting crop yield using remotely
   sensed vegetation indices and crop phenology metrics. \emph{Agricultural and
   Forest Meteorology} \textbf{173}, 74--84.
 
+\bibitem[{Bonhomme(2000)}]{Bonhomme2000}
+Bonhomme, R. (2000) Bases and limits to using `degree.day' units.
+  \emph{European Journal of Agronomy} \textbf{13}, 1--10.
+
 \bibitem[{Carpenter \emph{et~al.}(2017)Carpenter, Gelman, Hoffman, Lee,
   Goodrich, Betancourt, Brubaker, Guo, Li \& Allen}]{Carpenter2017}
 Carpenter, B., Gelman, A., Hoffman, M., Lee, D., Goodrich, B., Betancourt, M.,
@@ -268,13 +272,6 @@ Saikkonen, K., Taulavuori, K., Hyv{\"o}nen, T., Gundel, P.E., Hamilton, C.E.,
   V{\"a}nninen, I., Nissinen, A. \& Helander, M. (2012) Climate change-driven
   species' range shifts filtered by photoperiodism. \emph{Nature Climate
   Change} \textbf{2}, 239.
-
-\bibitem[{Satake \emph{et~al.}(2013)Satake, Kawagoe, Saburi, Chiba, Sakurai \&
-  Kudoh}]{Satake2013}
-Satake, A., Kawagoe, T., Saburi, Y., Chiba, Y., Sakurai, G. \& Kudoh, H. (2013)
-  Forecasting flowering phenology under climate warming by modelling the
-  regulatory dynamics of flowering-time genes. \emph{Nature Communications}
-  \textbf{4}, 2303.
 
 \bibitem[{Schwartz \emph{et~al.}(2006)Schwartz, Ahas \& Aasa}]{Schwartz2006}
 Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
