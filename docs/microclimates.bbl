@@ -1,5 +1,11 @@
-\begin{thebibliography}{60}
+\begin{thebibliography}{65}
 \providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Abendroth \emph{et~al.}(2019)Abendroth, Miguez, Castellano \&
+  Hatfield}]{Abendroth2019}
+Abendroth, L.J., Miguez, F.E., Castellano, M.J. \& Hatfield, J.L. (2019)
+  Climate warming trends in the u.s. midwest using four thermal models.
+  \emph{Agronomy Journal} \textbf{111}, 3230--3243.
 
 \bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
 Aitken, S.N. \& Bemmels, J.B. (2015) Time to get moving: assisted gene flow of
@@ -128,6 +134,11 @@ Ettinger, A.K., Gee, S. \& Wolkovich, E.M. (2018) Phenological sequences: how
   early-season events define those that follow. \emph{Am J Bot} \textbf{105},
   1771--1780.
 
+\bibitem[{Finn \emph{et~al.}(2007)Finn, Straszewski \& Peterson}]{Finn2007}
+Finn, G., Straszewski, A. \& Peterson, V. (2007) A general growth stage key for
+  describing trees and woody plants. \emph{Annals of Applied Biology}
+  \textbf{151}, 127--131.
+
 \bibitem[{Fu \emph{et~al.}(2015)Fu, Zhao, Piao, Peaucelle, Peng, Zhou, Ciais,
   Huang, Menzel, Pe{\~n}uelas \& et~al.}]{Fu2015}
 Fu, Y.H., Zhao, H., Piao, S., Peaucelle, M., Peng, S., Zhou, G., Ciais, P.,
@@ -166,6 +177,25 @@ Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
 Keenan, T.F., Richardson, A.D. \& Hufkens, K. (2020) On quantifying the
   apparent temperature sensitivity of plant phenology. \emph{New Phytologist}
   \textbf{225}, 1033--1040.
+
+\bibitem[{Klosterman \emph{et~al.}(2018)Klosterman, Hufkens \&
+  Richardson}]{Klosterman2018}
+Klosterman, S., Hufkens, K. \& Richardson, A.D. (2018) {Later springs green-up
+  faster: the relation between onset and completion of green-up in deciduous
+  forests of North America}. \emph{International Journal of Biometeorology}
+  \textbf{62}, 1645--1655.
+
+\bibitem[{Kumudini \emph{et~al.}(2014)Kumudini, Andrade, Boote, Brown, Dzotsi,
+  Edmeades, Gocken, Goodwin, Halter, Hammer, Hatfield, Jones, Kemanian, Kim,
+  Kiniry, Lizaso, Nendel, Nielsen, Parent, St{\"o}ckle, Tardieu, Thomison,
+  Timlin, Vyn, Wallach, Yang \& Tollenaar}]{Kumudini2014}
+Kumudini, S., Andrade, F.H., Boote, K.J., Brown, G.A., Dzotsi, K.A., Edmeades,
+  G.O., Gocken, T., Goodwin, M., Halter, A.L., Hammer, G.L., Hatfield, J.L.,
+  Jones, J.W., Kemanian, A.R., Kim, S.H., Kiniry, J., Lizaso, J.I., Nendel, C.,
+  Nielsen, R.L., Parent, B., St{\"o}ckle, C.O., Tardieu, F., Thomison, P.R.,
+  Timlin, D.J., Vyn, T.J., Wallach, D., Yang, H.S. \& Tollenaar, M. (2014)
+  Predicting maize phenology: Intercomparison of functions for developmental
+  response to temperature. \emph{Agronomy Journal} \textbf{106}, 2087--2097.
 
 \bibitem[{Lembrechts \emph{et~al.}(2019)Lembrechts, Nijs \&
   Lenoir}]{Lembrechts2019}
@@ -215,6 +245,14 @@ Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
   advances spring phenology but reduces the response of phenology to
   temperature in the conterminous united states. \emph{Proceedings of the
   National Academy of Sciences} \textbf{117}, 4228--4233.
+
+\bibitem[{Montgomery \emph{et~al.}(2020)Montgomery, Rice, Stefanski, Rich \&
+  Reich}]{Montgomery2020}
+Montgomery, R.A., Rice, K.E., Stefanski, A., Rich, R.L. \& Reich, P.B. (2020)
+  Phenological responses of temperate and boreal trees to warming depend on
+  ambient spring temperatures, leaf habit, and geographic range.
+  \emph{Proceedings of the National Academy of Sciences} \textbf{117},
+  10397--10405.
 
 \bibitem[{Moorcroft \emph{et~al.}(2001)Moorcroft, Hurtt \&
   Pacala}]{Moorcroft2001}
