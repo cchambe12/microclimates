@@ -1,4 +1,4 @@
-\begin{thebibliography}{65}
+\begin{thebibliography}{67}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Abendroth \emph{et~al.}(2019)Abendroth, Miguez, Castellano \&
@@ -66,13 +66,6 @@ Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
   elongation in provenances of \textit{Pinus contorta}}. \emph{Canadian Journal
   of Forest Research} \textbf{31}, 1444--1455.
 
-\bibitem[{Chuine \emph{et~al.}(2016)Chuine, Bonhomme, Legave, Garc{\'\i}a~de
-  Cort{\'a}zar-Atauri, Charrier, Lacointe \& Am{\'e}glio}]{Chuine2016}
-Chuine, I., Bonhomme, M., Legave, J.M., Garc{\'\i}a~de Cort{\'a}zar-Atauri, I.,
-  Charrier, G., Lacointe, A. \& Am{\'e}glio, T. (2016) Can phenological models
-  predict tree phenology accurately in the future? the unrevealed hurdle of
-  endodormancy break. \emph{Global Change Biology} \textbf{22}, 3444--3460.
-
 \bibitem[{Cook \emph{et~al.}(2012)Cook, Wolkovich, Davies, Ault, Betancourt,
   Allen, Bolmgren, Cleland, Crimmins, Kraft \& et~al.}]{Cook2012}
 Cook, B.I., Wolkovich, E.M., Davies, T.J., Ault, T.R., Betancourt, J.L., Allen,
@@ -117,16 +110,17 @@ Dimoudi, A., Kantzioura, A., Zoras, S., Pallas, C. \& Kosmopoulos, P. (2013)
 Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
   \emph{The Botanical Review} \textbf{72}, 207--234.
 
-\bibitem[{Duputi{\'e} \emph{et~al.}(2015)Duputi{\'e}, Rutschmann, Ronce \&
-  Chuine}]{Duputie2015}
-Duputi{\'e}, A., Rutschmann, A., Ronce, O. \& Chuine, I. (2015) Phenological
-  plasticity will not help all species adapt to climate change. \emph{Global
-  Change Biology} \textbf{21}, 3062--3073.
-
 \bibitem[{Erell \emph{et~al.}(2012)Erell, Pearlmutter \&
   Williamson}]{Erell2012}
 Erell, E., Pearlmutter, D. \& Williamson, T. (2012) \emph{Urban microclimate:
   designing the spaces between buildings}. Routledge.
+
+\bibitem[{Ettinger \emph{et~al.}(2020)Ettinger, Chamberlain, Morales-Castilla,
+  Buonaiuto, Flynn, Savas, Samaha \& Wolkovich}]{Ettinger2020}
+Ettinger, A.K., Chamberlain, C.J., Morales-Castilla, I., Buonaiuto, D.M.,
+  Flynn, D.F.B., Savas, T., Samaha, J.A. \& Wolkovich, E.M. (2020) Winter
+  temperatures predominate in spring phenological responses to warming.
+  \emph{Nature Climate Change} \textbf{10}, 1137--U119.
 
 \bibitem[{Ettinger \emph{et~al.}(2018)Ettinger, Gee \&
   Wolkovich}]{Ettinger2018}
@@ -166,17 +160,20 @@ Grimm, N.B., Faeth, S.H., Golubiewski, N.E., Redman, C.L., Wu, J., Bai, X. \&
   Briggs, J.M. (2008) Global change and the ecology of cities. \emph{Science}
   \textbf{319}, 756--760.
 
+\bibitem[{Hunter \& Lechowicz(1992)}]{Hunter1992}
+Hunter, A.F. \& Lechowicz, M.J. (1992) Predicting the timing of budburst in
+  temperate trees \textbf{29}, 597--604.
+
+\bibitem[{Jochner \& Menzel(2015)}]{Jochner2015}
+Jochner, S. \& Menzel, A. (2015) Urban phenological studies -- past, present,
+  future. \emph{Environmental Pollution} \textbf{203}, 250--261.
+
 \bibitem[{Keenan \emph{et~al.}(2014)Keenan, Gray, Friedl, Toomey, Bohrer,
   Hollinger, Munger, O'Keefe, Schmid, Wing \& et~al.}]{Keenan2014}
 Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
   Munger, J.W., O'Keefe, J., Schmid, H.P., Wing, I.S. \& et~al. (2014) Net
   carbon uptake has increased through warming-induced changes in temperate
   forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
-
-\bibitem[{Keenan \emph{et~al.}(2020)Keenan, Richardson \& Hufkens}]{Keenan2019}
-Keenan, T.F., Richardson, A.D. \& Hufkens, K. (2020) On quantifying the
-  apparent temperature sensitivity of plant phenology. \emph{New Phytologist}
-  \textbf{225}, 1033--1040.
 
 \bibitem[{Klosterman \emph{et~al.}(2018)Klosterman, Hufkens \&
   Richardson}]{Klosterman2018}
@@ -196,6 +193,14 @@ Kumudini, S., Andrade, F.H., Boote, K.J., Brown, G.A., Dzotsi, K.A., Edmeades,
   Timlin, D.J., Vyn, T.J., Wallach, D., Yang, H.S. \& Tollenaar, M. (2014)
   Predicting maize phenology: Intercomparison of functions for developmental
   response to temperature. \emph{Agronomy Journal} \textbf{106}, 2087--2097.
+
+\bibitem[{Laigle \emph{et~al.}(2022)Laigle, Carlson, Delestrade, Bison,
+  Van~Reeth \& Yoccoz}]{Laigle2021}
+Laigle, I., Carlson, B.Z., Delestrade, A., Bison, M., Van~Reeth, C. \& Yoccoz,
+  N.G. (2022) In-situ temperature stations elucidate species' phenological
+  responses to climate in the alps, but meteorological and snow reanalysis
+  facilitates broad scale and long-term studies. \emph{Frontiers in Earth
+  Science} \textbf{10}, 10.3389/feart.2022.912048.
 
 \bibitem[{Lembrechts \emph{et~al.}(2019)Lembrechts, Nijs \&
   Lenoir}]{Lembrechts2019}
@@ -347,6 +352,13 @@ Vico, G., Karacic, A., Adler, A., Richards, T. \& Weih, M. (2021) Consistent
   poplar clone ranking based on leaf phenology and temperature along a
   latitudinal and climatic gradient in northern europe. \emph{BioEnergy
   Research} \textbf{14}, 445--459.
+
+\bibitem[{Vitasse \emph{et~al.}(2021)Vitasse, Baumgarten, Zohner,
+  Kaewthongrach, Fu, Walde \& Moser}]{Vitasse2021}
+Vitasse, Y., Baumgarten, F., Zohner, C.M., Kaewthongrach, R., Fu, Y.H., Walde,
+  M.G. \& Moser, B. (2021) Impact of microclimatic conditions and resource
+  availability on spring and autumn phenology of temperate tree seedlings.
+  \emph{New Phytologist} \textbf{232}, 537--550.
 
 \bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
   Kremer, Chuine \& Delzon}]{Vitasse2011}
