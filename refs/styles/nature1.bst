@@ -32,6 +32,7 @@ ENTRY
     author
     booktitle
     chapter
+    doi
     edition
     editor
     howpublished
@@ -411,6 +412,16 @@ FUNCTION {format.pages}
   if$
 }
 
+FUNCTION {format.doi}
+{ doi  bibinfo.check %"doi"
+  duplicate$ empty$ 'skip$
+    {
+      new.block
+      "\doi{" swap$ * "}" *
+    }
+  if$
+}
+
 FUNCTION {format.vol.num.pages}
 { "{ \bf " volume field.or.null * "}" * % make volume bold face
   number empty$
@@ -601,6 +612,9 @@ FUNCTION {article}
   if$
   new.block
   note output
+  new.block
+  format.doi output
+  new.block
   fin.entry
 }
 

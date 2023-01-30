@@ -1,419 +1,421 @@
-\begin{thebibliography}{67}
-\providecommand{\natexlab}[1]{#1}
+\begin{thebibliography}{10}
 
-\bibitem[{Abendroth \emph{et~al.}(2019)Abendroth, Miguez, Castellano \&
-  Hatfield}]{Abendroth2019}
-Abendroth, L.J., Miguez, F.E., Castellano, M.J. \& Hatfield, J.L. (2019)
-  Climate warming trends in the u.s. midwest using four thermal models.
-  \emph{Agronomy Journal} \textbf{111}, 3230--3243.
+\bibitem{Morellato2016}
+Morellato, L. P.~C., Alberton, B., Alvarado, S.~T., Borges, B., Buisson, E.,
+  Camargo, M. G.~G., Cancian, L.~F., Carstensen, D.~W., Escobar, D.~F., Leite,
+  P.~T., Mendoza, I., Rocha, N.~M., Soares, N.~C., Silva, T. S.~F.,
+  Staggemeier, V.~G., Streher, A.~S., Vargas, B.~C., and Peres, C.~A.
+\newblock {\em Biological Conservation}{ \bf 195}, 60--72 (2016).
+\newblock \doi{https://doi.org/10.1016/j.biocon.2015.12.033}.
 
-\bibitem[{Aitken \& Bemmels(2015)}]{Aitken2015}
-Aitken, S.N. \& Bemmels, J.B. (2015) Time to get moving: assisted gene flow of
-  forest trees. \emph{Evolutionary Applications} \textbf{9}, 271--290.
+\bibitem{Silvestro2019}
+Silvestro, R., Rossi, S., Zhang, S., Froment, I., Huang, J.~G., and Saracino,
+  A.
+\newblock {\em Forest Ecology and Management}{ \bf 436}, 21--26 (2019).
+\newblock \doi{https://doi.org/10.1016/j.foreco.2019.01.005}.
 
-\bibitem[{Asse \emph{et~al.}(2018)Asse, Chuine, Vitasse, Yoccoz, Delpierre,
-  Badeau, Delestrade \& Randin}]{Asse2018}
-Asse, D., Chuine, I., Vitasse, Y., Yoccoz, N.G., Delpierre, N., Badeau, V.,
-  Delestrade, A. \& Randin, C.F. (2018) Warmer winters reduce the advance of
-  tree spring phenology induced by warmer springs in the alps.
-  \emph{Agricultural and Forest Meteorology} \textbf{252}, 220--230.
+\bibitem{Chuine2001}
+Chuine, I., Aitken, S.~N., and Ying, C.~C.
+\newblock {\em Canadian Journal of Forest Research}{ \bf 31}(8), 1444--1455 Aug
+   (2001).
+\newblock \doi{10.1139/x01-072}.
 
-\bibitem[{Basler \& K{\"{o}}rner(2012)}]{Basler2012}
-Basler, D. \& K{\"{o}}rner, C. (2012) {Photoperiod sensitivity of bud burst in
-  14 temperate forest tree species}. \emph{Agricultural and Forest Meteorology}
-  \textbf{165}, 73--81.
+\bibitem{Boggs2012}
+Boggs, C.~L. and Inouye, D.~W.
+\newblock {\em Ecology Letters}{ \bf 15}(5), 502--508 Mar  (2012).
+\newblock \doi{10.1111/j.1461-0248.2012.01766.x}.
 
-\bibitem[{Baumgarten \emph{et~al.}(2021)Baumgarten, Zohner, Gessler \&
-  Vitasse}]{Baumgarten2021}
-Baumgarten, F., Zohner, C.M., Gessler, A. \& Vitasse, Y. (2021) Chilled to be
-  forced: the best dose to wake up buds from winter dormancy. \emph{New
-  Phytologist} \textbf{230}, 1366--1377.
+\bibitem{Pardee2017}
+Pardee, G.~L., Inouye, D.~W., and Irwin, R.~E.
+\newblock {\em Global Change Biology}{ \bf 24}(2), 848--857 Sep  (2017).
+\newblock \doi{10.1111/gcb.13865}.
 
-\bibitem[{Boggs \& Inouye(2012)}]{Boggs2012}
-Boggs, C.L. \& Inouye, D.W. (2012) A single climate driver has direct and
-  indirect effects on insect population dynamics. \emph{Ecology Letters}
-  \textbf{15}, 502--508.
+\bibitem{Williamson2016}
+Williamson, S.~N., Barrio, I.~C., Hik, D.~S., and Gamon, J.~A.
+\newblock {\em Global Change Biology}{ \bf 22}(11), 3621--3631 (2016).
+\newblock \doi{10.1111/gcb.13297}.
 
-\bibitem[{Bolton \& Friedl(2013)}]{Bolton2013}
-Bolton, D.K. \& Friedl, M.A. (2013) Forecasting crop yield using remotely
-  sensed vegetation indices and crop phenology metrics. \emph{Agricultural and
-  Forest Meteorology} \textbf{173}, 74--84.
+\bibitem{Richardson2013}
+Richardson, A.~D., Keenan, T.~F., Migliavacca, M., Ryu, Y., Sonnentag, O., and
+  Toomey, M.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 169}, 156 -- 173
+  (2013).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2012.09.012}.
 
-\bibitem[{Bonhomme(2000)}]{Bonhomme2000}
-Bonhomme, R. (2000) Bases and limits to using `degree.day' units.
-  \emph{European Journal of Agronomy} \textbf{13}, 1--10.
+\bibitem{Keenan2014}
+Keenan, T.~F., Gray, J., Friedl, M.~A., Toomey, M., Bohrer, G., Hollinger,
+  D.~Y., Munger, J.~W., O'Keefe, J., Schmid, H.~P., Wing, I.~S., and et~al.
+\newblock {\em Nature Climate Change}{ \bf 4}(7), 598--604 Jun  (2014).
+\newblock \doi{10.1038/nclimate2253}.
 
-\bibitem[{Carpenter \emph{et~al.}(2017)Carpenter, Gelman, Hoffman, Lee,
-  Goodrich, Betancourt, Brubaker, Guo, Li \& Allen}]{Carpenter2017}
-Carpenter, B., Gelman, A., Hoffman, M., Lee, D., Goodrich, B., Betancourt, M.,
-  Brubaker, M.A., Guo, J., Li, P. \& Allen, R. (2017) Stan: A probabilistic
-  programming language. \emph{Journal of Statistical Software} \textbf{76},
-  10.18637/jss.v076.i01.
+\bibitem{Moorcroft2001}
+Moorcroft, P.~R., Hurtt, G.~C., and Pacala, S.~W.
+\newblock {\em Ecological Monographs}{ \bf 71}(4), 557--585 (2001).
 
-\bibitem[{Chang \emph{et~al.}(2021)Chang, Cheng, Allaire, Sievert, Schloerke,
-  Xie, Allen, McPherson, Dipert \& Borges}]{shiny2021}
-Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y., Allen,
-  J., McPherson, J., Dipert, A. \& Borges, B. (2021) shiny: Web application
-  framework for r. https://CRAN.R-project.org/package=shiny.
+\bibitem{Bolton2013}
+Bolton, D.~K. and Friedl, M.~A.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 173}, 74--84 (2013).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2013.01.007}.
 
-\bibitem[{Chuine(2010)}]{Chuine2010}
-Chuine, I. (2010) Why does phenology drive species distribution?
-  \emph{Philosophical Transactions of the Royal Society B: Biological Sciences}
-  \textbf{365}, 3149--3160.
+\bibitem{Yu2016}
+Yu, M., Wang, G., and Chen, H.
+\newblock {\em Journal of Advances in Modeling Earth Systems}{ \bf 8}(1),
+  370--386 (2016).
 
-\bibitem[{Chuine \emph{et~al.}(2001)Chuine, Aitken \& Ying}]{Chuine2001}
-Chuine, I., Aitken, S.N. \& Ying, C.C. (2001) {Temperature thresholds of shoot
-  elongation in provenances of \textit{Pinus contorta}}. \emph{Canadian Journal
-  of Forest Research} \textbf{31}, 1444--1455.
+\bibitem{Taylor2020}
+Taylor, S.~D. and White, E.~P.
+\newblock {\em Ecological Applications}{ \bf 30}(1), e02025 (2020).
+\newblock \doi{https://doi.org/10.1002/eap.2025}.
 
-\bibitem[{Cook \emph{et~al.}(2012)Cook, Wolkovich, Davies, Ault, Betancourt,
-  Allen, Bolmgren, Cleland, Crimmins, Kraft \& et~al.}]{Cook2012}
-Cook, B.I., Wolkovich, E.M., Davies, T.J., Ault, T.R., Betancourt, J.L., Allen,
-  J.M., Bolmgren, K., Cleland, E.E., Crimmins, T.M., Kraft, N.J.B. \& et~al.
-  (2012) {Sensitivity of spring phenology to warming across temporal and
-  spatial climate gradients in two independent databases}. \emph{Ecosystems}
-  \textbf{15}, 1283--1294.
+\bibitem{Schwartz2006}
+Schwartz, M.~D., Ahas, R., and Aasa, A.
+\newblock {\em Global Change Biology}{ \bf 12}(2), 343--351 (2006).
+\newblock \doi{10.1111/j.1365-2486.2005.01097.x}.
 
-\bibitem[{Crimmins \& Crimmins(2019)}]{Crimmins2020}
-Crimmins, M.A. \& Crimmins, T.M. (2019) Does an early spring indicate an early
-  summer? relationships between intraseasonal growing degree day thresholds.
-  \emph{Journal of Geophysical Research: Biogeosciences} \textbf{124},
-  2628--2641.
+\bibitem{Vitasse2011}
+Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.,
+  and Delzon, S.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 151}, 969--980 (2011).
 
-\bibitem[{Cuervo-Alarcon \emph{et~al.}(2018)Cuervo-Alarcon, Arend, M{\"u}ller,
-  Sperisen, Finkeldey \& Krutovsky}]{Cuervo-Alarcon2018}
-Cuervo-Alarcon, L., Arend, M., M{\"u}ller, M., Sperisen, C., Finkeldey, R. \&
-  Krutovsky, K.V. (2018) Genetic variation and signatures of natural selection
-  in populations of european beech (fagus sylvatica l.) along precipitation
-  gradients. \emph{Tree Genetics \& Genomes} \textbf{14}, 84.
+\bibitem{Cook2012}
+Cook, B.~I., Wolkovich, E.~M., Davies, T.~J., Ault, T.~R., Betancourt, J.~L.,
+  Allen, J.~M., Bolmgren, K., Cleland, E.~E., Crimmins, T.~M., Kraft, N. J.~B.,
+  and et~al.
+\newblock {\em Ecosystems}{ \bf 15}(8), 1283--1294 Sep  (2012).
+\newblock \doi{10.1007/s10021-012-9584-5}.
 
-\bibitem[{da~Cunha(2015)}]{daCunha2015}
-da~Cunha, A.R. (2015) Evaluation of measurement errors of temperature and
-  relative humidity from hobo data logger under different conditions of
-  exposure to solar radiation. \emph{Environmental Monitoring and Assessment}
-  \textbf{187}, 236.
+\bibitem{Phillimore2013}
+Phillimore, A.~B., Proios, K., O'Mahony, N., Bernard, R., Lord, A.~M.,
+  Atkinson, S., and Smithers, R.~J.
+\newblock {\em Journal of Ecology}{ \bf 101}(3), 774--783 Apr  (2013).
+\newblock \doi{10.1111/1365-2745.12067}.
 
-\bibitem[{de~Ress{\'e}guier \emph{et~al.}(2020)de~Ress{\'e}guier, Mary,
-  Le~Roux, Petitjean, Qu{\'e}nol \& van Leeuwen}]{deResseguier2020}
-de~Ress{\'e}guier, L., Mary, S., Le~Roux, R., Petitjean, T., Qu{\'e}nol, H. \&
-  van Leeuwen, C. (2020) Temperature variability at local scale in the bordeaux
-  area. relations with environmental factors and impact on vine phenology.
-  \emph{Frontiers in Plant Science} \textbf{11}, 515.
+\bibitem{Crimmins2020}
+Crimmins, M.~A. and Crimmins, T.~M.
+\newblock {\em Journal of Geophysical Research: Biogeosciences}{ \bf 124}(8),
+  2628--2641 (2019).
+\newblock \doi{10.1029/2019JG005297}.
 
-\bibitem[{Dimoudi \emph{et~al.}(2013)Dimoudi, Kantzioura, Zoras, Pallas \&
-  Kosmopoulos}]{Dimoudi2013}
-Dimoudi, A., Kantzioura, A., Zoras, S., Pallas, C. \& Kosmopoulos, P. (2013)
-  Investigation of urban microclimate parameters in an urban center.
-  \emph{Energy and Buildings} \textbf{64}, 1--9.
+\bibitem{Kumudini2014}
+Kumudini, S., Andrade, F.~H., Boote, K.~J., Brown, G.~A., Dzotsi, K.~A.,
+  Edmeades, G.~O., Gocken, T., Goodwin, M., Halter, A.~L., Hammer, G.~L.,
+  Hatfield, J.~L., Jones, J.~W., Kemanian, A.~R., Kim, S.~H., Kiniry, J.,
+  Lizaso, J.~I., Nendel, C., Nielsen, R.~L., Parent, B., St{\"o}ckle, C.~O.,
+  Tardieu, F., Thomison, P.~R., Timlin, D.~J., Vyn, T.~J., Wallach, D., Yang,
+  H.~S., and Tollenaar, M.
+\newblock {\em Agronomy Journal}{ \bf 106}(6), 2087--2097 2022/09/18  (2014).
+\newblock \doi{https://doi.org/10.2134/agronj14.0200}.
 
-\bibitem[{Dosmann(2006)}]{Dosmann2006}
-Dosmann, M.S. (2006) Research in the garden: Averting the collections crisis.
-  \emph{The Botanical Review} \textbf{72}, 207--234.
+\bibitem{Abendroth2019}
+Abendroth, L.~J., Miguez, F.~E., Castellano, M.~J., and Hatfield, J.~L.
+\newblock {\em Agronomy Journal}{ \bf 111}(6), 3230--3243 2022/09/18  (2019).
+\newblock \doi{https://doi.org/10.2134/agronj2019.02.0118}.
 
-\bibitem[{Erell \emph{et~al.}(2012)Erell, Pearlmutter \&
-  Williamson}]{Erell2012}
-Erell, E., Pearlmutter, D. \& Williamson, T. (2012) \emph{Urban microclimate:
-  designing the spaces between buildings}. Routledge.
+\bibitem{Klosterman2018}
+Klosterman, S., Hufkens, K., and Richardson, A.~D.
+\newblock {\em International Journal of Biometeorology}{ \bf 62}, 1645--1655
+  May  (2018).
+\newblock \doi{10.1007/s00484-018-1564-9}.
 
-\bibitem[{Ettinger \emph{et~al.}(2020)Ettinger, Chamberlain, Morales-Castilla,
-  Buonaiuto, Flynn, Savas, Samaha \& Wolkovich}]{Ettinger2020}
-Ettinger, A.K., Chamberlain, C.J., Morales-Castilla, I., Buonaiuto, D.M.,
-  Flynn, D.F.B., Savas, T., Samaha, J.A. \& Wolkovich, E.M. (2020) Winter
-  temperatures predominate in spring phenological responses to warming.
-  \emph{Nature Climate Change} \textbf{10}, 1137--U119.
+\bibitem{Montgomery2020}
+Montgomery, R.~A., Rice, K.~E., Stefanski, A., Rich, R.~L., and Reich, P.~B.
+\newblock {\em Proceedings of the National Academy of Sciences}{ \bf 117}(19),
+  10397--10405 Apr  (2020).
+\newblock \doi{10.1073/pnas.1917508117}.
 
-\bibitem[{Ettinger \emph{et~al.}(2018)Ettinger, Gee \&
-  Wolkovich}]{Ettinger2018}
-Ettinger, A.K., Gee, S. \& Wolkovich, E.M. (2018) Phenological sequences: how
-  early-season events define those that follow. \emph{Am J Bot} \textbf{105},
-  1771--1780.
+\bibitem{Man2010}
+Man, R. and Lu, P.
+\newblock {\em Canadian Journal of Forest Research}{ \bf 40}(9), 1815--1820 Sep
+   (2010).
+\newblock \doi{10.1139/x10-129}.
 
-\bibitem[{Finn \emph{et~al.}(2007)Finn, Straszewski \& Peterson}]{Finn2007}
-Finn, G., Straszewski, A. \& Peterson, V. (2007) A general growth stage key for
-  describing trees and woody plants. \emph{Annals of Applied Biology}
-  \textbf{151}, 127--131.
+\bibitem{Fahey2016}
+Fahey, R.~T.
+\newblock {\em Ecosphere}{ \bf 7}(2), e01209 (2016).
+\newblock \doi{10.1002/ecs2.1209}.
 
-\bibitem[{Fu \emph{et~al.}(2015)Fu, Zhao, Piao, Peaucelle, Peng, Zhou, Ciais,
-  Huang, Menzel, Pe{\~n}uelas \& et~al.}]{Fu2015}
-Fu, Y.H., Zhao, H., Piao, S., Peaucelle, M., Peng, S., Zhou, G., Ciais, P.,
-  Huang, M., Menzel, A., Pe{\~n}uelas, J. \& et~al. (2015) Declining global
-  warming effects on the phenology of spring leaf unfolding. \emph{Nature}
-  \textbf{526}, 104--107.
+\bibitem{Marquis2020}
+Marquis, B., Bergeron, Y., Simard, M., and Tremblay, F.
+\newblock {\em Frontiers in Plant Science}{ \bf 11} Jul  (2020).
+\newblock \doi{10.3389/fpls.2020.01031}.
 
-\bibitem[{Gauzere \emph{et~al.}(2017)Gauzere, Delzon, Davi, Bonhomme, Garcia~de
-  Cortazar-Atauri \& Chuine}]{Gauzere2017}
-Gauzere, J., Delzon, S., Davi, H., Bonhomme, M., Garcia~de Cortazar-Atauri, I.
-  \& Chuine, I. (2017) {Integrating interactive effects of chilling and
-  photoperiod in phenological process-based models. A case study with two
-  European tree species: \textit{Fagus sylvatica} and \textit{Quercus
-  petraea}}. \emph{Agricultural and Forest Meteorology} \textbf{244-255},
-  9--20.
+\bibitem{Bonhomme2000}
+Bonhomme, R.
+\newblock {\em European Journal of Agronomy}{ \bf 13}(1), 1--10 (2000).
+\newblock \doi{https://doi.org/10.1016/S1161-0301(00)00058-7}.
 
-\bibitem[{Gelman \emph{et~al.}(2014)Gelman, Carlin, Stern, Dunson, Vehtari \&
-  Rubin}]{BDA}
-Gelman, A., Carlin, J.B., Stern, H.S., Dunson, D.B., Vehtari, A. \& Rubin, D.B.
-  (2014) \emph{Bayesian Data Analysis}. CRC Press, New York, 3rd edn.
+\bibitem{Basler2012}
+Basler, D. and K{\"{o}}rner, C.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 165}, 73--81 (2012).
+\newblock \doi{10.1016/j.agrformet.2012.06.001}.
 
-\bibitem[{Grimm \emph{et~al.}(2008)Grimm, Faeth, Golubiewski, Redman, Wu, Bai
-  \& Briggs}]{Grimm2008}
-Grimm, N.B., Faeth, S.H., Golubiewski, N.E., Redman, C.L., Wu, J., Bai, X. \&
-  Briggs, J.M. (2008) Global change and the ecology of cities. \emph{Science}
-  \textbf{319}, 756--760.
+\bibitem{Chuine2010}
+Chuine, I.
+\newblock {\em Philosophical Transactions of the Royal Society B: Biological
+  Sciences}{ \bf 365}(1555), 3149--3160 Sep  (2010).
+\newblock \doi{10.1098/rstb.2010.0142}.
 
-\bibitem[{Hunter \& Lechowicz(1992)}]{Hunter1992}
-Hunter, A.F. \& Lechowicz, M.J. (1992) Predicting the timing of budburst in
-  temperate trees \textbf{29}, 597--604.
+\bibitem{Zohner2016}
+Zohner, C.~M., Benito, B.~M., Svenning, J.-C., and Renner, S.~S.
+\newblock {\em Nature Climate Change}{ \bf 6}(12), 1120--1123 Oct  (2016).
+\newblock \doi{10.1038/nclimate3138}.
 
-\bibitem[{Jochner \& Menzel(2015)}]{Jochner2015}
-Jochner, S. \& Menzel, A. (2015) Urban phenological studies -- past, present,
-  future. \emph{Environmental Pollution} \textbf{203}, 250--261.
+\bibitem{Wu2022}
+Wu, F., Gao, Y., Yang, W., Sui, N., and Zhu, J.
+\newblock {\em Front Plant Sci}{ \bf 13}, 821563 (2022).
+\newblock \doi{10.3389/fpls.2022.821563}.
 
-\bibitem[{Keenan \emph{et~al.}(2014)Keenan, Gray, Friedl, Toomey, Bohrer,
-  Hollinger, Munger, O'Keefe, Schmid, Wing \& et~al.}]{Keenan2014}
-Keenan, T.F., Gray, J., Friedl, M.A., Toomey, M., Bohrer, G., Hollinger, D.Y.,
-  Munger, J.W., O'Keefe, J., Schmid, H.P., Wing, I.S. \& et~al. (2014) Net
-  carbon uptake has increased through warming-induced changes in temperate
-  forest phenology. \emph{Nature Climate Change} \textbf{4}, 598--604.
+\bibitem{Meng2020}
+Meng, L., Mao, J., Zhou, Y., Richardson, A.~D., Lee, X., Thornton, P.~E.,
+  Ricciuto, D.~M., Li, X., Dai, Y., Shi, X., and et~al.
+\newblock {\em Proceedings of the National Academy of Sciences}{ \bf 117}(8),
+  4228--4233 Feb  (2020).
+\newblock \doi{10.1073/pnas.1911117117}.
 
-\bibitem[{Klosterman \emph{et~al.}(2018)Klosterman, Hufkens \&
-  Richardson}]{Klosterman2018}
-Klosterman, S., Hufkens, K. \& Richardson, A.D. (2018) {Later springs green-up
-  faster: the relation between onset and completion of green-up in deciduous
-  forests of North America}. \emph{International Journal of Biometeorology}
-  \textbf{62}, 1645--1655.
+\bibitem{Grimm2008}
+Grimm, N.~B., Faeth, S.~H., Golubiewski, N.~E., Redman, C.~L., Wu, J., Bai, X.,
+  and Briggs, J.~M.
+\newblock {\em Science}{ \bf 319}(5864), 756--760 (2008).
+\newblock \doi{10.1126/science.1150195}.
 
-\bibitem[{Kumudini \emph{et~al.}(2014)Kumudini, Andrade, Boote, Brown, Dzotsi,
-  Edmeades, Gocken, Goodwin, Halter, Hammer, Hatfield, Jones, Kemanian, Kim,
-  Kiniry, Lizaso, Nendel, Nielsen, Parent, St{\"o}ckle, Tardieu, Thomison,
-  Timlin, Vyn, Wallach, Yang \& Tollenaar}]{Kumudini2014}
-Kumudini, S., Andrade, F.H., Boote, K.J., Brown, G.A., Dzotsi, K.A., Edmeades,
-  G.O., Gocken, T., Goodwin, M., Halter, A.L., Hammer, G.L., Hatfield, J.L.,
-  Jones, J.W., Kemanian, A.R., Kim, S.H., Kiniry, J., Lizaso, J.I., Nendel, C.,
-  Nielsen, R.L., Parent, B., St{\"o}ckle, C.O., Tardieu, F., Thomison, P.R.,
-  Timlin, D.J., Vyn, T.J., Wallach, D., Yang, H.S. \& Tollenaar, M. (2014)
-  Predicting maize phenology: Intercomparison of functions for developmental
-  response to temperature. \emph{Agronomy Journal} \textbf{106}, 2087--2097.
+\bibitem{Pickett2011}
+Pickett, S.~T., Cadenasso, M.~L., Grove, J.~M., Boone, C.~G., Groffman, P.~M.,
+  Irwin, E., Kaushal, S.~S., Marshall, V., McGrath, B.~P., Nilon, C.~H., et~al.
+\newblock {\em Journal of environmental management}{ \bf 92}(3), 331--362
+  (2011).
 
-\bibitem[{Laigle \emph{et~al.}(2022)Laigle, Carlson, Delestrade, Bison,
-  Van~Reeth \& Yoccoz}]{Laigle2021}
-Laigle, I., Carlson, B.Z., Delestrade, A., Bison, M., Van~Reeth, C. \& Yoccoz,
-  N.G. (2022) In-situ temperature stations elucidate species' phenological
-  responses to climate in the alps, but meteorological and snow reanalysis
-  facilitates broad scale and long-term studies. \emph{Frontiers in Earth
-  Science} \textbf{10}, 10.3389/feart.2022.912048.
+\bibitem{Zohner2014}
+Zohner, C.~M. and Renner, S.~S.
+\newblock {\em Ecology Letters}{ \bf 17}(8), 1016--1025 (2014).
+\newblock \doi{https://doi.org/10.1111/ele.12308}.
 
-\bibitem[{Lembrechts \emph{et~al.}(2019)Lembrechts, Nijs \&
-  Lenoir}]{Lembrechts2019}
-Lembrechts, J.J., Nijs, I. \& Lenoir, J. (2019) Incorporating microclimate into
-  species distribution models. \emph{Ecography} \textbf{42}, 1267--1279.
+\bibitem{Ettinger2018}
+Ettinger, A.~K., Gee, S., and Wolkovich, E.~M.
+\newblock {\em Am J Bot}{ \bf 105}(10), 1771--1780 Oct  (2018).
+\newblock \doi{10.1002/ajb2.1174}.
 
-\bibitem[{Lenoir \emph{et~al.}(2013)Lenoir, Graae, Aarrestad, Alsos,
-  Armbruster, Austrheim, Bergendorff, Birks, Br{\aa}then, Brunet, Bruun,
-  Dahlberg, Decocq, Diekmann, Dynesius, Ejrn{\ae}s, Grytnes, Hylander,
-  Klanderud, Luoto, Milbau, Moora, Nygaard, Odland, Ravolainen, Reinhardt,
-  Sandvik, Schei, Speed, Tveraabak, Vandvik, Velle, Virtanen, Zobel \&
-  Svenning}]{Lenoir2013}
-Lenoir, J., Graae, B.J., Aarrestad, P.A., Alsos, I.G., Armbruster, W.S.,
-  Austrheim, G., Bergendorff, C., Birks, H.J.B., Br{\aa}then, K.A., Brunet, J.,
-  Bruun, H.H., Dahlberg, C.J., Decocq, G., Diekmann, M., Dynesius, M.,
-  Ejrn{\ae}s, R., Grytnes, J.A., Hylander, K., Klanderud, K., Luoto, M.,
-  Milbau, A., Moora, M., Nygaard, B., Odland, A., Ravolainen, V.T., Reinhardt,
-  S., Sandvik, S.M., Schei, F.H., Speed, J.D.M., Tveraabak, L.U., Vandvik, V.,
-  Velle, L.G., Virtanen, R., Zobel, M. \& Svenning, J.C. (2013) Local
-  temperatures inferred from plant communities suggest strong spatial buffering
-  of climate warming across northern europe. \emph{Global Change Biology}
-  \textbf{19}, 1470--1481.
+\bibitem{Primack2009}
+Primack, R.~B. and Miller-Rushing, A.~J.
+\newblock {\em New Phytologist}{ \bf 182}(2), 303--313 (2009).
+\newblock \doi{https://doi.org/10.1111/j.1469-8137.2009.02800.x}.
 
-\bibitem[{Luedeling \emph{et~al.}(2011)Luedeling, Girvetz, Semenov \&
-  Brown}]{Luedeling2011}
-Luedeling, E., Girvetz, E.H., Semenov, M.A. \& Brown, P.H. (2011) Climate
-  change affects winter chill for temperate fruit and nut trees. \emph{PLOS
-  ONE} \textbf{6}, 1--13.
+\bibitem{McKown2013}
+McKown, A.~D., Guy, R.~D., Kl{\'a}p{\v s}t{\v e}, J., Geraldes, A., Friedmann,
+  M., Cronk, Q. C.~B., El-Kassaby, Y.~A., Mansfield, S.~D., and Douglas, C.~J.
+\newblock {\em New Phytologist}{ \bf 201}(4), 1263--1276 Nov  (2013).
+\newblock \doi{10.1111/nph.12601}.
 
-\bibitem[{Man \& Lu(2010)}]{Man2010}
-Man, R. \& Lu, P. (2010) Effects of thermal model and base temperature on
-  estimates of thermal time to bud break in white spruce seedlings.
-  \emph{Canadian Journal of Forest Research} \textbf{40}, 1815--1820.
+\bibitem{Aitken2015}
+Aitken, S.~N. and Bemmels, J.~B.
+\newblock {\em Evolutionary Applications}{ \bf 9}(1), 271--290 Aug  (2015).
+\newblock \doi{10.1111/eva.12293}.
 
-\bibitem[{McKown \emph{et~al.}(2013)McKown, Guy, Kl{\'a}p{\v s}t{\v e},
-  Geraldes, Friedmann, Cronk, El-Kassaby, Mansfield \& Douglas}]{McKown2013}
-McKown, A.D., Guy, R.D., Kl{\'a}p{\v s}t{\v e}, J., Geraldes, A., Friedmann,
-  M., Cronk, Q.C.B., El-Kassaby, Y.A., Mansfield, S.D. \& Douglas, C.J. (2013)
-  Geographical and environmental gradients shape phenotypic trait variation and
-  genetic structure inpopulus trichocarpa. \emph{New Phytologist} \textbf{201},
-  1263--1276.
+\bibitem{Vico2021}
+Vico, G., Karacic, A., Adler, A., Richards, T., and Weih, M.
+\newblock {\em BioEnergy Research}{ \bf 14}(2), 445--459 (2021).
+\newblock \doi{10.1007/s12155-021-10249-5}.
 
-\bibitem[{Meng \emph{et~al.}(2020)Meng, Mao, Zhou, Richardson, Lee, Thornton,
-  Ricciuto, Li, Dai, Shi \& et~al.}]{Meng2020}
-Meng, L., Mao, J., Zhou, Y., Richardson, A.D., Lee, X., Thornton, P.E.,
-  Ricciuto, D.M., Li, X., Dai, Y., Shi, X. \& et~al. (2020) Urban warming
-  advances spring phenology but reduces the response of phenology to
-  temperature in the conterminous united states. \emph{Proceedings of the
-  National Academy of Sciences} \textbf{117}, 4228--4233.
-
-\bibitem[{Montgomery \emph{et~al.}(2020)Montgomery, Rice, Stefanski, Rich \&
-  Reich}]{Montgomery2020}
-Montgomery, R.A., Rice, K.E., Stefanski, A., Rich, R.L. \& Reich, P.B. (2020)
-  Phenological responses of temperate and boreal trees to warming depend on
-  ambient spring temperatures, leaf habit, and geographic range.
-  \emph{Proceedings of the National Academy of Sciences} \textbf{117},
-  10397--10405.
-
-\bibitem[{Moorcroft \emph{et~al.}(2001)Moorcroft, Hurtt \&
-  Pacala}]{Moorcroft2001}
-Moorcroft, P.R., Hurtt, G.C. \& Pacala, S.W. (2001) {A method for scaling
-  vegetation dynamics: The Ecosystem Demography Model (ED)}. \emph{Ecological
-  Monographs} \textbf{71}, 557--585.
-
-\bibitem[{O'Keefe(2014)}]{OKeefe2014}
-O'Keefe, J. (2014) {Phenology of woody species at Harvard Forest since 1990}.
-
-\bibitem[{Pardee \emph{et~al.}(2017)Pardee, Inouye \& Irwin}]{Pardee2017}
-Pardee, G.L., Inouye, D.W. \& Irwin, R.E. (2017) Direct and indirect effects of
-  episodic frost on plant growth and reproduction in subalpine wildflowers.
-  \emph{Global Change Biology} \textbf{24}, 848--857.
-
-\bibitem[{Phillimore \emph{et~al.}(2013)Phillimore, Proios, O'Mahony, Bernard,
-  Lord, Atkinson \& Smithers}]{Phillimore2013}
-Phillimore, A.B., Proios, K., O'Mahony, N., Bernard, R., Lord, A.M., Atkinson,
-  S. \& Smithers, R.J. (2013) Inferring local processes from macro‐scale
-  phenological pattern: a comparison of two methods. \emph{Journal of Ecology}
-  \textbf{101}, 774--783.
-
-\bibitem[{Pickett \emph{et~al.}(2011)Pickett, Cadenasso, Grove, Boone,
-  Groffman, Irwin, Kaushal, Marshall, McGrath, Nilon
-  \emph{et~al.}}]{Pickett2011}
-Pickett, S.T., Cadenasso, M.L., Grove, J.M., Boone, C.G., Groffman, P.M.,
-  Irwin, E., Kaushal, S.S., Marshall, V., McGrath, B.P., Nilon, C.H.
-  \emph{et~al.} (2011) Urban ecological systems: Scientific foundations and a
-  decade of progress. \emph{Journal of environmental management} \textbf{92},
-  331--362.
-
-\bibitem[{Primack \& Miller-Rushing(2009)}]{Primack2009}
-Primack, R.B. \& Miller-Rushing, A.J. (2009) The role of botanical gardens in
-  climate change research. \emph{New Phytologist} \textbf{182}, 303--313.
-
-\bibitem[{Qu \emph{et~al.}(2014)Qu, Wan \& Hao}]{Qu2014}
-Qu, M., Wan, J. \& Hao, X. (2014) Analysis of diurnal air temperature range
-  change in the continental united states. \emph{Weather and Climate Extremes}
-  \textbf{4}, 86--95.
-
-\bibitem[{{R Development Core Team}(2017)}]{R}
-{R Development Core Team} (2017) R: A language and environment for statistical
-  computing. \emph{R Foundation for Statistical Computing, Vienna, Austria} .
-
-\bibitem[{Richardson \emph{et~al.}(2013)Richardson, Keenan, Migliavacca, Ryu,
-  Sonnentag \& Toomey}]{Richardson2013}
-Richardson, A.D., Keenan, T.F., Migliavacca, M., Ryu, Y., Sonnentag, O. \&
-  Toomey, M. (2013) {Climate change, phenology, and phenological control of
-  vegetation feedbacks to the climate system}. \emph{Agricultural and Forest
-  Meteorology} \textbf{169}, 156 -- 173.
-
-\bibitem[{Saikkonen \emph{et~al.}(2012)Saikkonen, Taulavuori, Hyv{\"o}nen,
-  Gundel, Hamilton, V{\"a}nninen, Nissinen \& Helander}]{Saikkonen2012}
-Saikkonen, K., Taulavuori, K., Hyv{\"o}nen, T., Gundel, P.E., Hamilton, C.E.,
-  V{\"a}nninen, I., Nissinen, A. \& Helander, M. (2012) Climate change-driven
-  species' range shifts filtered by photoperiodism. \emph{Nature Climate
-  Change} \textbf{2}, 239.
-
-\bibitem[{Schwartz \emph{et~al.}(2006)Schwartz, Ahas \& Aasa}]{Schwartz2006}
-Schwartz, M.D., Ahas, R. \& Aasa, A. (2006) {Onset of spring starting earlier
-  across the Northern Hemisphere}. \emph{Global Change Biology} \textbf{12},
-  343--351.
-
-\bibitem[{Schwartz \emph{et~al.}(2013)Schwartz, Hanes \& Liang}]{Schwartz2013a}
-Schwartz, M.D., Hanes, J.M. \& Liang, L. (2013) Comparing carbon flux and
-  high-resolution spring phenological measurements in a northern mixed forest.
-  \emph{Agricultural and Forest Meteorology} \textbf{169}, 136--147.
-
-\bibitem[{Scotti-Saintagne \emph{et~al.}(2004)Scotti-Saintagne,
-  Bod{\'e}n{\`e}s, Barreneche, Bertocchi, Plomion \& Kremer}]{Scotti2004}
+\bibitem{Scotti2004}
 Scotti-Saintagne, C., Bod{\'e}n{\`e}s, C., Barreneche, T., Bertocchi, E.,
-  Plomion, C. \& Kremer, A. (2004) Detection of quantitative trait loci
-  controlling bud burst and height growth in quercus robur l. \emph{Theoretical
-  and Applied Genetics} \textbf{109}, 1648--1659.
+  Plomion, C., and Kremer, A.
+\newblock {\em Theoretical and Applied Genetics}{ \bf 109}(8), 1648--1659
+  (2004).
 
-\bibitem[{Stabler \emph{et~al.}(2005)Stabler, Martin \& Brazel}]{Stabler2005}
-Stabler, L.B., Martin, C.A. \& Brazel, A.J. (2005) Microclimates in a desert
-  city were related to land use and vegetation index. \emph{Urban Forestry &
-  Urban Greening} \textbf{3}, 137--147.
+\bibitem{Cuervo-Alarcon2018}
+Cuervo-Alarcon, L., Arend, M., M{\"u}ller, M., Sperisen, C., Finkeldey, R., and
+  Krutovsky, K.~V.
+\newblock {\em Tree Genetics \& Genomes}{ \bf 14}(6), 84 (2018).
+\newblock \doi{10.1007/s11295-018-1297-2}.
 
-\bibitem[{{Stan Development Team}(2019)}]{rstan2019}
-{Stan Development Team} (2019) Stan user's guide, version 2.19.
+\bibitem{Saikkonen2012}
+Saikkonen, K., Taulavuori, K., Hyv{\"o}nen, T., Gundel, P.~E., Hamilton, C.~E.,
+  V{\"a}nninen, I., Nissinen, A., and Helander, M.
+\newblock {\em Nature Climate Change}{ \bf 2}(4), 239 (2012).
 
-\bibitem[{Taylor \& White(2020)}]{Taylor2020}
-Taylor, S.D. \& White, E.P. (2020) Automated data-intensive forecasting of
-  plant phenology throughout the united states. \emph{Ecological Applications}
-  \textbf{30}, e02025.
+\bibitem{Way2015}
+Way, D.~A. and Montgomery, R.~A.
+\newblock {\em Plant, Cell \& Environment}{ \bf 38}(9), 1725--1736 (2015).
+\newblock \doi{10.1111/pce.12431}.
 
-\bibitem[{Vico \emph{et~al.}(2021)Vico, Karacic, Adler, Richards \&
-  Weih}]{Vico2021}
-Vico, G., Karacic, A., Adler, A., Richards, T. \& Weih, M. (2021) Consistent
-  poplar clone ranking based on leaf phenology and temperature along a
-  latitudinal and climatic gradient in northern europe. \emph{BioEnergy
-  Research} \textbf{14}, 445--459.
+\bibitem{Gauzere2017}
+Gauzere, J., Delzon, S., Davi, H., Bonhomme, M., Garcia~de Cortazar-Atauri, I.,
+  and Chuine, I.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 244-255}, 9--20
+  (2017).
 
-\bibitem[{Vitasse \emph{et~al.}(2021)Vitasse, Baumgarten, Zohner,
-  Kaewthongrach, Fu, Walde \& Moser}]{Vitasse2021}
-Vitasse, Y., Baumgarten, F., Zohner, C.M., Kaewthongrach, R., Fu, Y.H., Walde,
-  M.G. \& Moser, B. (2021) Impact of microclimatic conditions and resource
-  availability on spring and autumn phenology of temperate tree seedlings.
-  \emph{New Phytologist} \textbf{232}, 537--550.
+\bibitem{Meng2022}
+Meng, L., Zhou, Y., Rom{\'a}n, M.~O., Stokes, E.~C., Wang, Z., Asrar, G.~R.,
+  Mao, J., Richardson, A.~D., Gu, L., and Wang, Y.
+\newblock {\em PNAS Nexus}{ \bf 1}(2) 04  (2022).
+\newblock pgac046.
+\newblock \doi{10.1093/pnasnexus/pgac046}.
 
-\bibitem[{Vitasse \emph{et~al.}(2011)Vitasse, Francois, Delpierre, Dufrene,
-  Kremer, Chuine \& Delzon}]{Vitasse2011}
-Vitasse, Y., Francois, C., Delpierre, N., Dufrene, E., Kremer, A., Chuine, I.
-  \& Delzon, S. (2011) {Assessing the effects of climate change on the
-  phenology of European temperate trees.} \emph{Agricultural and Forest
-  Meteorology} \textbf{151}, 969--980.
+\bibitem{Dosmann2006}
+Dosmann, M.~S.
+\newblock {\em The Botanical Review}{ \bf 72}(3), 207--234 (2006).
+\newblock \doi{10.1663/0006-8101(2006)72{$[$}207:RITGAT{$]$}2.0.CO;2}.
 
-\bibitem[{Way \& Montgomery(2015)}]{Way2015}
-Way, D.A. \& Montgomery, R.A. (2015) Photoperiod constraints on tree phenology,
-  performance and migration in a warming world. \emph{Plant, Cell \&
-  Environment} \textbf{38}, 1725--1736.
+\bibitem{Lenoir2013}
+Lenoir, J., Graae, B.~J., Aarrestad, P.~A., Alsos, I.~G., Armbruster, W.~S.,
+  Austrheim, G., Bergendorff, C., Birks, H. J.~B., Br{\aa}then, K.~A., Brunet,
+  J., Bruun, H.~H., Dahlberg, C.~J., Decocq, G., Diekmann, M., Dynesius, M.,
+  Ejrn{\ae}s, R., Grytnes, J.-A., Hylander, K., Klanderud, K., Luoto, M.,
+  Milbau, A., Moora, M., Nygaard, B., Odland, A., Ravolainen, V.~T., Reinhardt,
+  S., Sandvik, S.~M., Schei, F.~H., Speed, J. D.~M., Tveraabak, L.~U., Vandvik,
+  V., Velle, L.~G., Virtanen, R., Zobel, M., and Svenning, J.-C.
+\newblock {\em Global Change Biology}{ \bf 19}(5), 1470--1481 (2013).
+\newblock \doi{https://doi.org/10.1111/gcb.12129}.
 
-\bibitem[{Whiteman \emph{et~al.}(01 Jan. 2000)Whiteman, Hubbe \&
-  Shaw}]{Whiteman2000}
-Whiteman, C.D., Hubbe, J.M. \& Shaw, W.J. (01 Jan. 2000) Evaluation of an
-  inexpensive temperature datalogger for meteorological applications.
-  \emph{Journal of Atmospheric and Oceanic Technology} \textbf{17}, 77 -- 81.
+\bibitem{deResseguier2020}
+de~Ress{\'e}guier, L., Mary, S., Le~Roux, R., Petitjean, T., Qu{\'e}nol, H.,
+  and van Leeuwen, C.
+\newblock {\em Frontiers in Plant Science}{ \bf 11}, 515 (2020).
+\newblock \doi{10.3389/fpls.2020.00515}.
 
-\bibitem[{Williamson \emph{et~al.}(2016)Williamson, Barrio, Hik \&
-  Gamon}]{Williamson2016}
-Williamson, S.N., Barrio, I.C., Hik, D.S. \& Gamon, J.A. (2016) Phenology and
-  species determine growing-season albedo increase at the altitudinal limit of
-  shrub growth in the sub-arctic. \emph{Global Change Biology} \textbf{22},
-  3621--3631.
+\bibitem{Lembrechts2019}
+Lembrechts, J.~J., Nijs, I., and Lenoir, J.
+\newblock {\em Ecography}{ \bf 42}(7), 1267--1279 (2019).
+\newblock \doi{https://doi.org/10.1111/ecog.03947}.
 
-\bibitem[{Yu \emph{et~al.}(2016)Yu, Wang \& Chen}]{Yu2016}
-Yu, M., Wang, G. \& Chen, H. (2016) Quantifying the impacts of land surface
-  schemes and dynamic vegetation on the model dependency of projected changes
-  in surface energy and water budgets. \emph{Journal of Advances in Modeling
-  Earth Systems} \textbf{8}, 370--386.
+\bibitem{Laigle2021}
+Laigle, I., Carlson, B.~Z., Delestrade, A., Bison, M., Van~Reeth, C., and
+  Yoccoz, N.~G.
+\newblock {\em Frontiers in Earth Science}{ \bf 10}, 10.3389/feart.2022.912048
+  (2022).
 
-\bibitem[{Zhang \emph{et~al.}(2021)Zhang, Lin, Wang, Shen, Wang, Rao, Wu \&
-  H{\"a}nninen}]{Zhang2021}
-Zhang, R., Lin, J., Wang, F., Shen, S., Wang, X., Rao, Y., Wu, J. \&
-  H{\"a}nninen, H. (2021) The chilling requirement of subtropical trees is
-  fulfilled by high temperatures: A generalized hypothesis for tree
-  endodormancy release and a method for testing it. \emph{Agricultural and
-  Forest Meteorology} \textbf{298-299}, 108296.
+\bibitem{Schwartz2013a}
+Schwartz, M.~D., Hanes, J.~M., and Liang, L.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 169}, 136--147 (2013).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2012.10.014}.
 
-\bibitem[{Ziter \& Turner(2018)}]{Ziter2018}
-Ziter, C. \& Turner, M.G. (2018) Current and historical land use influence
-  soil-based ecosystem services in an urban landscape. \emph{Ecological
-  Applications} \textbf{28}, 643--654.
+\bibitem{Whiteman2000}
+Whiteman, C.~D., Hubbe, J.~M., and Shaw, W.~J.
+\newblock {\em Journal of Atmospheric and Oceanic Technology}{ \bf 17}(1), 77
+  -- 81 (01 Jan. 2000).
+\newblock \doi{10.1175/1520-0426(2000)017<0077:EOAITD>2.0.CO;2}.
 
-\bibitem[{Zohner \emph{et~al.}(2016)Zohner, Benito, Svenning \&
-  Renner}]{Zohner2016}
-Zohner, C.M., Benito, B.M., Svenning, J.C. \& Renner, S.S. (2016) Day length
-  unlikely to constrain climate-driven shifts in leaf-out times of northern
-  woody plants. \emph{Nature Climate Change} \textbf{6}, 1120--1123.
+\bibitem{Hunter1992}
+Hunter, A.~F. and Lechowicz, M.~J.
+\newblock { \bf 29}(3), 597--604 2020/10/20/  (1992).
+\newblock \doi{10.2307/2404467}.
 
-\bibitem[{Zohner \& Renner(2014)}]{Zohner2014}
-Zohner, C.M. \& Renner, S.S. (2014) Common garden comparison of the leaf-out
-  phenology of woody species from different native climates, combined with
-  herbarium records, forecasts long-term change. \emph{Ecology Letters}
-  \textbf{17}, 1016--1025.
+\bibitem{Finn2007}
+Finn, G., Straszewski, A., and Peterson, V.
+\newblock {\em Annals of Applied Biology}{ \bf 151}(1), 127--131 Aug  (2007).
+\newblock \doi{10.1111/j.1744-7348.2007.00159.x}.
+
+\bibitem{Denny2014}
+Denny, E.~G., Gerst, K.~L., Miller-Rushing, A.~J., Tierney, G.~L., Crimmins,
+  T.~M., Enquist, C. A.~F., Guertin, P., Rosemartin, A.~H., Schwartz, M.~D.,
+  Thomas, K.~A., and Weltzin, J.~F.
+\newblock {\em International Journal of Biometeorology}{ \bf 58}(4), 591--601
+  (2014).
+\newblock \doi{10.1007/s00484-014-0789-5}.
+
+\bibitem{OKeefe2014}
+O'Keefe, J.
+\newblock  (2014).
+
+\bibitem{rstan2019}
+{Stan Development Team}.
+\newblock  (2019).
+
+\bibitem{R}
+{R Development Core Team}.
+\newblock {\em R Foundation for Statistical Computing, Vienna, Austria}{ \bf }
+  (2017).
+
+\bibitem{Asse2018}
+Asse, D., Chuine, I., Vitasse, Y., Yoccoz, N.~G., Delpierre, N., Badeau, V.,
+  Delestrade, A., and Randin, C.~F.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 252}, 220--230 (2018).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2018.01.030}.
+
+\bibitem{BDA}
+Gelman, A., Carlin, J.~B., Stern, H.~S., Dunson, D.~B., Vehtari, A., and Rubin,
+  D.~B.
+\newblock {\em Bayesian Data Analysis}.
+\newblock CRC Press, New York, 3rd edition,  (2014).
+
+\bibitem{Carpenter2017}
+Carpenter, B., Gelman, A., Hoffman, M., Lee, D., Goodrich, B., Betancourt, M.,
+  Brubaker, M.~A., Guo, J., Li, P., and Allen, R.
+\newblock {\em Journal of Statistical Software}{ \bf 76}(1),
+  10.18637/jss.v076.i01 (2017).
+
+\bibitem{shiny2021}
+Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y., Allen,
+  J., McPherson, J., Dipert, A., and Borges, B.
+\newblock https://CRAN.R-project.org/package=shiny,  (2021).
+
+\bibitem{Basler2016}
+Basler, D.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 217}, 10 -- 21 (2016).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2015.11.007}.
+
+\bibitem{Jochner2015}
+Jochner, S. and Menzel, A.
+\newblock {\em Environmental Pollution}{ \bf 203}, 250--261 (2015).
+\newblock \doi{https://doi.org/10.1016/j.envpol.2015.01.003}.
+
+\bibitem{Ettinger2020}
+Ettinger, A.~K., Chamberlain, C.~J., Morales-Castilla, I., Buonaiuto, D.~M.,
+  Flynn, D. F.~B., Savas, T., Samaha, J.~A., and Wolkovich, E.~M.
+\newblock {\em Nature Climate Change}{ \bf 10}(12), 1137--U119 (2020).
+
+\bibitem{Luedeling2011}
+Luedeling, E., Girvetz, E.~H., Semenov, M.~A., and Brown, P.~H.
+\newblock {\em PLOS ONE}{ \bf 6}(5), 1--13 05  (2011).
+\newblock \doi{10.1371/journal.pone.0020155}.
+
+\bibitem{Fu2015}
+Fu, Y.~H., Zhao, H., Piao, S., Peaucelle, M., Peng, S., Zhou, G., Ciais, P.,
+  Huang, M., Menzel, A., Pe{\~n}uelas, J., and et~al.
+\newblock {\em Nature}{ \bf 526}(7571), 104--107 Sep  (2015).
+\newblock \doi{10.1038/nature15402}.
+
+\bibitem{Baumgarten2021}
+Baumgarten, F., Zohner, C.~M., Gessler, A., and Vitasse, Y.
+\newblock {\em New Phytologist}{ \bf 230}(4), 1366--1377 (2021).
+\newblock \doi{https://doi.org/10.1111/nph.17270}.
+
+\bibitem{Zhang2021}
+Zhang, R., Lin, J., Wang, F., Shen, S., Wang, X., Rao, Y., Wu, J., and
+  H{\"a}nninen, H.
+\newblock {\em Agricultural and Forest Meteorology}{ \bf 298-299}, 108296
+  (2021).
+\newblock \doi{https://doi.org/10.1016/j.agrformet.2020.108296}.
+
+\bibitem{Stabler2005}
+Stabler, L.~B., Martin, C.~A., and Brazel, A.~J.
+\newblock {\em Urban Forestry & Urban Greening}{ \bf 3}(3), 137--147 (2005).
+\newblock \doi{https://doi.org/10.1016/j.ufug.2004.11.001}.
+
+\bibitem{Erell2012}
+Erell, E., Pearlmutter, D., and Williamson, T.
+\newblock {\em Urban microclimate: designing the spaces between buildings}.
+\newblock Routledge,  (2012).
+
+\bibitem{Dimoudi2013}
+Dimoudi, A., Kantzioura, A., Zoras, S., Pallas, C., and Kosmopoulos, P.
+\newblock {\em Energy and Buildings}{ \bf 64}, 1--9 (2013).
+\newblock \doi{https://doi.org/10.1016/j.enbuild.2013.04.014}.
+
+\bibitem{Qu2014}
+Qu, M., Wan, J., and Hao, X.
+\newblock {\em Weather and Climate Extremes}{ \bf 4}, 86--95 (2014).
+\newblock \doi{https://doi.org/10.1016/j.wace.2014.05.002}.
+
+\bibitem{daCunha2015}
+da~Cunha, A.~R.
+\newblock {\em Environmental Monitoring and Assessment}{ \bf 187}(5), 236
+  (2015).
+\newblock \doi{10.1007/s10661-015-4458-x}.
+
+\bibitem{Vitasse2021}
+Vitasse, Y., Baumgarten, F., Zohner, C.~M., Kaewthongrach, R., Fu, Y.~H.,
+  Walde, M.~G., and Moser, B.
+\newblock {\em New Phytologist}{ \bf 232}(2), 537--550 (2021).
+\newblock \doi{https://doi.org/10.1111/nph.17606}.
 
 \end{thebibliography}
