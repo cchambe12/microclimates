@@ -13,8 +13,8 @@
 \usepackage{mdframed}
 \usepackage{longtable}
 \usepackage{blindtext, rotating}
-\usepackage{natbib}
-\bibliographystyle{..//refs/styles/gcb.bst}
+\usepackage{natbib} %hyperref - attaches link to references
+\bibliographystyle{..//refs/styles/nature1.bst}
 %\usepackage[hyphens]{url}
 \usepackage{caption}
 \setlength{\captionmargin}{30pt}
@@ -57,17 +57,16 @@ library(ggplot2)
 \noindent \textbf{\Large{Supplemental materials: Variation across space, species and methods in models of spring phenology}}
 
 \noindent Authors:\\
-Catherine J. Chamberlain, ORCID: 0000-0001-5495-3219 $^{1,2,3}$ \& E. M. Wolkovich $^{1,2,4}$
+C. J. Chamberlain $^{1,2,3}$ \& E. M. Wolkovich $^{1,2,4}$
 \vspace{2ex}\\
 \emph{Author affiliations:}\\
-$^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA 02131; \\
-$^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA 02138; \\
-$^{3}$Conservation International, Arlington, VA, USA;\\
+$^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA; \\
+$^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA; \\
+$^{3}$The Nature Conservancy, Durham, NC 27701 USA;\\
 $^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
-$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org\\
-\vspace{2ex}
-%Article acceptance date: 13 April 2021
+$^*$Corresponding author: 248.953.0189; c.chamberlain@tnc.org; 0000-0001-5495-3219\\
+
 
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}

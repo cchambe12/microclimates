@@ -63,8 +63,8 @@
 \usepackage{mdframed}
 \usepackage{longtable}
 \usepackage{blindtext, rotating}
-\usepackage{natbib}
-\bibliographystyle{..//refs/styles/gcb.bst}
+\usepackage{natbib} %hyperref - attaches link to references
+\bibliographystyle{..//refs/styles/nature1.bst}
 %\usepackage[hyphens]{url}
 \usepackage{caption}
 \setlength{\captionmargin}{30pt}
@@ -103,17 +103,16 @@
 \noindent \textbf{\Large{Supplemental materials: Variation across space, species and methods in models of spring phenology}}
 
 \noindent Authors:\\
-Catherine J. Chamberlain, ORCID: 0000-0001-5495-3219 $^{1,2,3}$ \& E. M. Wolkovich $^{1,2,4}$
+C. J. Chamberlain $^{1,2,3}$ \& E. M. Wolkovich $^{1,2,4}$
 \vspace{2ex}\\
 \emph{Author affiliations:}\\
-$^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA 02131; \\
-$^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA 02138; \\
-$^{3}$Conservation International, Arlington, VA, USA;\\
+$^{1}$Arnold Arboretum of Harvard University, 1300 Centre Street, Boston, Massachusetts, USA; \\
+$^{2}$Organismic \& Evolutionary Biology, Harvard University, 26 Oxford Street, Cambridge, Massachusetts, USA; \\
+$^{3}$The Nature Conservancy, Durham, NC 27701 USA;\\
 $^{4}$Forest \& Conservation Sciences, Faculty of Forestry, University of British Columbia, 2424 Main Mall, Vancouver, BC V6T 1Z4;\\
 \vspace{2ex}
-$^*$Corresponding author: 248.953.0189; cchamberlain@conservation.org\\
-\vspace{2ex}
-%Article acceptance date: 13 April 2021
+$^*$Corresponding author: 248.953.0189; c.chamberlain@tnc.org; 0000-0001-5495-3219\\
+
 
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
@@ -155,7 +154,7 @@ where $i$ represents each unique observation, $species$ is the species, $\alpha$
 
 % %EMWFeb2022  -- Consider adding 'See main text methods and Fig. \ref{{fig:musims}} for more details.' to S1-S5 tables. 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from urban simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
@@ -183,7 +182,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from provenance latitude simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
@@ -211,7 +210,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from microclimate simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
@@ -240,7 +239,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy weather station simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
@@ -269,7 +268,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from noisy HOBO logger simulations}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable. See main text methods and Fig \ref{fig:musims} for more details.} 
@@ -298,7 +297,7 @@ $N_{sp}$ & 15.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical urban versus rural model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
@@ -327,7 +326,7 @@ $N_{sp}$ & 17.00 &  &  &  &  \\
 
 
 % latex table generated in R 4.1.2 by xtable 1.8-4 package
-% Mon Jan 30 14:42:44 2023
+% Fri Feb 10 09:20:24 2023
 \begin{table}[ht]
 \centering
 \caption{\textbf{Estimates from empirical provenance latitude model}. We present posterior means, as well as 50\% and 95\% uncertainty intervals from models in which the predictors have been standardized so that they are comparable.} 
