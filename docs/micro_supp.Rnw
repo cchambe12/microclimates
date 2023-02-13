@@ -81,7 +81,7 @@ library(xtable)
 
 @
 \section*{Methods S1: Using simulations to test Bayesian models in Rstan}
-To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. As building such data can be critical to testing models and better understanding them we provide a Shiny App and GitHub repository for this purpose for the models presented here. 
+To test all models, we used data simulations but simulation data can only take us so far in model interpretation. We first needed to be certain our models were operating correctly. To test our model function, we built test data and manipulated the effects of the parameters to make sure the models were reporting this information accurately. As building such data can be critical to testing models and better understanding them we provide a Shiny App and GitHub repository for this purpose for the models presented here (\url{https://impactforecasting.shinyapps.io/ecomodels_GDD/}). 
 
 \section*{Methods S2: Data analysis and model equations}
 Using Bayesian hierarchical models, we estimated the effects of site (i.e., `forest' sites modeled as `0' versus `urban` sites modeled as a `1'), method (i.e., HOBO logger climate data modeled as `0' and weather station climate data modeled as `1') and the interaction between site and method effects as predictors with species modeled hierarchically as grouping factors:
@@ -266,14 +266,14 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
   \end{center}
   \end{figure}}
 \fi
-  
-\begin{figure}[H]
+
+  \begin{figure}[H]
     \centering
     \includegraphics[height=8cm, width=12cm]{..//analyses/figures/gddratio_fstars.pdf}
 \caption{Using simulated data, we show how GDD measurement accuracy changes along varying GDD thresholds using a base temperature of (a) 0$^{\circ}$C and a sigma of 0.1$^{\circ}$C, (b) 0$^{\circ}$C and a sigma of 0.5$^{\circ}$C, (c) 10$^{\circ}$C and a sigma of 0.1$^{\circ}$C and (d) 10$^{\circ}$C and a sigma of 0.5$^{\circ}$C. GDD accuracy is measured as the observed GDD divided by the expected GDD. }
 \label{fig:forecasts}
 \end{figure}
-  
+
 {\begin{figure} [H]
   \begin{center}
   \includegraphics[width=16cm]{..//analyses/figures/climate_methodiff.pdf}
@@ -281,6 +281,12 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
   \end{center}
   \end{figure}}
   
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{..//analyses/figures/functype.pdf}
+\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus HOBO logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). The 1:1 (dashed) line helps visualize that shrubs generally require fewer GDDs until budburst than trees. }
+\label{fig:funcs}
+\end{figure}
   
 \begin{figure}[H]
       \centering
@@ -290,12 +296,6 @@ print(mod.table, include.rownames=TRUE, hline.after = c(-1,0,9,10),caption.place
 \label{fig:prov}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=12cm]{..//analyses/figures/functype.pdf}
-\caption{ Empirical Data: Using real data, we show (a) the effects of site (urban versus rural) and climate data method (weather station versus HOBO logger) on GDDs until budburst between shrubs versus tree species used in the study. We also show model output for the same relationship in (b). The 1:1 (dashed) line helps visualize that shrubs generally require fewer GDDs until budburst than trees. }
-\label{fig:funcs}
-\end{figure}
 
 \begin{figure}[H]
       \centering

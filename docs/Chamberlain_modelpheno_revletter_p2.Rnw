@@ -29,7 +29,7 @@
 
 We thank the reviewer for this positive feedback and for helping us improve the manuscript. Based on this review we have updated the language and interpretation throughout. We believe our revised manuscript better addresses our questions and will hopefully be more accessible to a wider audience of readers. \\
 
-In addition to small tweaks throughout we edited the abstract and discussion to clearly outline these limitations. In the abstract, we now specify that we are referring to one studied urban site and forest, emphasized our findings' relevance to `local-scale forecasts' and stressed the need to examine impacts at larger spatial. In the Discussion we have added a new paragraph early on that tackles this issue prominently (\lr{Z1largespatialscale} - \lr{Z1scaleend}), which reads: \\
+In addition to small tweaks throughout we edited the abstract and discussion to clearly outline these limitations. In the abstract, we now specify that we are referring to one studied urban site and one rural forest site, emphasized our findings' relevance to `local-scale forecasts' and stressed the need to examine impacts at larger spatial. In the Discussion we have added a new paragraph early on that tackles this issue prominently (\lr{Z1largespatialscale} - \lr{Z1scaleend}), which reads: \\
 
 \begin{quotation}
 \noindent These findings have relevance to local-scale forecasting. Land managers of temperature forests working at local to smaller regional scales may want to consider how microclimatic, species-level effects and GDD accuracy issues could impact their planning with climate change. As our climatic and species-level data were gathered at a relatively small spatial scale, extending these findings to larger spatial scales (e.g., with remote sensing etc.) to test whether simple approaches like GDD thresholds may still perform reasonably well is an important next step.
@@ -38,7 +38,7 @@ In addition to small tweaks throughout we edited the abstract and discussion to 
 \textit{To note: I did not install and explore the R Shiny app mentioned on L196; I am wondering whether the authors might consider hosting the app on a website, to enable easier access by readers
 In general, I really like this study, and I do not have major concerns about the study design or presentation. My comments are mainly in support of making the manuscript as accessible as possible to a range of readers.} \\
 
-Thank you for the idea to host the app on a website! We have now published the Shiny application to site: \url{https://impactforecasting.shinyapps.io/ecomodels_GDD/} and the link has been updated in the manuscript. This was a very helpful first step to making the manuscript more accessible. \\ 
+Thank you for the idea to host the app on a website! We have now published the Shiny application to site: \url{https://impactforecasting.shinyapps.io/ecomodels_GDD/} and the link has been updated in the manuscript. This was a very helpful suggestion that we believe has made the manuscript more accessible. \\ 
 
 \textit{L34: resources and forest management aren't ecosystem services; this sentence might work better if the second half focused on ecosystem functioning, since you mention ecosystem services later in this paragraph} \\
 
@@ -62,7 +62,7 @@ Thank you for pointing this out and further clarifying. We agree with the review
 
 \textit{L60: `constant' - here I might add `across individual plants and locations' or similar text, to help the reader follow} \\
 
-We thank the reviewer for this additional context and have added it for further clarification. \\
+We thank the reviewer for this additional context and have added it. \\
 
 \textit{L61-62: you state that due to plasticity, individual plants exposed to different conditions could leaf out at different times… the same individual could leaf out at different times but actually at the same GDD threshold, depending on the underlying conditions. I think what you mean to say here is that due to plasticity, the same individual could leaf-out at different GDD accumulations.} \\
 
@@ -76,8 +76,9 @@ We agree with the reviewer and have adjusted the language to be more specific an
 
 We thank the reviewer for their insight and agree the paragraph feels out of place. We have updated the language to better fit the rest of the Introduction (\lr{Z4urban} - \lr{Z4urbanend}): \\
 
+% EMW10Feb -- I updated the text here in the main text. If you keep the changes be sure to update the quoted text here. 
 \begin{quotation} 
-\noindent Climate helps determine the role of chilling and photoperiod---and, thus the required GDD \citep{Bonhomme2000}. On a large scale climate gradients across space (i.e., latitudinal or continentality effects) and gradients due to anthropogenic impact may thus alter estimated GDD. Urbanization has led to the formation of urban heat islands, which can affect plant phenology and lead to earlier spring leafout---and lower GDD thresholds---due to stronger chilling effects \citep{Meng2020}.
+\noindent Climate helps determine the role of chilling and photoperiod---and, thus the required GDD \citep{Bonhomme2000,Wu2022}. On a large scale climate gradients across space (i.e., latitudinal, continentality effects or due to global anthropogenic warming) may thus alter estimated GDD. On a smaller spatial scale, urbanization has led to the formation of urban heat islands, which can  lead to earlier spring leafout---and varying GDD thresholds----potentially due to warmer winters reducing chilling \citep{Meng2020}.
 \end{quotation}
 
 \textit{L81: why use `vineyard' here?} \\
@@ -162,7 +163,7 @@ Thank you for this suggestion, we have added a reference here. \\
 
 \textit{L296-297: this may be just me, but I don't follow how you could accumulate less chill at colder sites} \\
 
-We thank the reviewer for this suggestion and agree that the phrasing is confusing. We have attempted to add more context for clarity and explanation. \\
+We thank the reviewer for this suggestion and agree that the phrasing is confusing. We have attempted to add more context. \\
 
 \textit{L305-322: might be worth a bit more discussion of how different methods of temp logging perform - there most certainly is a big body of literature on this. I imagine HOBOs are more prone to error; it might be good in the future to have multiple HOBO data loggers out at the same site to estimate variation due to the equipment} \\
 
@@ -176,7 +177,7 @@ Thank you for your positive feedback and helpful comments. We have done our best
 
 \textit{In the present study, the authors point out the variations of GDD, which may be caused by the shifts of chilling and/or photoperiod as the authors indicated in the discussion. The authors have the winter temperature dataset, why add an analyzation of chilling variations?} \\
 
-We thank the reviewer for this suggestion and have carefully considered adding analyses around chilling, but have decided not to for several major reasons. First, we feel this is already a dense manuscript and we are concerned adding in analyses of chilling would be too much information for readers to interpret. Second (and relatedly), our current understanding of chilling is limited, but suggests a process far more complicated than the thermal sum model of GDD, where most spring temperatures above the base temperature accumulate equally. In contrast, models of chilling accumulation suggest a highly non-linear relationship where some temperatures are optimal, and others contribute very little---but what exactly those temperatures are is not known and very likely varies by species. Including any thoughtful analysis of chilling would thus require the addition of many various models, none of which we could clearly point to as most accurate. Based on this, we have decided that adding in chilling analyses would be overwhelming and take away from the overall message for focusing on GDD thresholds. We discuss, however, the complexity of chilling models some on lines \lr{Z2chillstart} - \lr{Z2chillend}.  \\  
+We thank the reviewer for this suggestion and have carefully considered adding analyses around chilling. After though we have not added such analyses for several major reasons. First, we feel this is already a dense manuscript and we are concerned that adding analyses of chilling would be too much information for readers to interpret. Second (and relatedly), our current understanding of chilling is limited, but suggests a process far more complicated than the thermal sum model of GDD, where most spring temperatures above the base temperature accumulate equally. In contrast, models of chilling accumulation suggest a highly non-linear relationship where some temperatures are optimal, and others contribute very little---but what exactly those temperatures are is not known and very likely varies by species. Including any thoughtful analysis of chilling would thus require the addition of many various models, none of which we could clearly point to as most biologically accurate. Based on this, we have decided that adding in chilling analyses would be overwhelming and take away from the overall message for focusing on GDD thresholds. We discuss, however, the complexity of chilling models on lines \lr{Z2chillstart} - \lr{Z2chillend}.  \\  
 
 \textit{Lines 33-37: More relevant references should be cited here.} \\
 
